@@ -75,14 +75,6 @@ public abstract class Assert {
     private static Locale locale = Locale.US;
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public Assert() {
-    }
-
-    /**
      * @return the locale
      */
     public static final Locale getLocale() {

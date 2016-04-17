@@ -31,6 +31,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.gl.utils.commons.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +42,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.OutputStreamAppender;
-
-import org.gl.utils.commons.StringUtils;
 
 /**
  * MDC Thread Safe check
@@ -63,12 +62,6 @@ public class MDCTSTest {
     private ExecutorService executorService;
     private ByteArrayOutputStream stream;
     private OutputStreamAppender<ILoggingEvent> appender;
-
-    /**
-     * Default constructor
-     */
-    public MDCTSTest() {
-    }
 
     /**
      * Init the appender and create the pool executor

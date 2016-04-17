@@ -27,14 +27,6 @@ import org.junit.Test;
 public class EnumUtilsTest {
 
     /**
-     * Constructor
-     *
-     */
-    public EnumUtilsTest() {
-        super();
-    }
-
-    /**
      * Test method for
      * {@link org.gl.utils.commons.EnumUtils#getNullIfEmpty(java.lang.Class, java.lang.String)}
      * .

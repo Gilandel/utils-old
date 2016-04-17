@@ -38,12 +38,6 @@ public class DateUtilsTest {
     private static final int DAY = 15;
 
     /**
-     * Constructor
-     */
-    public DateUtilsTest() {
-    }
-
-    /**
      * Check get date wrapper
      */
     @Test

@@ -29,17 +29,7 @@ import org.junit.Test;
 public class HexUtilsTest {
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public HexUtilsTest() {
-    }
-
-    /**
-     * Test method for
-     * {@link org.gl.utils.commons.HexUtils#intToByte(int)}
-     * .
+     * Test method for {@link org.gl.utils.commons.HexUtils#intToByte(int)} .
      */
     @Test
     public void testIntToByte() {
@@ -50,9 +40,7 @@ public class HexUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.HexUtils#intToBytes(int)}
-     * .
+     * Test method for {@link org.gl.utils.commons.HexUtils#intToBytes(int)} .
      */
     @Test
     public void testIntToBytes() {
@@ -64,8 +52,7 @@ public class HexUtilsTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.HexUtils#byteArrayToHexString(byte[])}
-     * .
+     * {@link org.gl.utils.commons.HexUtils#byteArrayToHexString(byte[])} .
      */
     @Test
     public void testByteArrayToHexString() {

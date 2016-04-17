@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -36,12 +35,6 @@ import org.junit.Test;
 public class CastGenericsTest {
 
     /**
-     * Constructor
-     */
-    public CastGenericsTest() {
-    }
-
-    /**
      * Check cast a object
      */
     @Test
@@ -49,7 +42,7 @@ public class CastGenericsTest {
         ExException map = new ExException("msg");
         IOException result = CastGenerics.getObject(map, IOException.class);
 
-        Assert.assertEquals("msg", result.getMessage());
+        assertEquals("msg", result.getMessage());
     }
 
     /**
@@ -64,9 +57,9 @@ public class CastGenericsTest {
         list.add("value2");
 
         List<String> result = CastGenerics.getList(list, String.class);
-        Assert.assertEquals("value1", result.get(0));
+        assertEquals("value1", result.get(0));
         assertNull(result.get(1));
-        Assert.assertEquals("value2", result.get(2));
+        assertEquals("value2", result.get(2));
     }
 
     /**
@@ -79,7 +72,7 @@ public class CastGenericsTest {
         map.put("key", "value");
 
         Map<String, String> result = CastGenerics.getHashMap(map, String.class, String.class);
-        Assert.assertEquals("value", result.get("key"));
+        assertEquals("value", result.get("key"));
     }
 
     /**
@@ -92,8 +85,8 @@ public class CastGenericsTest {
         set.add("test");
 
         Set<String> result = CastGenerics.getHashSet(set, String.class);
-        Assert.assertEquals(1, result.size());
-        Assert.assertEquals("test", result.toArray(new String[result.size()])[0]);
+        assertEquals(1, result.size());
+        assertEquals("test", result.toArray(new String[result.size()])[0]);
     }
 
     /**

@@ -41,14 +41,6 @@ public class FileUtilsTest {
     private static final String CHECK_CRC32_FILE = "checkCRC32.xml";
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public FileUtilsTest() {
-    }
-
-    /**
      * Remove test directory
      */
     @After

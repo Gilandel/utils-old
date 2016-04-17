@@ -17,8 +17,9 @@ import java.util.Map.Entry;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.gl.utils.commons.CastGenerics;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Abstract class to force implementation of Object methods.

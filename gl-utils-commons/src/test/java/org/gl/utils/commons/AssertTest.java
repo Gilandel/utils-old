@@ -38,27 +38,21 @@ import org.junit.Test;
 public class AssertTest {
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public AssertTest() {
-    }
-
-    /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isFalse(boolean, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isFalse(boolean, String, Object...)} .
      */
     @Test
     public void testIsFalseOKBooleanString() {
-        Assert.isFalse(false, "not false");
+        try {
+            Assert.isFalse(false, "not false");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isFalse(boolean, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isFalse(boolean, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBooleanString() {
@@ -66,19 +60,19 @@ public class AssertTest {
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#isFalse(boolean)}
-     * .
+     * Test method for {@link org.gl.utils.commons.Assert#isFalse(boolean)} .
      */
     @Test
     public void testIsFalseOKBoolean() {
-        Assert.isFalse(false);
+        try {
+            Assert.isFalse(false);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#isFalse(boolean)}
-     * .
+     * Test method for {@link org.gl.utils.commons.Assert#isFalse(boolean)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBoolean() {
@@ -87,18 +81,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isTrue(boolean, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isTrue(boolean, String, Object...)} .
      */
     @Test
     public void testIsTrueOKBooleanString() {
-        Assert.isTrue(true, "not true");
+        try {
+            Assert.isTrue(true, "not true");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isTrue(boolean, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isTrue(boolean, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBooleanString() {
@@ -106,19 +102,19 @@ public class AssertTest {
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#isTrue(boolean)}
-     * .
+     * Test method for {@link org.gl.utils.commons.Assert#isTrue(boolean)} .
      */
     @Test
     public void testIsTrueOKBoolean() {
-        Assert.isTrue(true);
+        try {
+            Assert.isTrue(true);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#isTrue(boolean)}
-     * .
+     * Test method for {@link org.gl.utils.commons.Assert#isTrue(boolean)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBoolean() {
@@ -127,18 +123,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNull(Object, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNull(Object, String, Object...)} .
      */
     @Test
     public void testIsNullOKObjectString() {
-        Assert.isNull(null, "not null object");
+        try {
+            Assert.isNull(null, "not null object");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNull(Object, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNull(Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObjectString() {
@@ -147,18 +145,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNull(java.lang.Object)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNull(java.lang.Object)} .
      */
     @Test
     public void testIsNullOKObject() {
-        Assert.isNull(null);
+        try {
+            Assert.isNull(null);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNull(java.lang.Object)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNull(java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObject() {
@@ -172,7 +172,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotNullOKObjectString() {
-        Assert.isNotNull(1, "null object");
+        try {
+            Assert.isNotNull(1, "null object");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -187,18 +191,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotNull(java.lang.Object)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotNull(java.lang.Object)} .
      */
     @Test
     public void testIsNotNullOKObject() {
-        Assert.isNotNull(1);
+        try {
+            Assert.isNotNull(1);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotNull(java.lang.Object)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotNull(java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObject() {
@@ -212,7 +218,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotEmptyOKStringString() {
-        Assert.isNotEmpty("a", "empty string");
+        try {
+            Assert.isNotEmpty("a", "empty string");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -237,18 +247,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.String)} .
      */
     @Test
     public void testIsNotEmptyOKString() {
-        Assert.isNotEmpty("z");
+        try {
+            Assert.isNotEmpty("z");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOString() {
@@ -257,8 +269,7 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2String() {
@@ -272,7 +283,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotEmptyOKObjectArrayString() {
-        Assert.isNotEmpty(Arrays.asList("").toArray(), "empty array");
+        try {
+            Assert.isNotEmpty(Arrays.asList("").toArray(), "empty array");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -287,18 +302,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.Object[])}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.Object[])} .
      */
     @Test
     public void testIsNotEmptyOKObjectArray() {
-        Assert.isNotEmpty(Arrays.asList("").toArray());
+        try {
+            Assert.isNotEmpty(Arrays.asList("").toArray());
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.Object[])}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.lang.Object[])} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOObjectArray() {
@@ -312,7 +329,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQString() {
-        Assert.isNotEmpty(Arrays.asList(""), "empty collection");
+        try {
+            Assert.isNotEmpty(Arrays.asList(""), "empty collection");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -327,18 +348,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Collection)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Collection)} .
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQ() {
-        Assert.isNotEmpty(Arrays.asList(""));
+        try {
+            Assert.isNotEmpty(Arrays.asList(""));
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Collection)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Collection)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQ() {
@@ -347,20 +370,22 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(Map, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(Map, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQString() {
-        Map<String, String> map = new HashMap<>();
-        map.put("f", "f");
-        Assert.isNotEmpty(map, "empty");
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("f", "f");
+            Assert.isNotEmpty(map, "empty");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(Map, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(Map, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQString() {
@@ -369,20 +394,22 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Map)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Map)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQ() {
-        Map<String, String> map = new HashMap<>();
-        map.put("fg", "fg");
-        Assert.isNotEmpty(map);
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("fg", "fg");
+            Assert.isNotEmpty(map);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Map)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotEmpty(java.util.Map)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQ() {
@@ -391,19 +418,21 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isEmpty(String, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isEmpty(String, String, Object...)} .
      */
     @Test
     public void testIsEmptyOKStringString() {
-        Assert.isEmpty(null, "not empty or null");
-        Assert.isEmpty("", "not empty");
+        try {
+            Assert.isEmpty(null, "not empty or null");
+            Assert.isEmpty("", "not empty");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isEmpty(String, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOStringString() {
@@ -412,19 +441,21 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isEmpty(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isEmpty(java.lang.String)} .
      */
     @Test
     public void testIsEmptyOKString() {
-        Assert.isEmpty(null);
-        Assert.isEmpty("");
+        try {
+            Assert.isEmpty(null);
+            Assert.isEmpty("");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isEmpty(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOString() {
@@ -438,7 +469,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotBlankOKStringString() {
-        Assert.isNotBlank("   \t sds  ", "blank");
+        try {
+            Assert.isNotBlank("   \t sds  ", "blank");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -453,18 +488,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotBlank(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotBlank(java.lang.String)} .
      */
     @Test
     public void testIsNotBlankOKString() {
-        Assert.isNotBlank("    \t  e ");
+        try {
+            Assert.isNotBlank("    \t  e ");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNotBlank(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isNotBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOString() {
@@ -473,18 +510,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isBlank(String, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isBlank(String, String, Object...)} .
      */
     @Test
     public void testIsBlankOKStringString() {
-        Assert.isBlank("   \t   ", "not blank");
+        try {
+            Assert.isBlank("   \t   ", "not blank");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isBlank(String, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isBlank(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOStringString() {
@@ -493,18 +532,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isBlank(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isBlank(java.lang.String)} .
      */
     @Test
     public void testIsBlankOKString() {
-        Assert.isBlank("   \t   ");
+        try {
+            Assert.isBlank("   \t   ");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isBlank(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#isBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOString() {
@@ -518,7 +559,11 @@ public class AssertTest {
      */
     @Test
     public void testDoesNotContainOKStringStringString() {
-        Assert.doesNotContain("titi part en vacances", "toto", "not found");
+        try {
+            Assert.doesNotContain("titi part en vacances", "toto", "not found");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -538,7 +583,11 @@ public class AssertTest {
      */
     @Test
     public void testDoesNotContainOKStringString() {
-        Assert.doesNotContain("toto part en vacances", "tutu");
+        try {
+            Assert.doesNotContain("toto part en vacances", "tutu");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -558,7 +607,11 @@ public class AssertTest {
      */
     @Test
     public void testContainsOKStringString() {
-        Assert.contains("toto part en vacances", "toto");
+        try {
+            Assert.contains("toto part en vacances", "toto");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -578,7 +631,11 @@ public class AssertTest {
      */
     @Test
     public void testContainsOKStringStringString() {
-        Assert.contains("toto part en vacances", "toto", "text not found");
+        try {
+            Assert.contains("toto part en vacances", "toto", "text not found");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -598,8 +655,12 @@ public class AssertTest {
      */
     @Test
     public void testIsNoNullElementOKsObjectArrayString() {
-        String[] array = new String[] {"1", "3"};
-        Assert.isNoNullElements(array);
+        try {
+            String[] array = new String[] {"1", "3"};
+            Assert.isNoNullElements(array);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -620,8 +681,12 @@ public class AssertTest {
      */
     @Test
     public void testIsNoNullElementsOKObjectArray() {
-        String[] array = new String[] {"1", "2"};
-        Assert.isNoNullElements(array, "array has null element");
+        try {
+            String[] array = new String[] {"1", "2"};
+            Assert.isNoNullElements(array, "array has null element");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -642,7 +707,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotEqualOKObjectObject() {
-        Assert.isNotEqual("texte9", "texte10");
+        try {
+            Assert.isNotEqual("texte9", "texte10");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -662,7 +731,11 @@ public class AssertTest {
      */
     @Test
     public void testIsNotEqualOKObjectObjectString() {
-        Assert.isNotEqual("texte8", "texte7", "equal");
+        try {
+            Assert.isNotEqual("texte8", "texte7", "equal");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -682,7 +755,11 @@ public class AssertTest {
      */
     @Test
     public void testIsEqualOKObjectObject() {
-        Assert.isEqual("texte4", "texte4");
+        try {
+            Assert.isEqual("texte4", "texte4");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -702,7 +779,11 @@ public class AssertTest {
      */
     @Test
     public void testIsEqualOKObjectObjectString() {
-        Assert.isEqual("texte0", "texte0", "not equals");
+        try {
+            Assert.isEqual("texte0", "texte0", "not equals");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -722,7 +803,11 @@ public class AssertTest {
      */
     @Test
     public void testIsInstanceOfOKClassOfQObject() {
-        Assert.isInstanceOf(IOException.class, new IOException());
+        try {
+            Assert.isInstanceOf(IOException.class, new IOException());
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -742,7 +827,11 @@ public class AssertTest {
      */
     @Test
     public void testIsInstanceOfOKClassOfQObjectString() {
-        Assert.isInstanceOf(IOException.class, new IOException(), "not instance of");
+        try {
+            Assert.isInstanceOf(IOException.class, new IOException(), "not instance of");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -762,7 +851,11 @@ public class AssertTest {
      */
     @Test
     public void testIsAssignableOKClassOfQClassOfQ() {
-        Assert.isAssignable(Exception.class, IOException.class);
+        try {
+            Assert.isAssignable(Exception.class, IOException.class);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -782,7 +875,11 @@ public class AssertTest {
      */
     @Test
     public void testIsAssignableOKClassOfQClassOfQString() {
-        Assert.isAssignable(Exception.class, IOException.class, "msg");
+        try {
+            Assert.isAssignable(Exception.class, IOException.class, "msg");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
@@ -797,18 +894,20 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#state(boolean, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#state(boolean, String, Object...)} .
      */
     @Test
     public void testStateBooleanTrueString() {
-        Assert.state(true, "test");
+        try {
+            Assert.state(true, "test");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#state(boolean, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#state(boolean, String, Object...)} .
      */
     @Test(expected = IllegalStateException.class)
     public void testStateBooleanFalseString() {
@@ -816,17 +915,19 @@ public class AssertTest {
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#state(boolean)}.
+     * Test method for {@link org.gl.utils.commons.Assert#state(boolean)}.
      */
     @Test
     public void testStateBooleanTrue() {
-        Assert.state(true);
+        try {
+            Assert.state(true);
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#state(boolean)}.
+     * Test method for {@link org.gl.utils.commons.Assert#state(boolean)}.
      */
     @Test(expected = IllegalStateException.class)
     public void testStateBooleanFalse() {
@@ -835,8 +936,7 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#fail(java.lang.String)}
-     * .
+     * {@link org.gl.utils.commons.Assert#fail(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testFailString() {
@@ -845,8 +945,7 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#fail(Throwable, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#fail(Throwable, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testFailStringThrowable() {
@@ -855,8 +954,7 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#fail(Throwable, String, Object...)}
-     * .
+     * {@link org.gl.utils.commons.Assert#fail(Throwable, String, Object...)} .
      */
     @Test
     public void testFailFormatStringThrowable() {
@@ -870,51 +968,53 @@ public class AssertTest {
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#that(Object, Matcher)}
+     * Test method for {@link org.gl.utils.commons.Assert#that(Object, Matcher)}
      * .
      */
     @Test
     public void testThatOK() {
-        final String red = "red";
-        final String green = "green";
-        final String blue = "blue";
-        final String alpha = "alpha";
+        try {
+            final String red = "red";
+            final String green = "green";
+            final String blue = "blue";
+            final String alpha = "alpha";
 
-        final int max = 255;
+            final int max = 255;
 
-        final int nbColors = 4;
-        final List<Color> colors = new ArrayList<>(nbColors);
+            final int nbColors = 4;
+            final List<Color> colors = new ArrayList<>(nbColors);
 
-        colors.add(Color.BLACK);
-        colors.add(Color.WHITE);
-        colors.add(Color.BLUE);
-        colors.add(Color.CYAN);
+            colors.add(Color.BLACK);
+            colors.add(Color.WHITE);
+            colors.add(Color.BLUE);
+            colors.add(Color.CYAN);
 
-        Matcher<Color> matcherAlpha = Matchers.hasProperty(alpha, Matchers.is(max));
+            Matcher<Color> matcherAlpha = Matchers.hasProperty(alpha, Matchers.is(max));
 
-        Matcher<Color> matcherBlack = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)),
-                Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(0)), matcherAlpha);
+            Matcher<Color> matcherBlack = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)),
+                    Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(0)), matcherAlpha);
 
-        Matcher<Color> matcherWhite = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
-                Matchers.hasProperty(red, Matchers.is(max)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
+            Matcher<Color> matcherWhite = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
+                    Matchers.hasProperty(red, Matchers.is(max)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
 
-        Matcher<Color> matcherBlue = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)), Matchers.hasProperty(red, Matchers.is(0)),
-                Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
+            Matcher<Color> matcherBlue = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)),
+                    Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
 
-        Matcher<Color> matcherCyan = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
-                Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
+            Matcher<Color> matcherCyan = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
+                    Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
 
-        List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
-                matcherCyan);
+            List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
+                    matcherCyan);
 
-        Assert.that(colors, Matchers.hasSize(nbColors));
-        Assert.that(colors, Matchers.contains(matcherList));
+            Assert.that(colors, Matchers.hasSize(nbColors));
+            Assert.that(colors, Matchers.contains(matcherList));
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
     }
 
     /**
-     * Test method for
-     * {@link org.gl.utils.commons.Assert#that(Object, Matcher)}
+     * Test method for {@link org.gl.utils.commons.Assert#that(Object, Matcher)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)

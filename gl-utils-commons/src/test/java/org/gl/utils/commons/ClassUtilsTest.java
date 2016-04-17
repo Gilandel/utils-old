@@ -41,14 +41,6 @@ import org.junit.Test;
 public class ClassUtilsTest {
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public ClassUtilsTest() {
-    }
-
-    /**
      * Test method for
      * {@link org.gl.utils.commons.ClassUtils#getSuperclasses(java.lang.Class)}
      * .
@@ -94,8 +86,7 @@ public class ClassUtilsTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.ClassUtils#isAnyNull(Object...)}
-     * .
+     * {@link org.gl.utils.commons.ClassUtils#isAnyNull(Object...)} .
      */
     @Test
     public void testIsAnyNull() {
@@ -110,8 +101,7 @@ public class ClassUtilsTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.ClassUtils#isAllNull(Object...)}
-     * .
+     * {@link org.gl.utils.commons.ClassUtils#isAllNull(Object...)} .
      */
     @Test
     public void testIsAllNull() {
@@ -127,8 +117,7 @@ public class ClassUtilsTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.ClassUtils#isNoneNull(Object...)}
-     * .
+     * {@link org.gl.utils.commons.ClassUtils#isNoneNull(Object...)} .
      */
     @Test
     public void testIsNoneNull() {

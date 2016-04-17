@@ -37,12 +37,6 @@ public class CloseableManagerTest {
     private static final String CHECK_CRC32_FILE_INPUT = CHECK_CRC32_PATH + "/checkCRC32.xml";
 
     /**
-     * Constructor
-     */
-    public CloseableManagerTest() {
-    }
-
-    /**
      * Test method for {@link CloseableManager#isCloseable(java.lang.Class)} .
      */
     @Test

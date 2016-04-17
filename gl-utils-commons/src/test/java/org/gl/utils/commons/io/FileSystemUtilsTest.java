@@ -42,12 +42,6 @@ public class FileSystemUtilsTest {
     private static final Long CHECK_CRC32_VALUE = 269_218_582L;
 
     /**
-     * Constructor
-     */
-    public FileSystemUtilsTest() {
-    }
-
-    /**
      * Remove test directory
      */
     @After

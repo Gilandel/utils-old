@@ -38,12 +38,6 @@ public class StreamUtilsTest {
     private static final String CHECK_CRC32_FILE_OUTPUT = CHECK_CRC32_TARGET_PATH + "/checkCRC32.xml";
 
     /**
-     * Constructor
-     */
-    public StreamUtilsTest() {
-    }
-
-    /**
      * Test method for
      * {@link StreamUtils#createBufferedReader(java.lang.String, java.lang.String)}
      * .

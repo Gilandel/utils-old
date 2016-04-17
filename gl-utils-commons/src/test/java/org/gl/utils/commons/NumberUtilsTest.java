@@ -29,14 +29,6 @@ import org.junit.Test;
 public class NumberUtilsTest {
 
     /**
-     * Constructor
-     *
-     */
-    public NumberUtilsTest() {
-        super();
-    }
-
-    /**
      * Test method for {@link NumberUtils#isEqual(Double, Double)} .
      */
     @Test

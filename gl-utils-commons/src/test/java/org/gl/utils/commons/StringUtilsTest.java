@@ -27,14 +27,6 @@ import org.junit.Test;
 public class StringUtilsTest {
 
     /**
-     * Constructor
-     *
-     */
-    public StringUtilsTest() {
-        super();
-    }
-
-    /**
      * Test method for
      * {@link org.gl.utils.commons.StringUtils#getNullIfEmpty(java.lang.CharSequence)}
      * .

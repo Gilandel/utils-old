@@ -37,12 +37,6 @@ public class FileSizeUtilsTest {
     private static final long CHECK_CRC32_SIZE = 1_099L;
 
     /**
-     * Constructor
-     */
-    public FileSizeUtilsTest() {
-    }
-
-    /**
      * Remove test directory
      */
     @After
