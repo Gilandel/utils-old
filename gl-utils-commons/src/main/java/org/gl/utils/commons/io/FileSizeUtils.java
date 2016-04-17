@@ -23,11 +23,7 @@ import java.util.TreeMap;
 import org.gl.utils.commons.EnumChar;
 
 /**
- * This class is used to:<br>
- * - read a file,<br>
- * - get the CRC32 of a file or a directory,<br>
- * - copy a file or a directory,<br>
- * - delete a directory from disk
+ * This class contains the list of file sizes
  *
  * @since 27 nov. 2015
  * @author Gilles Landel

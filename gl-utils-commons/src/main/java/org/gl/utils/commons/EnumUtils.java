@@ -49,7 +49,9 @@ public final class EnumUtils extends org.apache.commons.lang3.EnumUtils {
             try {
                 return Enum.valueOf(enumType, name);
             } catch (IllegalArgumentException e) {
-                LOGGER.debug("Name parameter '" + name + "' not found in enumeration: " + enumType, e);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Name parameter '" + name + "' not found in enumeration: " + enumType, e);
+                }
             }
         }
         return null;
