@@ -27,13 +27,6 @@ public final class EnumUtils extends org.apache.commons.lang3.EnumUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnumUtils.class);
 
     /**
-     * Default constructor.
-     */
-    public EnumUtils() {
-        super();
-    }
-
-    /**
      * Get the enumeration if name is not empty and null otherwise.
      * 
      * @param enumType

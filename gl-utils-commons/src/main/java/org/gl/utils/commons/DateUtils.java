@@ -31,13 +31,6 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
 
     /**
-     * Default constructor.
-     */
-    public DateUtils() {
-        super();
-    }
-
-    /**
      * Date Wrapper.
      * 
      * @param date

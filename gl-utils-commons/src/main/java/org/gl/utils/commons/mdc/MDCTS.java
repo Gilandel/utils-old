@@ -53,12 +53,6 @@ public abstract class MDCTS {
     private static ConcurrentMap<Long, ConcurrentMap<String, String>> globalContextMap = new ConcurrentHashMap<>();
 
     /**
-     * Utility class
-     */
-    public MDCTS() {
-    }
-
-    /**
      * Get the context map of the current thread
      * 
      * @param threadId

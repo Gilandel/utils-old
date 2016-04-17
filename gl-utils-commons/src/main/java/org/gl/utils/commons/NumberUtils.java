@@ -26,13 +26,6 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     private static final int TEN = 10;
 
     /**
-     * Default constructor.
-     */
-    public NumberUtils() {
-        super();
-    }
-
-    /**
      * Get the max decimal length.
      * 
      * @param num1

@@ -22,13 +22,6 @@ package org.gl.utils.commons;
 public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
-     * Constructor.
-     */
-    public StringUtils() {
-        super();
-    }
-
-    /**
      * Get the char sequence if not empty and null otherwise.
      * 
      * @param cs
