@@ -98,6 +98,7 @@
 		<sonar.plugin.version>3.0.1</sonar.plugin.version>
 		<license.plugin.version>1.8</license.plugin.version>
 		<javadoc.plugin.version>2.10.3</javadoc.plugin.version>
+		<versioneye.plugin.version>3.9.1</versioneye.plugin.version>
 
 		<!-- Dependencies version -->
 		<commons.lang.version>3.4</commons.lang.version>
@@ -107,7 +108,8 @@
 		<logback.version>1.1.7</logback.version>
 		<slf4j.version>1.7.21</slf4j.version>
 
-		<!-- Only the class 'org.gl.utils.model.hibernate.ImprovedNamingStrategy' requires Hibernate 5 -->
+		<!-- Only the class 'org.gl.utils.model.hibernate.ImprovedNamingStrategy' 
+			requires Hibernate 5 -->
 		<!-- For the others classes, Hibernate 4.3.11 can be used -->
 		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
@@ -132,24 +134,11 @@
 				<artifactId>cobertura-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<show>package</show>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
+				<configuration> <show>package</show> <aggregate>true</aggregate> </configuration> 
+				</plugin> -->
 		</plugins>
 	</reporting>
-	
-	<!-- Only required for Javadoc generation (maven site lifecycle), may be place this in a profile? -->
-	<!-- <dependencies>
-		<dependency>
-			<groupId>net.sourceforge.cobertura</groupId>
-			<artifactId>cobertura</artifactId>
-		</dependency>
-	</dependencies> -->
 
 	<build>
 		<plugins>
@@ -198,6 +187,10 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.versioneye</groupId>
+				<artifactId>versioneye-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 
@@ -331,6 +324,11 @@
 					<version>${sonar.plugin.version}</version>
 				</plugin>
 				<plugin>
+					<groupId>com.versioneye</groupId>
+					<artifactId>versioneye-maven-plugin</artifactId>
+					<version>${versioneye.plugin.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${javadoc.plugin.version}</version>
@@ -449,7 +447,7 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<!-- Assert -->
 			<dependency>
 				<groupId>org.hamcrest</groupId>
