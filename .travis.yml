@@ -4,12 +4,11 @@ jdk:
   - oraclejdk8
   
 install: 
-  - "curl https://www.jpm4j.org/install/script | sh"
+  - "curl -sL http://bit.ly/jpm4j >jpm4j.jar"
+  - "java -jar jpm4j.jar -u init"
   - "jpm install com.codacy:codacy-coverage-reporter:assembly"
 
 script: mvn clean compile test
 
 after_success:
-  - coveralls
-  - coverage xml
   - CODACY_PROJECT_TOKEN=29895bb6d60541cb892b958b8b95b55c codacy-coverage-reporter -l Java -r coverage.xml
