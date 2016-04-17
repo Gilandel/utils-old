@@ -3,12 +3,14 @@ language: java
 jdk:
   - oraclejdk8
   
-install: 
-  - "curl -sL http://bit.ly/jpm4j >jpm4j.jar"
-  - "java -jar jpm4j.jar -u init"
-  - "jpm install com.codacy:codacy-coverage-reporter:assembly"
+before_install:
+  - pip install --user codecov
 
 script: mvn clean compile test
 
 after_success:
-  - CODACY_PROJECT_TOKEN=29895bb6d60541cb892b958b8b95b55c codacy-coverage-reporter -l Java -r coverage.xml
+  - codecov
+
+cache:
+  directories:
+  - $HOME/.m2
