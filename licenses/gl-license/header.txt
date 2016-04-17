@@ -1,0 +1,3 @@
+Authors: Gilles Landel
+
+This code is under Apache License, version 2.0 (2004).
