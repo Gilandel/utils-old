@@ -5,8 +5,9 @@
  * Copyright (C) 2016 Gilandel
  * %%
  * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
  * 
- * This code is under Apache License, version 2.0 (2004).
+ * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
 package org.gl.utils.commons;
@@ -864,7 +865,7 @@ public class AssertTest {
             Assert.fail(new IOException(), "The argument %s doesn't match the predicate number %.1f", "ARG0", arg0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals("[Assertion failed] The argument ARG0 doesn't match the predicate number 2,3", e.getMessage());
+            assertEquals("[Assertion failed] The argument ARG0 doesn't match the predicate number 2.3", e.getMessage());
         }
     }
 

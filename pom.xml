@@ -351,8 +351,8 @@
 						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 
 						<canUpdateLicense>true</canUpdateLicense>
-						<canUpdateCopyright>true</canUpdateCopyright>
-						<canUpdateDescription>true</canUpdateDescription>
+						<canUpdateCopyright>false</canUpdateCopyright>
+						<canUpdateDescription>false</canUpdateDescription>
 
 						<failOnMissingHeader>true</failOnMissingHeader>
 						<failOnNotUptodateHeader>true</failOnNotUptodateHeader>

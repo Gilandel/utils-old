@@ -5,13 +5,15 @@
  * Copyright (C) 2016 Gilandel
  * %%
  * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
  * 
- * This code is under Apache License, version 2.0 (2004).
+ * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
 package org.gl.utils.commons;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -50,12 +52,13 @@ import org.hamcrest.StringDescription;
  * </pre>
  *
  * <p>
- * Mainly for internal use within the framework; consider <a
- * href="http://commons.apache.org/proper/commons-lang/">Apache's Commons
+ * Mainly for internal use within the framework; consider
+ * <a href="http://commons.apache.org/proper/commons-lang/">Apache's Commons
  * Lang</a> for a more comprehensive suite of {@code String} utilities.
  *
- * @see <a
- *      href="http://docs.spring.io/spring/docs/2.0.x/api/org/springframework/util/Assert.html?is-external=true">org.springframework.util.Assert</a>
+ * @see <a href=
+ *      "http://docs.spring.io/spring/docs/2.0.x/api/org/springframework/util/Assert.html?is-external=true">
+ *      org.springframework.util.Assert</a>
  *
  * @author Keith Donald
  * @author Juergen Hoeller
@@ -69,12 +72,29 @@ public abstract class Assert {
 
     private static final String ASSERTION_FAILED = "[Assertion failed]";
 
+    private static Locale locale = Locale.US;
+
     /**
      * 
      * Constructor
      *
      */
     public Assert() {
+    }
+
+    /**
+     * @return the locale
+     */
+    public static final Locale getLocale() {
+        return Assert.locale;
+    }
+
+    /**
+     * @param locale
+     *            the locale to set
+     */
+    public static final void setLocale(final Locale locale) {
+        Assert.locale = locale;
     }
 
     /**
@@ -252,8 +272,8 @@ public abstract class Assert {
      */
     public static void isNotEmpty(final String text, final String message, final Object... arguments) {
         if (StringUtils.isEmpty(text)) {
-            throw new IllegalArgumentException(getMessage("this String argument must have length; it must not be null or empty", message,
-                    arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this String argument must have length; it must not be null or empty", message, arguments));
         }
     }
 
@@ -293,8 +313,8 @@ public abstract class Assert {
      */
     public static void isNotEmpty(Object[] array, final String message, final Object... arguments) {
         if (ArrayUtils.isEmpty(array)) {
-            throw new IllegalArgumentException(getMessage("this array must not be empty: it must contain at least 1 element", message,
-                    arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this array must not be empty: it must contain at least 1 element", message, arguments));
         }
     }
 
@@ -334,8 +354,8 @@ public abstract class Assert {
      */
     public static void isNotEmpty(final Collection<?> collection, final String message, final Object... arguments) {
         if (CollectionUtils.isEmpty(collection)) {
-            throw new IllegalArgumentException(getMessage("this collection must not be empty: it must contain at least 1 element", message,
-                    arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this collection must not be empty: it must contain at least 1 element", message, arguments));
         }
     }
 
@@ -375,8 +395,8 @@ public abstract class Assert {
      */
     public static void isNotEmpty(final Map<?, ?> map, final String message, final Object... arguments) {
         if (MapUtils.isEmpty(map)) {
-            throw new IllegalArgumentException(getMessage("this map must not be empty; it must contain at least one entry", message,
-                    arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this map must not be empty; it must contain at least one entry", message, arguments));
         }
     }
 
@@ -454,8 +474,8 @@ public abstract class Assert {
      */
     public static void isNotBlank(final String text, final String message, final Object... arguments) {
         if (StringUtils.isBlank(text)) {
-            throw new IllegalArgumentException(getMessage("this String argument must have text; it must not be null, empty, or blank",
-                    message, arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this String argument must have text; it must not be null, empty, or blank", message, arguments));
         }
     }
 
@@ -536,8 +556,8 @@ public abstract class Assert {
      */
     public static void contains(final String textToSearch, final String substring, final String message, final Object... arguments) {
         if (StringUtils.isNotEmpty(textToSearch) && StringUtils.isNotEmpty(substring) && !textToSearch.contains(substring)) {
-            throw new IllegalArgumentException(getMessage("this String argument must contain the substring [" + substring + "]", message,
-                    arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this String argument must contain the substring [" + substring + "]", message, arguments));
         }
     }
 
@@ -579,8 +599,8 @@ public abstract class Assert {
      */
     public static void doesNotContain(final String textToSearch, final String substring, final String message, final Object... arguments) {
         if (StringUtils.isNotEmpty(textToSearch) && StringUtils.isNotEmpty(substring) && textToSearch.contains(substring)) {
-            throw new IllegalArgumentException(getMessage("this String argument must not contain the substring [" + substring + "]",
-                    message, arguments));
+            throw new IllegalArgumentException(
+                    getMessage("this String argument must not contain the substring [" + substring + "]", message, arguments));
         }
     }
 
@@ -787,8 +807,8 @@ public abstract class Assert {
                 clazzName = "null";
             }
 
-            throw new IllegalArgumentException(getMessage("Object of class [" + clazzName + "] must be an instance of " + type, message,
-                    arguments));
+            throw new IllegalArgumentException(
+                    getMessage("Object of class [" + clazzName + "] must be an instance of " + type, message, arguments));
         }
     }
 
@@ -971,7 +991,7 @@ public abstract class Assert {
         final String msg;
         if (StringUtils.isNotEmpty(message)) {
             if (arguments != null && arguments.length > 0) {
-                msg = String.format(message, arguments);
+                msg = String.format(Assert.locale, message, arguments);
             } else {
                 msg = message;
             }
