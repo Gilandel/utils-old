@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Runnable to test MDC thread safe
  *
- * @since 11 déc. 2015
+ * @since 11 dec. 2015
  * @author Gilles Landel
  *
  */

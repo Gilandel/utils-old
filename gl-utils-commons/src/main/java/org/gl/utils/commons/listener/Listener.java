@@ -15,7 +15,7 @@ package org.gl.utils.commons.listener;
 /**
  * Interface to manage listen events
  *
- * @since 11 déc. 2015
+ * @since 11 dec. 2015
  * @author Gilles Landel
  *
  */

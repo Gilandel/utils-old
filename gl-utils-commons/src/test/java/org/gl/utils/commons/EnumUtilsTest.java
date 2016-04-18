@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * Check utility class (enumerations).
  * 
- * @since 11 déc. 2015
+ * @since 11 dec. 2015
  * @author Gilles Landel
  * 
  */

@@ -15,7 +15,7 @@ package org.gl.utils.commons;
 /**
  * Characters utility class.
  *
- * @since 1 déc. 2015
+ * @since 1 dec. 2015
  * @author Gilles Landel
  *
  */

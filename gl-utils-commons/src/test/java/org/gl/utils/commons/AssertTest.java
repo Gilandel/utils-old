@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  * Check assert
  *
- * @since 10 déc. 2015
+ * @since 10 dec. 2015
  * @author Gilles Landel
  *
  */
