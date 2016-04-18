@@ -26,9 +26,11 @@ Utility classes
 - File utils: To read, write and compare files
 - Stream utils: To manage stream files (unrelated with Java 8 Stream)
 
-##Listener: base classes to manage events (listenable / event / listener)
+##Listener:
+Base classes to manage events (listenable / event / listener)
 
-##MDCTS: To add mdc in our application in thread safe mode
+##MDCTS:
+To add mdc in our application in thread safe mode
 
 ##Over:
 - AbstractOverComparable: Class to force the implementation of compareTo method
