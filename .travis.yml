@@ -10,6 +10,7 @@ script: mvn clean compile test cobertura:cobertura
 
 after_success:
   - codecov
+  - "chmod u+x distribution/*.sh"
   - distribution/sign.sh
   - distribution/deploy.sh
 
