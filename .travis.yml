@@ -6,7 +6,7 @@ jdk:
 before_install:
   - pip install --user codecov
 
-script: mvn clean compile test
+script: mvn clean compile test cobertura:cobertura
 
 after_success:
   - codecov

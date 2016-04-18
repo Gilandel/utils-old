@@ -42,15 +42,14 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>${project.scm.dev.url}</connection>
-		<developerConnection>${project.scm.dev.url}</developerConnection>
-
-		<url>${project.scm.dev.url}</url>
+		<url>https://github.com/Gilandel/utils.git</url>
+		<connection>scm:git:git://github.com/Gilandel/utils.git</connection>
+		<developerConnection>scm:git:git@github.com:Gilandel/utils.git</developerConnection>
 	</scm>
 
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>${jenkins-url}</url>
+		<system>Travis</system>
+		<url>https://travis-ci.org/Gilandel/utils</url>
 	</ciManagement>
 
 	<modules>
@@ -69,8 +68,6 @@
 		<application.org.license>gl-license</application.org.license>
 
 		<!-- Project information -->
-		<project.scm.dev.url>https://github.com/Gilandel/utils.git</project.scm.dev.url>
-
 		<jdk.version>1.8</jdk.version>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
@@ -134,9 +131,14 @@
 				<artifactId>cobertura-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<configuration> <show>package</show> <aggregate>true</aggregate> </configuration> 
-				</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<show>package</show>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
 		</plugins>
 	</reporting>
 
