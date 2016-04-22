@@ -14,6 +14,8 @@ package org.gl.utils.commons;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Utility class to manage numbers.
  *
@@ -23,6 +25,7 @@ import java.math.BigDecimal;
  */
 public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
 
+    private static final int RADIX = 10;
     private static final int TEN = 10;
 
     /**
@@ -139,5 +142,290 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
             return num;
         }
         return defaultNum;
+    }
+
+    /**
+     * Round to 0.x
+     * 
+     * @param value
+     *            The value
+     * @return A float
+     */
+    public static Float round(final Double value) {
+        if (value != null) {
+            return (float) (Math.round(value * TEN)) / TEN;
+        }
+        return null;
+    }
+
+    public static boolean isNumberInteger(final String string) {
+        if (StringUtils.isEmpty(string)) {
+            return false;
+        }
+        int start = 0;
+        if (string.startsWith("-") || string.startsWith("+")) {
+            start = 1;
+        }
+        for (int i = start; i < string.length(); i++) {
+            if (!Character.isDigit(string.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNumberDecimal(final String string) {
+        if (StringUtils.isEmpty(string)) {
+            return false;
+        }
+        int start = 0;
+        if (string.startsWith("-") || string.startsWith("+")) {
+            start = 1;
+        }
+        for (int i = start; i < string.length(); i++) {
+            if (!Character.isDigit(string.charAt(i)) && '.' != string.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Parse a string into an integer. (Null safe and number safe). Return null,
+     * if the string is null or not a number. Can raise a NumberFormatException,
+     * if the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @return The parsed result
+     */
+    public static Integer parseInt(final String string) {
+        return parseInt(string, null, RADIX);
+    }
+
+    /**
+     * Parse a string into an integer. (Null safe and number safe). Can raise a
+     * NumberFormatException, if the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Integer parseInt(final String string, final Integer defaultValue) {
+        return parseInt(string, defaultValue, RADIX);
+    }
+
+    /**
+     * Parse a string into an integer. (Null safe and number safe). Can raise a
+     * NumberFormatException, if the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Integer parseInt(final String string, final Integer defaultValue, final int radix) {
+        if (NumberUtils.isNumberInteger(string)) {
+            return Integer.parseInt(string, radix);
+        }
+        return defaultValue;
+    }
+
+    /**
+     * Parse a string into a float. (Null safe and number safe). Return null, if
+     * the string is null or not a number.
+     * 
+     * @param string
+     *            The input
+     * @return The parsed result
+     */
+    public static Float parseFloat(final String string) {
+        return parseFloat(string, null);
+    }
+
+    /**
+     * Parse a string into a float. (Null safe and number safe)
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Float parseFloat(final String string, final Float defaultValue) {
+        if (NumberUtils.isNumberDecimal(string)) {
+            return Float.parseFloat(string);
+        }
+        return defaultValue;
+    }
+
+    /**
+     * Parse a string into a long. (Null safe and number safe). Return null, if
+     * the string is null or not a number.
+     * 
+     * @param string
+     *            The input
+     * @return The parsed result
+     */
+    public static Long parseLong(final String string) {
+        return parseLong(string, null, RADIX);
+    }
+
+    /**
+     * Parse a string into a long. (Null safe and number safe).
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Long parseLong(final String string, final Long defaultValue) {
+        return parseLong(string, defaultValue, RADIX);
+    }
+
+    /**
+     * Parse a string into a long. (Null safe and number safe)
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Long parseLong(final String string, final Long defaultValue, final int radix) {
+        if (NumberUtils.isNumberInteger(string)) {
+            return Long.parseLong(string, radix);
+        }
+        return defaultValue;
+    }
+
+    /**
+     * Parse a string into a double. (Null safe and number safe). Return null,
+     * if the string is null or not a number.
+     * 
+     * @param string
+     *            The input
+     * @return The parsed result
+     */
+    public static Double parseDouble(final String string) {
+        return parseDouble(string, null);
+    }
+
+    /**
+     * Parse a string into a double. (Null safe and number safe)
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Double parseDouble(final String string, final Double defaultValue) {
+        if (NumberUtils.isNumberDecimal(string)) {
+            return Double.parseDouble(string);
+        }
+        return defaultValue;
+    }
+
+    /**
+     * Parse a string into a byte. (Null safe and number safe). Return null, if
+     * the string is null or not a number. Can raise a NumberFormatException, if
+     * the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @return The parsed result
+     */
+    public static Short parseShort(final String string) {
+        return parseShort(string, null, RADIX);
+    }
+
+    /**
+     * Parse a string into a byte. (Null safe and number safe). Can raise a
+     * NumberFormatException, if the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Short parseShort(final String string, final Short defaultValue) {
+        return parseShort(string, defaultValue, RADIX);
+    }
+
+    /**
+     * Parse a string into a short. (Null safe and number safe). Can raise a
+     * NumberFormatException, if the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Short parseShort(final String string, final Short defaultValue, final int radix) {
+        if (NumberUtils.isNumberInteger(string)) {
+            int value = Integer.parseInt(string, radix);
+            if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) {
+                return (short) value;
+            }
+        }
+        return defaultValue;
+    }
+
+    /**
+     * Parse a string into a byte. (Null safe and number safe). Return null, if
+     * the string is null or not a number. Can raise a NumberFormatException, if
+     * the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @return The parsed result
+     */
+    public static Byte parseByte(final String string) {
+        return parseByte(string, null, RADIX);
+    }
+
+    /**
+     * Parse a string into a byte. (Null safe and number safe). Return null, if
+     * the string is null or not a number. Can raise a NumberFormatException, if
+     * the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @return The parsed result
+     */
+    public static Byte parseByte(final String string, final Byte defaultValue) {
+        return parseByte(string, defaultValue, RADIX);
+    }
+
+    /**
+     * Parse a string into a byte. (Null safe and number safe). Can raise a
+     * NumberFormatException, if the number is greater than an integer.
+     * 
+     * @param string
+     *            The input
+     * 
+     * @param defaultValue
+     *            If the input cannot be parse, value is returned
+     * @param radix
+     *            The radix
+     * @return The parsed result
+     */
+    public static Byte parseByte(final String string, final Byte defaultValue, final int radix) {
+        if (NumberUtils.isNumberInteger(string)) {
+            int value = Integer.parseInt(string, radix);
+            if (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) {
+                return (byte) value;
+            }
+        }
+        return defaultValue;
     }
 }
