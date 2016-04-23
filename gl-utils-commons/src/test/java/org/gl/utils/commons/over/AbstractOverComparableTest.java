@@ -126,7 +126,12 @@ public class AbstractOverComparableTest {
         final ComparableImpl comparable1 = new ComparableImpl(key1);
         final ComparableImpl comparable2 = new ComparableImpl(key2);
 
-        assertFalse(comparable1.equals(null));
+        ComparableImpl testNull = new ComparableImpl(1);
+        if (testNull.value > 0) {
+            testNull = null;
+        }
+
+        assertFalse(comparable1.equals(testNull));
         assertFalse(comparable1.equals(comparable2));
         assertTrue(comparable1.equals(comparable1));
     }
