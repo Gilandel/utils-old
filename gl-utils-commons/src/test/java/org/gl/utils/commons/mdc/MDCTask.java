@@ -48,15 +48,21 @@ public class MDCTask implements Callable<Long> {
     public Long call() throws Exception {
         final int timeout = 10;
         for (int i = 0; i < this.loop; i++) {
-            this.info(i);
+            this.log(i);
 
             Thread.sleep(Math.round(Math.random() * timeout));
         }
         return this.id;
     }
 
-    private synchronized void info(final int i) {
+    private synchronized void log(final int i) {
         MDCTS.put(this.id, "test", "THREAD: " + this.id + ", task: " + i);
+
+        MDCTS.trace(this.id, this.logger, "message");
+        MDCTS.trace(this.id, this.logger, "message", new IllegalAccessError());
+        MDCTS.debug(this.id, this.logger, "message");
         MDCTS.info(this.id, this.logger, "message");
+        MDCTS.warn(this.id, this.logger, "message");
+        MDCTS.error(this.id, this.logger, "message");
     }
 }

@@ -54,9 +54,10 @@ public class MDCTSTest {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(MDCTSTest.class);
 
-    private static final Pattern VALIDATOR = Pattern.compile("MDCTask \\[THREAD: (\\d+), task: (\\d)\\] message");
-    private static final int VALIDATOR_GP_THREAD = 1;
-    private static final int VALIDATOR_GP_TASK = 2;
+    private static final Pattern VALIDATOR = Pattern
+            .compile("MDCTask \\- (TRACE|DEBUG|INFO|WARN|ERROR) \\[THREAD: (\\d+), task: (\\d)\\] message");
+    private static final int VALIDATOR_GP_THREAD = 2;
+    private static final int VALIDATOR_GP_TASK = 3;
 
     private Logger logger;
     private ExecutorService executorService;
@@ -80,7 +81,7 @@ public class MDCTSTest {
         // Encoder
         PatternLayoutEncoder encoder = new PatternLayoutEncoder();
         encoder.setContext(loggerContext);
-        encoder.setPattern("%logger{0} [%mdc{test}] %m%n");
+        encoder.setPattern("%logger{0} - %level [%mdc{test}] %m%n");
         encoder.setImmediateFlush(true);
         encoder.start();
 
@@ -116,6 +117,9 @@ public class MDCTSTest {
      */
     @Test
     public void testPut() throws InterruptedException, ExecutionException, IOException {
+        // trace, debug, info, warn, error (NB-1, trace logs aren't displayed)
+        final int logLevel = 4;
+
         this.stream.reset();
 
         final List<Future<Long>> futures = new ArrayList<>();
@@ -141,7 +145,7 @@ public class MDCTSTest {
         final String[] lines = outputLog.split(System.lineSeparator());
 
         assertNotNull(lines);
-        assertEquals(max * loop, lines.length);
+        assertEquals(max * loop * logLevel, lines.length);
 
         final Map<Integer, Set<Integer>> results = new HashMap<>();
 
