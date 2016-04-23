@@ -265,7 +265,7 @@ public final class CastGenerics {
     public static <K, V> Map<K, V> getHashMap(final Object o, final Class<K> classKey, final Class<V> classValue) {
         final Map<K, V> map = new HashMap<>();
 
-        map(map, o, classKey, classValue);
+        map(map, o, classKey, classValue, false);
 
         return map;
     }
@@ -288,13 +288,13 @@ public final class CastGenerics {
     public static <K, V> Map<K, V> getTreeMap(final Object o, final Class<K> classKey, final Class<V> classValue) {
         final Map<K, V> map = new TreeMap<>();
 
-        map(map, o, classKey, classValue);
+        map(map, o, classKey, classValue, true);
 
         return map;
     }
 
     /**
-     * Cast an object into a typed tree map.
+     * Cast an object into a typed tree map. Comparator has to be null safe.
      * 
      * @param o
      *            The input object
@@ -314,7 +314,7 @@ public final class CastGenerics {
             final Comparator<K> comparator) {
         final SortedMap<K, V> map = new TreeMap<>(comparator);
 
-        map(map, o, classKey, classValue);
+        map(map, o, classKey, classValue, false);
 
         return map;
     }
@@ -337,7 +337,7 @@ public final class CastGenerics {
     public static <K, V> Map<K, V> getHashtable(final Object o, final Class<K> classKey, final Class<V> classValue) {
         final Map<K, V> map = new Hashtable<>();
 
-        map(map, o, classKey, classValue);
+        map(map, o, classKey, classValue, true);
 
         return map;
     }
@@ -410,16 +410,19 @@ public final class CastGenerics {
      *            the object
      * @param classValue
      *            the class value
+     * @param removeNull
+     *            If null has to be removed
      * @param <K>
      *            The type of key
      * @param <V>
      *            The type of the value
      * 
      */
-    private static <K, V> void setMapValue(final Map<K, V> map, final K key, final Entry<?, ?> obj, final Class<V> classValue) {
+    private static <K, V> void setMapValue(final Map<K, V> map, final K key, final Entry<?, ?> obj, final Class<V> classValue,
+            final boolean removeNull) {
         if (obj.getValue() != null && classValue.isAssignableFrom(obj.getValue().getClass())) {
             map.put(key, classValue.cast(obj.getValue()));
-        } else if (obj.getValue() == null) {
+        } else if (obj.getValue() == null && !removeNull) {
             map.put(key, null);
         }
     }
@@ -477,14 +480,19 @@ public final class CastGenerics {
      *            The class of the map key
      * @param classValue
      *            The class of the map value
+     * @param removeNull
+     *            If null has to be removed
      */
-    private static <K, V> void map(final Map<K, V> map, final Object o, final Class<K> classKey, final Class<V> classValue) {
+    private static <K, V> void map(final Map<K, V> map, final Object o, final Class<K> classKey, final Class<V> classValue,
+            final boolean removeNull) {
         if (o != null && Map.class.isAssignableFrom(o.getClass())) {
             Map<?, ?> mObj = (Map<?, ?>) o;
             for (Entry<?, ?> obj : mObj.entrySet()) {
                 if (obj.getKey() != null && classKey.isAssignableFrom(obj.getKey().getClass())) {
                     final K key = classKey.cast(obj.getKey());
-                    setMapValue(map, key, obj, classValue);
+                    setMapValue(map, key, obj, classValue, removeNull);
+                } else if (obj.getKey() == null && !removeNull) {
+                    setMapValue(map, null, obj, classValue, removeNull);
                 }
             }
         }
@@ -544,7 +552,7 @@ public final class CastGenerics {
         if (o != null && Set.class.isAssignableFrom(o.getClass())) {
             Set<?> mObj = (Set<?>) o;
             for (Object obj : mObj) {
-                if (classElement.isAssignableFrom(obj.getClass())) {
+                if (obj != null && classElement.isAssignableFrom(obj.getClass())) {
                     final T element = classElement.cast(obj);
                     set.add(element);
                 }

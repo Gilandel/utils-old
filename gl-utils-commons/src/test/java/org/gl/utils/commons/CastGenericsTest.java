@@ -13,6 +13,8 @@
 package org.gl.utils.commons;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,20 @@ import org.junit.Test;
  *
  */
 public class CastGenericsTest {
+
+    private static final Comparator<String> COMPARATOR = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            if (o1 != null && o2 != null) {
+                return o1.compareTo(o2);
+            } else if (o1 != null) {
+                return 1;
+            } else if (o2 != null) {
+                return -1;
+            }
+            return 0;
+        }
+    };
 
     /**
      * Check cast a object
@@ -138,32 +155,34 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetMap() {
-        final Comparator<String> comparator = new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareTo(o2);
-            }
-        };
-
         Map<Object, Object> map = new HashMap<>();
         map.put("key", "value");
+        map.put("key2", null);
+        map.put(null, "value2");
 
         assertTrue(MapUtils.isEmpty(CastGenerics.getHashMap(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getHashtable(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class)));
-        assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class, comparator)));
+        assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class, COMPARATOR)));
 
         Map<String, String> result = CastGenerics.getHashMap(map, String.class, String.class);
         assertEquals("value", result.get("key"));
+        assertEquals("value2", result.get(null));
+        assertNull(result.get("key2"));
 
         result = CastGenerics.getHashtable(map, String.class, String.class);
         assertEquals("value", result.get("key"));
+        assertNull(result.get("key2"));
 
+        result = CastGenerics.getTreeMap(map, String.class, String.class, COMPARATOR);
+        assertEquals("value", result.get("key"));
+        assertEquals("value2", result.get(null));
+        assertNull(result.get("key2"));
+
+        // No comparator: TreeMap is not null safe
         result = CastGenerics.getTreeMap(map, String.class, String.class);
         assertEquals("value", result.get("key"));
-
-        result = CastGenerics.getTreeMap(map, String.class, String.class, comparator);
-        assertEquals("value", result.get("key"));
+        assertNull(result.get("key2"));
     }
 
     /**
@@ -171,19 +190,13 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetHashSet() {
-        final Comparator<String> comparator = new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareTo(o2);
-            }
-        };
-
         Set<Object> set = new HashSet<>();
         set.add("test");
+        set.add(null);
 
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getHashSet(null, String.class)));
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getTreeSet(null, String.class)));
-        assertTrue(CollectionUtils.isEmpty(CastGenerics.getTreeSet(null, String.class, comparator)));
+        assertTrue(CollectionUtils.isEmpty(CastGenerics.getTreeSet(null, String.class, COMPARATOR)));
 
         Set<String> result = CastGenerics.getHashSet(set, String.class);
         assertEquals(1, result.size());
@@ -193,9 +206,27 @@ public class CastGenericsTest {
         assertEquals(1, result.size());
         assertEquals("test", result.toArray(new String[result.size()])[0]);
 
-        result = CastGenerics.getTreeSet(set, String.class, comparator);
+        result = CastGenerics.getTreeSet(set, String.class, COMPARATOR);
         assertEquals(1, result.size());
         assertEquals("test", result.toArray(new String[result.size()])[0]);
+    }
+
+    /**
+     * Check cast iterator
+     */
+    @Test
+    public void testGetIterator() {
+        Set<Object> set = new HashSet<>();
+        set.add("test");
+        set.add(null);
+
+        assertFalse(CastGenerics.getIterator(null, String.class).hasNext());
+
+        Iterator<String> iterator = CastGenerics.getIterator(set.iterator(), String.class);
+        assertTrue(iterator.hasNext());
+        assertNull(iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("test", iterator.next());
     }
 
     /**
@@ -209,6 +240,16 @@ public class CastGenericsTest {
 
         assertEquals(objects[0], exception.getMessage());
         assertEquals(objects[1], exception.getCause());
+    }
+
+    /**
+     * Check get typed list class
+     */
+    @Test
+    public void testGetListTypedClass() {
+        Class<List<Exception>> exceptionListClass = CastGenerics.getListTypedClass(Exception.class);
+
+        assertNotNull(exceptionListClass);
     }
 
     static class ExException extends IOException {
