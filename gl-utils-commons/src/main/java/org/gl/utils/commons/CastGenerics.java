@@ -15,13 +15,27 @@ package org.gl.utils.commons;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.Vector;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -80,7 +94,7 @@ public final class CastGenerics {
     }
 
     /**
-     * Cast an object into the specified class.
+     * Cast an object into a typed array list.
      * 
      * @param o
      *            The input object
@@ -90,21 +104,151 @@ public final class CastGenerics {
      * @param <T>
      *            The type of the output
      */
-    public static <T> List<T> getList(final Object o, final Class<T> clazz) {
+    public static <T> List<T> getArrayList(final Object o, final Class<T> clazz) {
         final List<T> list = new ArrayList<>();
 
-        if (o != null && List.class.isAssignableFrom(o.getClass())) {
-            List<?> mObj = (List<?>) o;
-            for (Object obj : mObj) {
-                setListValue(list, obj, clazz);
-            }
-        }
+        list(list, o, clazz);
 
         return list;
     }
 
     /**
-     * Cast an object into a typed map.
+     * Cast an object into a typed vector.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> List<T> getVector(final Object o, final Class<T> clazz) {
+        final List<T> list = new Vector<>();
+
+        list(list, o, clazz);
+
+        return list;
+    }
+
+    /**
+     * Cast an object into a typed linked list as list.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> List<T> getLinkedListAsList(final Object o, final Class<T> clazz) {
+        final List<T> list = new LinkedList<>();
+
+        list(list, o, clazz);
+
+        return list;
+    }
+
+    /**
+     * Cast an object into a typed linked list as queue.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> Queue<T> getLinkedListAsQueue(final Object o, final Class<T> clazz) {
+        final Queue<T> queue = new LinkedList<>();
+
+        queue(queue, o, clazz, false);
+
+        return queue;
+    }
+
+    /**
+     * Cast an object into a typed priority queue.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> Queue<T> getPriorityQueue(final Object o, final Class<T> clazz) {
+        final Queue<T> queue = new PriorityQueue<>();
+
+        queue(queue, o, clazz, true);
+
+        return queue;
+    }
+
+    /**
+     * Cast an object into a typed linked blocking queue.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> BlockingQueue<T> getLinkedBlockingQueue(final Object o, final Class<T> clazz) {
+        final BlockingQueue<T> queue = new LinkedBlockingQueue<>();
+
+        queue(queue, o, clazz, true);
+
+        return queue;
+    }
+
+    /**
+     * Cast an object into a typed array blocking queue.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @param capacity
+     *            The initial capacity
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> BlockingQueue<T> getArrayBlockingQueue(final Object o, final Class<T> clazz, final int capacity) {
+        final BlockingQueue<T> queue = new ArrayBlockingQueue<>(capacity);
+
+        queue(queue, o, clazz, true);
+
+        return queue;
+    }
+
+    /**
+     * Cast an object into a typed priority blocking queue.
+     * 
+     * @param o
+     *            The input object
+     * @param clazz
+     *            The output class
+     * @return The casted object
+     * @param <T>
+     *            The type of the output
+     */
+    public static <T> BlockingQueue<T> getPriorityBlockingQueue(final Object o, final Class<T> clazz) {
+        final BlockingQueue<T> queue = new PriorityBlockingQueue<>();
+
+        queue(queue, o, clazz, true);
+
+        return queue;
+    }
+
+    /**
+     * Cast an object into a typed hash map.
      * 
      * @param o
      *            The input object
@@ -121,17 +265,138 @@ public final class CastGenerics {
     public static <K, V> Map<K, V> getHashMap(final Object o, final Class<K> classKey, final Class<V> classValue) {
         final Map<K, V> map = new HashMap<>();
 
-        if (o != null && Map.class.isAssignableFrom(o.getClass())) {
-            Map<?, ?> mObj = (Map<?, ?>) o;
-            for (Entry<?, ?> obj : mObj.entrySet()) {
-                if (obj.getKey() != null && classKey.isAssignableFrom(obj.getKey().getClass())) {
-                    final K key = classKey.cast(obj.getKey());
-                    setMapValue(map, key, obj, classValue);
-                }
-            }
-        }
+        map(map, o, classKey, classValue);
 
         return map;
+    }
+
+    /**
+     * Cast an object into a typed tree map.
+     * 
+     * @param o
+     *            The input object
+     * @param classKey
+     *            The class of the key
+     * @param classValue
+     *            The class of the value
+     * @return The casted object
+     * @param <K>
+     *            The type of key
+     * @param <V>
+     *            The type of the value
+     */
+    public static <K, V> Map<K, V> getTreeMap(final Object o, final Class<K> classKey, final Class<V> classValue) {
+        final Map<K, V> map = new TreeMap<>();
+
+        map(map, o, classKey, classValue);
+
+        return map;
+    }
+
+    /**
+     * Cast an object into a typed tree map.
+     * 
+     * @param o
+     *            The input object
+     * @param classKey
+     *            The class of the key
+     * @param classValue
+     *            The class of the value
+     * @param comparator
+     *            The tree map comparator
+     * @return The casted object
+     * @param <K>
+     *            The type of key
+     * @param <V>
+     *            The type of the value
+     */
+    public static <K, V> SortedMap<K, V> getTreeMap(final Object o, final Class<K> classKey, final Class<V> classValue,
+            final Comparator<K> comparator) {
+        final SortedMap<K, V> map = new TreeMap<>(comparator);
+
+        map(map, o, classKey, classValue);
+
+        return map;
+    }
+
+    /**
+     * Cast an object into a typed hashtable.
+     * 
+     * @param o
+     *            The input object
+     * @param classKey
+     *            The class of the key
+     * @param classValue
+     *            The class of the value
+     * @return The casted object
+     * @param <K>
+     *            The type of key
+     * @param <V>
+     *            The type of the value
+     */
+    public static <K, V> Map<K, V> getHashtable(final Object o, final Class<K> classKey, final Class<V> classValue) {
+        final Map<K, V> map = new Hashtable<>();
+
+        map(map, o, classKey, classValue);
+
+        return map;
+    }
+
+    /**
+     * Cast an object into a typed hash set.
+     * 
+     * @param o
+     *            The input object
+     * @param classElement
+     *            The class of the element in the set
+     * @return The casted object
+     * @param <T>
+     *            The type of the element
+     */
+    public static <T> Set<T> getHashSet(final Object o, final Class<T> classElement) {
+        final Set<T> set = new HashSet<>();
+
+        set(set, o, classElement);
+
+        return set;
+    }
+
+    /**
+     * Cast an object into a typed hash set.
+     * 
+     * @param o
+     *            The input object
+     * @param classElement
+     *            The class of the element in the set
+     * @return The casted object
+     * @param <T>
+     *            The type of the element
+     */
+    public static <T> Set<T> getTreeSet(final Object o, final Class<T> classElement) {
+        final Set<T> set = new TreeSet<>();
+
+        set(set, o, classElement);
+
+        return set;
+    }
+
+    /**
+     * Cast an object into a typed hash set.
+     * 
+     * @param o
+     *            The input object
+     * @param classElement
+     *            The class of the element in the set
+     * @return The casted object
+     * @param <T>
+     *            The type of the element
+     */
+    public static <T> SortedSet<T> getTreeSet(final Object o, final Class<T> classElement, final Comparator<T> comparator) {
+        final SortedSet<T> set = new TreeSet<>(comparator);
+
+        set(set, o, classElement);
+
+        return set;
     }
 
     /**
@@ -180,19 +445,102 @@ public final class CastGenerics {
     }
 
     /**
-     * Cast an object into a typed set.
+     * Set the queue value.
      * 
-     * @param o
-     *            The input object
-     * @param classElement
-     *            The class of the element in the set
-     * @return The casted object
+     * @param queue
+     *            the queue
+     * @param obj
+     *            the object
+     * @param clazz
+     *            the class
+     * @param removeNull
+     *            If null has to be removed
      * @param <T>
      *            The type of the element
      */
-    public static <T> Set<T> getHashSet(final Object o, final Class<T> classElement) {
-        final Set<T> set = new HashSet<>();
+    private static <T> void setQueueValue(final Queue<T> queue, final Object obj, final Class<T> clazz, final boolean removeNull) {
+        if (obj != null && clazz.isAssignableFrom(obj.getClass())) {
+            queue.add(clazz.cast(obj));
+        } else if (obj == null && !removeNull) {
+            queue.add(null);
+        }
+    }
 
+    /**
+     * Cast the object and feel the map.
+     * 
+     * @param map
+     *            The output map
+     * @param o
+     *            The input object
+     * @param classKey
+     *            The class of the map key
+     * @param classValue
+     *            The class of the map value
+     */
+    private static <K, V> void map(final Map<K, V> map, final Object o, final Class<K> classKey, final Class<V> classValue) {
+        if (o != null && Map.class.isAssignableFrom(o.getClass())) {
+            Map<?, ?> mObj = (Map<?, ?>) o;
+            for (Entry<?, ?> obj : mObj.entrySet()) {
+                if (obj.getKey() != null && classKey.isAssignableFrom(obj.getKey().getClass())) {
+                    final K key = classKey.cast(obj.getKey());
+                    setMapValue(map, key, obj, classValue);
+                }
+            }
+        }
+    }
+
+    /**
+     * Cast the object and feel the queue.
+     * 
+     * @param queue
+     *            The output queue
+     * @param o
+     *            The input object
+     * @param classElement
+     *            The typed class
+     * @param removeNull
+     *            If null has to be removed
+     */
+    private static <T> void queue(final Queue<T> queue, final Object o, final Class<T> clazz, final boolean removeNull) {
+        if (o != null && Queue.class.isAssignableFrom(o.getClass())) {
+            Queue<?> mObj = (Queue<?>) o;
+            for (Object obj : mObj) {
+                setQueueValue(queue, obj, clazz, removeNull);
+            }
+        }
+    }
+
+    /**
+     * Cast the object and feel the list.
+     * 
+     * @param list
+     *            The output list
+     * @param o
+     *            The input object
+     * @param classElement
+     *            The typed class
+     */
+    private static <T> void list(final List<T> list, final Object o, final Class<T> clazz) {
+        if (o != null && List.class.isAssignableFrom(o.getClass())) {
+            List<?> mObj = (List<?>) o;
+            for (Object obj : mObj) {
+                setListValue(list, obj, clazz);
+            }
+        }
+    }
+
+    /**
+     * Cast the object and feel the set.
+     * 
+     * @param set
+     *            The output set
+     * @param o
+     *            The input object
+     * @param classElement
+     *            The typed class
+     */
+    private static <T> void set(final Set<T> set, final Object o, final Class<T> classElement) {
         if (o != null && Set.class.isAssignableFrom(o.getClass())) {
             Set<?> mObj = (Set<?>) o;
             for (Object obj : mObj) {
@@ -202,8 +550,6 @@ public final class CastGenerics {
                 }
             }
         }
-
-        return set;
     }
 
     /**
@@ -237,88 +583,89 @@ public final class CastGenerics {
     }
 
     /**
-     * Instanciate some objects.
+     * Instantiate some objects.
      * 
      * @param logLevelInfo
      *            log level info
      * @param constructor
      *            constructor
-     * @param instanciableClass
+     * @param instantiableClass
      *            instantiable class
      * @param objects
      *            list of objects
-     * @return the instanciated class
+     * @return the instantiated class
      * @param <T>
      *            The type of the element
      */
     @SuppressWarnings("unchecked")
-    private static <T> T instanciate(final boolean logLevelInfo, final Constructor<?> constructor, final Class<T> instanciableClass,
+    private static <T> T instantiate(final boolean logLevelInfo, final Constructor<?> constructor, final Class<T> instantiableClass,
             final Object... objects) {
         T result = null;
         Object resultTmp;
         try {
             if (constructor != null) {
                 resultTmp = constructor.newInstance(objects);
-                if (resultTmp != null && instanciableClass.isAssignableFrom(resultTmp.getClass())) {
+                if (resultTmp != null && instantiableClass.isAssignableFrom(resultTmp.getClass())) {
                     result = (T) resultTmp;
                 }
             }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             if (logLevelInfo) {
-                LOGGER.info("Cannot instanciate " + constructor.getName());
+                LOGGER.info("Cannot instantiate " + constructor.getName());
             } else {
-                LOGGER.error("Cannot instanciate " + constructor.getName());
+                LOGGER.error("Cannot instantiate " + constructor.getName());
             }
         }
         return result;
     }
 
     /**
-     * Instanciate a typed constructor.
+     * Instantiate a typed constructor.
      * 
-     * @param instanciableClass
-     *            instanciable class
+     * @param instantiableClass
+     *            instantiable class
      * @param classes
      *            classes
      * @param objects
      *            objects
-     * @return the instanciated constructor
+     * @return the instantiated constructor
      * @param <T>
      *            The type of the element
      */
-    private static <T> T instanciateTypedConstructor(final Class<T> instanciableClass, final List<Class<?>> classes, final Object[] objects) {
+    private static <T> T instantiateTypedConstructor(final Class<T> instantiableClass, final List<Class<?>> classes,
+            final Object[] objects) {
         T result = null;
 
         Constructor<T> typedConstructor;
         try {
-            typedConstructor = instanciableClass.getDeclaredConstructor(classes.toArray(new Class<?>[classes.size()]));
+            typedConstructor = instantiableClass.getDeclaredConstructor(classes.toArray(new Class<?>[classes.size()]));
 
-            result = instanciate(true, typedConstructor, instanciableClass, objects);
+            result = instantiate(true, typedConstructor, instantiableClass, objects);
         } catch (NoSuchMethodException | SecurityException e) {
-            LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instanciableClass.getName(), e);
+            LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
         }
         return result;
     }
 
     /**
-     * Instanciate an unknown constructor.
+     * Instantiate an unknown constructor.
      * 
-     * @param instanciableClass
-     *            instanciable class
+     * @param instantiableClass
+     *            instantiable class
      * @param classes
      *            classes
      * @param objects
      *            objects
-     * @return the instanciated constructor
+     * @return the instantiated constructor
      * @param <T>
      *            The type of the element
      */
-    private static <T> T instanciateUnknownConstructor(final Class<T> instanciableClass, final List<Class<?>> classes,
+    private static <T> T instantiateUnknownConstructor(final Class<T> instantiableClass, final List<Class<?>> classes,
             final Object[] objects) {
         T result = null;
 
         try {
-            Constructor<?>[] constructors = instanciableClass.getDeclaredConstructors();
+            Constructor<?>[] constructors = instantiableClass.getDeclaredConstructors();
             boolean mismatch = true;
 
             for (Constructor<?> constructor : constructors) {
@@ -329,34 +676,34 @@ public final class CastGenerics {
                         mismatch |= classes.get(i) != null && !parameterTypes[i].isAssignableFrom(classes.get(i));
                     }
                     if (!mismatch) {
-                        result = instanciate(false, constructor, instanciableClass, objects);
+                        result = instantiate(false, constructor, instantiableClass, objects);
                         break;
                     }
                 }
             }
         } catch (SecurityException e) {
-            LOGGER.error("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instanciableClass.getName(), e);
+            LOGGER.error("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
         }
 
         return result;
     }
 
     /**
-     * Map a list of object into a instanciable.
+     * Map a list of object into a instantiable.
      * 
-     * @param instanciableClass
-     *            The instanciable
+     * @param instantiableClass
+     *            The instantiable
      * @param objects
      *            The objects to pass through the constructor
      * @return The new instance
      * @param <T>
      *            The result class
      */
-    public static <T> T map(final Class<T> instanciableClass, final Object... objects) {
+    public static <T> T map(final Class<T> instantiableClass, final Object... objects) {
         List<Class<?>> classes = new ArrayList<>();
         T result = null;
 
-        if (instanciableClass != null) {
+        if (instantiableClass != null) {
             for (Object object : objects) {
                 if (object != null) {
                     classes.add(object.getClass());
@@ -365,10 +712,10 @@ public final class CastGenerics {
                 }
             }
 
-            result = instanciateTypedConstructor(instanciableClass, classes, objects);
+            result = instantiateTypedConstructor(instantiableClass, classes, objects);
 
             if (result == null) {
-                result = instanciateUnknownConstructor(instanciableClass, classes, objects);
+                result = instantiateUnknownConstructor(instantiableClass, classes, objects);
             }
         }
 
@@ -378,18 +725,18 @@ public final class CastGenerics {
     /**
      * Get the generic collection class.
      * 
-     * @param instanciableClass
+     * @param instantiableClass
      *            The item class
      * @param <T>
      *            The item type
      * @return The iterable typed
      */
     @SuppressWarnings("unchecked")
-    public static <T> Class<List<T>> getListTypedClass(final Class<T> instanciableClass) {
+    public static <T> Class<List<T>> getListTypedClass(final Class<T> instantiableClass) {
         final List<T> list = new ArrayList<>();
 
         try {
-            list.add(instanciableClass.newInstance());
+            list.add(instantiableClass.newInstance());
         } catch (InstantiationException | IllegalAccessException e) {
             LOGGER.error("Errors occurred in CastGenerics#getListTypedClass()", e);
         }
