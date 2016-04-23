@@ -93,6 +93,7 @@ public class NumberUtilsTest {
         final double val = 10.358941684565d;
         final float expected = 10.4f;
 
+        assertNull(NumberUtils.round(null));
         assertTrue(NumberUtils.isEqual(expected, NumberUtils.round(val), 1));
     }
 
@@ -325,6 +326,7 @@ public class NumberUtilsTest {
         assertEquals(-expected, (short) NumberUtils.parseShort("-10", value));
         assertEquals(expected, (short) NumberUtils.parseShort("+10", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseShort(String.valueOf(Short.MAX_VALUE + 1), value));
+        assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseShort(String.valueOf(Short.MIN_VALUE - 1), value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseShort("10L", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseShort("10L", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseShort("10.0", value));
@@ -373,6 +375,7 @@ public class NumberUtilsTest {
         assertEquals(-expected, (byte) NumberUtils.parseByte("-10", value));
         assertEquals(expected, (byte) NumberUtils.parseByte("+10", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte(String.valueOf(Byte.MAX_VALUE + 1), value));
+        assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte(String.valueOf(Byte.MIN_VALUE - 1), value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte("10L", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte("10L", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte("10.0", value));
