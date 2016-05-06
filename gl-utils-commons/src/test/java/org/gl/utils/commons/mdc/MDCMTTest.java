@@ -59,7 +59,6 @@ public class MDCMTTest {
     private static final int VALIDATOR_GP_THREAD = 2;
     private static final int VALIDATOR_GP_TASK = 3;
 
-    private Logger logger;
     private ExecutorService executorService;
     private ByteArrayOutputStream stream;
     private OutputStreamAppender<ILoggingEvent> appender;
@@ -73,7 +72,7 @@ public class MDCMTTest {
 
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-        this.logger = loggerContext.getLogger(MDCTask.class);
+        Logger logger = loggerContext.getLogger(MDCTask.class);
 
         // Destination stream
         this.stream = new ByteArrayOutputStream();
@@ -93,7 +92,7 @@ public class MDCMTTest {
         this.appender.setOutputStream(this.stream);
         this.appender.start();
 
-        this.logger.addAppender(this.appender);
+        logger.addAppender(this.appender);
     }
 
     /**
