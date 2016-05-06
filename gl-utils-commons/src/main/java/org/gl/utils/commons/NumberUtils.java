@@ -13,6 +13,7 @@
 package org.gl.utils.commons;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -227,7 +228,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      * @param defaultValue
      *            If the input cannot be parse, value is returned
      * @param radix
-     *            The radix
+     *            The radix to be used while parsing the string
      * @return The parsed result
      */
     public static Byte parseByte(final String string, final Byte defaultValue, final int radix) {
@@ -275,6 +276,8 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      *            The input
      * @param defaultValue
      *            If the input cannot be parse, value is returned
+     * @param radix
+     *            The radix to be used while parsing the string
      * @return The parsed result
      */
     public static Short parseShort(final String string, final Short defaultValue, final int radix) {
@@ -322,6 +325,8 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      *            The input
      * @param defaultValue
      *            If the input cannot be parse, value is returned
+     * @param radix
+     *            The radix to be used while parsing the string
      * @return The parsed result
      */
     public static Integer parseInt(final String string, final Integer defaultValue, final int radix) {
@@ -363,6 +368,8 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      *            The input
      * @param defaultValue
      *            If the input cannot be parse, value is returned
+     * @param radix
+     *            The radix to be used while parsing the string
      * @return The parsed result
      */
     public static Long parseLong(final String string, final Long defaultValue, final int radix) {
@@ -428,4 +435,111 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         return defaultValue;
     }
 
+    /**
+     * Check if the number is a <code>Byte</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isByte(final N number) {
+        return isNumberType(number, Byte.class);
+    }
+
+    /**
+     * Check if the number is a <code>Short</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isShort(final N number) {
+        return isNumberType(number, Short.class);
+    }
+
+    /**
+     * Check if the number is a <code>Integer</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isInteger(final N number) {
+        return isNumberType(number, Integer.class);
+    }
+
+    /**
+     * Check if the number is a <code>Long</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isLong(final N number) {
+        return isNumberType(number, Long.class);
+    }
+
+    /**
+     * Check if the number is a <code>Float</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isFloat(final N number) {
+        return isNumberType(number, Float.class);
+    }
+
+    /**
+     * Check if the number is a <code>Double</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isDouble(final N number) {
+        return isNumberType(number, Double.class);
+    }
+
+    /**
+     * Check if the number is a <code>BigInteger</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isBigInteger(final N number) {
+        return isNumberType(number, BigInteger.class);
+    }
+
+    /**
+     * Check if the number is a <code>BigDecimal</code>
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isBigDecimal(final N number) {
+        return isNumberType(number, BigDecimal.class);
+    }
+
+    private static <N extends Number> boolean isNumberType(final N number, final Class<? extends Number> classNumber) {
+        return number != null && classNumber.isAssignableFrom(number.getClass());
+    }
 }

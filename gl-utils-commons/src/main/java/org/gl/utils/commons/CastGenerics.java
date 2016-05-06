@@ -387,6 +387,8 @@ public final class CastGenerics {
      *            The input object
      * @param classElement
      *            The class of the element in the set
+     * @param comparator
+     *            The comparator to keep the sort
      * @return The casted object
      * @param <T>
      *            The type of the element

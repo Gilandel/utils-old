@@ -56,13 +56,13 @@ public class MDCTask implements Callable<Long> {
     }
 
     private synchronized void log(final int i) {
-        MDCTS.put(this.id, "test", "THREAD: " + this.id + ", task: " + i);
+        MDCMT.put(this.id, "test", "THREAD: " + this.id + ", task: " + i);
 
-        MDCTS.trace(this.id, this.logger, "message");
-        MDCTS.trace(this.id, this.logger, "message", new IllegalAccessError());
-        MDCTS.debug(this.id, this.logger, "message");
-        MDCTS.info(this.id, this.logger, "message");
-        MDCTS.warn(this.id, this.logger, "message");
-        MDCTS.error(this.id, this.logger, "message");
+        MDCMT.trace(this.id, this.logger, "message");
+        MDCMT.trace(this.id, this.logger, "message", new IllegalAccessError());
+        MDCMT.debug(this.id, this.logger, "message");
+        MDCMT.info(this.id, this.logger, "message");
+        MDCMT.warn(this.id, this.logger, "message");
+        MDCMT.error(this.id, this.logger, "message");
     }
 }

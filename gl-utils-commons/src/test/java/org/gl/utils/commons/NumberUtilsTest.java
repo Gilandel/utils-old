@@ -17,6 +17,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.junit.Test;
 
 /**
@@ -381,5 +384,93 @@ public class NumberUtilsTest {
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte("10.0", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte("10.0D", value));
         assertEquals(expectedIfNullOrFalse, (short) NumberUtils.parseByte("10.0F", value));
+    }
+
+    /**
+     * Test method for
+     * {@link org.gl.utils.commons.NumberUtils#isByte(java.lang.Number)} .
+     */
+    @Test
+    public void testNumber() {
+        Number numByte = (byte) 12;
+        Number numShort = (short) 12;
+        Number numInteger = (int) 12;
+        Number numLong = 12L;
+        Number numFloat = 12.0f;
+        Number numDouble = 12.0d;
+        Number numBigInteger = BigInteger.valueOf(12L);
+        Number numBigDecimal = BigDecimal.valueOf(12.0d);
+
+        assertTrue(NumberUtils.isByte(numByte));
+        assertFalse(NumberUtils.isShort(numByte));
+        assertFalse(NumberUtils.isInteger(numByte));
+        assertFalse(NumberUtils.isLong(numByte));
+        assertFalse(NumberUtils.isFloat(numByte));
+        assertFalse(NumberUtils.isDouble(numByte));
+        assertFalse(NumberUtils.isBigInteger(numByte));
+        assertFalse(NumberUtils.isBigDecimal(numByte));
+
+        assertFalse(NumberUtils.isByte(numShort));
+        assertTrue(NumberUtils.isShort(numShort));
+        assertFalse(NumberUtils.isInteger(numShort));
+        assertFalse(NumberUtils.isLong(numShort));
+        assertFalse(NumberUtils.isFloat(numShort));
+        assertFalse(NumberUtils.isDouble(numShort));
+        assertFalse(NumberUtils.isBigInteger(numShort));
+        assertFalse(NumberUtils.isBigDecimal(numShort));
+
+        assertFalse(NumberUtils.isByte(numInteger));
+        assertFalse(NumberUtils.isShort(numInteger));
+        assertTrue(NumberUtils.isInteger(numInteger));
+        assertFalse(NumberUtils.isLong(numInteger));
+        assertFalse(NumberUtils.isFloat(numInteger));
+        assertFalse(NumberUtils.isDouble(numInteger));
+        assertFalse(NumberUtils.isBigInteger(numInteger));
+        assertFalse(NumberUtils.isBigDecimal(numInteger));
+
+        assertFalse(NumberUtils.isByte(numLong));
+        assertFalse(NumberUtils.isShort(numLong));
+        assertFalse(NumberUtils.isInteger(numLong));
+        assertTrue(NumberUtils.isLong(numLong));
+        assertFalse(NumberUtils.isFloat(numLong));
+        assertFalse(NumberUtils.isDouble(numLong));
+        assertFalse(NumberUtils.isBigInteger(numLong));
+        assertFalse(NumberUtils.isBigDecimal(numLong));
+
+        assertFalse(NumberUtils.isByte(numFloat));
+        assertFalse(NumberUtils.isShort(numFloat));
+        assertFalse(NumberUtils.isInteger(numFloat));
+        assertFalse(NumberUtils.isLong(numFloat));
+        assertTrue(NumberUtils.isFloat(numFloat));
+        assertFalse(NumberUtils.isDouble(numFloat));
+        assertFalse(NumberUtils.isBigInteger(numFloat));
+        assertFalse(NumberUtils.isBigDecimal(numFloat));
+
+        assertFalse(NumberUtils.isByte(numDouble));
+        assertFalse(NumberUtils.isShort(numDouble));
+        assertFalse(NumberUtils.isInteger(numDouble));
+        assertFalse(NumberUtils.isLong(numDouble));
+        assertFalse(NumberUtils.isFloat(numDouble));
+        assertTrue(NumberUtils.isDouble(numDouble));
+        assertFalse(NumberUtils.isBigInteger(numDouble));
+        assertFalse(NumberUtils.isBigDecimal(numDouble));
+
+        assertFalse(NumberUtils.isByte(numBigInteger));
+        assertFalse(NumberUtils.isShort(numBigInteger));
+        assertFalse(NumberUtils.isInteger(numBigInteger));
+        assertFalse(NumberUtils.isLong(numBigInteger));
+        assertFalse(NumberUtils.isFloat(numBigInteger));
+        assertFalse(NumberUtils.isDouble(numBigInteger));
+        assertTrue(NumberUtils.isBigInteger(numBigInteger));
+        assertFalse(NumberUtils.isBigDecimal(numBigInteger));
+
+        assertFalse(NumberUtils.isByte(numBigDecimal));
+        assertFalse(NumberUtils.isShort(numBigDecimal));
+        assertFalse(NumberUtils.isInteger(numBigDecimal));
+        assertFalse(NumberUtils.isLong(numBigDecimal));
+        assertFalse(NumberUtils.isFloat(numBigDecimal));
+        assertFalse(NumberUtils.isDouble(numBigDecimal));
+        assertFalse(NumberUtils.isBigInteger(numBigDecimal));
+        assertTrue(NumberUtils.isBigDecimal(numBigDecimal));
     }
 }

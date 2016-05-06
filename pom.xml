@@ -90,10 +90,10 @@
 		<site.plugin.version>3.5.1</site.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
 		<cobertura.plugin.version>2.7</cobertura.plugin.version>
-		<sonar.plugin.version>3.0.1</sonar.plugin.version>
+		<sonar.plugin.version>3.0.2</sonar.plugin.version>
 		<license.plugin.version>1.8</license.plugin.version>
 		<javadoc.plugin.version>2.10.3</javadoc.plugin.version>
-		<versioneye.plugin.version>3.9.1</versioneye.plugin.version>
+		<versioneye.plugin.version>3.9.2</versioneye.plugin.version>
 		<gpg.plugin.version>1.6</gpg.plugin.version>
 		<nexus.staging.plugin.version>1.6.7</nexus.staging.plugin.version>
 
@@ -115,7 +115,7 @@
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<aspectj.version>1.8.9</aspectj.version>
 
-		<jackson.version>2.7.3</jackson.version>
+		<jackson.version>2.7.4</jackson.version>
 
 		<poi.version>3.14</poi.version>
 

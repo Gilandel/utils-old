@@ -650,14 +650,14 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNoNullElements(Object[], String, Object...)}
+     * {@link org.gl.utils.commons.Assert#hasNoNullElements(Object[], String, Object...)}
      * .
      */
     @Test
     public void testIsNoNullElementOKsObjectArrayString() {
         try {
             String[] array = new String[] {"1", "3"};
-            Assert.isNoNullElements(array);
+            Assert.hasNoNullElements(array);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -665,25 +665,25 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNoNullElements(Object[], String, Object...)}
+     * {@link org.gl.utils.commons.Assert#hasNoNullElements(Object[], String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNoNullElementsKOObjectArrayString() {
         String[] array = new String[] {null, "2"};
-        Assert.isNoNullElements(array);
+        Assert.hasNoNullElements(array);
     }
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNoNullElements(java.lang.Object[])}
+     * {@link org.gl.utils.commons.Assert#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test
     public void testIsNoNullElementsOKObjectArray() {
         try {
             String[] array = new String[] {"1", "2"};
-            Assert.isNoNullElements(array, "array has null element");
+            Assert.hasNoNullElements(array, "array has null element");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -691,13 +691,13 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link org.gl.utils.commons.Assert#isNoNullElements(java.lang.Object[])}
+     * {@link org.gl.utils.commons.Assert#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNoNullElementsKOObjectArray() {
         String[] array = new String[] {"", null};
-        Assert.isNoNullElements(array, "array has null element");
+        Assert.hasNoNullElements(array, "array has null element");
     }
 
     /**
@@ -915,6 +915,19 @@ public class AssertTest {
     }
 
     /**
+     * Test method for
+     * {@link org.gl.utils.commons.Assert#state(boolean, String, Object...)} .
+     */
+    @Test
+    public void testStateBooleanFalseString2() {
+        try {
+            Assert.state(false, "test: %p");
+        } catch (IllegalStateException e) {
+            assertEquals("[Assertion failed] test: false", e.getMessage());
+        }
+    }
+
+    /**
      * Test method for {@link org.gl.utils.commons.Assert#state(boolean)}.
      */
     @Test
@@ -1027,5 +1040,27 @@ public class AssertTest {
         colors.add(Color.CYAN);
 
         Assert.that(colors, Matchers.hasSize(colors.size() - 1));
+    }
+
+    /**
+     * Test method for
+     * {@link org.gl.utils.commons.Assert#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
+     * .
+     */
+    @Test
+    public void testGetMessage() {
+        // TEST GET MESSAGE
+
+        try {
+            Assert.isNotEqual("texte11", "texte11", "texte '%2$p' is not equal to '%1$p'");
+        } catch (IllegalArgumentException e) {
+            assertEquals("[Assertion failed] texte 'texte11' is not equal to 'texte11'", e.getMessage());
+        }
+
+        try {
+            Assert.isEqual("texte11", "texte12", "texte '%2$p' is not equal to '%1$p' or '%p' != '%p'%p...%0$p%3$p");
+        } catch (IllegalArgumentException e) {
+            assertEquals("[Assertion failed] texte 'texte12' is not equal to 'texte11' or 'texte11' != 'texte12'...", e.getMessage());
+        }
     }
 }

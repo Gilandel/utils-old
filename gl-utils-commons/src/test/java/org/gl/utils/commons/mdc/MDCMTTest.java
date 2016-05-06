@@ -44,15 +44,15 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.OutputStreamAppender;
 
 /**
- * MDC Thread Safe check
+ * MDC multi-thread helper test
  * 
  * @since 11 dec. 2015
  * @author Gilles Landel
  *
  */
-public class MDCTSTest {
+public class MDCMTTest {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(MDCTSTest.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(MDCMTTest.class);
 
     private static final Pattern VALIDATOR = Pattern
             .compile("MDCTask \\- (TRACE|DEBUG|INFO|WARN|ERROR) \\[THREAD: (\\d+), task: (\\d)\\] message");
@@ -87,7 +87,7 @@ public class MDCTSTest {
 
         // Appender
         this.appender = new OutputStreamAppender<>();
-        this.appender.setName("OutputStream Appender " + MDCTSTest.class.getSimpleName());
+        this.appender.setName("OutputStream Appender " + MDCMTTest.class.getSimpleName());
         this.appender.setContext(loggerContext);
         this.appender.setEncoder(encoder);
         this.appender.setOutputStream(this.stream);

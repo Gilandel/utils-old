@@ -15,7 +15,7 @@ Utility classes
 - Enum char: A list of ASCII characters and others with their unicode and HTML version
 - Enum utils: Extend EnumUtils from Apache project, add methods to get null if empty name is used (avoid exception)
 - Hex utils: To convert hexadecimal in bytes
-- Number utils: Extend NumberUtils from Apache project, add methods to check number equality (float and double)
+- Number utils: Extend NumberUtils from Apache project, add methods to check number equality
 - String utils: Extend NumberUtils from Apache project, add methods to get default string if empty or null
 
 ##IO:
@@ -30,8 +30,8 @@ Utility classes
 ##Listener:
 Base classes to manage events (listenable / event / listener)
 
-##MDCTS:
-To add mdc in our application in thread safe mode
+##MDCMT:
+To add easily MDC in your application in multi-threaded context
 
 ##Over:
 - AbstractOverComparable: Class to force the implementation of compareTo method

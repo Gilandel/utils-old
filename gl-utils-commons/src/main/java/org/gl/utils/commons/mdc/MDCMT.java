@@ -27,8 +27,8 @@ import org.slf4j.MDC;
  * Ex:<br>
  * public class Task implements Runnable {<br>
  * &nbsp;&nbsp;public synchronized void run(){<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;MDCTS.put("prop.key1", "value");<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;MDCTS.put("prop.key2", 2);<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;MDCMT.put("prop.key1", "value");<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;MDCMT.put("prop.key2", 2);<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;LOG.info("My log");<br>
  * &nbsp;&nbsp;}<br>
  * } <br>
@@ -36,10 +36,10 @@ import org.slf4j.MDC;
  * Or:<br>
  * public class Task implements Runnable {<br>
  * &nbsp;&nbsp;private Map&lt;String, String&gt; contextMap =
- * MDCTS.getCopyOfContextMap();<br>
+ * MDCMT.getCopyOfContextMap();<br>
  * &nbsp;&nbsp;public void run(){<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;MDCTS.setContextMap(this.contextMap);<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;MDCTS.put("prop.key", "value");<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;MDCMT.setContextMap(this.contextMap);<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;MDCMT.put("prop.key", "value");<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;LOG.info("My log");<br>
  * &nbsp;&nbsp;}<br>
  * }
@@ -48,7 +48,7 @@ import org.slf4j.MDC;
  * @author Gilles Landel
  *
  */
-public abstract class MDCTS {
+public abstract class MDCMT {
 
     private static ConcurrentMap<Long, ConcurrentMap<String, String>> globalContextMap = new ConcurrentHashMap<>();
 
@@ -60,9 +60,9 @@ public abstract class MDCTS {
      * @return The concurrent context map
      */
     protected static ConcurrentMap<String, String> getContextMap(final Long threadId) {
-        MDCTS.globalContextMap.putIfAbsent(threadId, new ConcurrentHashMap<String, String>());
+        MDCMT.globalContextMap.putIfAbsent(threadId, new ConcurrentHashMap<String, String>());
 
-        return MDCTS.globalContextMap.get(threadId);
+        return MDCMT.globalContextMap.get(threadId);
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class MDCTS {
      *            The value
      */
     public static synchronized void put(final Long threadId, final String key, final String value) {
-        MDCTS.getContextMap(threadId).put(key, value);
+        MDCMT.getContextMap(threadId).put(key, value);
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class MDCTS {
      * @return True, if the value exists in map
      */
     public static synchronized boolean containsKey(final Long threadId, final String key) {
-        return MDCTS.getContextMap(threadId).containsKey(key);
+        return MDCMT.getContextMap(threadId).containsKey(key);
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class MDCTS {
      * @return True, if the value exists in map
      */
     public static synchronized boolean containsValue(final Long threadId, final String value) {
-        return MDCTS.getContextMap(threadId).containsValue(value);
+        return MDCMT.getContextMap(threadId).containsValue(value);
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class MDCTS {
      * @return The value
      */
     public static synchronized String get(final Long threadId, final String key) {
-        return MDCTS.getContextMap(threadId).get(key);
+        return MDCMT.getContextMap(threadId).get(key);
     }
 
     /**
@@ -127,7 +127,7 @@ public abstract class MDCTS {
      *            The key to remove
      */
     public static synchronized void remove(final Long threadId, final String key) {
-        MDCTS.getContextMap(threadId).remove(key);
+        MDCMT.getContextMap(threadId).remove(key);
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class MDCTS {
      *            The thread identifier
      */
     public static synchronized void clear(final Long threadId) {
-        MDCTS.getContextMap(threadId).clear();
+        MDCMT.getContextMap(threadId).clear();
     }
 
     /**
@@ -154,7 +154,7 @@ public abstract class MDCTS {
      */
     public static synchronized void trace(final Long threadId, final Logger logger, final String message, final Throwable throwable) {
         if (logger.isTraceEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.trace(message, throwable);
         }
     }
@@ -173,7 +173,7 @@ public abstract class MDCTS {
      */
     public static synchronized void trace(final Long threadId, final Logger logger, final String message, final Object... arguments) {
         if (logger.isTraceEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.trace(message, arguments);
         }
     }
@@ -192,7 +192,7 @@ public abstract class MDCTS {
      */
     public static synchronized void debug(final Long threadId, final Logger logger, final String message, final Throwable throwable) {
         if (logger.isDebugEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.debug(message, throwable);
         }
     }
@@ -211,7 +211,7 @@ public abstract class MDCTS {
      */
     public static synchronized void debug(final Long threadId, final Logger logger, final String message, final Object... arguments) {
         if (logger.isDebugEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.debug(message, arguments);
         }
     }
@@ -230,7 +230,7 @@ public abstract class MDCTS {
      */
     public static synchronized void info(final Long threadId, final Logger logger, final String message, final Throwable throwable) {
         if (logger.isInfoEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.info(message, throwable);
         }
     }
@@ -249,7 +249,7 @@ public abstract class MDCTS {
      */
     public static synchronized void info(final Long threadId, final Logger logger, final String message, final Object... arguments) {
         if (logger.isInfoEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.info(message, arguments);
         }
     }
@@ -268,7 +268,7 @@ public abstract class MDCTS {
      */
     public static synchronized void warn(final Long threadId, final Logger logger, final String message, final Throwable throwable) {
         if (logger.isWarnEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.warn(message, throwable);
         }
     }
@@ -287,7 +287,7 @@ public abstract class MDCTS {
      */
     public static synchronized void warn(final Long threadId, final Logger logger, final String message, final Object... arguments) {
         if (logger.isWarnEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.warn(message, arguments);
         }
     }
@@ -306,7 +306,7 @@ public abstract class MDCTS {
      */
     public static synchronized void error(final Long threadId, final Logger logger, final String message, final Throwable throwable) {
         if (logger.isErrorEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.error(message, throwable);
         }
     }
@@ -325,7 +325,7 @@ public abstract class MDCTS {
      */
     public static synchronized void error(final Long threadId, final Logger logger, final String message, final Object... arguments) {
         if (logger.isErrorEnabled()) {
-            MDC.setContextMap(MDCTS.getContextMap(threadId));
+            MDC.setContextMap(MDCMT.getContextMap(threadId));
             logger.error(message, arguments);
         }
     }
