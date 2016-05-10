@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.gl</groupId>
-	<artifactId>gl-utils</artifactId>
+	<groupId>fr.landel</groupId>
+	<artifactId>utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>gl-utils</name>
+	<name>utils</name>
 	<description>Utility project</description>
 	<inceptionYear>2016</inceptionYear>
 
@@ -51,7 +51,7 @@
 	</ciManagement>
 
 	<modules>
-		<module>gl-utils-commons</module>
+		<module>utils-commons</module>
 	</modules>
 
 	<properties>
@@ -63,7 +63,7 @@
 
 		<application.org.name>Gilandel</application.org.name>
 		<application.org.url>https://github.com/Gilandel</application.org.url>
-		<application.org.license>gl-license</application.org.license>
+		<application.org.license>landel-license</application.org.license>
 
 		<!-- Project information -->
 		<jdk.version>1.8</jdk.version>
