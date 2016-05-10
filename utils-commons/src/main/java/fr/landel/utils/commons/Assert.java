@@ -1,6 +1,6 @@
 /*
  * #%L
- * gl-utils-commons
+ * utils-commons
  * %%
  * Copyright (C) 2016 Gilandel
  * %%

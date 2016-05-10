@@ -52,6 +52,7 @@
 
 	<modules>
 		<module>utils-commons</module>
+		<module>utils-aop</module>
 	</modules>
 
 	<properties>

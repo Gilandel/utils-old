@@ -6,6 +6,7 @@ Utility classes
 [![Dependency Status](https://www.versioneye.com/user/projects/571407adfcd19a00415b1a84/badge.svg?style=flat)](https://www.versioneye.com/user/projects/571407adfcd19a00415b1a84)
 [![codecov.io](https://codecov.io/github/Gilandel/utils/coverage.svg?branch=develop)](https://codecov.io/github/Gilandel/utils?branch=develop)
 
+# utils-commons
 ##Commons:
 - Assert: Improved version of Assert provided by the Spring Team,
 - Cast generics: To cast map / list / object (avoid the use of @SuppressWarnings
@@ -36,3 +37,6 @@ To add easily MDC in your application in multi-threaded context
 ##Over:
 - AbstractOverComparable: Class to force the implementation of compareTo method
 - AbstractOverObject: Class to force implementation of toString, equals and hashCode
+
+# utils-aop
+- AbstractAspect: Base to include AOP (logging and profiling) in an application
