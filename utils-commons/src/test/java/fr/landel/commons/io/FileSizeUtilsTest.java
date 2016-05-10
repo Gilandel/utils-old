@@ -37,7 +37,7 @@ public class FileSizeUtilsTest {
     private static final String CHECK_CRC32_PATH = "src/test/resources/io";
     private static final String CHECK_CRC32_TARGET_PATH = "target/io";
     private static final String CHECK_CRC32_FILE = CHECK_CRC32_PATH + "/checkCRC32.xml";
-    private static final long CHECK_CRC32_SIZE = 1_099L;
+    private static final long CHECK_CRC32_SIZE = 1_102L;
 
     /**
      * Remove test directory

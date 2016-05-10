@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>org.gl</groupId>
+		<groupId>fr.landel</groupId>
 		<artifactId>test</artifactId>
 		<version>3.3.0-BETA-12-SNAPSHOT</version>
 	</parent>

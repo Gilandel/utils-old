@@ -42,7 +42,7 @@ public class FileSystemUtilsTest {
     private static final String CHECK_CRC32_PATH = "src/test/resources/io";
     private static final String CHECK_CRC32_TARGET_PATH = "target/io";
     private static final String CHECK_CRC32_FILE = CHECK_CRC32_PATH + "/checkCRC32.xml";
-    private static final Long CHECK_CRC32_VALUE = 269_218_582L;
+    private static final Long CHECK_CRC32_VALUE = 3_893_630_386L;
 
     /**
      * Remove test directory
