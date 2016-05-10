@@ -30,17 +30,11 @@ import fr.landel.utils.aop.exception.AOPException;
 public class ProfilingAspect extends AbstractAspectExtends {
 
     /**
-     * Constructor
-     */
-    public ProfilingAspect() {
-        super();
-    }
-
-    /**
      * point cut for all methods of the service layer of the application
      */
     @Pointcut("execution(* " + BASE_PACKAGE + ".*.*(..))")
     public void trace() {
+        // Point cut, no code here
     }
 
     /**

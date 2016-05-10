@@ -34,17 +34,10 @@ public class AOPObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(AOPObservable.class);
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public AOPObservable() {
-    }
-
-    /**
      * Test method (logging)
      */
     public void test() {
+        // Observable method, no parameter
     }
 
     /**
@@ -64,6 +57,7 @@ public class AOPObservable {
      *            Date
      */
     public void test(final String p1, final Character p2, final Number p3, final Boolean p4, final EnumTest p5, final Date p6) {
+        // Observable method, boxed simple type
     }
 
     /**
@@ -81,6 +75,7 @@ public class AOPObservable {
      *            Short
      */
     public void test(final double p1, final float p2, final long p3, final int p4, final short p5) {
+        // Observable method, unboxed simple type
     }
 
     /**
@@ -94,6 +89,7 @@ public class AOPObservable {
      *            Byte
      */
     public void test(final char p1, final boolean p2, final byte p3) {
+        // Observable method, unboxed simple type
     }
 
     /**
@@ -107,6 +103,7 @@ public class AOPObservable {
      *            Map
      */
     public void test(final String[] p1, final List<String> p2, final Map<String, String> p3) {
+        // Observable method, array, list and map
     }
 
     /**

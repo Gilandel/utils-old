@@ -17,8 +17,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import fr.landel.utils.aop.exception.AOPException;
-
 /**
  * Check AOP exception
  *
@@ -29,17 +27,8 @@ import fr.landel.utils.aop.exception.AOPException;
 public class AOPExceptionTest {
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public AOPExceptionTest() {
-    }
-
-    /**
      * Test method for
-     * {@link fr.landel.utils.aop.exception.AOPException#AOPException()}
-     * .
+     * {@link fr.landel.utils.aop.exception.AOPException#AOPException()} .
      */
     @Test
     public void testAOPException() {

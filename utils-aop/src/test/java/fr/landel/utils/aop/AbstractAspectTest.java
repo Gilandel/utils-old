@@ -23,7 +23,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.OutputStreamAppender;
-import fr.landel.utils.aop.AbstractAspect;
 
 /**
  * Abstract aspect test (initialize the test appender).
@@ -59,6 +58,13 @@ public abstract class AbstractAspectTest<A extends AbstractAspect> {
      */
     public AbstractAspectTest(final Class<A> clazz) {
         this.clazz = clazz;
+    }
+
+    /**
+     * @return the logger
+     */
+    public final Logger getLogger() {
+        return this.logger;
     }
 
     /**

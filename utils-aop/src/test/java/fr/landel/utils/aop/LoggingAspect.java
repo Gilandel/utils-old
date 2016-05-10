@@ -28,17 +28,11 @@ import org.aspectj.lang.annotation.Pointcut;
 public class LoggingAspect extends AbstractAspectExtends {
 
     /**
-     * Constructor
-     */
-    public LoggingAspect() {
-        super();
-    }
-
-    /**
      * Point cut to monitor controller
      */
     @Pointcut("execution(* " + BASE_PACKAGE + ".*.*(..))")
     public void trace() {
+        // Point cut, no code here
     }
 
     /**

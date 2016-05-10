@@ -12,8 +12,6 @@
  */
 package fr.landel.utils.aop;
 
-import fr.landel.utils.aop.AbstractAspect;
-
 /**
  * Aspect implementation for tests
  *
@@ -27,13 +25,4 @@ public abstract class AbstractAspectExtends extends AbstractAspect {
      * Base package path
      */
     protected static final String BASE_PACKAGE = "fr.landel.utils.aop.observable";
-
-    /**
-     * 
-     * Constructor
-     *
-     */
-    public AbstractAspectExtends() {
-        super();
-    }
 }
