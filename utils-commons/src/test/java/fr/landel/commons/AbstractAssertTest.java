@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.Assert;
+import fr.landel.utils.commons.AssertUtils;
 
 /**
  * Check assert
@@ -32,12 +32,12 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isFalse(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isFalse(boolean, String, Object...)} .
      */
     @Test
     public void testIsFalseOKBooleanString() {
         try {
-            Assert.isFalse(false, "not false");
+            AssertUtils.isFalse(false, "not false");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -45,41 +45,41 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isFalse(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isFalse(boolean, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBooleanString() {
-        Assert.isFalse(true, "not false");
+        AssertUtils.isFalse(true, "not false");
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#isFalse(boolean)} .
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#isFalse(boolean)} .
      */
     @Test
     public void testIsFalseOKBoolean() {
         try {
-            Assert.isFalse(false);
+            AssertUtils.isFalse(false);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#isFalse(boolean)} .
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#isFalse(boolean)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBoolean() {
-        Assert.isFalse(true);
+        AssertUtils.isFalse(true);
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isTrue(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isTrue(boolean, String, Object...)} .
      */
     @Test
     public void testIsTrueOKBooleanString() {
         try {
-            Assert.isTrue(true, "not true");
+            AssertUtils.isTrue(true, "not true");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -87,41 +87,41 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isTrue(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isTrue(boolean, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBooleanString() {
-        Assert.isTrue(false, "not true");
+        AssertUtils.isTrue(false, "not true");
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#isTrue(boolean)} .
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#isTrue(boolean)} .
      */
     @Test
     public void testIsTrueOKBoolean() {
         try {
-            Assert.isTrue(true);
+            AssertUtils.isTrue(true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#isTrue(boolean)} .
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#isTrue(boolean)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBoolean() {
-        Assert.isTrue(false);
+        AssertUtils.isTrue(false);
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNull(Object, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isNull(Object, String, Object...)} .
      */
     @Test
     public void testIsNullOKObjectString() {
         try {
-            Assert.isNull(null, "not null object");
+            AssertUtils.isNull(null, "not null object");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -129,21 +129,21 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNull(Object, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isNull(Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObjectString() {
-        Assert.isNull("", "not null object");
+        AssertUtils.isNull("", "not null object");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNull(java.lang.Object)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isNull(java.lang.Object)} .
      */
     @Test
     public void testIsNullOKObject() {
         try {
-            Assert.isNull(null);
+            AssertUtils.isNull(null);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -151,22 +151,22 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNull(java.lang.Object)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isNull(java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObject() {
-        Assert.isNull("");
+        AssertUtils.isNull("");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotNull(Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isNotNull(Object, String, Object...)}
      * .
      */
     @Test
     public void testIsNotNullOKObjectString() {
         try {
-            Assert.isNotNull(1, "null object");
+            AssertUtils.isNotNull(1, "null object");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -174,22 +174,22 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotNull(Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isNotNull(Object, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObjectString() {
-        Assert.isNotNull(null, "null object");
+        AssertUtils.isNotNull(null, "null object");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotNull(java.lang.Object)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isNotNull(java.lang.Object)} .
      */
     @Test
     public void testIsNotNullOKObject() {
         try {
-            Assert.isNotNull(1);
+            AssertUtils.isNotNull(1);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -197,22 +197,22 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotNull(java.lang.Object)} .
+     * {@link fr.landel.utils.commons.AssertUtils#isNotNull(java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObject() {
-        Assert.isNotNull(null);
+        AssertUtils.isNotNull(null);
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotEqual(java.lang.Object, java.lang.Object)}
+     * {@link fr.landel.utils.commons.AssertUtils#isNotEqual(java.lang.Object, java.lang.Object)}
      * .
      */
     @Test
     public void testIsNotEqualOKObjectObject() {
         try {
-            Assert.isNotEqual("texte9", "texte10");
+            AssertUtils.isNotEqual("texte9", "texte10");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -220,23 +220,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotEqual(java.lang.Object, java.lang.Object)}
+     * {@link fr.landel.utils.commons.AssertUtils#isNotEqual(java.lang.Object, java.lang.Object)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObject() {
-        Assert.isNotEqual("texte11", "texte11");
+        AssertUtils.isNotEqual("texte11", "texte11");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotEqual(Object, Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isNotEqual(Object, Object, String, Object...)}
      * .
      */
     @Test
     public void testIsNotEqualOKObjectObjectString() {
         try {
-            Assert.isNotEqual("texte8", "texte7", "equal");
+            AssertUtils.isNotEqual("texte8", "texte7", "equal");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -244,23 +244,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isNotEqual(Object, Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isNotEqual(Object, Object, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObjectString() {
-        Assert.isNotEqual("texte6", "texte6", "equal");
+        AssertUtils.isNotEqual("texte6", "texte6", "equal");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isEqual(java.lang.Object, java.lang.Object)}
+     * {@link fr.landel.utils.commons.AssertUtils#isEqual(java.lang.Object, java.lang.Object)}
      * .
      */
     @Test
     public void testIsEqualOKObjectObject() {
         try {
-            Assert.isEqual("texte4", "texte4");
+            AssertUtils.isEqual("texte4", "texte4");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -268,23 +268,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isEqual(java.lang.Object, java.lang.Object)}
+     * {@link fr.landel.utils.commons.AssertUtils#isEqual(java.lang.Object, java.lang.Object)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObject() {
-        Assert.isEqual("texte5", "texte3");
+        AssertUtils.isEqual("texte5", "texte3");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isEqual(Object, Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isEqual(Object, Object, String, Object...)}
      * .
      */
     @Test
     public void testIsEqualOKObjectObjectString() {
         try {
-            Assert.isEqual("texte0", "texte0", "not equals");
+            AssertUtils.isEqual("texte0", "texte0", "not equals");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -292,23 +292,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isEqual(Object, Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isEqual(Object, Object, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObjectString() {
-        Assert.isEqual("texte1", "texte2", "not equals");
+        AssertUtils.isEqual("texte1", "texte2", "not equals");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isInstanceOf(java.lang.Class, java.lang.Object)}
+     * {@link fr.landel.utils.commons.AssertUtils#isInstanceOf(java.lang.Class, java.lang.Object)}
      * .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObject() {
         try {
-            Assert.isInstanceOf(IOException.class, new IOException());
+            AssertUtils.isInstanceOf(IOException.class, new IOException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -316,23 +316,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isInstanceOf(java.lang.Class, java.lang.Object)}
+     * {@link fr.landel.utils.commons.AssertUtils#isInstanceOf(java.lang.Class, java.lang.Object)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObject() {
-        Assert.isInstanceOf(IOException.class, new Exception());
+        AssertUtils.isInstanceOf(IOException.class, new Exception());
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isInstanceOf(Class, Object, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isInstanceOf(Class, Object, String, Object...)}
      * .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObjectString() {
         try {
-            Assert.isInstanceOf(IOException.class, new IOException(), "not instance of");
+            AssertUtils.isInstanceOf(IOException.class, new IOException(), "not instance of");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -340,23 +340,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isInstanceOf(Class, Object, String, Object...)
+     * {@link fr.landel.utils.commons.AssertUtils#isInstanceOf(Class, Object, String, Object...)
      * )} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObjectString() {
-        Assert.isInstanceOf(IOException.class, new Exception(), "not instance of");
+        AssertUtils.isInstanceOf(IOException.class, new Exception(), "not instance of");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isAssignable(java.lang.Class, java.lang.Class)}
+     * {@link fr.landel.utils.commons.AssertUtils#isAssignable(java.lang.Class, java.lang.Class)}
      * .
      */
     @Test
     public void testIsAssignableOKClassOfQClassOfQ() {
         try {
-            Assert.isAssignable(Exception.class, IOException.class);
+            AssertUtils.isAssignable(Exception.class, IOException.class);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -364,23 +364,23 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isAssignable(java.lang.Class, java.lang.Class)}
+     * {@link fr.landel.utils.commons.AssertUtils#isAssignable(java.lang.Class, java.lang.Class)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsAssignableKOClassOfQClassOfQ() {
-        Assert.isAssignable(IOException.class, Exception.class);
+        AssertUtils.isAssignable(IOException.class, Exception.class);
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isAssignable(Class, Class, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isAssignable(Class, Class, String, Object...)}
      * .
      */
     @Test
     public void testIsAssignableOKClassOfQClassOfQString() {
         try {
-            Assert.isAssignable(Exception.class, IOException.class, "msg");
+            AssertUtils.isAssignable(Exception.class, IOException.class, "msg");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -388,22 +388,22 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#isAssignable(Class, Class, String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#isAssignable(Class, Class, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsAssignableKOClassOfQClassOfQString() {
-        Assert.isAssignable(IOException.class, Exception.class, "msg");
+        AssertUtils.isAssignable(IOException.class, Exception.class, "msg");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#state(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#state(boolean, String, Object...)} .
      */
     @Test
     public void testStateBooleanTrueString() {
         try {
-            Assert.state(true, "test");
+            AssertUtils.state(true, "test");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -411,73 +411,73 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#state(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#state(boolean, String, Object...)} .
      */
     @Test(expected = IllegalStateException.class)
     public void testStateBooleanFalseString() {
-        Assert.state(false, "test");
+        AssertUtils.state(false, "test");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#state(boolean, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#state(boolean, String, Object...)} .
      */
     @Test
     public void testStateBooleanFalseString2() {
         try {
-            Assert.state(false, "test: %p");
+            AssertUtils.state(false, "test: %p");
         } catch (IllegalStateException e) {
             assertEquals("[Assertion failed] test: false", e.getMessage());
         }
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#state(boolean)}.
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#state(boolean)}.
      */
     @Test
     public void testStateBooleanTrue() {
         try {
-            Assert.state(true);
+            AssertUtils.state(true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#state(boolean)}.
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#state(boolean)}.
      */
     @Test(expected = IllegalStateException.class)
     public void testStateBooleanFalse() {
-        Assert.state(false);
+        AssertUtils.state(false);
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#fail(java.lang.String)} .
+     * {@link fr.landel.utils.commons.AssertUtils#fail(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testFailString() {
-        Assert.fail("message");
+        AssertUtils.fail("message");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#fail(Throwable, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#fail(Throwable, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testFailStringThrowable() {
-        Assert.fail(new IOException(), "message");
+        AssertUtils.fail(new IOException(), "message");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#fail(Throwable, String, Object...)} .
+     * {@link fr.landel.utils.commons.AssertUtils#fail(Throwable, String, Object...)} .
      */
     @Test
     public void testFailFormatStringThrowable() {
         try {
             final double arg0 = 2.25d;
-            Assert.fail(new IOException(), "The argument %s doesn't match the predicate number %.1f", "ARG0", arg0);
+            AssertUtils.fail(new IOException(), "The argument %s doesn't match the predicate number %.1f", "ARG0", arg0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertEquals("[Assertion failed] The argument ARG0 doesn't match the predicate number 2.3", e.getMessage());
@@ -486,7 +486,7 @@ public class AbstractAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
+     * {@link fr.landel.utils.commons.AssertUtils#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
      * .
      */
     @Test
@@ -494,13 +494,13 @@ public class AbstractAssertTest {
         // TEST GET MESSAGE
 
         try {
-            Assert.isNotEqual("texte11", "texte11", "texte '%2$p' is not equal to '%1$p'");
+            AssertUtils.isNotEqual("texte11", "texte11", "texte '%2$p' is not equal to '%1$p'");
         } catch (IllegalArgumentException e) {
             assertEquals("[Assertion failed] texte 'texte11' is not equal to 'texte11'", e.getMessage());
         }
 
         try {
-            Assert.isEqual("texte11", "texte12", "texte '%2$p' is not equal to '%1$p' or '%p' != '%p'%p...%0$p%3$p");
+            AssertUtils.isEqual("texte11", "texte12", "texte '%2$p' is not equal to '%1$p' or '%p' != '%p'%p...%0$p%3$p");
         } catch (IllegalArgumentException e) {
             assertEquals("[Assertion failed] texte 'texte12' is not equal to 'texte11' or 'texte11' != 'texte12'...", e.getMessage());
         }

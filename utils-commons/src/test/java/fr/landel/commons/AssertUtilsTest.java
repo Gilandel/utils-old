@@ -23,7 +23,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import fr.landel.utils.commons.Assert;
+import fr.landel.utils.commons.AssertUtils;
 
 /**
  * Check assert
@@ -32,18 +32,18 @@ import fr.landel.utils.commons.Assert;
  * @author Gilles Landel
  *
  */
-public class AssertTest {
+public class AssertUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#hasNoNullElements(Object[], String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#hasNoNullElements(Object[], String, Object...)}
      * .
      */
     @Test
     public void testHasNoNullElementOKsObjectArrayString() {
         try {
             String[] array = new String[] {"1", "3"};
-            Assert.hasNoNullElements(array);
+            AssertUtils.hasNoNullElements(array);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -51,25 +51,25 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#hasNoNullElements(Object[], String, Object...)}
+     * {@link fr.landel.utils.commons.AssertUtils#hasNoNullElements(Object[], String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testHasNoNullElementsKOObjectArrayString() {
         String[] array = new String[] {null, "2"};
-        Assert.hasNoNullElements(array);
+        AssertUtils.hasNoNullElements(array);
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#hasNoNullElements(java.lang.Object[])}
+     * {@link fr.landel.utils.commons.AssertUtils#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test
     public void testHasNoNullElementsOKObjectArray() {
         try {
             String[] array = new String[] {"1", "2"};
-            Assert.hasNoNullElements(array, "array has null element");
+            AssertUtils.hasNoNullElements(array, "array has null element");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -77,17 +77,17 @@ public class AssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.Assert#hasNoNullElements(java.lang.Object[])}
+     * {@link fr.landel.utils.commons.AssertUtils#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testHasNoNullElementsKOObjectArray() {
         String[] array = new String[] {"", null};
-        Assert.hasNoNullElements(array, "array has null element");
+        AssertUtils.hasNoNullElements(array, "array has null element");
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#that(Object, Matcher)}
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#that(Object, Matcher)}
      * .
      */
     @Test
@@ -125,15 +125,15 @@ public class AssertTest {
             List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
                     matcherCyan);
 
-            Assert.that(colors, Matchers.hasSize(nbColors));
-            Assert.that(colors, Matchers.contains(matcherList));
+            AssertUtils.that(colors, Matchers.hasSize(nbColors));
+            AssertUtils.that(colors, Matchers.contains(matcherList));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link fr.landel.utils.commons.Assert#that(Object, Matcher)}
+     * Test method for {@link fr.landel.utils.commons.AssertUtils#that(Object, Matcher)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
@@ -145,6 +145,6 @@ public class AssertTest {
         colors.add(Color.BLUE);
         colors.add(Color.CYAN);
 
-        Assert.that(colors, Matchers.hasSize(colors.size() - 1));
+        AssertUtils.that(colors, Matchers.hasSize(colors.size() - 1));
     }
 }

@@ -251,11 +251,11 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      *             than the end. If the end is greater than the string length.
      */
     public static String replace(final String string, final String replacement, final int start, final int end) {
-        Assert.isNotEmpty(string, "The input string cannot be empty");
-        Assert.isNotNull(replacement, "The replacement string cannot be null");
-        Assert.isGTE(start, 0, "The start parameter must be greated than or equal to 0");
-        Assert.isLTE(end, string.length(), "The end parameter must be lower than or equal to the length of string");
-        Assert.isLT(start, end, "The start parameter must be lower than the end");
+        AssertUtils.isNotEmpty(string, "The input string cannot be empty");
+        AssertUtils.isNotNull(replacement, "The replacement string cannot be null");
+        AssertUtils.isGTE(start, 0, "The start parameter must be greated than or equal to 0");
+        AssertUtils.isLTE(end, string.length(), "The end parameter must be lower than or equal to the length of string");
+        AssertUtils.isLT(start, end, "The start parameter must be lower than the end");
 
         String part1 = "";
         if (start > 0) {

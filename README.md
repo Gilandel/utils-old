@@ -8,7 +8,7 @@ Utility classes
 
 # utils-commons
 ##Commons:
-- Assert: Improved version of Assert provided by the Spring Team,
+- Assert utils: Improved version of Assert provided by the Spring Team,
 - Cast generics: To cast map / list / object (avoid the use of @SuppressWarnings
 - Class utils: To get super classes or to get common super classes
 - Collection utils: Add missing transform methods (in complement of CollectionUtils provided by Apache Team)

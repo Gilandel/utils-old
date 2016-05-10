@@ -72,7 +72,7 @@ import org.hamcrest.StringDescription;
  * @author Gilles Landel
  * @since 1.1.2
  */
-public abstract class Assert extends AbstractNumberAssert {
+public abstract class AssertUtils extends AbstractNumberAssert {
 
     /**
      * Assert that an array has no null elements. Note: Does not complain if the
@@ -163,7 +163,7 @@ public abstract class Assert extends AbstractNumberAssert {
      *             if matcher doesn't match
      */
     public static <T> void that(final T actual, final Matcher<? super T> matcher) {
-        Assert.that(actual, matcher, (String) null);
+        AssertUtils.that(actual, matcher, (String) null);
     }
 
     /**
