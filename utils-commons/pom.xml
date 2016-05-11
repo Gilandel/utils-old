@@ -8,6 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
+	<groupId>fr.landel.utils</groupId>
 	<artifactId>utils-commons</artifactId>
 	<name>utils-commons</name>
 	<description>Common utility classes (cast, enum, integer...)</description>
