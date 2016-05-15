@@ -68,7 +68,7 @@ public final class CastGenerics {
      * @return The class of the object
      */
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getObjectClass(final T object) {
+    public static <T> Class<T> getClass(final T object) {
         if (object != null) {
             return (Class<T>) object.getClass();
         }

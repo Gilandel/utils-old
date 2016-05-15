@@ -52,7 +52,11 @@
 
 	<modules>
 		<module>utils-commons</module>
+		<module>utils-mapper</module>
 		<module>utils-aop</module>
+		<module>utils-model</module>
+		<module>utils-poi</module>
+		<module>utils-web</module>
 	</modules>
 
 	<properties>

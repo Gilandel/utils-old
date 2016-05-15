@@ -16,6 +16,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -37,23 +38,52 @@ public final class CollectionUtils2 {
     }
 
     /**
-     * To array a collection (take the type of the first element, otherwise use
+     * To array an iterable (take the type of the first element, otherwise use
      * the default 'toArray(new T[0])')
      * 
-     * @param list
-     *            The input list
+     * @param iterable
+     *            The input iterable (required)
+     * @param <T>
+     *            The type of object in collection
+     * @return The array
+     */
+    public static <T> T[] toArray(final Iterable<T> iterable) {
+        return toArray(iterable);
+    }
+
+    /**
+     * To array an iterable (take the type of the first element, otherwise use
+     * the default 'toArray(new T[0])')
+     * 
+     * @param iterable
+     *            The input iterable (required)
+     * @param type
+     *            the type of objects (optional, if null take the type of the
+     *            first element)
      * @param <T>
      *            The type of object in collection
      * @return The array
      */
     @SuppressWarnings("unchecked")
-    public static <T> T[] toArray(final Collection<T> list) {
-        if (list != null && !list.isEmpty()) {
-            Class<?> typeClass = list.iterator().next().getClass();
-            return list.toArray((T[]) Array.newInstance(typeClass, list.size()));
-        } else {
-            return null;
+    public static <T> T[] toArray(final Iterable<T> iterable, final Class<T> type) {
+        if (iterable != null) {
+            final Iterator<T> iterator = iterable.iterator();
+            if (iterator.hasNext()) {
+                final List<T> list = new ArrayList<>();
+                while (iterator.hasNext()) {
+                    final T obj = iterator.next();
+                    list.add(obj);
+                }
+                final Class<T> typeClass;
+                if (type != null) {
+                    typeClass = type;
+                } else {
+                    typeClass = CastGenerics.getClass(list.get(0));
+                }
+                return list.toArray((T[]) Array.newInstance(typeClass, list.size()));
+            }
         }
+        return null;
     }
 
     /**

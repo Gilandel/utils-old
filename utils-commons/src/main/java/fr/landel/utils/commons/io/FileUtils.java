@@ -24,6 +24,8 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import fr.landel.utils.commons.asserts.AssertUtils;
+
 /**
  * This class is used to read and write files.
  *
@@ -146,6 +148,42 @@ public final class FileUtils {
     }
 
     /**
+     * Get the content of a file from class loader (from classpath root).
+     * 
+     * @param path
+     *            The path
+     * @param charset
+     *            The file charset
+     * @param classLoader
+     *            The class loader (advice: use a Class in the same JAR of the
+     *            file to load), if null use the class loader of the current
+     *            thread
+     * @return The buffered content
+     * @throws IOException
+     *             Exception thrown if problems occurs during reading
+     */
+    public static StringBuilder getFileContent(final String path, final Charset charset, final ClassLoader classLoader) throws IOException {
+        AssertUtils.isNotBlank(path, "The 'path' parameter cannot be null or blank");
+        AssertUtils.isNotNull(charset, "The 'charset' parameter cannot be null");
+
+        ClassLoader loader = classLoader;
+        int bufferReadSize;
+        final StringBuilder buffer = new StringBuilder();
+
+        if (loader == null) {
+            loader = Thread.currentThread().getContextClassLoader();
+        }
+
+        try (InputStream is = loader.getResourceAsStream(path)) {
+            while ((bufferReadSize = is.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
+                buffer.append(new String(BUFFER, 0, bufferReadSize, charset));
+            }
+        }
+
+        return buffer;
+    }
+
+    /**
      * Write the content of the buffer into a file and create intermediate
      * directories if necessary.
      * 
@@ -258,9 +296,9 @@ public final class FileUtils {
      * @throws IllegalArgumentException
      *             If parameters are null or not files
      */
-    public static boolean areEqual(final String path1, final String path2) {
+    public static boolean isEqual(final String path1, final String path2) {
         if (path1 != null && path2 != null) {
-            return FileUtils.areEqual(new File(path1), new File(path2));
+            return FileUtils.isEqual(new File(path1), new File(path2));
         }
         throw new IllegalArgumentException("The paths paramater are invalid");
     }
@@ -276,7 +314,7 @@ public final class FileUtils {
      * @throws IllegalArgumentException
      *             If parameters are null or not files
      */
-    public static boolean areEqual(final File file1, final File file2) {
+    public static boolean isEqual(final File file1, final File file2) {
         if (file1 == null || !file1.isFile()) {
             throw new IllegalArgumentException("The first file isn't valid");
         } else if (file2 == null || !file2.isFile()) {
@@ -289,10 +327,10 @@ public final class FileUtils {
             return true;
         }
 
-        return FileUtils.areIdentical(file1, file2);
+        return FileUtils.isIdentical(file1, file2);
     }
 
-    private static boolean areIdentical(final File file1, final File file2) {
+    private static boolean isIdentical(final File file1, final File file2) {
         boolean result = true;
 
         try (BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(file1))) {
