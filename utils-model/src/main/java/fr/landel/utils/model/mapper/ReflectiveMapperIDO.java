@@ -20,9 +20,12 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import fr.landel.utils.commons.asserts.AssertUtils;
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.EnumMode;
+import fr.landel.utils.mapper.MapperException;
+import fr.landel.utils.mapper.core.AbstractReflectiveMapper;
 import fr.landel.utils.model.AbstractDTO;
 import fr.landel.utils.model.AbstractEntity;
-import fr.landel.utils.model.mapper.core.AbstractReflectiveMapper;
 
 /**
  * Reflective mapper (entity &lt;-&gt; DTO)

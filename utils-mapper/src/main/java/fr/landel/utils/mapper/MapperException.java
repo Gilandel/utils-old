@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper;
+package fr.landel.utils.mapper;
 
 import fr.landel.utils.commons.exception.AbstractException;
 

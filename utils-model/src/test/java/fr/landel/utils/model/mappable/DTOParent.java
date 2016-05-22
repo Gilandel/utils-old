@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.landel.utils.mapper.EnumMode;
+import fr.landel.utils.mapper.mappable.Mappable;
+import fr.landel.utils.mapper.mappable.MappableProperty;
 import fr.landel.utils.model.AbstractDTO;
-import fr.landel.utils.model.mapper.EnumMode;
-import fr.landel.utils.model.mapper.mappable.Mappable;
-import fr.landel.utils.model.mapper.mappable.MappableProperty;
 
 /**
  * DTO parent to test mapper

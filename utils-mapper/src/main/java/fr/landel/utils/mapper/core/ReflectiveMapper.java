@@ -10,13 +10,13 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.core;
+package fr.landel.utils.mapper.core;
 
 import fr.landel.utils.commons.exception.AbstractException;
 import fr.landel.utils.commons.stream.FunctionThrowable;
-import fr.landel.utils.model.mapper.DTOIdentifier;
-import fr.landel.utils.model.mapper.EnumMode;
-import fr.landel.utils.model.mapper.MapperException;
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.EnumMode;
+import fr.landel.utils.mapper.MapperException;
 
 /**
  * Reflective mapper (DTO &lt;-&gt; DTO)

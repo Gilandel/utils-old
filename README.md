@@ -28,6 +28,12 @@ mettre a dispo des converters de date/String en utilisant les standards J8
 
 mise en place de JMH
 
+scripts loader multi config (replacer/loader) config commune geree par le loader
+public static getValues()
+
+AssertUtils date avec ecart millisecondes/ sec/ min/ heures...
+Meilleure remontée des params (interface pour exception pour injecter les parametres / messages?
+
 
 # utils
 Utility classes

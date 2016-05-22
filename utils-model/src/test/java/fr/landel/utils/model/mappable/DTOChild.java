@@ -15,11 +15,11 @@ package fr.landel.utils.model.mappable;
 import java.util.Date;
 import java.util.Map;
 
+import fr.landel.utils.mapper.EnumMode;
+import fr.landel.utils.mapper.mappable.Mappable;
+import fr.landel.utils.mapper.mappable.MappableProperty;
+import fr.landel.utils.mapper.mappable.MappablesProperty;
 import fr.landel.utils.model.AbstractDTO;
-import fr.landel.utils.model.mapper.EnumMode;
-import fr.landel.utils.model.mapper.mappable.Mappable;
-import fr.landel.utils.model.mapper.mappable.MappableProperty;
-import fr.landel.utils.model.mapper.mappable.MappablesProperty;
 
 /**
  * DTO parent to test mapper

@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper;
+package fr.landel.utils.mapper;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ import java.util.Set;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
-import fr.landel.utils.model.mapper.core.DTOIdentifierManager;
+import fr.landel.utils.mapper.core.DTOIdentifierManager;
 
 /**
  * Abstract DTO identifier.

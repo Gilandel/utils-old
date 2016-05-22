@@ -15,9 +15,13 @@ package fr.landel.utils.commons;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.collections4.Transformer;
@@ -48,7 +52,7 @@ public final class CollectionUtils2 {
      * @return The array
      */
     public static <T> T[] toArray(final Iterable<T> iterable) {
-        return toArray(iterable);
+        return toArray(iterable, null);
     }
 
     /**
@@ -418,5 +422,21 @@ public final class CollectionUtils2 {
         } else {
             output.add(null);
         }
+    }
+
+    public static <T> Class<List<T>> getListClass(final Class<T> type) {
+        return CastGenerics.getClass(new ArrayList<T>());
+    }
+
+    public static <T> Class<Set<T>> getSetClass(final Class<T> type) {
+        return CastGenerics.getClass(new HashSet<T>());
+    }
+
+    public static <T> Class<Queue<T>> getQueueClass(final Class<T> type) {
+        return CastGenerics.getClass(new LinkedList<T>());
+    }
+
+    public static <K, V> Class<Map<K, V>> getMapClass(final Class<K> keyType, final Class<V> valueType) {
+        return CastGenerics.getClass(new HashMap<K, V>());
     }
 }

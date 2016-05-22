@@ -34,8 +34,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.junit.Test;
 
-import fr.landel.utils.commons.CastGenerics;
-
 /**
  * Check utility class (generic cast).
  *
@@ -76,10 +74,10 @@ public class CastGenericsTest {
     @Test
     public void testGetObject() {
         ExException map = new ExException("msg");
-        IOException result = CastGenerics.getObject(map, IOException.class);
+        IOException result = CastGenerics.cast(map, IOException.class);
 
         assertEquals("msg", result.getMessage());
-        assertNull(CastGenerics.getObject(null, IOException.class));
+        assertNull(CastGenerics.cast(null, IOException.class));
     }
 
     /**

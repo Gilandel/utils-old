@@ -10,10 +10,10 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.core;
+package fr.landel.utils.mapper.core;
 
-import fr.landel.utils.model.mapper.DTOIdentifier;
-import fr.landel.utils.model.mapper.DTOIdentifierImpl;
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.DTOIdentifierImpl;
 
 /**
  * The abstract DTO identifier loader (to load in the manager all identifiers).

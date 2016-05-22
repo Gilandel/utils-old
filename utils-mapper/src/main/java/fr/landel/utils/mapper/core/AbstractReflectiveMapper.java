@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.core;
+package fr.landel.utils.mapper.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -27,12 +27,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.landel.utils.commons.exception.AbstractException;
 import fr.landel.utils.commons.stream.FunctionThrowable;
-import fr.landel.utils.model.mapper.DTOIdentifier;
-import fr.landel.utils.model.mapper.EnumMode;
-import fr.landel.utils.model.mapper.MapperException;
-import fr.landel.utils.model.mapper.mappable.Mappable;
-import fr.landel.utils.model.mapper.mappable.MappableProperty;
-import fr.landel.utils.model.mapper.utils.ReflectUtils;
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.EnumMode;
+import fr.landel.utils.mapper.MapperException;
+import fr.landel.utils.mapper.mappable.Mappable;
+import fr.landel.utils.mapper.mappable.MappableProperty;
+import fr.landel.utils.mapper.utils.ReflectUtils;
 
 /**
  * Reflective mapper (DTO 1 &lt;-&gt; DTO 2)
@@ -120,7 +120,7 @@ public abstract class AbstractReflectiveMapper {
 
         if (collection != null) {
             if (targetCollection == null) {
-                values = (Collection<T>) this.reflectionUtil.newInstanceCollection(targetField.getType());
+                values = this.reflectionUtil.newInstanceCollection((Class<Collection<T>>) targetField.getType());
             } else {
                 values = targetCollection;
             }
@@ -177,7 +177,7 @@ public abstract class AbstractReflectiveMapper {
 
         if (sourceMap != null) {
             if (targetMap == null) {
-                map = (Map<Object, T>) this.reflectionUtil.newInstanceMap(targetField.getType(), Object.class, sourceObject.getClass());
+                map = (Map<Object, T>) this.reflectionUtil.newInstanceMap((Class<Map<Object, S>>) targetField.getType());
             } else {
                 map = targetMap;
             }

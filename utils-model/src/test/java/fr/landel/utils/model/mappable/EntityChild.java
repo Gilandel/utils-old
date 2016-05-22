@@ -15,8 +15,8 @@ package fr.landel.utils.model.mappable;
 import java.util.Date;
 import java.util.Map;
 
+import fr.landel.utils.mapper.mappable.Mappable;
 import fr.landel.utils.model.AbstractEntity;
-import fr.landel.utils.model.mapper.mappable.Mappable;
 
 /**
  * Entity child to test mapper.

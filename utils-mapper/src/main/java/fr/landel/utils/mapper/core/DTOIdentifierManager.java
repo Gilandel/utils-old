@@ -10,11 +10,11 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.core;
+package fr.landel.utils.mapper.core;
 
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
-import fr.landel.utils.model.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.DTOIdentifier;
 
 /**
  * The DTO identifiers manager.

@@ -1,11 +1,24 @@
-package fr.landel.utils.model.mapper.utils;
+/*
+ * #%L
+ * utils-mapper
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
+package fr.landel.utils.mapper.utils;
 
 import java.util.Collection;
+import java.util.Observable;
 
-import fr.landel.utils.model.mapper.EnumMode;
-import fr.landel.utils.model.mapper.mappable.Mappable;
-import fr.landel.utils.model.mapper.mappable.MappableProperty;
-import fr.landel.utils.model.mapper.mappable.MappablesProperty;
+import fr.landel.utils.mapper.EnumMode;
+import fr.landel.utils.mapper.mappable.Mappable;
+import fr.landel.utils.mapper.mappable.MappableProperty;
+import fr.landel.utils.mapper.mappable.MappablesProperty;
 
 /**
  * 
@@ -15,7 +28,7 @@ import fr.landel.utils.model.mapper.mappable.MappablesProperty;
  * @author Gilles
  *
  */
-@Mappable({Class.class, Collection.class})
+@Mappable({Observable.class, Collection.class})
 public class ReflectDTO {
 
     public static final EnumMode MODE = EnumMode.DEFAULT;

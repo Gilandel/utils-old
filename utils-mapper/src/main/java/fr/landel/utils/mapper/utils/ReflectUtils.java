@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.utils;
+package fr.landel.utils.mapper.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -19,11 +19,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.Vector;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
@@ -31,9 +39,9 @@ import org.apache.commons.lang3.StringUtils;
 import fr.landel.utils.commons.asserts.AssertUtils;
 import fr.landel.utils.commons.exception.AbstractException;
 import fr.landel.utils.commons.stream.FunctionThrowable;
-import fr.landel.utils.model.mapper.MapperException;
-import fr.landel.utils.model.mapper.mappable.Mappable;
-import fr.landel.utils.model.mapper.mappable.MappableProperty;
+import fr.landel.utils.mapper.MapperException;
+import fr.landel.utils.mapper.mappable.Mappable;
+import fr.landel.utils.mapper.mappable.MappableProperty;
 
 /**
  * Utilities to map.
@@ -357,6 +365,8 @@ public class ReflectUtils {
      */
     public <I> I newInstance(final Class<I> clazz) throws MapperException {
 
+        AssertUtils.isNotNull(clazz, "The class is null");
+
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
@@ -367,31 +377,117 @@ public class ReflectUtils {
     /**
      * Create a new instance of a collection (List, Set or Queue).
      * 
-     * @param clazz
+     * @param collectionClass
      *            The class to instantiate (required)
+     * @param <C>
+     *            The collection type (C has to extend Collection&lt;X&gt;)
      * @param <X>
-     *            The collection type
-     * @return The new instance of the collection
+     *            The generic type
+     * @return The new instance of the collection (or null if not a list, set or
+     *         queue)
      * @throws MapperException
      *             On creation failed
      */
-    public <X> Collection<X> newInstanceCollection(final Class<X> clazz) throws MapperException {
+    public <C extends Collection<X>, X> C newInstanceCollection(final Class<C> collectionClass) throws MapperException {
 
-        AssertUtils.isNotNull(clazz, "The class is null");
+        return newInstanceCollection(collectionClass, collectionClass, null);
+    }
 
-        if (Queue.class.isAssignableFrom(clazz)) {
-            return new LinkedList<X>();
-        } else if (List.class.isAssignableFrom(clazz)) {
-            return new ArrayList<X>();
-        } else if (Set.class.isAssignableFrom(clazz)) {
-            return new HashSet<X>();
+    /**
+     * Create a new instance of a collection (List, Set or Queue).
+     * 
+     * @param collectionClass
+     *            The class to instantiate (required)
+     * @param valueClass
+     *            The generic type (required)
+     * @param <C>
+     *            The collection type (C has to extend Collection&lt;X&gt;)
+     * @param <X>
+     *            The generic type
+     * @return The new instance of the collection (or null if not a list, set or
+     *         queue)
+     * @throws MapperException
+     *             On creation failed
+     */
+    @SuppressWarnings("unchecked")
+    public <C extends Collection<X>, X> C newInstanceCollection(final Class<?> collectionClass, final Class<X> valueClass)
+            throws MapperException {
+
+        AssertUtils.isNotNull(valueClass, "The value class is null");
+
+        return newInstanceCollection((Class<C>) collectionClass, (Class<C>) collectionClass, valueClass);
+    }
+
+    /**
+     * Create a new instance of a collection (List, Set or Queue).
+     * 
+     * @param instanciableCollectionClass
+     *            The class to instantiate (required)
+     * @param outputCollectionClass
+     *            The output class, can be the same as
+     *            instanciableCollectionClass or an interface (required)
+     * @param valueClass
+     *            The generic type (optional)
+     * @param <C>
+     *            The collection type (C has to be equal to O or extend O)
+     * @param <O>
+     *            The collection type (O has to extend Collection&lt;X&gt;)
+     * @param <X>
+     *            The generic type
+     * @return The new instance of the collection (or null if not a list, set or
+     *         queue)
+     * @throws MapperException
+     *             On creation failed
+     */
+    public <C extends Collection<X>, O extends Collection<X>, X> O newInstanceCollection(final Class<C> instanciableCollectionClass,
+            final Class<O> outputCollectionClass, final Class<X> valueClass) throws MapperException {
+
+        AssertUtils.isNotNull(instanciableCollectionClass, "The instanciable collection class is null");
+        AssertUtils.isNotNull(outputCollectionClass, "The output collection class is null");
+        AssertUtils.isAssignable(outputCollectionClass, instanciableCollectionClass,
+                "The ouput class is not assignable from instanciable class");
+
+        final O collection;
+
+        if (Queue.class.isAssignableFrom(instanciableCollectionClass)) {
+            if (BlockingQueue.class.isAssignableFrom(instanciableCollectionClass)) {
+                if (PriorityBlockingQueue.class.isAssignableFrom(instanciableCollectionClass)) {
+                    collection = outputCollectionClass.cast(new PriorityBlockingQueue<X>());
+                } else if (LinkedBlockingQueue.class.isAssignableFrom(instanciableCollectionClass)) {
+                    collection = outputCollectionClass.cast(new LinkedBlockingQueue<X>());
+                } else {
+                    throw new MapperException("The instanciable blocking queue class is not supported");
+                }
+            } else if (PriorityQueue.class.isAssignableFrom(instanciableCollectionClass)) {
+                collection = outputCollectionClass.cast(new PriorityQueue<X>());
+            } else {
+                collection = outputCollectionClass.cast(new LinkedList<X>());
+            }
+        } else if (List.class.isAssignableFrom(instanciableCollectionClass)) {
+            if (Vector.class.isAssignableFrom(instanciableCollectionClass)) {
+                collection = outputCollectionClass.cast(new Vector<X>());
+            } else {
+                collection = outputCollectionClass.cast(new ArrayList<X>());
+            }
+        } else if (Set.class.isAssignableFrom(instanciableCollectionClass)) {
+            if (TreeSet.class.isAssignableFrom(instanciableCollectionClass)) {
+                collection = outputCollectionClass.cast(new TreeSet<X>());
+            } else {
+                collection = outputCollectionClass.cast(new HashSet<X>());
+            }
+        } else {
+            throw new MapperException("The instanciable collection class is not supported");
         }
 
-        return null;
+        return collection;
     }
 
     /**
      * Create a new instance of a map.
+     * 
+     * <pre>
+     * Map&lt;String, Integer&gt; map = this.ru.newInstanceMap(Map.class, String.class, Integer.class);
+     * </pre>
      * 
      * @param classMap
      *            The map class (required)
@@ -407,60 +503,78 @@ public class ReflectUtils {
      * @throws MapperException
      *             On creation failed
      */
-    public <K, V> Map<K, V> newInstanceMap(final Class<?> classMap, final Class<K> classKey, final Class<V> classValue)
+    @SuppressWarnings("unchecked")
+    public <M extends Map<K, V>, K, V> M newInstanceMap(final Class<?> classMap, final Class<K> classKey, final Class<V> classValue)
             throws MapperException {
 
-        AssertUtils.isNotNull(classMap, "The map class is null");
-        AssertUtils.isNotNull(classKey, "The map key is null");
-        AssertUtils.isNotNull(classValue, "The value class is null");
+        AssertUtils.isNotNull(classKey, "The map key class is null");
+        AssertUtils.isNotNull(classValue, "The map value class is null");
 
-        if (Map.class.isAssignableFrom(classMap)) {
-            return new HashMap<>();
-        }
-        return null;
+        return newInstanceMap((Class<M>) classMap);
     }
 
     /**
-     * Create a new instance of a map.
+     * Create a new instance of a map (Map&lt;K, Object&gt;).
+     * 
+     * <pre>
+     * Map&lt;String, Object&gt; map = this.ru.newInstanceMap(Map.class, String.class);
+     * </pre>
      * 
      * @param classMap
      *            The map class (required)
-     * @param classValue
-     *            The class of the value (required)
+     * @param keyClass
+     *            The class of the key (required)
+     * @param <K>
+     *            The key type
      * @param <V>
      *            The value type
      * @return The new typed map
      * @throws MapperException
      *             On creation failed
      */
-    public <V> Map<?, V> newInstanceMap(final Class<?> classMap, final Class<V> classValue) throws MapperException {
+    @SuppressWarnings("unchecked")
+    public <M extends Map<K, V>, K, V> M newInstanceMap(final Class<?> classMap, final Class<K> keyClass) throws MapperException {
 
-        AssertUtils.isNotNull(classMap, "The map class is null");
-        AssertUtils.isNotNull(classValue, "The value class is null");
-
-        if (Map.class.isAssignableFrom(classMap)) {
-            return new HashMap<>();
-        }
-        return null;
+        return newInstanceMap(classMap, keyClass, (Class<V>) Object.class);
     }
 
     /**
      * Create a new instance of a map.
      * 
+     * <pre>
+     * Class&lt;TreeMap&lt;String, Integer&gt;&gt; clazz = CastGenerics.getClass(new TreeMap&lt;String, Integer&gt;);
+     * Map&lt;String, Integer&gt; map = this.ru.newInstanceMap(clazz);
+     * </pre>
+     * 
      * @param classMap
      *            The map class (required)
+     * @param <K>
+     *            The key type
+     * @param <V>
+     *            The value type
      * @return The new typed map
      * @throws MapperException
      *             On creation failed
      */
-    public Map<?, ?> newInstanceMap(final Class<?> classMap) throws MapperException {
+    public <M extends Map<K, V>, K, V> M newInstanceMap(final Class<M> classMap) throws MapperException {
 
         AssertUtils.isNotNull(classMap, "The map class is null");
 
+        final Map<K, V> map;
+
         if (Map.class.isAssignableFrom(classMap)) {
-            return new HashMap<>();
+            if (TreeMap.class.isAssignableFrom(classMap)) {
+                map = new TreeMap<>();
+            } else if (Hashtable.class.isAssignableFrom(classMap)) {
+                map = new Hashtable<>();
+            } else {
+                map = new HashMap<>();
+            }
+        } else {
+            map = null;
         }
-        return null;
+
+        return classMap.cast(map);
     }
 
     /**
@@ -481,6 +595,7 @@ public class ReflectUtils {
         AssertUtils.isNotNull(clazz, "The class is null");
         AssertUtils.isNotBlank(name, "The name is null or blank");
         AssertUtils.isNotNull(parameterTypes, "The parameter types array is null");
+        AssertUtils.hasNoNullElements(parameterTypes, "At least one parameter type is null");
 
         Method method;
         try {
@@ -548,7 +663,7 @@ public class ReflectUtils {
 
         capitalizedName = StringUtils.capitalize(field.getName());
 
-        method = this.getMethod(field.getDeclaringClass(), SET_PREFIX + capitalizedName);
+        method = this.getMethod(field.getDeclaringClass(), SET_PREFIX + capitalizedName, field.getType());
 
         return method;
     }

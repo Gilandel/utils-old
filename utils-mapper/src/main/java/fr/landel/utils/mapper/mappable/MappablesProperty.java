@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.mappable;
+package fr.landel.utils.mapper.mappable;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

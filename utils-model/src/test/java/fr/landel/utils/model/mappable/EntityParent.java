@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.landel.utils.mapper.mappable.Mappable;
 import fr.landel.utils.model.AbstractEntity;
-import fr.landel.utils.model.mapper.mappable.Mappable;
 
 /**
  * Entity parent to test mapper.

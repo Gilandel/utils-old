@@ -16,8 +16,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
-import fr.landel.utils.model.mapper.DTOIdentifier;
-import fr.landel.utils.model.mapper.core.AbstractDTOIdentifierLoader;
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.core.AbstractDTOIdentifierLoader;
 
 /**
  * DTO identifiers loader for tests.

@@ -13,6 +13,7 @@
 package fr.landel.utils.commons.asserts;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,7 +32,7 @@ import fr.landel.utils.commons.CollectionUtils2;
  * @author Gilles
  *
  */
-public abstract class AbstractIterableAssert extends AbstractNumberAssert {
+public abstract class AbstractIterableAssert extends AbstractDateAssert {
 
     /**
      * Assert that an array has elements; that is, it must not be {@code null}
@@ -241,8 +242,7 @@ public abstract class AbstractIterableAssert extends AbstractNumberAssert {
     }
 
     /**
-     * Assert that an array has no null elements. Note: Does not complain if the
-     * array is empty!
+     * Assert that an array has no null elements.
      * 
      * <pre>
      * AssertUtils.hasNoNullElements(array);
@@ -258,8 +258,7 @@ public abstract class AbstractIterableAssert extends AbstractNumberAssert {
     }
 
     /**
-     * Assert that an array has no null elements. Note: Does not complain if the
-     * array is empty!
+     * Assert that an array has no null elements.
      * 
      * <pre>
      * AssertUtils.hasNoNullElements(array, &quot;The array must have non-null elements&quot;);
@@ -281,8 +280,7 @@ public abstract class AbstractIterableAssert extends AbstractNumberAssert {
     }
 
     /**
-     * Assert that an array has no null elements. Note: Does not complain if the
-     * array is empty!
+     * Assert that an array has no null elements.
      * 
      * <pre>
      * AssertUtils.hasNoNullElements(array, exceptionToThrowOnError);
@@ -298,14 +296,14 @@ public abstract class AbstractIterableAssert extends AbstractNumberAssert {
      *             if object array contains a {@code null} element. The standard
      *             exception is appended as suppressed.
      */
-    public static <E extends Throwable> void hasNoNullElements(final Object[] array, final E exception) throws E {
+    public static <E extends Throwable> void hasNoNullElements(Object[] array, final E exception) throws E {
         hasNoNullElements(array, exception, null);
     }
 
-    private static <E extends Throwable> void hasNoNullElements(final Object[] array, final E exception, final String message,
+    private static <E extends Throwable> void hasNoNullElements(Object[] array, final E exception, final String message,
             final Object... arguments) throws E {
 
-        isNotEmpty(array);
+        isNotNull(array);
 
         for (Object element : array) {
             if (element == null) {
@@ -314,49 +312,87 @@ public abstract class AbstractIterableAssert extends AbstractNumberAssert {
         }
     }
 
-    public static <T> void contains(final T[] array, final T object) {
-        contains(array, object, null);
+    public static <T> void contains(T[] array, final T object) {
+        contains(array, object, (Comparator<T>) null);
     }
 
-    public static <T> void contains(final T[] array, final T object, final String message, final Object... arguments) {
-        contains(array, object, null, message, arguments);
+    public static <T> void contains(T[] array, final T object, final String message, final Object... arguments) {
+        contains(array, object, (Comparator<T>) null, null, message, arguments);
     }
 
-    public static <T, E extends Throwable> void contains(final T[] array, final T object, final E exception) throws E {
-        contains(array, object, exception, null);
+    public static <T, E extends Throwable> void contains(T[] array, final T object, final E exception) throws E {
+        contains(array, object, (Comparator<T>) null, exception, null);
     }
 
-    private static <T, E extends Throwable> void contains(final T[] array, final T object, final E exception, final String message,
-            final Object... arguments) throws E {
+    public static <T> void contains(T[] array, final T object, final Comparator<T> comparator) {
+        contains(array, object, comparator, null);
+    }
+
+    public static <T> void contains(T[] array, final T object, final Comparator<T> comparator, final String message,
+            final Object... arguments) {
+        contains(array, object, comparator, null, message, arguments);
+    }
+
+    public static <T, E extends Throwable> void contains(T[] array, final T object, final Comparator<T> comparator, final E exception)
+            throws E {
+        contains(array, object, comparator, exception, null);
+    }
+
+    private static <T, E extends Throwable> void contains(T[] array, final T object, final Comparator<T> comparator, final E exception,
+            final String message, final Object... arguments) throws E {
 
         isNotEmpty(array);
         isNotNull(object);
 
-        if (Arrays.binarySearch(array, object) < 0) {
+        T[] inputArray = Arrays.copyOf(array, array.length);
+
+        Arrays.sort(inputArray, comparator);
+
+        if (Arrays.binarySearch(inputArray, object, comparator) < 0) {
             manageExceptions("The array must contain the object", exception, message, new Object[] {array, object}, arguments);
         }
     }
 
-    public static <T> void contains(final T[] array, final T[] objects) {
-        contains(array, objects, null);
+    public static <T> void contains(T[] array, T[] objects) {
+        contains(array, objects, (Comparator<T>) null, null);
     }
 
-    public static <T> void contains(final T[] array, final T[] objects, final String message, final Object... arguments) {
-        contains(array, objects, null, message, arguments);
+    public static <T> void contains(T[] array, T[] objects, final String message, final Object... arguments) {
+        contains(array, objects, (Comparator<T>) null, null, message, arguments);
     }
 
-    public static <T, E extends Throwable> void contains(final T[] array, final T[] objects, final E exception) throws E {
-        contains(array, objects, exception, null);
+    public static <T, E extends Throwable> void contains(T[] array, T[] objects, final E exception) throws E {
+        contains(array, objects, (Comparator<T>) null, exception, null);
     }
 
-    private static <T, E extends Throwable> void contains(final T[] array, final T[] objects, final E exception, final String message,
-            final Object... arguments) throws E {
+    public static <T> void contains(T[] array, T[] objects, final Comparator<T> comparator) {
+        contains(array, objects, comparator, null);
+    }
+
+    public static <T> void contains(T[] array, T[] objects, final Comparator<T> comparator, final String message,
+            final Object... arguments) {
+        contains(array, objects, comparator, null, message, arguments);
+    }
+
+    public static <T, E extends Throwable> void contains(T[] array, T[] objects, final Comparator<T> comparator, final E exception)
+            throws E {
+        contains(array, objects, comparator, exception, null);
+    }
+
+    private static <T, E extends Throwable> void contains(T[] array, T[] objects, final Comparator<T> comparator, final E exception,
+            final String message, final Object... arguments) throws E {
 
         isNotEmpty(array);
         isNotEmpty(objects);
 
-        for (T object : objects) {
-            if (Arrays.binarySearch(array, object) < 0) {
+        T[] inputArray = Arrays.copyOf(array, array.length);
+        T[] inputObjects = Arrays.copyOf(objects, objects.length);
+
+        Arrays.sort(inputArray, comparator);
+        Arrays.sort(inputObjects, comparator);
+
+        for (T object : inputObjects) {
+            if (Arrays.binarySearch(inputArray, object, comparator) < 0) {
                 manageExceptions("The array must contain all objects", exception, message, new Object[] {array, objects}, arguments);
             }
         }
@@ -519,49 +555,87 @@ public abstract class AbstractIterableAssert extends AbstractNumberAssert {
         }
     }
 
-    public static <T> void doesNotContain(final T[] array, final T object) {
-        doesNotContain(array, object, null);
+    public static <T> void doesNotContain(T[] array, final T object) {
+        doesNotContain(array, object, (Comparator<T>) null, null);
     }
 
-    public static <T> void doesNotContain(final T[] array, final T object, final String message, final Object... arguments) {
-        doesNotContain(array, object, null, message, arguments);
+    public static <T> void doesNotContain(T[] array, final T object, final String message, final Object... arguments) {
+        doesNotContain(array, object, (Comparator<T>) null, null, message, arguments);
     }
 
-    public static <T, E extends Throwable> void doesNotContain(final T[] array, final T object, final E exception) throws E {
-        doesNotContain(array, object, exception, null);
+    public static <T, E extends Throwable> void doesNotContain(T[] array, final T object, final E exception) throws E {
+        doesNotContain(array, object, (Comparator<T>) null, exception, null);
     }
 
-    private static <T, E extends Throwable> void doesNotContain(final T[] array, final T object, final E exception, final String message,
-            final Object... arguments) throws E {
+    public static <T> void doesNotContain(T[] array, final T object, final Comparator<T> comparator) {
+        doesNotContain(array, object, comparator, null);
+    }
+
+    public static <T> void doesNotContain(T[] array, final T object, final Comparator<T> comparator, final String message,
+            final Object... arguments) {
+        doesNotContain(array, object, comparator, null, message, arguments);
+    }
+
+    public static <T, E extends Throwable> void doesNotContain(T[] array, final T object, final Comparator<T> comparator, final E exception)
+            throws E {
+        doesNotContain(array, object, comparator, exception, null);
+    }
+
+    private static <T, E extends Throwable> void doesNotContain(T[] array, final T object, final Comparator<T> comparator,
+            final E exception, final String message, final Object... arguments) throws E {
 
         isNotEmpty(array);
         isNotNull(object);
 
-        if (Arrays.binarySearch(array, object) > -1) {
+        T[] inputArray = Arrays.copyOf(array, array.length);
+
+        Arrays.sort(inputArray, comparator);
+
+        if (Arrays.binarySearch(inputArray, object, comparator) > -1) {
             manageExceptions("The array contains the object", exception, message, new Object[] {array, object}, arguments);
         }
     }
 
-    public static <T> void doesNotContain(final T[] array, final T[] objects) {
-        doesNotContain(array, objects, null);
+    public static <T> void doesNotContain(T[] array, T[] objects) {
+        doesNotContain(array, objects, (Comparator<T>) null, null);
     }
 
-    public static <T> void doesNotContain(final T[] array, final T[] objects, final String message, final Object... arguments) {
-        doesNotContain(array, objects, null, message, arguments);
+    public static <T> void doesNotContain(T[] array, T[] objects, final String message, final Object... arguments) {
+        doesNotContain(array, objects, (Comparator<T>) null, null, message, arguments);
     }
 
-    public static <T, E extends Throwable> void doesNotContain(final T[] array, final T[] objects, final E exception) throws E {
-        doesNotContain(array, objects, exception, null);
+    public static <T, E extends Throwable> void doesNotContain(T[] array, T[] objects, final E exception) throws E {
+        doesNotContain(array, objects, (Comparator<T>) null, exception, null);
     }
 
-    private static <T, E extends Throwable> void doesNotContain(final T[] array, final T[] objects, final E exception, final String message,
-            final Object... arguments) throws E {
+    public static <T> void doesNotContain(T[] array, T[] objects, final Comparator<T> comparator) {
+        doesNotContain(array, objects, comparator, null);
+    }
+
+    public static <T> void doesNotContain(T[] array, T[] objects, final Comparator<T> comparator, final String message,
+            final Object... arguments) {
+        doesNotContain(array, objects, comparator, null, message, arguments);
+    }
+
+    public static <T, E extends Throwable> void doesNotContain(T[] array, T[] objects, final Comparator<T> comparator, final E exception)
+            throws E {
+        doesNotContain(array, objects, comparator, exception, null);
+    }
+
+    private static <T, E extends Throwable> void doesNotContain(T[] array, T[] objects, final Comparator<T> comparator, final E exception,
+            final String message, final Object... arguments) throws E {
 
         isNotEmpty(array);
         isNotEmpty(objects);
 
-        for (T object : objects) {
-            if (Arrays.binarySearch(array, object) > -1) {
+        T[] inputArray = Arrays.copyOf(array, array.length);
+        T[] inputObjects = Arrays.copyOf(objects, objects.length);
+
+        Arrays.sort(inputArray, comparator);
+        Arrays.sort(inputObjects, comparator);
+
+        for (T object : inputObjects) {
+            if (Arrays.binarySearch(inputArray, object, comparator) > -1) {
                 manageExceptions("The array must not contain any object", exception, message, new Object[] {array, objects}, arguments);
             }
         }

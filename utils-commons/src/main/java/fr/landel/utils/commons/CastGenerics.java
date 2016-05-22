@@ -86,7 +86,7 @@ public final class CastGenerics {
      * @param <T>
      *            The type of the output
      */
-    public static <T> T getObject(final Object o, Class<T> clazz) {
+    public static <T> T cast(final Object o, Class<T> clazz) {
         if (o != null && clazz.isAssignableFrom(o.getClass())) {
             return clazz.cast(o);
         }

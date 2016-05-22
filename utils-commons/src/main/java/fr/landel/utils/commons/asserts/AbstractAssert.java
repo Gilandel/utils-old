@@ -580,15 +580,15 @@ public abstract class AbstractAssert {
      * Assert.isAssignable(Number.class, myClass);
      * </pre>
      * 
+     * @param type
+     *            the type to check
      * @param superType
      *            the super type to check
-     * @param subType
-     *            the sub type to check
      * @throws IllegalArgumentException
      *             if the classes are not assignable
      */
-    public static void isAssignable(final Class<?> superType, final Class<?> subType) {
-        isAssignable(superType, subType, (String) null);
+    public static void isAssignable(final Class<?> type, final Class<?> superType) {
+        isAssignable(type, superType, (String) null);
     }
 
     /**
@@ -598,10 +598,10 @@ public abstract class AbstractAssert {
      * Assert.isAssignable(Number.class, myClass);
      * </pre>
      * 
+     * @param type
+     *            the type to check against
      * @param superType
-     *            the super type to check against
-     * @param subType
-     *            the sub type to check
+     *            the super type to check
      * @param message
      *            the exception message, use the default assertion if null (%p
      *            or %1$p can be used to display parameter value, see
@@ -612,8 +612,8 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if the classes are not assignable
      */
-    public static void isAssignable(final Class<?> superType, final Class<?> subType, final String message, final Object... arguments) {
-        isAssignable(superType, subType, null, message, arguments);
+    public static void isAssignable(final Class<?> type, final Class<?> superType, final String message, final Object... arguments) {
+        isAssignable(type, superType, null, message, arguments);
     }
 
     /**
@@ -623,10 +623,10 @@ public abstract class AbstractAssert {
      * Assert.isAssignable(Number.class, myClass), exceptionToThrowOnError);
      * </pre>
      * 
+     * @param type
+     *            the type to check against
      * @param superType
-     *            the super type to check against
-     * @param subType
-     *            the sub type to check
+     *            the super type to check
      * @param exception
      *            the exception to throw on error
      * @param <E>
@@ -635,16 +635,15 @@ public abstract class AbstractAssert {
      *             if the classes are not assignable. The standard exception is
      *             appended as suppressed.
      */
-    public static <E extends Throwable> void isAssignable(final Class<?> superType, final Class<?> subType, final E exception) throws E {
-        isAssignable(superType, subType, exception, null);
+    public static <E extends Throwable> void isAssignable(final Class<?> type, final Class<?> superType, final E exception) throws E {
+        isAssignable(superType, superType, exception, null);
     }
 
-    private static <E extends Throwable> void isAssignable(final Class<?> superType, final Class<?> subType, final E exception,
+    private static <E extends Throwable> void isAssignable(final Class<?> type, final Class<?> superType, final E exception,
             final String message, final Object... arguments) throws E {
-        isNotNull(superType, "Type to check against must not be null");
-        if (subType == null || !superType.isAssignableFrom(subType)) {
-            manageExceptions(subType + " is not assignable to " + superType, exception, message, new Object[] {superType, subType},
-                    arguments);
+        isNotNull(type, "Type to check against must not be null");
+        if (superType == null || !type.isAssignableFrom(superType)) {
+            manageExceptions(superType + " is not assignable to " + type, exception, message, new Object[] {type, superType}, arguments);
         }
     }
 

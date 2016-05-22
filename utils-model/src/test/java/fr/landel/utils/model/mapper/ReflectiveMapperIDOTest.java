@@ -25,9 +25,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.MapperException;
 import fr.landel.utils.model.AbstractDTO;
 import fr.landel.utils.model.AbstractEntity;
 import fr.landel.utils.model.AbstractModelTest;
@@ -38,9 +41,6 @@ import fr.landel.utils.model.mappable.DTOParent;
 import fr.landel.utils.model.mappable.EntityChild;
 import fr.landel.utils.model.mappable.EntityParent;
 import fr.landel.utils.model.mappable.EnumLocale;
-import fr.landel.utils.model.mapper.DTOIdentifier;
-import fr.landel.utils.model.mapper.MapperException;
-import fr.landel.utils.model.mapper.ReflectiveMapperIDO;
 
 /**
  * Reflective mapper tests.
@@ -49,6 +49,7 @@ import fr.landel.utils.model.mapper.ReflectiveMapperIDO;
  * @author Gilles
  *
  */
+@Ignore
 public class ReflectiveMapperIDOTest extends AbstractModelTest {
 
     /**

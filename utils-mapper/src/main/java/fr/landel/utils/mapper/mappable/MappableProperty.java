@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.model.mapper.mappable;
+package fr.landel.utils.mapper.mappable;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -19,8 +19,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import fr.landel.utils.model.mapper.DTOIdentifier;
-import fr.landel.utils.model.mapper.EnumMode;
+import fr.landel.utils.mapper.DTOIdentifier;
+import fr.landel.utils.mapper.EnumMode;
 
 /**
  * Annotation to map properties from a DTO to an entity (and vis versa).
