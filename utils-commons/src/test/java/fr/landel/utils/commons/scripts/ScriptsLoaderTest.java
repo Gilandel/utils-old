@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.commons.io.FileUtils;
@@ -42,6 +44,8 @@ import fr.landel.utils.commons.scripts.PatientSearch.Status;
  *
  */
 public class ScriptsLoaderTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptsLoaderTest.class);
 
     private static final String PARAM_STATUS = "status";
     private static final String PARAM_ATTENDANCE = "attendance";
@@ -73,8 +77,12 @@ public class ScriptsLoaderTest {
      */
     @Before
     public void init() {
+        LOGGER.info("Initializing...");
+
         this.queriesLoader = new ScriptsLoader();
         this.queriesLoader.init(EnumScripts.values());
+
+        LOGGER.info("Initialized");
     }
 
     /**
@@ -82,6 +90,8 @@ public class ScriptsLoaderTest {
      */
     @Test
     public void test() {
+        LOGGER.info("test");
+
         String key = "app.id";
         String replacement = "28";
         StringBuilder builder = this.queriesLoader.get(EnumScripts.TEST, key, replacement);
@@ -97,6 +107,8 @@ public class ScriptsLoaderTest {
      */
     @Test
     public void patientsSearchTest() {
+        LOGGER.info("patientsSearchTest");
+
         final Map<String, String> replacements = new HashMap<>();
 
         PatientSearch patientSearch = new PatientSearch();
