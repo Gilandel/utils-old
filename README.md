@@ -1,5 +1,4 @@
 # TODO
-fichiers LOKI (xls) a supprimer
 ecrire d'autres TU
 ecrire mapper + include converter or supplier/consumer
 
