@@ -18,7 +18,6 @@ import java.util.Map;
 import javax.persistence.Transient;
 
 import fr.landel.utils.commons.DateUtils;
-
 import fr.landel.utils.model.AbstractEntity;
 
 /**
@@ -292,20 +291,22 @@ public class Project extends AbstractEntity<Project, Integer> {
 
     @Override
     protected void overToString(Map<String, Object> map) {
+        map.put("id", this.id);
+        map.put("label", this.label);
     }
 
     @Override
     protected int overCompareTo(Project obj) {
-        return 0;
+        return this.id.compareTo(obj.id);
     }
 
     @Override
     protected boolean overEquals(Project obj) {
-        return false;
+        return this.id.equals(obj.id);
     }
 
     @Override
     protected int overHashCode() {
-        return 0;
+        return this.id.hashCode();
     }
 }

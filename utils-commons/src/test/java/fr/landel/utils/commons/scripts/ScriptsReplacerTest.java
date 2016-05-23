@@ -134,11 +134,19 @@ public class ScriptsReplacerTest {
 
             i++;
         }
+    }
 
-        replacements.clear();
+    /**
+     * Test replacer 2
+     */
+    @Test
+    public void replaceTest2() {
+        StringBuilder sb;
+        final Map<String, String> replacements = new HashMap<>();
+        final ScriptsReplacer replacer = new ScriptsReplacer();
+        final Map<String, String> inputs = new LinkedHashMap<>();
+
         replacements.put("var2", "dat'a");
-
-        inputs.clear();
         inputs.put("{var.iable}", "value");
 
         try {
@@ -152,11 +160,19 @@ public class ScriptsReplacerTest {
         } catch (IllegalArgumentException e) {
             LOGGER.info("Expected exception", e);
         }
+    }
 
-        replacements.clear();
+    /**
+     * Test replacer 3
+     */
+    @Test
+    public void replaceTest3() {
+        StringBuilder sb;
+        final Map<String, String> replacements = new HashMap<>();
+        final ScriptsReplacer replacer = new ScriptsReplacer();
+        final Map<String, String> inputs = new LinkedHashMap<>();
+
         replacements.put("var2", "'dat'a");
-
-        inputs.clear();
         inputs.put("{var.iable}", "value");
 
         try {

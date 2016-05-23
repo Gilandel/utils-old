@@ -29,15 +29,6 @@ import fr.landel.utils.mapper.core.AbstractDTOIdentifierLoader;
 @Component
 public class MyDTOIdentifierLoader extends AbstractDTOIdentifierLoader implements MyDTOIdentifier {
 
-    /**
-     * 
-     * Constructor
-     *
-     */
-    public MyDTOIdentifierLoader() {
-        super();
-    }
-
     @Override
     @PostConstruct
     public void load() {

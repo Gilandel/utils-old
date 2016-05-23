@@ -29,16 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 public class ResourceBundleUTF8ControlTest extends AbstractTest {
 
     @Value("${utf8.prop1}")
-    String prop1;
-
-    /**
-     * 
-     * Constructor
-     *
-     */
-    public ResourceBundleUTF8ControlTest() {
-        super();
-    }
+    private String prop1;
 
     /**
      * Test method for

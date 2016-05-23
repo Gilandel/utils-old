@@ -544,8 +544,11 @@ public class ReflectUtilsTest {
      */
     @Test
     public void testGetClassesFromObject() {
-        AssertUtils.contains(this.ru.getClassesFromObject(ReflectDTO.class), new Class<?>[] {Observable.class, Collection.class},
-                COMPARATOR_CLASS);
+        Class<?>[] classes = this.ru.getClassesFromObject(ReflectDTO.class);
+
+        assertNotNull(classes);
+
+        AssertUtils.contains(classes, new Class<?>[] {Observable.class, Collection.class}, COMPARATOR_CLASS);
     }
 
     /**
@@ -894,6 +897,7 @@ public class ReflectUtilsTest {
 
         @Override
         public void clear() {
+            return;
         }
 
         @Override
@@ -908,6 +912,7 @@ public class ReflectUtilsTest {
 
         @Override
         public void add(int index, String element) {
+            return;
         }
 
         @Override

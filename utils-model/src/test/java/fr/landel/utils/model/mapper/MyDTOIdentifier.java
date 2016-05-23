@@ -14,6 +14,8 @@ package fr.landel.utils.model.mapper;
 
 import java.beans.Transient;
 
+import fr.landel.utils.mapper.MapperException;
+
 /**
  * DTO identifiers for tests.
  *
@@ -80,8 +82,12 @@ public interface MyDTOIdentifier {
 
     /**
      * Load the identifiers or do nothing
+     * 
+     * @throws MapperException
+     *             If not implemented
      */
     @Transient
-    default void load() {
+    default void load() throws MapperException {
+        throw new MapperException("Not implemented");
     }
 }
