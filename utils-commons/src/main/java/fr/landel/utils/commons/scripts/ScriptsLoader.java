@@ -268,11 +268,17 @@ public class ScriptsLoader {
         if (this.scripts.containsKey(path)) {
             final StringBuilder builder = new StringBuilder(this.scripts.get(path));
 
+            LOGGER.info("remove comments");
+
             if (this.removeComments) {
                 this.removeComments(builder);
             }
 
+            LOGGER.info("replacing");
+
             this.replacer.replace(builder, replacements, checkVariables);
+
+            LOGGER.info("removeBlankLines");
 
             if (this.removeBlankLines) {
                 this.removeBlankLines(builder);

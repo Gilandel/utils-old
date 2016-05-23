@@ -77,12 +77,8 @@ public class ScriptsLoaderTest {
      */
     @Before
     public void init() {
-        LOGGER.info("Initializing...");
-
         this.queriesLoader = new ScriptsLoader();
         this.queriesLoader.init(EnumScripts.values());
-
-        LOGGER.info("Initialized");
     }
 
     /**
@@ -90,8 +86,6 @@ public class ScriptsLoaderTest {
      */
     @Test
     public void test() {
-        LOGGER.info("test");
-
         String key = "app.id";
         String replacement = "28";
         StringBuilder builder = this.queriesLoader.get(EnumScripts.TEST, key, replacement);
@@ -107,8 +101,6 @@ public class ScriptsLoaderTest {
      */
     @Test
     public void patientsSearchTest() {
-        LOGGER.info("patientsSearchTest");
-
         final Map<String, String> replacements = new HashMap<>();
 
         PatientSearch patientSearch = new PatientSearch();

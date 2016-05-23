@@ -20,6 +20,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.commons.asserts.AssertUtils;
@@ -33,6 +35,8 @@ import fr.landel.utils.commons.asserts.AssertUtils;
  *
  */
 public class ScriptsReplacer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptsReplacer.class);
 
     /**
      * The open expression tag (use for expressions and variables)
@@ -197,6 +201,12 @@ public class ScriptsReplacer {
         this.operatorNot = operatorNot;
     }
 
+    private void info(final String msg) {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(msg);
+        }
+    }
+
     /**
      * Replace all keys by their values in the input string builder.<br>
      * <br>
@@ -279,7 +289,7 @@ public class ScriptsReplacer {
         // first check if the input is valid
         this.checkInput(sb);
 
-        // check if replacements ar valid
+        // check if replacements are valid
         this.checkReplacements(replacements, checkVariables);
 
         // replace all keys with their variables
@@ -295,6 +305,8 @@ public class ScriptsReplacer {
     }
 
     private void checkInput(final StringBuilder sb) throws IllegalArgumentException {
+        info("ScriptsReplacer.checkInput");
+
         AssertUtils.isNotNull(sb, "Input cannot be null");
         AssertUtils.isGT(sb.length(), 0, "Input cannot be empty");
 
@@ -326,6 +338,8 @@ public class ScriptsReplacer {
     }
 
     private void checkReplacements(final Map<String, String> replacements, final boolean checkVariables) throws IllegalArgumentException {
+        info("ScriptsReplacer.checkReplacements");
+
         for (Entry<String, String> entry : replacements.entrySet()) {
             AssertUtils.isNotNull(entry.getKey(), "Replacement key cannot be null");
             AssertUtils.isNotNull(entry.getValue(), "Replacement value cannot be null");
@@ -355,6 +369,8 @@ public class ScriptsReplacer {
     }
 
     private void replaceSimples(final StringBuilder sb, final String key, final String value) {
+        info("ScriptsReplacer.replaceSimples");
+
         String simple;
 
         // get first
@@ -377,6 +393,8 @@ public class ScriptsReplacer {
     }
 
     private void clearUnknownSimples(final StringBuilder sb) {
+        info("ScriptsReplacer.clearUnknownSimples");
+
         String simple;
         int indexValid;
         int indexDefault;
@@ -404,6 +422,8 @@ public class ScriptsReplacer {
     }
 
     private void replaceConditions(final StringBuilder sb, final Map<String, String> replacements) {
+        info("ScriptsReplacer.replaceConditions");
+
         Pair<Integer, Integer> bounds;
         String condition;
         int indexValid;
