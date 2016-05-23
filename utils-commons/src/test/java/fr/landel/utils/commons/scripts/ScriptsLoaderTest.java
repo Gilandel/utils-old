@@ -122,7 +122,12 @@ public class ScriptsLoaderTest {
 
         // replacements.put("count", Boolean.TRUE.toString());
 
+        LOGGER.info("Call queriesLoader for patientSearch");
+
         StringBuilder builder = this.queriesLoader.get(EnumScripts.PATIENTS_SEARCH, replacements);
+
+        LOGGER.info("QueriesLoader for patientSearch done");
+
         assertNotNull(builder);
         try {
             StringBuilder expected = FileUtils.getFileContent(PATH + "patientsSearch.expected.sql", StandardCharsets.UTF_8);
