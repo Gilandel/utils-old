@@ -79,7 +79,7 @@ public class AssertXLSTest {
         final File source = new File(SRC_DIR);
 
         File expectedFile = new File(source, "file1.xls");
-        File targetFile = new File(source, "file4.xls");
+        File targetFile = new File(source, "file2.xls"); // Selected cell
 
         AssertXLS.assertEquals(expectedFile, targetFile);
     }
@@ -94,15 +94,15 @@ public class AssertXLSTest {
     public void testAssertNotEquals2() throws IOException {
         final File source = new File(SRC_DIR);
 
-        File expectedFile = new File(source, "file2.xls");
-        File targetFile = new File(source, "file3.xls");
+        File expectedFile = new File(source, "file1.xls"); // cell color: red
+        File targetFile = new File(source, "file3.xls"); // cell color: violet
 
         try {
             AssertXLS.assertEquals(expectedFile, targetFile);
 
             fail("The files must have differences");
         } catch (IllegalArgumentException e) {
-            assertEquals("[Assertion failed] Style fill foreground color [17, 0]", e.getMessage());
+            assertEquals("[Assertion failed] Style fill foreground color [3, 4]", e.getMessage());
         }
     }
 }

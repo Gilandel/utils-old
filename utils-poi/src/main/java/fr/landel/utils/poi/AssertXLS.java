@@ -250,7 +250,8 @@ public final class AssertXLS {
             isEqual(styleExpected.getFontIndex(), style.getFontIndex(), "Style font index" + cellPosition);
             isEqual(styleExpected.getHidden(), style.getHidden(), "Style hidden" + cellPosition);
             isEqual(styleExpected.getIndention(), style.getIndention(), "Style indentation" + cellPosition);
-            isEqual(styleExpected.getIndex(), style.getIndex(), "Style index" + cellPosition);
+            // isEqual(styleExpected.getIndex(), style.getIndex(), "Style index"
+            // + cellPosition);
             isEqual(styleExpected.getLocked(), style.getLocked(), "Style locked" + cellPosition);
             isEqual(styleExpected.getRotation(), style.getRotation(), "Style rotation" + cellPosition);
             isEqual(styleExpected.getWrapText(), style.getWrapText(), "Style wrap text" + cellPosition);
