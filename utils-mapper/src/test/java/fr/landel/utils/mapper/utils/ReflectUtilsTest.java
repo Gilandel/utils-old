@@ -26,10 +26,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.PriorityQueue;
@@ -43,6 +41,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -602,7 +601,7 @@ public class ReflectUtilsTest {
         assertNotNull(obs);
         AssertUtils.isAssignable(ArrayList.class, list.getClass());
 
-        Collection<String> myCollection = new MyCollection();
+        Collection<?> myCollection = new UnboundedFifoBuffer(1);
 
         AssertUtils.exception(() -> {
             this.ru.newInstanceCollection(CastGenerics.getClass(myCollection));
@@ -828,189 +827,11 @@ public class ReflectUtilsTest {
         } , IllegalArgumentException.class);
     }
 
-    private static class MyList implements List<String> {
+    private static class MyList extends ArrayList<String> {
 
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        @Override
-        public Iterator<String> iterator() {
-            return null;
-        }
-
-        @Override
-        public Object[] toArray() {
-            return null;
-        }
-
-        @Override
-        public <T> T[] toArray(T[] a) {
-            return null;
-        }
-
-        @Override
-        public boolean add(String e) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends String> c) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends String> c) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-            return;
-        }
-
-        @Override
-        public String get(int index) {
-            return null;
-        }
-
-        @Override
-        public String set(int index, String element) {
-            return null;
-        }
-
-        @Override
-        public void add(int index, String element) {
-            return;
-        }
-
-        @Override
-        public String remove(int index) {
-            return null;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public ListIterator<String> listIterator() {
-            return null;
-        }
-
-        @Override
-        public ListIterator<String> listIterator(int index) {
-            return null;
-        }
-
-        @Override
-        public List<String> subList(int fromIndex, int toIndex) {
-            return null;
-        }
-    }
-
-    private static class MyCollection implements Collection<String> {
-
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        @Override
-        public Iterator<String> iterator() {
-            return null;
-        }
-
-        @Override
-        public Object[] toArray() {
-            return null;
-        }
-
-        @Override
-        public <T> T[] toArray(T[] a) {
-            return null;
-        }
-
-        @Override
-        public boolean add(String e) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends String> c) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-        }
-
+        /**
+         * serialVersionUID
+         */
+        private static final long serialVersionUID = -2923027114545209843L;
     }
 }
