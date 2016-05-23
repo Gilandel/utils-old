@@ -38,15 +38,6 @@ public class HTCLoaderTest extends AbstractTest {
     private HTCLoader htcLoader;
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public HTCLoaderTest() {
-        super();
-    }
-
-    /**
      * Test method for {@link fr.landel.utils.web.HTCLoader#getHTCContent()}.
      */
     @Test
