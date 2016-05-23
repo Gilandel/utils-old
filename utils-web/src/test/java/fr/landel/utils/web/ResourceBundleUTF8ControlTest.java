@@ -49,7 +49,7 @@ public class ResourceBundleUTF8ControlTest extends AbstractTest {
     public void testNewBundleStringLocaleStringClassLoaderBoolean() {
         ResourceBundle bundle = ResourceBundle.getBundle("test-utf8", new ResourceBundleUTF8Control());
 
-        assertEquals("text accentu\u00e9", bundle.getString("prop1"));
+        assertEquals("text accentu\u00e9", bundle.getString("utf8.prop1"));
     }
 
     /**
