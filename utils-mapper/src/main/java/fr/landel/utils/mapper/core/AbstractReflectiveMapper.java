@@ -312,24 +312,22 @@ public abstract class AbstractReflectiveMapper {
             final EnumMode mode, final FunctionThrowable<Object, Object, E> postAction) throws MapperException {
 
         final EnumMode mapMode = this.canMapField(fields, identifier, deep, mode);
-        if (mapMode != null) {
-            if (this.reflectionUtil.isGettable(fields.getKey(), sourceObject)) {
-                final Object value;
-                final int deepFinal;
-                if (deep != DTOIdentifier.MAX_DEEP) {
-                    deepFinal = deep - 1;
-                } else {
-                    deepFinal = DTOIdentifier.MAX_DEEP;
-                }
+        if (mapMode != null && this.reflectionUtil.isGettable(fields.getKey(), sourceObject)) {
+            final Object value;
+            final int deepFinal;
+            if (deep != DTOIdentifier.MAX_DEEP) {
+                deepFinal = deep - 1;
+            } else {
+                deepFinal = DTOIdentifier.MAX_DEEP;
+            }
 
-                final Object targetObject = this.getTargetInstance(targetInstance, targetExists);
+            final Object targetObject = this.getTargetInstance(targetInstance, targetExists);
 
-                value = this.getValue(fields.getValue(), fields.getKey(), sourceObject, identifier, targetObject, deepFinal, mapMode,
-                        postAction);
+            value = this.getValue(fields.getValue(), fields.getKey(), sourceObject, identifier, targetObject, deepFinal, mapMode,
+                    postAction);
 
-                if (this.reflectionUtil.isSettable(fields.getKey(), sourceObject)) {
-                    this.reflectionUtil.invokeSetter(fields.getValue(), targetInstance, value);
-                }
+            if (this.reflectionUtil.isSettable(fields.getKey(), sourceObject)) {
+                this.reflectionUtil.invokeSetter(fields.getValue(), targetInstance, value);
             }
         }
     }

@@ -25,13 +25,6 @@ import org.hibernate.dialect.HSQLDialect;
  */
 public class ImprovedHSQLDialect extends HSQLDialect {
 
-    /**
-     * Constructor
-     */
-    public ImprovedHSQLDialect() {
-        super();
-    }
-
     @Override
     public String getDropSequenceString(String sequenceName) {
         return super.getDropSequenceString("if exists " + sequenceName);

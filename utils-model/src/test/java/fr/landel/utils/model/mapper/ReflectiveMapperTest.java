@@ -48,15 +48,6 @@ public class ReflectiveMapperTest extends AbstractModelTest {
     private DTOIdentifierManager dtoIdentifierManager;
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public ReflectiveMapperTest() {
-        super();
-    }
-
-    /**
      * Check a simple mapping
      * 
      * @throws MapperException

@@ -32,14 +32,6 @@ public class ImprovedNamingStrategy implements PhysicalNamingStrategy {
     private static final Pattern CONVERTER_PATTERN = Pattern.compile("([a-z])([A-Z])");
     private static final String CONVERTER_REPLACEMENT = "$1_$2";
 
-    /**
-     * 
-     * Constructor
-     *
-     */
-    public ImprovedNamingStrategy() {
-    }
-
     @Override
     public Identifier toPhysicalCatalogName(Identifier identifier, JdbcEnvironment jdbcEnv) {
         return this.convert(identifier);

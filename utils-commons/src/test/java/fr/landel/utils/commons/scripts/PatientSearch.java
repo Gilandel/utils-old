@@ -37,14 +37,6 @@ public class PatientSearch {
     private Long doctorId;
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public PatientSearch() {
-    }
-
-    /**
      * @return the status
      */
     public Status getStatus() {

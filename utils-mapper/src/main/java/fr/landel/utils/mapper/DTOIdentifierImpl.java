@@ -19,8 +19,6 @@ import java.util.Set;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
-import fr.landel.utils.mapper.core.DTOIdentifierManager;
-
 /**
  * Abstract DTO identifier.
  *
@@ -61,21 +59,6 @@ public class DTOIdentifierImpl implements DTOIdentifier {
         final Set<DTOIdentifier> modifiableAllIdentifiers = new HashSet<>();
         this.getIdentifiers(modifiableAllIdentifiers, this);
         this.allIdentifiers = Collections.unmodifiableSet(modifiableAllIdentifiers);
-    }
-
-    /**
-     * 
-     * Constructor (max deep)
-     *
-     * @param manager
-     *            the DTO identifier manager
-     * @param name
-     *            The name of the identifier
-     * @param identifiers
-     *            The included identifiers
-     */
-    public DTOIdentifierImpl(final DTOIdentifierManager manager, final String name, final DTOIdentifier... identifiers) {
-        this(name, -1, identifiers);
     }
 
     private void getIdentifiers(final Set<DTOIdentifier> listedIdentifiers, final DTOIdentifier identifier) {

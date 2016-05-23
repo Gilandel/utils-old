@@ -16,9 +16,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import fr.landel.utils.model.query.QueryBuilder;
-import fr.landel.utils.model.query.QueryCondition;
-
 /**
  * Check query condition.
  *
@@ -27,12 +24,6 @@ import fr.landel.utils.model.query.QueryCondition;
  *
  */
 public class QueryConditionTest {
-
-    /**
-     * Constructor
-     */
-    public QueryConditionTest() {
-    }
 
     /**
      * Test method for {@link QueryCondition#toString()}.

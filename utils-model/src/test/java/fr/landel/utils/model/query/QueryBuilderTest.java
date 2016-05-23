@@ -28,12 +28,6 @@ import org.junit.Test;
 public class QueryBuilderTest {
 
     /**
-     * Constructor
-     */
-    public QueryBuilderTest() {
-    }
-
-    /**
      * Test method for {@link QueryBuilder#getAlias()}.
      */
     @Test

@@ -35,14 +35,6 @@ public class AssertXLSTest {
     private static final String SRC_DIR = "src/test/resources";
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public AssertXLSTest() {
-    }
-
-    /**
      * Check XLS comparison
      * 
      * @throws IOException

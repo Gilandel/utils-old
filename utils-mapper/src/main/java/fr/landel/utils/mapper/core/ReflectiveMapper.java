@@ -27,14 +27,6 @@ import fr.landel.utils.mapper.MapperException;
  */
 public class ReflectiveMapper extends AbstractReflectiveMapper {
 
-    /**
-     * Constructor.
-     *
-     */
-    public ReflectiveMapper() {
-        super();
-    }
-
     @Override
     public <S, T> T map(final S inObject, final T outObject, final DTOIdentifier identifier, final int deep, final EnumMode mode)
             throws MapperException {

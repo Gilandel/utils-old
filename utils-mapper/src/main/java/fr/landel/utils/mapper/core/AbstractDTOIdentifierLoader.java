@@ -27,14 +27,6 @@ public abstract class AbstractDTOIdentifierLoader {
     private DTOIdentifierManager dtoIdentifierManager;
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public AbstractDTOIdentifierLoader() {
-    }
-
-    /**
      * Get the base identifier
      * 
      * @return a DTO identifier

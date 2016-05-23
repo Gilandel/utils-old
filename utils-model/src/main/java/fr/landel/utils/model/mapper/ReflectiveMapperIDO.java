@@ -54,15 +54,6 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
     private static final String PARAM_PREVIOUS_DTO_LIST = "previousDTOList";
 
     /**
-     * 
-     * Constructor.
-     *
-     */
-    public ReflectiveMapperIDO() {
-        super();
-    }
-
-    /**
      * Transform entity to DTO.
      *
      * @param entity

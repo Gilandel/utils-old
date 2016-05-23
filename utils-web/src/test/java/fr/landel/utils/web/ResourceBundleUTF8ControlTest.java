@@ -19,8 +19,6 @@ import java.util.ResourceBundle;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 
-import fr.landel.utils.web.ResourceBundleUTF8Control;
-
 /**
  * Check the resources bundle loader (in UTF-8)
  *
@@ -30,7 +28,7 @@ import fr.landel.utils.web.ResourceBundleUTF8Control;
  */
 public class ResourceBundleUTF8ControlTest extends AbstractTest {
 
-    @Value("${prop1}")
+    @Value("${utf8.prop1}")
     String prop1;
 
     /**

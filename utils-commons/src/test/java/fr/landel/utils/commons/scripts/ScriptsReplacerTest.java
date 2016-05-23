@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.landel.utils.commons.scripts.ScriptsReplacer;
-
 /**
  * Check scripts replacer
  *
@@ -36,14 +34,6 @@ import fr.landel.utils.commons.scripts.ScriptsReplacer;
 public class ScriptsReplacerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptsReplacerTest.class);
-
-    /**
-     * Constructor
-     *
-     */
-    public ScriptsReplacerTest() {
-        super();
-    }
 
     /**
      * Test replacer

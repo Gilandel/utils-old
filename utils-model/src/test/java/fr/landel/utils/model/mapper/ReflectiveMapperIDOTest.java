@@ -70,30 +70,21 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
 
     private EntityParent entityParent1;
 
-    private Date currentDate;
-    private Date tomorrowDate;
-
-    /**
-     * 
-     * Constructor
-     *
-     */
-    public ReflectiveMapperIDOTest() {
-        super();
-    }
-
     /**
      * Prepare tests
      */
     @Before
     public void prepare() {
+        Date currentDate;
+        Date tomorrowDate;
+
         // Prepare dates
         final Calendar calendar = Calendar.getInstance();
 
-        this.currentDate = calendar.getTime();
+        currentDate = calendar.getTime();
 
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        this.tomorrowDate = calendar.getTime();
+        tomorrowDate = calendar.getTime();
 
         // Prepare entities
         this.entityParent1 = new EntityParent();
@@ -116,7 +107,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         this.entityParent1.setValFloat(4.1f);
         this.entityParent1.setValDouble(5.2d);
         this.entityParent1.setName("parent 1 name");
-        this.entityParent1.setDate(this.currentDate);
+        this.entityParent1.setDate(currentDate);
         this.entityParent1.setLocale(EnumLocale.fr);
         this.entityParent1.setOnlyInEntity(6L);
         this.entityParent1.setChild(child1);
@@ -136,7 +127,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         child1.setValFloat(14.1f);
         child1.setValDouble(15.2d);
         child1.setName("child 1 name");
-        child1.setDate(this.currentDate);
+        child1.setDate(currentDate);
         child1.setLocale(null);
 
         child11.setPk("child 11");
@@ -149,7 +140,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         child11.setValFloat(114.1f);
         child11.setValDouble(115.2d);
         child11.setName("child 11 name");
-        child11.setDate(this.currentDate);
+        child11.setDate(currentDate);
         child11.setLocale(EnumLocale.en);
 
         child12.setPk("child 12");
@@ -162,7 +153,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         child12.setValFloat(124.1f);
         child12.setValDouble(125.2d);
         child12.setName("child 12 name");
-        child12.setDate(this.tomorrowDate);
+        child12.setDate(tomorrowDate);
         child12.setLocale(EnumLocale.en);
 
         child21.setPk("child 21");
@@ -175,7 +166,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         child21.setValFloat(214.1f);
         child21.setValDouble(215.2d);
         child21.setName("child 21 name");
-        child21.setDate(this.currentDate);
+        child21.setDate(currentDate);
         child21.setLocale(EnumLocale.fr);
 
         child22.setPk("child 22");
@@ -188,7 +179,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         child22.setValFloat(224.1f);
         child22.setValDouble(225.2d);
         child22.setName("child 22 name");
-        child22.setDate(this.currentDate);
+        child22.setDate(currentDate);
         child22.setLocale(EnumLocale.fr);
 
         child23.setPk("child 23");
@@ -201,7 +192,7 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         child23.setValFloat(235.1f);
         child23.setValDouble(236.2d);
         child23.setName("child 23 name");
-        child23.setDate(this.tomorrowDate);
+        child23.setDate(tomorrowDate);
         child23.setLocale(EnumLocale.fr);
     }
 

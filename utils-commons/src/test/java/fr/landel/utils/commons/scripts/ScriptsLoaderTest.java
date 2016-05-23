@@ -65,14 +65,6 @@ public class ScriptsLoaderTest {
     private ScriptsLoader queriesLoader;
 
     /**
-     * Constructor
-     *
-     */
-    public ScriptsLoaderTest() {
-        super();
-    }
-
-    /**
      * initialize the loader with scripts list
      */
     @Before

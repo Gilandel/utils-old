@@ -34,26 +34,17 @@ import fr.landel.utils.commons.StringUtils;
  */
 public abstract class AbstractReturningWork<T> implements ReturningWork<T> {
 
-    private PreparedStatement stmt;
-
-    /**
-     * Default constructor
-     */
-    public AbstractReturningWork() {
-        super();
-    }
-
     @Override
     public final T execute(final Connection connection) throws SQLException {
         final CharSequence query = this.preparedQuery();
 
-        this.stmt = connection.prepareStatement(query.toString());
+        PreparedStatement stmt = connection.prepareStatement(query.toString());
 
         final int countStatments = StringUtils.countMatches(query, ';');
 
-        this.defineParameters(this.stmt);
+        this.defineParameters(stmt);
 
-        boolean isResult = this.stmt.execute();
+        boolean isResult = stmt.execute();
 
         // Specific code to manage JDBC results...
         // when you have multiple statements in one query, the first return
@@ -70,19 +61,19 @@ public abstract class AbstractReturningWork<T> implements ReturningWork<T> {
         while (!isResult) {
             loop++;
 
-            if (this.stmt.getUpdateCount() <= 0 && countStatments < loop) {
+            if (stmt.getUpdateCount() <= 0 && countStatments < loop) {
                 // End of results.
                 return null;
             }
-            isResult = this.stmt.getMoreResults();
+            isResult = stmt.getMoreResults();
         }
 
         if (isResult) {
-            final ResultSet rs = this.stmt.getResultSet();
+            final ResultSet rs = stmt.getResultSet();
             if (rs != null) {
                 final T result = this.processResult(rs);
                 // Checks the reference (null or anything)
-                if (result != rs) {
+                if (!rs.equals(result)) {
                     rs.close();
                 }
                 return result;

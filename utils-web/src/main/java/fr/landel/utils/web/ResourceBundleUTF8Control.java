@@ -36,13 +36,6 @@ import fr.landel.utils.commons.io.EncodingUtils;
  */
 public class ResourceBundleUTF8Control extends Control {
 
-    /**
-     * Constructor
-     */
-    public ResourceBundleUTF8Control() {
-        super();
-    }
-
     @Override
     public ResourceBundle newBundle(final String baseName, final Locale locale, final String format, final ClassLoader loader,
             final boolean reload) throws IllegalAccessException, InstantiationException, IOException {

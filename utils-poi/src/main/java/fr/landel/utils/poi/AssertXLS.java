@@ -294,6 +294,7 @@ public final class AssertXLS {
                         "Cell type hyperlink address" + cellPosition);
                 isEqual(cellExpected.getHyperlink().getLabel(), cell.getHyperlink().getLabel(), "Cell type hyperlink label" + cellPosition);
             }
+            break;
         }
     }
 

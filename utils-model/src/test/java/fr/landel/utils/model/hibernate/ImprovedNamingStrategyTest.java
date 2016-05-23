@@ -16,8 +16,6 @@ import org.hibernate.boot.model.naming.Identifier;
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.landel.utils.model.hibernate.ImprovedNamingStrategy;
-
 /**
  * Check ImprovedNamingStrategy
  *
@@ -26,14 +24,6 @@ import fr.landel.utils.model.hibernate.ImprovedNamingStrategy;
  *
  */
 public class ImprovedNamingStrategyTest {
-
-    /**
-     * 
-     * Constructor
-     *
-     */
-    public ImprovedNamingStrategyTest() {
-    }
 
     /**
      * Test method for

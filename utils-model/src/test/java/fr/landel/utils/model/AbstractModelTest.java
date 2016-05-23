@@ -30,10 +30,4 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @ContextConfiguration(locations = {"classpath:appContext-model-test.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public abstract class AbstractModelTest extends AbstractJUnit4SpringContextTests {
-
-    /**
-     * Default constructor
-     */
-    public AbstractModelTest() {
-    }
 }

@@ -14,6 +14,7 @@ package fr.landel.utils.commons.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -23,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.After;
@@ -244,7 +244,7 @@ public class FileUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.io.FileUtils#getFileContent(String, Charset, ClassLoader)}
+     * {@link fr.landel.utils.commons.io.FileUtils#getFileContent(String, java.nio.charset.Charset, ClassLoader)}
      * .
      * 
      * @throws IOException
@@ -256,6 +256,9 @@ public class FileUtilsTest {
 
         StringBuilder referenceContent = FileUtils.getFileContent(referenceFile, StandardCharsets.UTF_8);
         StringBuilder content = FileUtils.getFileContent("io/" + CHECK_CRC32_FILE, StandardCharsets.UTF_8, null);
+
+        assertNotNull(referenceContent);
+        assertNotNull(content);
 
         AssertUtils.isEqual(referenceContent, content);
     }
