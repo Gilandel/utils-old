@@ -296,7 +296,17 @@ public class ScriptsLoader {
         // removes line comments
         while ((startComments = builder.indexOf(this.oneLineCommentOperator)) > -1) {
             // For Windows / Mac / Unix
-            endComments = Math.min(builder.indexOf(NEW_LINE, startComments), builder.indexOf(LINE_RETURN, startComments));
+            int cr = builder.indexOf(NEW_LINE, startComments);
+            int lf = builder.indexOf(LINE_RETURN, startComments);
+            if (cr > -1 && lf > -1) {
+                endComments = Math.min(cr, lf);
+            } else if (cr > -1) {
+                endComments = cr;
+            } else if (lf > -1) {
+                endComments = lf;
+            } else {
+                endComments = builder.length();
+            }
             if (endComments > startComments) {
                 builder.delete(startComments, endComments);
             }
