@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+   	<group_ code="ADMIN" label="Administrator"/>
+   	<group_ code="USER" label="User"/>
+   	<group_ code="ANONYMOUS" label="Anonymous"/>
+   	
+    <user_ code="JABA" firstname="Jack" lastname="Bauer"/>
+    <user_ code="JADO" firstname="Jane" lastname="Doe"/>
+    <user_ code="JOSM" firstname="John" lastname="Smith"/>
+    <user_ code="JAJO" firstname="James" lastname="Johnson"/>
+    
+    <users_groups code_user="JABA" code_group="ADMIN"/>
+    <users_groups code_user="JADO" code_group="USER"/>
+    <users_groups code_user="JOSM" code_group="ANONYMOUS"/>
+</dataset>

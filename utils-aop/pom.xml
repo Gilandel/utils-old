@@ -47,7 +47,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>fr.landel</groupId>
+			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

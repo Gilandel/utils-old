@@ -15,6 +15,8 @@ package fr.landel.utils.commons;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.landel.utils.commons.asserts.AssertUtils;
+
 /**
  * Utility class to manage strings.
  *

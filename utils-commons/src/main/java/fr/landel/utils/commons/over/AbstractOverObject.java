@@ -122,7 +122,7 @@ public abstract class AbstractOverObject<O extends AbstractOverObject<O>> {
         if (obj == null || !this.getOverClass().isAssignableFrom(obj.getClass())) {
             return false;
         }
-        return this.overEquals(CastGenerics.getObject(obj, this.getOverClass()));
+        return this.overEquals(CastGenerics.cast(obj, this.getOverClass()));
     }
 
     @Override
