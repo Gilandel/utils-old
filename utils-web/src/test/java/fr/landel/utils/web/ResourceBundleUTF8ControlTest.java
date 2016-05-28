@@ -1,8 +1,8 @@
 /*
  * #%L
- * OpenLib
+ * utils-web
  * %%
- * Copyright (C) 2015 Open Groupe
+ * Copyright (C) 2016 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel

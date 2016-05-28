@@ -1,6 +1,6 @@
 /*
  * #%L
- * utils-commons
+ * utils-scripts
  * %%
  * Copyright (C) 2016 Gilandel
  * %%
