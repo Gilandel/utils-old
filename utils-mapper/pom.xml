@@ -13,10 +13,6 @@
 	<name>utils-mapper</name>
 	<description>To map classes through annotations</description>
 
-	<properties>
-		<java.home>C:\\Program Files\\Java\\jdk1.8.0_92</java.home>
-	</properties>
-
 	<build>
 		<plugins>
 			<!-- Add license header and generate third-party text file -->
@@ -34,46 +30,20 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			<!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>${uberjar.name}</finalName>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.openjdk.jmh.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                            <shadeTestJar>true</shadeTestJar>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin> -->
 
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>run-benchmarks</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<classpathScope>test</classpathScope>
-							<mainClass>fr.landel.utils.mapper.utils.Test</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+				<executions> <execution> <phase>package</phase> <goals> <goal>shade</goal> 
+				</goals> <configuration> <finalName>${uberjar.name}</finalName> <transformers> 
+				<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+				<mainClass>org.openjdk.jmh.Main</mainClass> </transformer> </transformers> 
+				<shadeTestJar>true</shadeTestJar> </configuration> </execution> </executions> 
+				</plugin> -->
+
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>exec-maven-plugin</artifactId> 
+				<executions> <execution> <id>run-benchmarks</id> <phase>integration-test</phase> 
+				<goals> <goal>java</goal> </goals> <configuration> <classpathScope>test</classpathScope> 
+				<mainClass>fr.landel.utils.mapper.utils.Test</mainClass> </configuration> 
+				</execution> </executions> </plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -93,10 +63,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
-			<artifactId>utils-commons</artifactId>
+			<artifactId>utils-asserts</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!-- Unit testing -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -9,9 +9,9 @@
 	</parent>
 
 	<groupId>fr.landel.utils</groupId>
-	<artifactId>utils-poi</artifactId>
-	<name>utils-poi</name>
-	<description>POI utils (XLS)</description>
+	<artifactId>utils-io</artifactId>
+	<name>utils-io</name>
+	<description>IO utils to manage file and stream</description>
 
 	<build>
 		<plugins>
@@ -52,24 +52,12 @@
 			<artifactId>utils-asserts</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
+		
 		<!-- Unit testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.landel.utils</groupId>
-			<artifactId>utils-io</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- POI (Excel) -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
 		</dependency>
 	</dependencies>
 </project>

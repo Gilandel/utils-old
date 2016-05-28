@@ -15,8 +15,6 @@ package fr.landel.utils.commons;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.landel.utils.commons.asserts.AssertUtils;
-
 /**
  * Utility class to manage strings.
  *
@@ -253,11 +251,17 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      *             than the end. If the end is greater than the string length.
      */
     public static String replace(final String string, final String replacement, final int start, final int end) {
-        AssertUtils.isNotEmpty(string, "The input string cannot be empty");
-        AssertUtils.isNotNull(replacement, "The replacement string cannot be null");
-        AssertUtils.isGTE(start, 0, "The start parameter must be greated than or equal to 0");
-        AssertUtils.isLTE(end, string.length(), "The end parameter must be lower than or equal to the length of string");
-        AssertUtils.isLT(start, end, "The start parameter must be lower than the end");
+        if (isEmpty(string)) {
+            throw new IllegalArgumentException("The input string cannot be empty");
+        } else if (replacement == null) {
+            throw new IllegalArgumentException("The replacement string cannot be null");
+        } else if (start < 0) {
+            throw new IllegalArgumentException("The start parameter must be greated than or equal to 0");
+        } else if (end > string.length()) {
+            throw new IllegalArgumentException("The end parameter must be lower than or equal to the length of string");
+        } else if (start >= end) {
+            throw new IllegalArgumentException("The start parameter must be lower than the end");
+        }
 
         String part1 = "";
         if (start > 0) {

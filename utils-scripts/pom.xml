@@ -1,19 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>fr.landel</groupId>
-		<artifactId>utils</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-
-	<groupId>fr.landel.utils</groupId>
-	<artifactId>utils-poi</artifactId>
-	<name>utils-poi</name>
-	<description>POI utils (XLS)</description>
-
-	<build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>fr.landel</groupId>
+    <artifactId>utils</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>fr.landel.utils</groupId>
+  <artifactId>utils-scripts</artifactId>
+  <name>utils-scripts</name>
+  <description>Scripts utilities to load scripts like SQL, JSON query with conditions</description>
+  
+  <build>
 		<plugins>
 			<!-- Add license header and generate third-party text file -->
 			<plugin>
@@ -49,27 +48,20 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
+			<artifactId>utils-io</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-asserts</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
+		
 		<!-- Unit testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.landel.utils</groupId>
-			<artifactId>utils-io</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- POI (Excel) -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
 		</dependency>
 	</dependencies>
 </project>
