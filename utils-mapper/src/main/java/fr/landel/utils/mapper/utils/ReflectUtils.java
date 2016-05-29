@@ -36,7 +36,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 
-import fr.landel.commons.asserts.AssertUtils;
+import fr.landel.utils.commons.asserts.AssertUtils;
 import fr.landel.utils.commons.exception.AbstractException;
 import fr.landel.utils.commons.stream.FunctionThrowable;
 import fr.landel.utils.mapper.MapperException;

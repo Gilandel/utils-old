@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.commons.asserts;
+package fr.landel.utils.commons.asserts;
 
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -61,7 +61,7 @@ public abstract class AbstractAssert {
      *             if expression is {@code false}
      */
     public static void isFalse(final boolean expression) {
-        isFalse(expression, (String) null);
+        isFalse(expression, (CharSequence) null);
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if expression is {@code false}
      */
-    public static void isFalse(final boolean expression, final String message, final Object... arguments) {
+    public static void isFalse(final boolean expression, final CharSequence message, final Object... arguments) {
         isFalse(expression, null, message, arguments);
     }
 
@@ -108,7 +108,7 @@ public abstract class AbstractAssert {
         isFalse(expression, exception, null);
     }
 
-    private static <E extends Throwable> void isFalse(final boolean expression, final E exception, final String message,
+    private static <E extends Throwable> void isFalse(final boolean expression, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (expression) {
             manageExceptions("this expression must be false", exception, message, new Object[] {expression}, arguments);
@@ -129,7 +129,7 @@ public abstract class AbstractAssert {
      *             if expression is {@code false}
      */
     public static void isTrue(final boolean expression) {
-        isTrue(expression, (String) null);
+        isTrue(expression, (CharSequence) null);
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if expression is {@code false}
      */
-    public static void isTrue(final boolean expression, final String message, final Object... arguments) {
+    public static void isTrue(final boolean expression, final CharSequence message, final Object... arguments) {
         isTrue(expression, null, message, arguments);
     }
 
@@ -176,7 +176,7 @@ public abstract class AbstractAssert {
         isTrue(expression, exception, null);
     }
 
-    private static <E extends Throwable> void isTrue(final boolean expression, final E exception, final String message,
+    private static <E extends Throwable> void isTrue(final boolean expression, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (!expression) {
             manageExceptions("this expression must be true", exception, message, new Object[] {expression}, arguments);
@@ -196,7 +196,7 @@ public abstract class AbstractAssert {
      *             if the object is not {@code null}
      */
     public static void isNull(final Object object) {
-        isNull(object, (String) null);
+        isNull(object, (CharSequence) null);
     }
 
     /**
@@ -217,7 +217,7 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if the object is not {@code null}
      */
-    public static void isNull(final Object object, final String message, final Object... arguments) {
+    public static void isNull(final Object object, final CharSequence message, final Object... arguments) {
         isNull(object, null, message, arguments);
     }
 
@@ -237,11 +237,11 @@ public abstract class AbstractAssert {
      * @throws E
      *             if the object is not {@code null}
      */
-    public static <E extends Throwable> void isNull(final Object object, final E exception) throws E {
+    public static <E extends Throwable> void isNull(final CharSequence object, final E exception) throws E {
         isNull(object, exception, null);
     }
 
-    private static <E extends Throwable> void isNull(final Object object, final E exception, final String message,
+    private static <E extends Throwable> void isNull(final Object object, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (object != null) {
             manageExceptions("the object argument must be null", exception, message, new Object[] {object}, arguments);
@@ -261,7 +261,7 @@ public abstract class AbstractAssert {
      *             if the object is {@code null}
      */
     public static void isNotNull(final Object object) {
-        isNotNull(object, (String) null);
+        isNotNull(object, (CharSequence) null);
     }
 
     /**
@@ -282,7 +282,7 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if the object is {@code null}
      */
-    public static void isNotNull(final Object object, final String message, final Object... arguments) {
+    public static void isNotNull(final Object object, final CharSequence message, final Object... arguments) {
         isNotNull(object, null, message, arguments);
     }
 
@@ -306,7 +306,7 @@ public abstract class AbstractAssert {
         isNotNull(object, exception, null);
     }
 
-    private static <E extends Throwable> void isNotNull(final Object object, final E exception, final String message,
+    private static <E extends Throwable> void isNotNull(final Object object, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (object == null) {
             manageExceptions("this argument is required; it must not be null", exception, message, new Object[] {object}, arguments);
@@ -330,7 +330,7 @@ public abstract class AbstractAssert {
      *             if both objects are {@code null} or are equal.
      */
     public static void isNotEqual(final Object obj1, final Object obj2) {
-        isNotEqual(obj1, obj2, (String) null);
+        isNotEqual(obj1, obj2, (CharSequence) null);
     }
 
     /**
@@ -355,7 +355,7 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if both objects are {@code null} or are equal.
      */
-    public static void isNotEqual(final Object obj1, final Object obj2, final String message, final Object... arguments) {
+    public static void isNotEqual(final Object obj1, final Object obj2, final CharSequence message, final Object... arguments) {
         isNotEqual(obj1, obj2, null, message, arguments);
     }
 
@@ -384,8 +384,8 @@ public abstract class AbstractAssert {
         isNotEqual(obj1, obj2, exception, null);
     }
 
-    private static <E extends Throwable> void isNotEqual(final Object obj1, final Object obj2, final E exception, final String message,
-            final Object... arguments) throws E {
+    private static <E extends Throwable> void isNotEqual(final Object obj1, final Object obj2, final E exception,
+            final CharSequence message, final Object... arguments) throws E {
         if (obj1 == null && obj2 == null) {
             manageExceptions("Both objects are null.", exception, message, new Object[] {obj1, obj2}, arguments);
         } else if (obj1 != null && obj2 != null) {
@@ -416,7 +416,7 @@ public abstract class AbstractAssert {
      *             equal.
      */
     public static void isEqual(final Object obj1, final Object obj2) {
-        isEqual(obj1, obj2, (String) null);
+        isEqual(obj1, obj2, (CharSequence) null);
     }
 
     /**
@@ -442,7 +442,7 @@ public abstract class AbstractAssert {
      *             if only one object is {@code null} and not the other one or
      *             are not equal.
      */
-    public static void isEqual(final Object obj1, final Object obj2, final String message, final Object... arguments) {
+    public static void isEqual(final Object obj1, final Object obj2, final CharSequence message, final Object... arguments) {
         isEqual(obj1, obj2, null, message, arguments);
     }
 
@@ -470,7 +470,7 @@ public abstract class AbstractAssert {
         isEqual(obj1, obj2, exception, null);
     }
 
-    private static <E extends Throwable> void isEqual(final Object obj1, final Object obj2, final E exception, final String message,
+    private static <E extends Throwable> void isEqual(final Object obj1, final Object obj2, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (obj1 != null && obj2 != null && !obj1.equals(obj2)) {
             if (!CharSequence.class.isAssignableFrom(obj1.getClass()) || !CharSequence.class.isAssignableFrom(obj2.getClass())
@@ -500,7 +500,7 @@ public abstract class AbstractAssert {
      * @see Class#isInstance
      */
     public static void isInstanceOf(final Class<?> clazz, final Object obj) {
-        isInstanceOf(clazz, obj, (String) null);
+        isInstanceOf(clazz, obj, (CharSequence) null);
     }
 
     /**
@@ -524,7 +524,7 @@ public abstract class AbstractAssert {
      *             if the object is not an instance of clazz
      * @see Class#isInstance
      */
-    public static void isInstanceOf(final Class<?> type, final Object obj, final String message, final Object... arguments) {
+    public static void isInstanceOf(final Class<?> type, final Object obj, final CharSequence message, final Object... arguments) {
         isInstanceOf(type, obj, null, message, arguments);
     }
 
@@ -551,15 +551,16 @@ public abstract class AbstractAssert {
         isInstanceOf(type, obj, exception, null);
     }
 
-    private static <E extends Throwable> void isInstanceOf(final Class<?> type, final Object obj, final E exception, final String message,
-            final Object... arguments) throws E {
+    private static <E extends Throwable> void isInstanceOf(final Class<?> type, final Object obj, final E exception,
+            final CharSequence message, final Object... arguments) throws E {
         isNotNull(type, "Type to check against must not be null", exception);
         if (!type.isInstance(obj)) {
 
             final String clazzName = getClassName(obj);
 
-            manageExceptions("Object of class [" + clazzName + "] must be an instance of " + type, exception, message,
-                    new Object[] {type, obj}, arguments);
+            manageExceptions(
+                    new StringBuilder().append("Object of class [").append(clazzName).append("] must be an instance of ").append(type),
+                    exception, message, new Object[] {type, obj}, arguments);
         }
     }
 
@@ -588,7 +589,7 @@ public abstract class AbstractAssert {
      *             if the classes are not assignable
      */
     public static void isAssignable(final Class<?> type, final Class<?> superType) {
-        isAssignable(type, superType, (String) null);
+        isAssignable(type, superType, (CharSequence) null);
     }
 
     /**
@@ -612,7 +613,7 @@ public abstract class AbstractAssert {
      * @throws IllegalArgumentException
      *             if the classes are not assignable
      */
-    public static void isAssignable(final Class<?> type, final Class<?> superType, final String message, final Object... arguments) {
+    public static void isAssignable(final Class<?> type, final Class<?> superType, final CharSequence message, final Object... arguments) {
         isAssignable(type, superType, null, message, arguments);
     }
 
@@ -640,7 +641,7 @@ public abstract class AbstractAssert {
     }
 
     private static <E extends Throwable> void isAssignable(final Class<?> type, final Class<?> superType, final E exception,
-            final String message, final Object... arguments) throws E {
+            final CharSequence message, final Object... arguments) throws E {
         isNotNull(type, "Type to check against must not be null");
         if (superType == null || !type.isAssignableFrom(superType)) {
             manageExceptions(superType + " is not assignable to " + type, exception, message, new Object[] {type, superType}, arguments);
@@ -664,7 +665,7 @@ public abstract class AbstractAssert {
      *             if the supplied expression is {@code false}
      */
     public static void state(final boolean expression) {
-        state(expression, (String) null);
+        state(expression, (CharSequence) null);
     }
 
     /**
@@ -687,7 +688,7 @@ public abstract class AbstractAssert {
      * @throws IllegalStateException
      *             if expression is {@code false}
      */
-    public static void state(final boolean expression, final String message, final Object... arguments) {
+    public static void state(final boolean expression, final CharSequence message, final Object... arguments) {
         if (!expression) {
             throw new IllegalStateException(getMessage("this state invariant must be true", message, new Object[] {expression}, arguments));
         }
@@ -723,7 +724,8 @@ public abstract class AbstractAssert {
      * Fail, throwing {@link IllegalStateException}.
      * 
      * <pre>
-     * Assert.fail(&quot;Error&quot;, new Exception());
+     * Assert.fail(&quot;Error&quot;);
+     * Assert.fail(&quot;Error type: %s&quot;, &quot;access exception&quot;);
      * </pre>
      * 
      * @param message
@@ -733,15 +735,16 @@ public abstract class AbstractAssert {
      * @throws IllegalStateException
      *             in all cases
      */
-    public static void fail(final String message, final Object... arguments) {
+    public static void fail(final CharSequence message, final Object... arguments) {
         fail(null, message, arguments);
     }
 
     /**
-     * Fail, throwing {@link IllegalStateException}.
+     * Fail, throwing E.
      * 
      * <pre>
-     * Assert.fail(&quot;Error&quot;, new Exception());
+     * Assert.fail(new Exception(), &quot;Error&quot;);
+     * Assert.fail(new IOException(), &quot;Error type: %s&quot;, &quot;access exception&quot;);
      * </pre>
      * 
      * 
@@ -753,15 +756,18 @@ public abstract class AbstractAssert {
      *            explanation in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
-     * @throws IllegalStateException
+     * @param <E>
+     *            The exception type
+     * @throws E
      *             in all cases
      */
-    public static void fail(final Throwable throwable, final String message, final Object... arguments) {
+    public static <E extends Throwable> void fail(final E throwable, final CharSequence message, final Object... arguments) throws E {
+        final IllegalStateException exception = new IllegalStateException(getMessage("", message, new Object[] {throwable}, arguments));
         if (throwable != null) {
-            throw new IllegalArgumentException(getMessage("", message, new Object[] {throwable}, arguments), throwable);
-        } else {
-            throw new IllegalArgumentException(getMessage("", message, new Object[] {throwable}, arguments));
+            throwable.addSuppressed(exception);
+            throw throwable;
         }
+        throw exception;
     }
 
     /**
@@ -783,10 +789,10 @@ public abstract class AbstractAssert {
      * @throws E
      *             If exception parameter is set
      */
-    protected static <E extends Throwable> void manageExceptions(final String defaultString, final E exception, final String message,
-            final Object[] parameters, final Object[] arguments) throws E {
+    protected static <E extends Throwable> void manageExceptions(final CharSequence defaultString, final E exception,
+            final CharSequence message, final Object[] parameters, final Object[] arguments) throws E {
         if (exception != null) {
-            exception.addSuppressed(new IllegalArgumentException(defaultString));
+            exception.addSuppressed(new IllegalArgumentException(defaultString.toString()));
             throw exception;
         } else {
             throw new IllegalArgumentException(getMessage(defaultString, message, parameters, arguments));
@@ -814,7 +820,7 @@ public abstract class AbstractAssert {
      *            The user arguments
      * @return The message formatted
      */
-    protected static String getMessage(final String defaultString, final String message, final Object[] parameters,
+    protected static String getMessage(final CharSequence defaultString, final CharSequence message, final Object[] parameters,
             final Object[] arguments) {
         String msg;
         String group;
@@ -822,7 +828,7 @@ public abstract class AbstractAssert {
         int number;
 
         if (StringUtils.isNotEmpty(message)) {
-            msg = message;
+            msg = message.toString();
             if (parameters != null && parameters.length > 0) {
                 java.util.regex.Matcher matcher;
                 int count = 0;
@@ -842,18 +848,15 @@ public abstract class AbstractAssert {
                     } else {
                         replacement = "";
                     }
-                    if (replacement != null) {
-                        msg = StringUtils.replace(msg, replacement, matcher.start(), matcher.end());
-                        replacement = null;
-                    }
+                    msg = StringUtils.replace(msg, replacement, matcher.start(), matcher.end());
                 }
             }
             if (arguments != null && arguments.length > 0) {
                 msg = String.format(AbstractAssert.locale, msg, arguments);
             }
         } else {
-            msg = defaultString;
+            msg = defaultString.toString();
         }
-        return ASSERTION_FAILED + " " + msg;
+        return new StringBuilder().append(ASSERTION_FAILED).append(" ").append(msg).toString();
     }
 }

@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import fr.landel.commons.asserts.AssertUtils;
+import fr.landel.utils.commons.asserts.AssertUtils;
 
 /**
  * This class is used to read and write files.

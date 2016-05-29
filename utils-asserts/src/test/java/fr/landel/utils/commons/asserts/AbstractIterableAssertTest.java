@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.commons.asserts.AssertUtils;
+import fr.landel.utils.commons.asserts.AssertUtils;
 
 /**
  * Check assert
@@ -29,7 +29,7 @@ public class AbstractIterableAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.commons.asserts.AssertUtils#hasNoNullElements(Object[], String, Object...)}
+     * {@link fr.landel.utils.commons.asserts.AssertUtils#hasNoNullElements(Object[], String, Object...)}
      * .
      */
     @Test
@@ -44,7 +44,7 @@ public class AbstractIterableAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.commons.asserts.AssertUtils#hasNoNullElements(Object[], String, Object...)}
+     * {@link fr.landel.utils.commons.asserts.AssertUtils#hasNoNullElements(Object[], String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
@@ -55,7 +55,7 @@ public class AbstractIterableAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.commons.asserts.AssertUtils#hasNoNullElements(java.lang.Object[])}
+     * {@link fr.landel.utils.commons.asserts.AssertUtils#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test
@@ -70,7 +70,7 @@ public class AbstractIterableAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.commons.asserts.AssertUtils#hasNoNullElements(java.lang.Object[])}
+     * {@link fr.landel.utils.commons.asserts.AssertUtils#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test(expected = IllegalArgumentException.class)

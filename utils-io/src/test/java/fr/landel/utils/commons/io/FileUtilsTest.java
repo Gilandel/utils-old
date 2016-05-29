@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 import org.junit.After;
 import org.junit.Test;
 
-import fr.landel.commons.asserts.AssertUtils;
+import fr.landel.utils.commons.asserts.AssertUtils;
 
 /**
  * Check file utils

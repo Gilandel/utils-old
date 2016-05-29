@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.commons.asserts;
+package fr.landel.utils.commons.asserts;
 
 import java.util.Arrays;
 import java.util.Comparator;
