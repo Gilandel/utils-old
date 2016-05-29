@@ -240,6 +240,31 @@ public class CastGenericsTest {
 
         assertEquals(objects[0], exception.getMessage());
         assertEquals(objects[1], exception.getCause());
+
+        Object[] objects2 = {"TEST", null};
+
+        exception = CastGenerics.map(Exception.class, objects2);
+
+        assertEquals(objects2[0], exception.getMessage());
+        assertNull(objects2[1]);
+
+        Object[] objects3 = {"TEST"};
+
+        exception = CastGenerics.map(Exception.class, objects3);
+
+        assertEquals(objects3[0], exception.getMessage());
+
+        Object[] objects4 = {12};
+
+        assertNull(CastGenerics.map(Exception.class, objects4));
+
+        Object[] objects5 = {"TEST", -1};
+
+        assertNull(CastGenerics.map(ExException.class, objects5));
+
+        assertNull(CastGenerics.map(null, objects4));
+        assertNull(CastGenerics.map(null, (Object[]) null));
+        assertNull(CastGenerics.map(Exception.class, (Object[]) null));
     }
 
     /**
@@ -267,6 +292,22 @@ public class CastGenericsTest {
          */
         ExException(final String message) {
             super(message);
+        }
+
+        /**
+         * Constructor
+         *
+         * @param message
+         *            The exception message
+         * @param value
+         *            The value
+         */
+        ExException(final String message, final Integer value) {
+            super(message);
+
+            if (value < 0) {
+                throw new IllegalArgumentException("Value cannot be negative");
+            }
         }
     }
 }

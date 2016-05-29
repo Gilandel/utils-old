@@ -31,8 +31,6 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.ClassUtils;
-
 /**
  * Check utility class.
  *
@@ -49,10 +47,25 @@ public class ClassUtilsTest {
      */
     @Test
     public void testGetSuperclasses() {
-        final List<Class<?>> expectedClasses = Arrays.asList(TreeMap.class, AbstractMap.class, NavigableMap.class, Cloneable.class,
+        List<Class<?>> expectedClasses = Arrays.asList(TreeMap.class, AbstractMap.class, NavigableMap.class, Cloneable.class,
                 Serializable.class, Map.class, SortedMap.class, Object.class);
 
-        final Set<Class<?>> treeMapClasses = ClassUtils.getSuperclasses(TreeMap.class);
+        Set<Class<?>> treeMapClasses = ClassUtils.getSuperclasses(TreeMap.class);
+
+        assertNotNull(treeMapClasses);
+        assertEquals(expectedClasses.size(), treeMapClasses.size());
+
+        for (Class<?> treeMapClass : treeMapClasses) {
+            if (!expectedClasses.contains(treeMapClass)) {
+                fail("Super class not found: " + treeMapClass);
+            }
+        }
+
+        // Interface
+
+        expectedClasses = Arrays.asList(Map.class, Object.class);
+
+        treeMapClasses = ClassUtils.getSuperclasses(Map.class);
 
         assertNotNull(treeMapClasses);
         assertEquals(expectedClasses.size(), treeMapClasses.size());

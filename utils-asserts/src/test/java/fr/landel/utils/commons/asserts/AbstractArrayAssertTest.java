@@ -25,7 +25,7 @@ import fr.landel.utils.commons.asserts.AssertUtils;
  * @author Gilles Landel
  *
  */
-public class AbstractIterableAssertTest {
+public class AbstractArrayAssertTest {
 
     /**
      * Test method for

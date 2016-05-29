@@ -16,10 +16,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.listener.AbstractListenable;
-import fr.landel.utils.commons.listener.EventListener;
-import fr.landel.utils.commons.listener.Listener;
-
 /**
  * Class to check the listenable design pattern
  *
@@ -62,14 +58,16 @@ public class ListenerTest {
 
         @Override
         public void execute(final EventListener event) {
-            switch (event.getValue()) {
-            case ADD_EVENT:
-                ListenerTest.eventCount++;
-                break;
-            case REMOVE_EVENT:
-                ListenerTest.eventCount--;
-                break;
-            default:
+            if (event.getSource() != null) {
+                switch (event.getValue()) {
+                case ADD_EVENT:
+                    ListenerTest.eventCount++;
+                    break;
+                case REMOVE_EVENT:
+                    ListenerTest.eventCount--;
+                    break;
+                default:
+                }
             }
         }
     }

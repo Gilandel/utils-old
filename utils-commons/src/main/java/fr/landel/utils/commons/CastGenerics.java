@@ -59,13 +59,13 @@ public final class CastGenerics {
     }
 
     /**
-     * Get the class of the object.
+     * Get the class of the object (null safe).
      * 
      * @param object
-     *            The object
+     *            The object (required)
      * @param <T>
      *            The object type
-     * @return The class of the object
+     * @return The class of the object or null
      */
     @SuppressWarnings("unchecked")
     public static <T> Class<T> getClass(final T object) {
@@ -76,18 +76,18 @@ public final class CastGenerics {
     }
 
     /**
-     * Cast an object into the specified class.
+     * Cast an object into the specified class (null safe).
      * 
      * @param o
-     *            The input object
+     *            The input object (required)
      * @param clazz
-     *            The output class
-     * @return The casted object
+     *            The output class (required)
+     * @return The casted object or {@code null}
      * @param <T>
      *            The type of the output
      */
-    public static <T> T cast(final Object o, Class<T> clazz) {
-        if (o != null && clazz.isAssignableFrom(o.getClass())) {
+    public static <T> T cast(final Object o, final Class<T> clazz) {
+        if (o != null && clazz != null && clazz.isAssignableFrom(o.getClass())) {
             return clazz.cast(o);
         }
         return null;
@@ -433,16 +433,16 @@ public final class CastGenerics {
      * Set the list value.
      * 
      * @param list
-     *            the list
+     *            the list (required)
      * @param obj
-     *            the object
+     *            the object (nullable)
      * @param clazz
-     *            the class
+     *            the class (required)
      * @param <T>
      *            The type of the element
      */
     private static <T> void setListValue(final List<T> list, final Object obj, final Class<T> clazz) {
-        if (obj != null && clazz.isAssignableFrom(obj.getClass())) {
+        if (obj != null && clazz != null && clazz.isAssignableFrom(obj.getClass())) {
             list.add(clazz.cast(obj));
         } else if (obj == null) {
             list.add(null);
@@ -551,7 +551,7 @@ public final class CastGenerics {
      *            The typed class
      */
     private static <T> void set(final Set<T> set, final Object o, final Class<T> classElement) {
-        if (o != null && Set.class.isAssignableFrom(o.getClass())) {
+        if (o != null && classElement != null && Set.class.isAssignableFrom(o.getClass())) {
             Set<?> mObj = (Set<?>) o;
             for (Object obj : mObj) {
                 if (obj != null && classElement.isAssignableFrom(obj.getClass())) {
@@ -576,7 +576,7 @@ public final class CastGenerics {
     public static <T> Iterator<T> getIterator(final Object o, final Class<T> classElement) {
         final List<T> list = new ArrayList<>();
 
-        if (o != null && Iterator.class.isAssignableFrom(o.getClass())) {
+        if (o != null && classElement != null && Iterator.class.isAssignableFrom(o.getClass())) {
             Iterator<?> mObj = (Iterator<?>) o;
             while (mObj.hasNext()) {
                 Object obj = mObj.next();
@@ -713,7 +713,7 @@ public final class CastGenerics {
         List<Class<?>> classes = new ArrayList<>();
         T result = null;
 
-        if (instantiableClass != null) {
+        if (instantiableClass != null && objects != null) {
             for (Object object : objects) {
                 if (object != null) {
                     classes.add(object.getClass());

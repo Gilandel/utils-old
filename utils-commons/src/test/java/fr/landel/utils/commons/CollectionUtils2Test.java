@@ -12,11 +12,18 @@
  */
 package fr.landel.utils.commons;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.collections4.Transformer;
@@ -438,5 +445,50 @@ public class CollectionUtils2Test {
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
+    }
+
+    /**
+     * Test method for {@link CollectionUtils2#getListClass}
+     * {@link CollectionUtils2#getSetClass}
+     * {@link CollectionUtils2#getQueueClass}
+     * {@link CollectionUtils2#getMapClass}.
+     */
+    @Test
+    public void testGetTypedClass() {
+        Class<List<String>> clazz = CollectionUtils2.getListClass(String.class);
+        assertNotNull(clazz);
+        assertTrue(ArrayList.class.isAssignableFrom(clazz));
+
+        Class<List<Object>> clazz2 = CollectionUtils2.getListClass(null);
+        assertNotNull(clazz2);
+        assertTrue(ArrayList.class.isAssignableFrom(clazz));
+
+        Class<Set<String>> clazz3 = CollectionUtils2.getSetClass(String.class);
+        assertNotNull(clazz3);
+        assertTrue(HashSet.class.isAssignableFrom(clazz3));
+
+        Class<Set<Object>> clazz4 = CollectionUtils2.getSetClass(null);
+        assertNotNull(clazz4);
+        assertTrue(HashSet.class.isAssignableFrom(clazz4));
+
+        Class<Queue<String>> clazz5 = CollectionUtils2.getQueueClass(String.class);
+        assertNotNull(clazz5);
+        assertTrue(LinkedList.class.isAssignableFrom(clazz5));
+
+        Class<Queue<Object>> clazz6 = CollectionUtils2.getQueueClass(null);
+        assertNotNull(clazz6);
+        assertTrue(LinkedList.class.isAssignableFrom(clazz6));
+
+        Class<Map<String, Integer>> clazz7 = CollectionUtils2.getMapClass(String.class, Integer.class);
+        assertNotNull(clazz7);
+        assertTrue(HashMap.class.isAssignableFrom(clazz7));
+
+        Class<Map<Object, Integer>> clazz8 = CollectionUtils2.getMapClass(null, Integer.class);
+        assertNotNull(clazz8);
+        assertTrue(HashMap.class.isAssignableFrom(clazz8));
+
+        Class<Map<String, Object>> clazz9 = CollectionUtils2.getMapClass(String.class, null);
+        assertNotNull(clazz9);
+        assertTrue(HashMap.class.isAssignableFrom(clazz9));
     }
 }

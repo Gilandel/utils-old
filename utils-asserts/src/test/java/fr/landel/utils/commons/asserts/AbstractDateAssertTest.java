@@ -316,6 +316,13 @@ public class AbstractDateAssertTest {
         }
 
         try {
+            AssertUtils.isAfter(null, null);
+            fail("Has to raise an exception");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
+
+        try {
             AssertUtils.isAfter(date1, null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
@@ -377,6 +384,13 @@ public class AbstractDateAssertTest {
 
         try {
             AssertUtils.isAfterOrEqual(date1, null);
+            fail("Has to raise an exception");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            AssertUtils.isAfterOrEqual(null, null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -446,6 +460,13 @@ public class AbstractDateAssertTest {
         }
 
         try {
+            AssertUtils.isBefore(null, null);
+            fail("Has to raise an exception");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
+
+        try {
             AssertUtils.isBefore(date1, date2, new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
@@ -500,6 +521,13 @@ public class AbstractDateAssertTest {
 
         try {
             AssertUtils.isBeforeOrEqual(date1, null);
+            fail("Has to raise an exception");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            AssertUtils.isBeforeOrEqual(null, null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);

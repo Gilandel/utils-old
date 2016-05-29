@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
@@ -62,6 +63,7 @@ public class MDCMTTest {
     private ExecutorService executorService;
     private ByteArrayOutputStream stream;
     private OutputStreamAppender<ILoggingEvent> appender;
+    private Logger logger;
 
     /**
      * Init the appender and create the pool executor
@@ -72,7 +74,7 @@ public class MDCMTTest {
 
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-        Logger logger = loggerContext.getLogger(MDCTask.class);
+        this.logger = loggerContext.getLogger(MDCTask.class);
 
         // Destination stream
         this.stream = new ByteArrayOutputStream();
@@ -92,7 +94,7 @@ public class MDCMTTest {
         this.appender.setOutputStream(this.stream);
         this.appender.start();
 
-        logger.addAppender(this.appender);
+        this.logger.addAppender(this.appender);
     }
 
     /**
@@ -105,7 +107,7 @@ public class MDCMTTest {
     }
 
     /**
-     * Check the put
+     * Global check
      * 
      * @throws InterruptedException
      *             on interrupted thread
@@ -115,9 +117,12 @@ public class MDCMTTest {
      *             on stream error
      */
     @Test
-    public void testPut() throws InterruptedException, ExecutionException, IOException {
+    public void testMain() throws InterruptedException, ExecutionException, IOException {
         // trace, debug, info, warn, error (NB-1, trace logs aren't displayed)
+        this.logger.setLevel(Level.DEBUG);
         final int logLevel = 4;
+        final int nbLinesByLogLevel = 2; // normal + exception
+        final int exceptionLength = 8;
 
         this.stream.reset();
 
@@ -144,33 +149,127 @@ public class MDCMTTest {
         final String[] lines = outputLog.split(System.lineSeparator());
 
         assertNotNull(lines);
-        assertEquals(max * loop * logLevel, lines.length);
+        assertEquals(max * loop * logLevel * (nbLinesByLogLevel + exceptionLength), lines.length);
 
         final Map<Integer, Set<Integer>> results = new HashMap<>();
 
+        int count = 0;
         for (int i = 0; i < lines.length; i++) {
             Matcher matcher = VALIDATOR.matcher(lines[i]);
 
-            assertTrue("Validator failed on line: " + i + ", content: " + lines[i], matcher.matches());
+            if (matcher.matches()) {
+                count++;
 
-            String thread = matcher.group(VALIDATOR_GP_THREAD);
-            String task = matcher.group(VALIDATOR_GP_TASK);
+                String thread = matcher.group(VALIDATOR_GP_THREAD);
+                String task = matcher.group(VALIDATOR_GP_TASK);
 
-            assertTrue(StringUtils.isNumeric(thread));
-            assertTrue(StringUtils.isNumeric(task));
+                assertTrue(StringUtils.isNumeric(thread));
+                assertTrue(StringUtils.isNumeric(task));
 
-            Integer threadInt = Integer.parseInt(thread);
-            Integer taskInt = Integer.parseInt(task);
+                Integer threadInt = Integer.parseInt(thread);
+                Integer taskInt = Integer.parseInt(task);
 
-            if (!results.containsKey(threadInt)) {
-                results.put(threadInt, new HashSet<Integer>());
+                if (!results.containsKey(threadInt)) {
+                    results.put(threadInt, new HashSet<Integer>());
+                }
+
+                results.get(threadInt).add(taskInt);
             }
-
-            results.get(threadInt).add(taskInt);
         }
+
+        assertEquals(max * loop * logLevel * nbLinesByLogLevel, count);
 
         for (int i = 0; i < max; i++) {
             assertEquals(loop, results.get(i).size());
         }
+    }
+
+    @Test
+    public void testLogTrace() throws InterruptedException, ExecutionException, IOException {
+        // trace, debug, info, warn, error (NB-1, trace logs aren't displayed)
+        this.logger.setLevel(Level.TRACE);
+        final int logLevel = 5;
+        final int nbLinesByLogLevel = 2; // normal + exception
+        final int exceptionLength = 8;
+
+        this.stream.reset();
+
+        final List<Future<Long>> futures = new ArrayList<>();
+
+        futures.add(this.executorService.submit(new MDCTask(0, 1)));
+
+        for (Future<Long> future : futures) {
+            LOGGER.info("THREAD " + future.get() + " DONE!");
+        }
+
+        this.stream.flush();
+
+        LOGGER.info("ALL DONE!");
+
+        final String outputLog = this.stream.toString("UTF-8");
+
+        LOGGER.info(outputLog);
+
+        final String[] lines = outputLog.split(System.lineSeparator());
+
+        assertNotNull(lines);
+        assertEquals(logLevel * (nbLinesByLogLevel + exceptionLength), lines.length);
+
+        final Map<Integer, Set<Integer>> results = new HashMap<>();
+
+        int count = 0;
+        for (int i = 0; i < lines.length; i++) {
+            Matcher matcher = VALIDATOR.matcher(lines[i]);
+
+            if (matcher.matches()) {
+                count++;
+
+                String thread = matcher.group(VALIDATOR_GP_THREAD);
+                String task = matcher.group(VALIDATOR_GP_TASK);
+
+                assertTrue(StringUtils.isNumeric(thread));
+                assertTrue(StringUtils.isNumeric(task));
+
+                Integer threadInt = Integer.parseInt(thread);
+                Integer taskInt = Integer.parseInt(task);
+
+                if (!results.containsKey(threadInt)) {
+                    results.put(threadInt, new HashSet<Integer>());
+                }
+
+                results.get(threadInt).add(taskInt);
+            }
+        }
+
+        assertEquals(logLevel * nbLinesByLogLevel, count);
+
+        assertEquals(1, results.get(0).size());
+    }
+
+    @Test
+    public void testLogOFF() throws InterruptedException, ExecutionException, IOException {
+        // trace, debug, info, warn, error (NB-1, trace logs aren't displayed)
+        this.logger.setLevel(Level.OFF);
+
+        this.stream.reset();
+
+        final List<Future<Long>> futures = new ArrayList<>();
+
+        futures.add(this.executorService.submit(new MDCTask(0, 1)));
+
+        for (Future<Long> future : futures) {
+            LOGGER.info("THREAD " + future.get() + " DONE!");
+        }
+
+        this.stream.flush();
+
+        LOGGER.info("ALL DONE!");
+
+        final String outputLog = this.stream.toString("UTF-8");
+
+        LOGGER.info(outputLog);
+
+        assertNotNull(outputLog);
+        assertEquals(0, outputLog.trim().length());
     }
 }

@@ -14,14 +14,13 @@ package fr.landel.utils.commons.over;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-
-import fr.landel.utils.commons.over.AbstractOverComparable;
 
 /**
  * Check methods from over comparable and over object classes
@@ -45,6 +44,13 @@ public class AbstractOverComparableTest {
 
         /**
          * Constructor
+         */
+        public ComparableImpl() {
+            super();
+        }
+
+        /**
+         * Constructor
          *
          * @param value
          *            The comparable value
@@ -52,6 +58,16 @@ public class AbstractOverComparableTest {
         public ComparableImpl(final Integer value) {
             super(ComparableImpl.class);
             this.value = value;
+        }
+
+        /**
+         * Constructor
+         *
+         * @param value
+         *            The unused value
+         */
+        public ComparableImpl(final String value) {
+            super(null);
         }
 
         @Override
@@ -100,6 +116,9 @@ public class AbstractOverComparableTest {
         assertEquals(-1, comparable1.compareTo(null));
         assertEquals(0, comparable1.compareTo(comparable1));
         assertEquals(1, comparable1.compareTo(comparable2));
+
+        // simple check
+        assertNotNull(new ComparableImpl());
     }
 
     /**
@@ -122,9 +141,13 @@ public class AbstractOverComparableTest {
     public void testOverToString() {
         final int key1 = 10;
 
-        final ComparableImpl comparable1 = new ComparableImpl(key1);
+        ComparableImpl comparable = new ComparableImpl(key1);
 
-        assertEquals("ComparableImpl [value=10]", comparable1.toString());
+        assertEquals("ComparableImpl [value=10]", comparable.toString());
+
+        comparable = new ComparableImpl("");
+
+        assertEquals("ComparableImpl [value=null]", comparable.toString());
     }
 
     /**

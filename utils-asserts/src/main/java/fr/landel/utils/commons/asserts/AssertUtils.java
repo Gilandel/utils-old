@@ -77,7 +77,7 @@ import org.hamcrest.StringDescription;
  * @author Gilles Landel
  * @since 1.1.2
  */
-public abstract class AssertUtils extends AbstractIterableAssert {
+public abstract class AssertUtils extends AbstractMapAssert {
 
     /**
      * The equivalent of JUnit/hamcrest assertThat

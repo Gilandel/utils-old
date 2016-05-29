@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.MDC;
 
 /**
- * MDC Thread Safe (only checked with logback adpater (thread safe)).<br>
+ * MDC Multi-thread (only checked with logback adpater (thread safe)).<br>
  * <br>
  * To be sure, the thread method where you log, have to be synchronized or you
  * have to use the context map.<br>

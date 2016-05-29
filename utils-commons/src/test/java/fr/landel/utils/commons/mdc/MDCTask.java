@@ -14,10 +14,9 @@ package fr.landel.utils.commons.mdc;
 
 import java.util.concurrent.Callable;
 
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import fr.landel.utils.commons.mdc.MDCMT;
 
 /**
  * Runnable to test MDC thread safe
@@ -58,13 +57,34 @@ public class MDCTask implements Callable<Long> {
     }
 
     private synchronized void log(final int i) {
-        MDCMT.put(this.id, "test", "THREAD: " + this.id + ", task: " + i);
+        String key = "test";
+        String keyRemove = "key_to_remove";
+        String value = "THREAD: " + this.id + ", task: " + i;
+
+        MDCMT.put(this.id, keyRemove, value);
+        Assert.assertTrue(MDCMT.containsKey(this.id, keyRemove));
+        MDCMT.clear(this.id);
+        Assert.assertFalse(MDCMT.containsKey(this.id, keyRemove));
+
+        MDCMT.put(this.id, key, value);
+        Assert.assertTrue(MDCMT.containsKey(this.id, key));
+        Assert.assertTrue(MDCMT.containsValue(this.id, value));
+        Assert.assertEquals(value, MDCMT.get(this.id, key));
+
+        MDCMT.put(this.id, keyRemove, value);
+        Assert.assertTrue(MDCMT.containsKey(this.id, keyRemove));
+        MDCMT.remove(this.id, keyRemove);
+        Assert.assertFalse(MDCMT.containsKey(this.id, keyRemove));
 
         MDCMT.trace(this.id, this.logger, "message");
         MDCMT.trace(this.id, this.logger, "message", new IllegalAccessError());
         MDCMT.debug(this.id, this.logger, "message");
+        MDCMT.debug(this.id, this.logger, "message", new IllegalArgumentException());
         MDCMT.info(this.id, this.logger, "message");
+        MDCMT.info(this.id, this.logger, "message", new IllegalArgumentException());
         MDCMT.warn(this.id, this.logger, "message");
+        MDCMT.warn(this.id, this.logger, "message", new IllegalArgumentException());
         MDCMT.error(this.id, this.logger, "message");
+        MDCMT.error(this.id, this.logger, "message", new IllegalArgumentException());
     }
 }

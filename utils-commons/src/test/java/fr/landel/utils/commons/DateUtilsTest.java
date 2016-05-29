@@ -24,8 +24,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.DateUtils;
-
 /**
  * Check utility class (dates).
  *
@@ -112,5 +110,28 @@ public class DateUtilsTest {
 
         date2 = DateUtils.getDefaultIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, null, dateDefault);
         assertEquals(dateDefault.toString(), date2.toString());
+
+        date2 = DateUtils.getDefaultIfEmpty("UNPARSEABLE", df, dateDefault);
+        assertEquals(dateDefault.toString(), date2.toString());
+    }
+
+    /**
+     * Check get null date if empty
+     */
+    @Test
+    public void testGetNullIfEmpty() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date date2 = DateUtils.getNullIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, df);
+        assertEquals(date2.toString(), date2.toString());
+
+        date2 = DateUtils.getNullIfEmpty(null, df);
+        assertNull(date2);
+
+        date2 = DateUtils.getNullIfEmpty("", df);
+        assertNull(date2);
+
+        date2 = DateUtils.getNullIfEmpty("UNPARSEABLE", df);
+        assertNull(date2);
     }
 }

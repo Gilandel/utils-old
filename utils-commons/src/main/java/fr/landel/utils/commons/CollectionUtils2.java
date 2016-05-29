@@ -424,18 +424,58 @@ public final class CollectionUtils2 {
         }
     }
 
+    /**
+     * Get typed list class
+     * 
+     * @param type
+     *            The class type
+     * @param <T>
+     *            The type
+     * @return The typed class
+     */
     public static <T> Class<List<T>> getListClass(final Class<T> type) {
         return CastGenerics.getClass(new ArrayList<T>());
     }
 
+    /**
+     * Get typed set class
+     * 
+     * @param type
+     *            The class type
+     * @param <T>
+     *            The type
+     * @return The typed class
+     */
     public static <T> Class<Set<T>> getSetClass(final Class<T> type) {
         return CastGenerics.getClass(new HashSet<T>());
     }
 
+    /**
+     * Get typed queue class
+     * 
+     * @param type
+     *            The class type
+     * @param <T>
+     *            The type
+     * @return The typed class
+     */
     public static <T> Class<Queue<T>> getQueueClass(final Class<T> type) {
         return CastGenerics.getClass(new LinkedList<T>());
     }
 
+    /**
+     * Get typed map class
+     * 
+     * @param keyType
+     *            The key class
+     * @param valueType
+     *            The value class
+     * @param <K>
+     *            The key type
+     * @param <V>
+     *            The value type
+     * @return The typed class
+     */
     public static <K, V> Class<Map<K, V>> getMapClass(final Class<K> keyType, final Class<V> valueType) {
         return CastGenerics.getClass(new HashMap<K, V>());
     }
