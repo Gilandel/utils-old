@@ -41,6 +41,7 @@ public class AbstractOverComparableTest {
     private class ComparableImpl extends AbstractOverComparable<ComparableImpl> {
 
         private Integer value;
+        private String value2;
 
         /**
          * Constructor
@@ -68,6 +69,14 @@ public class AbstractOverComparableTest {
          */
         public ComparableImpl(final String value) {
             super(null);
+            this.value2 = value;
+        }
+
+        /**
+         * @return value 2
+         */
+        public String getValue2() {
+            return this.value2;
         }
 
         @Override
@@ -147,6 +156,7 @@ public class AbstractOverComparableTest {
 
         comparable = new ComparableImpl("");
 
+        assertEquals("", comparable.getValue2());
         assertEquals("ComparableImpl [value=null]", comparable.toString());
     }
 

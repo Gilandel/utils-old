@@ -13,6 +13,7 @@
 package fr.landel.utils.commons;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -28,7 +29,6 @@ import java.util.Set;
 
 import org.apache.commons.collections4.Transformer;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -65,7 +65,7 @@ public class CollectionUtils2Test {
 
             List<String> strPoints = CollectionUtils2.transformIntoList(points, TRANSFORMER);
 
-            Assert.assertThat(strPoints, Matchers.contains("1, 2", "2, 0", null));
+            assertThat(strPoints, Matchers.contains("1, 2", "2, 0", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -86,7 +86,7 @@ public class CollectionUtils2Test {
 
             Set<String> strPoints = CollectionUtils2.transformIntoSet(points, TRANSFORMER);
 
-            Assert.assertThat(strPoints, Matchers.containsInAnyOrder("1, 2", "2, 0", null));
+            assertThat(strPoints, Matchers.containsInAnyOrder("1, 2", "2, 0", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -106,7 +106,7 @@ public class CollectionUtils2Test {
 
             List<String> strPoints = CollectionUtils2.transformIntoList(points);
 
-            Assert.assertThat(strPoints, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
+            assertThat(strPoints, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -126,7 +126,7 @@ public class CollectionUtils2Test {
 
             List<String> strPoints = CollectionUtils2.transformIntoList(points, true);
 
-            Assert.assertThat(strPoints, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+            assertThat(strPoints, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -146,7 +146,7 @@ public class CollectionUtils2Test {
 
             Set<String> strPoints = CollectionUtils2.transformIntoSet(points);
 
-            Assert.assertThat(strPoints, Matchers.containsInAnyOrder("java.awt.Point[x=2,y=0]", "java.awt.Point[x=1,y=2]", null));
+            assertThat(strPoints, Matchers.containsInAnyOrder("java.awt.Point[x=2,y=0]", "java.awt.Point[x=1,y=2]", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -166,7 +166,7 @@ public class CollectionUtils2Test {
 
             Set<String> strPoints = CollectionUtils2.transformIntoSet(points, true);
 
-            Assert.assertThat(strPoints, Matchers.containsInAnyOrder("java.awt.Point[x=2,y=0]", "java.awt.Point[x=1,y=2]", "null"));
+            assertThat(strPoints, Matchers.containsInAnyOrder("java.awt.Point[x=2,y=0]", "java.awt.Point[x=1,y=2]", "null"));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -185,9 +185,9 @@ public class CollectionUtils2Test {
 
             Point[] pointsArray = CollectionUtils2.toArray(points);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining(points.get(0), points.get(1), null));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining(points.get(0), points.get(1), null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -207,9 +207,9 @@ public class CollectionUtils2Test {
 
             String[] pointsArray = CollectionUtils2.transformIntoArray(points, TRANSFORMER);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining("1, 2", "2, 0", null));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining("1, 2", "2, 0", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -227,9 +227,9 @@ public class CollectionUtils2Test {
 
             String[] pointsArray = CollectionUtils2.transformIntoArray(points);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -248,9 +248,9 @@ public class CollectionUtils2Test {
 
             String[] pointsArray = CollectionUtils2.transformIntoArray(points, true);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -271,9 +271,9 @@ public class CollectionUtils2Test {
 
             String[] pointsArray = CollectionUtils2.transformIntoArray(points, TRANSFORMER);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining("1, 2", "2, 0", null));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining("1, 2", "2, 0", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -293,9 +293,9 @@ public class CollectionUtils2Test {
 
             String[] pointsArray = CollectionUtils2.transformIntoArray(points);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -315,9 +315,9 @@ public class CollectionUtils2Test {
 
             String[] pointsArray = CollectionUtils2.transformIntoArray(points, true);
 
-            Assert.assertNotNull(pointsArray);
-            Assert.assertTrue(pointsArray.length > 0);
-            Assert.assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -337,9 +337,9 @@ public class CollectionUtils2Test {
 
             List<String> pointsList = CollectionUtils2.transformIntoList(points, TRANSFORMER);
 
-            Assert.assertNotNull(pointsList);
-            Assert.assertTrue(pointsList.size() > 0);
-            Assert.assertThat(pointsList, Matchers.contains("1, 2", "2, 0", null));
+            assertNotNull(pointsList);
+            assertTrue(pointsList.size() > 0);
+            assertThat(pointsList, Matchers.contains("1, 2", "2, 0", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -357,9 +357,9 @@ public class CollectionUtils2Test {
 
             List<String> pointsList = CollectionUtils2.transformIntoList(points);
 
-            Assert.assertNotNull(pointsList);
-            Assert.assertTrue(pointsList.size() > 0);
-            Assert.assertThat(pointsList, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
+            assertNotNull(pointsList);
+            assertTrue(pointsList.size() > 0);
+            assertThat(pointsList, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -377,9 +377,9 @@ public class CollectionUtils2Test {
 
             List<String> pointsList = CollectionUtils2.transformIntoList(points, true);
 
-            Assert.assertNotNull(pointsList);
-            Assert.assertTrue(pointsList.size() > 0);
-            Assert.assertThat(pointsList, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+            assertNotNull(pointsList);
+            assertTrue(pointsList.size() > 0);
+            assertThat(pointsList, Matchers.contains("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -399,9 +399,9 @@ public class CollectionUtils2Test {
 
             Set<String> pointsList = CollectionUtils2.transformIntoSet(points, TRANSFORMER);
 
-            Assert.assertNotNull(pointsList);
-            Assert.assertTrue(pointsList.size() > 0);
-            Assert.assertThat(pointsList, Matchers.containsInAnyOrder("1, 2", "2, 0", null));
+            assertNotNull(pointsList);
+            assertTrue(pointsList.size() > 0);
+            assertThat(pointsList, Matchers.containsInAnyOrder("1, 2", "2, 0", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -419,9 +419,9 @@ public class CollectionUtils2Test {
 
             Set<String> pointsList = CollectionUtils2.transformIntoSet(points);
 
-            Assert.assertNotNull(pointsList);
-            Assert.assertTrue(pointsList.size() > 0);
-            Assert.assertThat(pointsList, Matchers.containsInAnyOrder("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
+            assertNotNull(pointsList);
+            assertTrue(pointsList.size() > 0);
+            assertThat(pointsList, Matchers.containsInAnyOrder("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", null));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -439,9 +439,9 @@ public class CollectionUtils2Test {
 
             Set<String> pointsList = CollectionUtils2.transformIntoSet(points, true);
 
-            Assert.assertNotNull(pointsList);
-            Assert.assertTrue(pointsList.size() > 0);
-            Assert.assertThat(pointsList, Matchers.containsInAnyOrder("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+            assertNotNull(pointsList);
+            assertTrue(pointsList.size() > 0);
+            assertThat(pointsList, Matchers.containsInAnyOrder("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
