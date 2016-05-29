@@ -27,7 +27,7 @@ import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 
 import fr.landel.utils.aop.observable.AOPObservable;
 import fr.landel.utils.aop.observable.EnumTest;
-import fr.landel.utils.commons.io.EncodingUtils;
+import fr.landel.utils.io.EncodingUtils;
 
 /**
  * Check logging aspect methods.

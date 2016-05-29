@@ -62,6 +62,7 @@
 		<module>utils-io</module>
 		<module>utils-scripts</module>
 		<module>utils-mapper</module>
+		<module>utils-log</module>
 		<module>utils-aop</module>
 		<module>utils-model</module>
 		<module>utils-poi</module>
@@ -78,6 +79,10 @@
 		<application.org.name>Gilandel</application.org.name>
 		<application.org.url>https://github.com/Gilandel</application.org.url>
 		<application.org.license>landel-license</application.org.license>
+		
+		<!-- For easy access to license parameters when adding a new module -->
+		<canUpdateCopyright>false</canUpdateCopyright>
+		<canUpdateDescription>false</canUpdateDescription>
 
 		<!-- Project information -->
 		<jdk.version>1.8</jdk.version>
@@ -434,8 +439,8 @@
 						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 
 						<canUpdateLicense>true</canUpdateLicense>
-						<canUpdateCopyright>false</canUpdateCopyright>
-						<canUpdateDescription>false</canUpdateDescription>
+						<canUpdateCopyright>${canUpdateCopyright}</canUpdateCopyright>
+						<canUpdateDescription>${canUpdateDescription}</canUpdateDescription>
 
 						<dryRun>false</dryRun>
 						<failOnMissingHeader>true</failOnMissingHeader>

@@ -22,7 +22,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 
-import fr.landel.utils.commons.io.EncodingUtils;
+import fr.landel.utils.io.EncodingUtils;
 
 /**
  * UTF-8 resources bundle loader.

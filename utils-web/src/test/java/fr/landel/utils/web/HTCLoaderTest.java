@@ -23,7 +23,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.landel.utils.commons.io.FileUtils;
+import fr.landel.utils.io.FileUtils;
 
 /**
  * HTC loader tests.

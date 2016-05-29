@@ -12,9 +12,9 @@
  */
 package fr.landel.utils.poi;
 
-import static fr.landel.utils.commons.asserts.AbstractAssert.fail;
-import static fr.landel.utils.commons.asserts.AbstractAssert.isEqual;
-import static fr.landel.utils.commons.asserts.AbstractAssert.isNotNull;
+import static fr.landel.utils.asserts.AbstractAssert.fail;
+import static fr.landel.utils.asserts.AbstractAssert.isEqual;
+import static fr.landel.utils.asserts.AbstractAssert.isNotNull;
 
 import java.io.File;
 import java.io.FileInputStream;

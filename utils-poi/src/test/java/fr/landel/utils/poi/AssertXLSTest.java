@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.io.FileSystemUtils;
+import fr.landel.utils.io.FileSystemUtils;
 
 /**
  * Check the XLS comparison
