@@ -21,9 +21,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AbstractDateAssert;
-import fr.landel.utils.asserts.AssertUtils;
-
 /**
  * Test date assert
  *
@@ -34,7 +31,7 @@ import fr.landel.utils.asserts.AssertUtils;
 public class AbstractDateAssertTest {
 
     /**
-     * Test method for {@link AbstractDateAssert#isEqual}.
+     * Test method for {@link AssertUtils#isEqual}.
      */
     @Test
     public void testIsEqualOK() {
@@ -52,7 +49,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isEqual}.
+     * Test method for {@link AssertUtils#isEqual}.
      */
     @Test
     public void testIsEqualKO() {
@@ -82,7 +79,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isAround}.
+     * Test method for {@link AssertUtils#isAround}.
      */
     @Test
     public void testIsAroundOK() {
@@ -106,7 +103,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isAround}.
+     * Test method for {@link AssertUtils#isAround}.
      */
     @Test
     public void testIsAroundKO() {
@@ -168,7 +165,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isNotAround}.
+     * Test method for {@link AssertUtils#isNotAround}.
      */
     @Test
     public void testIsNotAroundOK() {
@@ -195,7 +192,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isNotAround}.
+     * Test method for {@link AssertUtils#isNotAround}.
      */
     @Test
     public void testIsNotAroundKO() {
@@ -241,7 +238,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isNotEqual}.
+     * Test method for {@link AssertUtils#isNotEqual}.
      */
     @Test
     public void testIsNotEqualOK() {
@@ -260,7 +257,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isNotEqual}.
+     * Test method for {@link AssertUtils#isNotEqual}.
      */
     @Test
     public void testIsNotEqualKO() {
@@ -283,7 +280,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isAfter}.
+     * Test method for {@link AssertUtils#isAfter}.
      */
     @Test
     public void testIsAfterOK() {
@@ -300,7 +297,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isAfter}.
+     * Test method for {@link AssertUtils#isAfter}.
      */
     @Test
     public void testIsAfterKO() {
@@ -353,7 +350,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isAfterOrEqual}.
+     * Test method for {@link AssertUtils#isAfterOrEqual}.
      */
     @Test
     public void testIsAfterOrEqualOK() {
@@ -376,7 +373,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isAfterOrEqual}.
+     * Test method for {@link AssertUtils#isAfterOrEqual}.
      */
     @Test
     public void testIsAfterOrEqualKO() {
@@ -420,7 +417,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isBefore}.
+     * Test method for {@link AssertUtils#isBefore}.
      */
     @Test
     public void testIsBeforeOK() {
@@ -437,7 +434,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isBefore}.
+     * Test method for {@link AssertUtils#isBefore}.
      */
     @Test
     public void testIsBeforeKO() {
@@ -490,7 +487,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isBeforeOrEqual}.
+     * Test method for {@link AssertUtils#isBeforeOrEqual}.
      */
     @Test
     public void testIsBeforeOrEqualOK() {
@@ -513,7 +510,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AbstractDateAssert#isBeforeOrEqual}.
+     * Test method for {@link AssertUtils#isBeforeOrEqual}.
      */
     @Test
     public void testIsBeforeOrEqualKO() {

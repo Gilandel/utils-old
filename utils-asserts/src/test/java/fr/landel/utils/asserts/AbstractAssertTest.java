@@ -20,8 +20,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AssertUtils;
-
 /**
  * Check assert
  *

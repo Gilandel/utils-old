@@ -21,8 +21,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AssertUtils;
-
 /**
  * Check assert
  *
@@ -33,8 +31,7 @@ import fr.landel.utils.asserts.AssertUtils;
 public class AbstractStringAssertTest {
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(String, String, Object...)}
+     * Test method for {@link AssertUtils#isNotEmpty(String, String, Object...)}
      * .
      */
     @Test
@@ -47,8 +44,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(String, String, Object...)}
+     * Test method for {@link AssertUtils#isNotEmpty(String, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
@@ -57,8 +53,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(String, String, Object...)}
+     * Test method for {@link AssertUtils#isNotEmpty(String, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
@@ -67,8 +62,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.lang.String)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.lang.String)} .
      */
     @Test
     public void testIsNotEmptyOKString() {
@@ -80,8 +74,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.lang.String)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOString() {
@@ -89,8 +82,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.lang.String)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2String() {
@@ -99,8 +91,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(Object[], String, Object...)}
-     * .
+     * {@link AssertUtils#isNotEmpty(Object[], String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKObjectArrayString() {
@@ -113,8 +104,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(Object[], String, Object...)}
-     * .
+     * {@link AssertUtils#isNotEmpty(Object[], String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOObjectArrayString() {
@@ -122,8 +112,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.lang.Object[])} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.lang.Object[])} .
      */
     @Test
     public void testIsNotEmptyOKObjectArray() {
@@ -135,8 +124,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.lang.Object[])} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.lang.Object[])} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOObjectArray() {
@@ -145,8 +133,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.util.Collection, String, Object...)}
-     * .
+     * {@link AssertUtils#isNotEmpty(java.util.Collection, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQString() {
@@ -159,8 +146,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.util.Collection, String, Object...)}
-     * .
+     * {@link AssertUtils#isNotEmpty(java.util.Collection, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQString() {
@@ -168,8 +154,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.util.Collection)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.util.Collection)} .
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQ() {
@@ -181,8 +166,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.util.Collection)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.util.Collection)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQ() {
@@ -190,8 +174,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(Map, String, Object...)} .
+     * Test method for {@link AssertUtils#isNotEmpty(Map, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQString() {
@@ -205,8 +188,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(Map, String, Object...)} .
+     * Test method for {@link AssertUtils#isNotEmpty(Map, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQString() {
@@ -214,8 +196,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.util.Map)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.util.Map)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQ() {
@@ -229,8 +210,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotEmpty(java.util.Map)} .
+     * Test method for {@link AssertUtils#isNotEmpty(java.util.Map)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQ() {
@@ -238,8 +218,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isEmpty(String, String, Object...)} .
+     * Test method for {@link AssertUtils#isEmpty(String, String, Object...)} .
      */
     @Test
     public void testIsEmptyOKStringString() {
@@ -252,8 +231,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isEmpty(String, String, Object...)} .
+     * Test method for {@link AssertUtils#isEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOStringString() {
@@ -261,8 +239,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isEmpty(java.lang.String)} .
+     * Test method for {@link AssertUtils#isEmpty(java.lang.String)} .
      */
     @Test
     public void testIsEmptyOKString() {
@@ -275,8 +252,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isEmpty(java.lang.String)} .
+     * Test method for {@link AssertUtils#isEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOString() {
@@ -284,8 +260,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotBlank(String, String, Object...)}
+     * Test method for {@link AssertUtils#isNotBlank(String, String, Object...)}
      * .
      */
     @Test
@@ -298,8 +273,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotBlank(String, String, Object...)}
+     * Test method for {@link AssertUtils#isNotBlank(String, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
@@ -308,8 +282,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotBlank(java.lang.String)} .
+     * Test method for {@link AssertUtils#isNotBlank(java.lang.String)} .
      */
     @Test
     public void testIsNotBlankOKString() {
@@ -321,8 +294,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isNotBlank(java.lang.String)} .
+     * Test method for {@link AssertUtils#isNotBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOString() {
@@ -330,8 +302,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isBlank(String, String, Object...)} .
+     * Test method for {@link AssertUtils#isBlank(String, String, Object...)} .
      */
     @Test
     public void testIsBlankOKStringString() {
@@ -343,8 +314,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isBlank(String, String, Object...)} .
+     * Test method for {@link AssertUtils#isBlank(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOStringString() {
@@ -352,8 +322,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isBlank(java.lang.String)} .
+     * Test method for {@link AssertUtils#isBlank(java.lang.String)} .
      */
     @Test
     public void testIsBlankOKString() {
@@ -365,8 +334,7 @@ public class AbstractStringAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#isBlank(java.lang.String)} .
+     * Test method for {@link AssertUtils#isBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOString() {
@@ -375,8 +343,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#doesNotContain(String, String, String, Object...)}
-     * .
+     * {@link AssertUtils#doesNotContain(String, String, String, Object...)} .
      */
     @Test
     public void testDoesNotContainOKStringStringString() {
@@ -389,8 +356,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#doesNotContain(String, String, String, Object...)}
-     * .
+     * {@link AssertUtils#doesNotContain(String, String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringStringString() {
@@ -399,8 +365,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#doesNotContain(java.lang.String, java.lang.String)}
-     * .
+     * {@link AssertUtils#doesNotContain(java.lang.String, java.lang.String)} .
      */
     @Test
     public void testDoesNotContainOKStringString() {
@@ -413,8 +378,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#doesNotContain(java.lang.String, java.lang.String)}
-     * .
+     * {@link AssertUtils#doesNotContain(java.lang.String, java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringString() {
@@ -423,8 +387,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#contains(java.lang.String, java.lang.String)}
-     * .
+     * {@link AssertUtils#contains(java.lang.String, java.lang.String)} .
      */
     @Test
     public void testContainsOKStringString() {
@@ -437,8 +400,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#contains(java.lang.String, java.lang.String)}
-     * .
+     * {@link AssertUtils#contains(java.lang.String, java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringString() {
@@ -447,8 +409,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#contains(String, String, String, Object...)}
-     * .
+     * {@link AssertUtils#contains(String, String, String, Object...)} .
      */
     @Test
     public void testContainsOKStringStringString() {
@@ -461,8 +422,7 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#contains(String, String, String, Object...)}
-     * .
+     * {@link AssertUtils#contains(String, String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringStringString() {

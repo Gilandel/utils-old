@@ -23,8 +23,6 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AssertUtils;
-
 /**
  * Check assert
  *
@@ -35,9 +33,7 @@ import fr.landel.utils.asserts.AssertUtils;
 public class AssertUtilsTest {
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#that(Object, Matcher)}
-     * .
+     * Test method for {@link AssertUtils#that(Object, Matcher)} .
      */
     @Test
     public void testThatOK() {
@@ -82,9 +78,7 @@ public class AssertUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#that(Object, Matcher)}
-     * .
+     * Test method for {@link AssertUtils#that(Object, Matcher)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testThatKO() {

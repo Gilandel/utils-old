@@ -16,8 +16,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AssertUtils;
-
 /**
  * Check assert
  *
@@ -29,8 +27,7 @@ public class AbstractArrayAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#hasNoNullElements(Object[], String, Object...)}
-     * .
+     * {@link AssertUtils#hasNoNullElements(Object[], String, Object...)} .
      */
     @Test
     public void testHasNoNullElementOKsObjectArrayString() {
@@ -44,8 +41,7 @@ public class AbstractArrayAssertTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#hasNoNullElements(Object[], String, Object...)}
-     * .
+     * {@link AssertUtils#hasNoNullElements(Object[], String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testHasNoNullElementsKOObjectArrayString() {
@@ -54,8 +50,7 @@ public class AbstractArrayAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#hasNoNullElements(java.lang.Object[])}
+     * Test method for {@link AssertUtils#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test
@@ -69,8 +64,7 @@ public class AbstractArrayAssertTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.asserts.AssertUtils#hasNoNullElements(java.lang.Object[])}
+     * Test method for {@link AssertUtils#hasNoNullElements(java.lang.Object[])}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
