@@ -103,7 +103,7 @@ public interface FunctionThrowable<T, R, E extends Throwable> extends Function<T
      * @throws E
      *             On error exception
      *
-     * @see #compose(Function)
+     * @see #composeThrows(FunctionThrowable)
      */
     default <O> FunctionThrowable<T, O, E> andThen(final FunctionThrowable<R, O, E> after) throws E {
         Objects.requireNonNull(after);

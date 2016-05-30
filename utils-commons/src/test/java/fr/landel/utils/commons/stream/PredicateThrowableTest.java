@@ -139,8 +139,7 @@ public class PredicateThrowableTest {
         final PredicateThrowable<String, IllegalArgumentException> pp = P1.or(P2);
 
         try {
-            assertFalse(P1.testThrows("V6"));
-            assertTrue(P2.testThrows("V1"));
+            assertTrue(pp.testThrows("V1"));
             assertTrue(pp.testThrows("V12"));
             assertTrue(pp.testThrows("v12"));
             assertFalse(pp.testThrows("A1"));

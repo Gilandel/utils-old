@@ -14,7 +14,6 @@ package fr.landel.utils.commons.stream;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Throwable function with two arguments
@@ -84,8 +83,6 @@ public interface BiFunctionThrowable<T, U, R, E extends Throwable> extends BiFun
      *             if after is null
      * @throws E
      *             On error exception
-     *
-     * @see #compose(Function)
      */
     default <O> BiFunctionThrowable<T, U, O, E> andThen(final FunctionThrowable<R, O, E> after) throws E {
         Objects.requireNonNull(after);

@@ -39,7 +39,7 @@ public class BiPredicateThrowableTest {
         String s1u = s1.toUpperCase();
         String s2u = s2.toUpperCase();
         if (s1u.equals(s1) && s2u.equals(s2)) {
-            return s1u.contains(s2u);
+            return s1u.contains(s2u) || s2u.contains(s1u);
         } else if (!s1u.equals(s1)) {
             throw new IllegalArgumentException(ERROR4);
         } else if (!s2u.equals(s2)) {
@@ -154,10 +154,9 @@ public class BiPredicateThrowableTest {
         final BiPredicateThrowable<String, String, IllegalArgumentException> pp = P1.or(P2);
 
         try {
-            assertFalse(P1.testThrows("V6", "V8"));
-            assertTrue(P2.testThrows("V1", "V1"));
-            assertFalse(P2.testThrows("V1", "V12"));
             assertTrue(pp.testThrows("V12", "V1"));
+            assertTrue(pp.testThrows("V", "V1"));
+            assertTrue(pp.testThrows("V12", "V12"));
             assertFalse(pp.testThrows("V6", "V12"));
         } catch (IllegalArgumentException e) {
             fail("Predicate failed");
