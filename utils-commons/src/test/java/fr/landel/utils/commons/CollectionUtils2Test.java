@@ -13,6 +13,7 @@
 package fr.landel.utils.commons;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -188,6 +189,16 @@ public class CollectionUtils2Test {
             assertNotNull(pointsArray);
             assertTrue(pointsArray.length > 0);
             assertThat(pointsArray, Matchers.arrayContaining(points.get(0), points.get(1), null));
+
+            pointsArray = CollectionUtils2.toArray(points, Point.class);
+            assertNotNull(pointsArray);
+            assertTrue(pointsArray.length > 0);
+            assertThat(pointsArray, Matchers.arrayContaining(points.get(0), points.get(1), null));
+
+            assertNull(CollectionUtils2.toArray(null));
+
+            points.clear();
+            assertNull(CollectionUtils2.toArray(points));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -251,6 +262,10 @@ public class CollectionUtils2Test {
             assertNotNull(pointsArray);
             assertTrue(pointsArray.length > 0);
             assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+
+            points = new Point[0];
+            pointsArray = CollectionUtils2.transformIntoArray(points, true);
+            assertNull(pointsArray);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -318,6 +333,10 @@ public class CollectionUtils2Test {
             assertNotNull(pointsArray);
             assertTrue(pointsArray.length > 0);
             assertThat(pointsArray, Matchers.arrayContaining("java.awt.Point[x=1,y=2]", "java.awt.Point[x=2,y=0]", "null"));
+
+            points.clear();
+            pointsArray = CollectionUtils2.transformIntoArray(points, true);
+            assertNull(pointsArray);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }

@@ -73,11 +73,14 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetObject() {
-        ExException map = new ExException("msg");
-        IOException result = CastGenerics.cast(map, IOException.class);
+        ExException exex = new ExException("msg");
+        IOException result = CastGenerics.cast(exex, IOException.class);
 
         assertEquals("msg", result.getMessage());
         assertNull(CastGenerics.cast(null, IOException.class));
+        assertNull(CastGenerics.cast("", IOException.class));
+        assertNull(CastGenerics.cast("", null));
+        assertNull(CastGenerics.cast(null, null));
     }
 
     /**
@@ -216,11 +219,17 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetIterator() {
-        Set<Object> set = new HashSet<>();
+        Set<CharSequence> set = new HashSet<>();
         set.add("test");
         set.add(null);
 
         assertFalse(CastGenerics.getIterator(null, String.class).hasNext());
+        assertFalse(CastGenerics.getIterator(null, null).hasNext());
+        assertFalse(CastGenerics.getIterator(set.iterator(), null).hasNext());
+        assertFalse(CastGenerics.getIterator("", null).hasNext());
+        assertFalse(CastGenerics.getIterator("", String.class).hasNext());
+        assertTrue(CastGenerics.getIterator(set.iterator(), Integer.class).hasNext());
+        assertNull(CastGenerics.getIterator(set.iterator(), Integer.class).next());
 
         Iterator<String> iterator = CastGenerics.getIterator(set.iterator(), String.class);
         assertTrue(iterator.hasNext());
@@ -272,9 +281,9 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetListTypedClass() {
-        Class<List<Exception>> exceptionListClass = CastGenerics.getListTypedClass(Exception.class);
-
-        assertNotNull(exceptionListClass);
+        assertNotNull(CastGenerics.getListTypedClass(Exception.class));
+        assertNotNull(CastGenerics.getListTypedClass(List.class));
+        assertNotNull(CastGenerics.getListTypedClass(null));
     }
 
     static class ExException extends IOException {

@@ -17,8 +17,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.StringUtils;
-
 /**
  * Check utility class (strings).
  *
@@ -116,6 +114,8 @@ public class StringUtilsTest {
         // out of bounds
         assertEquals("", StringUtils.substring(str, ":", -5));
 
+        assertEquals("", StringUtils.substring("", ":", 0, 2));
+        assertEquals("a", StringUtils.substring("a", ":", 0, 2));
         assertEquals("test:toto", StringUtils.substring(str, ":", 0, 2));
         assertEquals("test:toto:titi", StringUtils.substring(str, ":", 0, 3));
         assertEquals("test:toto:titi:", StringUtils.substring(str, ":", 0, 4));
@@ -175,8 +175,11 @@ public class StringUtilsTest {
 
         assertEquals("test", StringUtils.substring(str, "::", 0, -2));
 
-        // to not checked
+        assertEquals("toto:titi", StringUtils.substring(str, "::", -3, 2));
+
+        // not checked
         assertEquals("", StringUtils.substring(str, "::", 100, 10));
+        assertEquals("", StringUtils.substring(str, "::", -10, 2));
     }
 
     /**

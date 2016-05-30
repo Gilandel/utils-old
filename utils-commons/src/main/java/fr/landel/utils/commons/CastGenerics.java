@@ -580,11 +580,11 @@ public final class CastGenerics {
             Iterator<?> mObj = (Iterator<?>) o;
             while (mObj.hasNext()) {
                 Object obj = mObj.next();
-                if (obj != null && classElement.isAssignableFrom(obj.getClass())) {
+                if (obj == null) {
+                    list.add(null);
+                } else if (classElement.isAssignableFrom(obj.getClass())) {
                     final T element = classElement.cast(obj);
                     list.add(element);
-                } else if (obj == null) {
-                    list.add(null);
                 }
             }
         }
@@ -611,19 +611,23 @@ public final class CastGenerics {
     private static <T> T instantiate(final boolean logLevelInfo, final Constructor<?> constructor, final Class<T> instantiableClass,
             final Object... objects) {
         T result = null;
-        Object resultTmp;
-        try {
-            if (constructor != null) {
-                resultTmp = constructor.newInstance(objects);
-                if (resultTmp != null && instantiableClass.isAssignableFrom(resultTmp.getClass())) {
-                    result = (T) resultTmp;
+        if (instantiableClass != null) {
+            Object resultTmp;
+            try {
+                if (constructor != null) {
+                    resultTmp = constructor.newInstance(objects);
+                    if (resultTmp != null && instantiableClass.isAssignableFrom(resultTmp.getClass())) {
+                        result = (T) resultTmp;
+                    }
                 }
-            }
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            if (logLevelInfo) {
-                LOGGER.info("Cannot instantiate " + constructor.getName());
-            } else {
-                LOGGER.error("Cannot instantiate " + constructor.getName());
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                if (constructor != null) {
+                    if (logLevelInfo) {
+                        LOGGER.info("Cannot instantiate " + constructor.getName());
+                    } else {
+                        LOGGER.error("Cannot instantiate " + constructor.getName());
+                    }
+                }
             }
         }
         return result;
@@ -646,14 +650,17 @@ public final class CastGenerics {
             final Object[] objects) {
         T result = null;
 
-        Constructor<T> typedConstructor;
-        try {
-            typedConstructor = instantiableClass.getDeclaredConstructor(classes.toArray(new Class<?>[classes.size()]));
+        if (instantiableClass != null && classes != null) {
+            Constructor<T> typedConstructor;
+            try {
+                typedConstructor = instantiableClass.getDeclaredConstructor(classes.toArray(new Class<?>[classes.size()]));
 
-            result = instantiate(true, typedConstructor, instantiableClass, objects);
-        } catch (NoSuchMethodException | SecurityException e) {
-            LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
+                result = instantiate(true, typedConstructor, instantiableClass, objects);
+            } catch (NoSuchMethodException | SecurityException e) {
+                LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
+            }
         }
+
         return result;
     }
 
@@ -674,25 +681,27 @@ public final class CastGenerics {
             final Object[] objects) {
         T result = null;
 
-        try {
-            Constructor<?>[] constructors = instantiableClass.getDeclaredConstructors();
-            boolean mismatch = true;
+        if (instantiableClass != null && classes != null) {
+            try {
+                Constructor<?>[] constructors = instantiableClass.getDeclaredConstructors();
+                boolean mismatch = true;
 
-            for (Constructor<?> constructor : constructors) {
-                Class<?>[] parameterTypes = constructor.getParameterTypes();
-                if (parameterTypes.length == classes.size()) {
-                    mismatch = false;
-                    for (int i = 0; i < parameterTypes.length; i++) {
-                        mismatch |= classes.get(i) != null && !parameterTypes[i].isAssignableFrom(classes.get(i));
-                    }
-                    if (!mismatch) {
-                        result = instantiate(false, constructor, instantiableClass, objects);
-                        break;
+                for (Constructor<?> constructor : constructors) {
+                    Class<?>[] parameterTypes = constructor.getParameterTypes();
+                    if (parameterTypes.length == classes.size()) {
+                        mismatch = false;
+                        for (int i = 0; i < parameterTypes.length; i++) {
+                            mismatch |= classes.get(i) != null && !parameterTypes[i].isAssignableFrom(classes.get(i));
+                        }
+                        if (!mismatch) {
+                            result = instantiate(false, constructor, instantiableClass, objects);
+                            break;
+                        }
                     }
                 }
+            } catch (SecurityException e) {
+                LOGGER.error("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
             }
-        } catch (SecurityException e) {
-            LOGGER.error("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
         }
 
         return result;
@@ -745,10 +754,12 @@ public final class CastGenerics {
     public static <T> Class<List<T>> getListTypedClass(final Class<T> instantiableClass) {
         final List<T> list = new ArrayList<>();
 
-        try {
-            list.add(instantiableClass.newInstance());
-        } catch (InstantiationException | IllegalAccessException e) {
-            LOGGER.error("Errors occurred in CastGenerics#getListTypedClass()", e);
+        if (instantiableClass != null) {
+            try {
+                list.add(instantiableClass.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                LOGGER.error("Errors occurred in CastGenerics#getListTypedClass()", e);
+            }
         }
 
         return (Class<List<T>>) list.getClass();

@@ -165,7 +165,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
             if (from >= size || (from < 0 && Math.abs(from) - 1 >= size)) {
                 return "";
-            } else if (size > 0) {
+            } else {
                 final StringBuilder stringBuilder = new StringBuilder();
 
                 int end;
@@ -181,11 +181,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
                         throw new IllegalArgumentException("The 'to' index is invalid");
                     }
                 } else if (to > -1) {
-                    if (size + from + 1 < 0) {
-                        start = 0;
-                    } else {
-                        start = size + from + 1;
-                    }
+                    start = size + from + 1;
                     end = to;
                 } else if (to < from) {
                     if (size + to + 1 < 0) {
