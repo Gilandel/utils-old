@@ -13,77 +13,59 @@
 package fr.landel.utils.commons.stream;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Throwable function
+ * Throwable function with two arguments
  *
  * @since 14 mai 2016
  * @author Gilles
  *
  * @param <T>
- *            The input type
+ *            The first input type
+ * @param <U>
+ *            The second input type
  * @param <R>
  *            The return type
  * @param <E>
  *            The exception type
  */
 @FunctionalInterface
-public interface FunctionThrowable<T, R, E extends Throwable> extends Function<T, R> {
+public interface BiFunctionThrowable<T, U, R, E extends Throwable> extends BiFunction<T, U, R> {
 
     /**
-     * Performs this operation on the given argument.
+     * Performs this operation on the given arguments.
      *
      * @param t
-     *            the input argument
+     *            the first argument
+     * @param u
+     *            The second argument
      * @return The output result
      * @throws RuntimeException
      *             On error exception
      */
     @Override
-    default R apply(final T t) {
+    default R apply(final T t, final U u) {
         try {
-            return applyThrows(t);
+            return applyThrows(t, u);
         } catch (final Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Performs this operation on the given argument.
+     * Performs this operation on the given arguments.
      *
      * @param t
-     *            the input argument
+     *            the first argument
+     * @param u
+     *            The second argument
      * @return The output result
      * @throws E
      *             On error exception
      */
-    R applyThrows(T t) throws E;
-
-    /**
-     * Returns a composed function that first applies the {@code before}
-     * function to its input, and then applies this function to the result. If
-     * evaluation of either function throws an exception, it is relayed to the
-     * caller of the composed function.
-     *
-     * @param <V>
-     *            the type of input to the {@code before} function, and to the
-     *            composed function
-     * @param before
-     *            the function to apply before this function is applied
-     * @return a composed function that first applies the {@code before}
-     *         function and then applies this function
-     * @throws NullPointerException
-     *             if before is null
-     * @throws E
-     *             On error exception
-     *
-     * @see #andThen(Function)
-     */
-    default <V> FunctionThrowable<V, R, E> composeThrows(final FunctionThrowable<V, T, E> before) throws E {
-        Objects.requireNonNull(before);
-        return (v) -> applyThrows(before.applyThrows(v));
-    }
+    R applyThrows(T t, U u) throws E;
 
     /**
      * Returns a composed function that first applies this function to its
@@ -105,8 +87,8 @@ public interface FunctionThrowable<T, R, E extends Throwable> extends Function<T
      *
      * @see #compose(Function)
      */
-    default <O> FunctionThrowable<T, O, E> andThen(final FunctionThrowable<R, O, E> after) throws E {
+    default <O> BiFunctionThrowable<T, U, O, E> andThen(final FunctionThrowable<R, O, E> after) throws E {
         Objects.requireNonNull(after);
-        return (t) -> after.applyThrows(applyThrows(t));
+        return (t, u) -> after.applyThrows(applyThrows(t, u));
     }
 }

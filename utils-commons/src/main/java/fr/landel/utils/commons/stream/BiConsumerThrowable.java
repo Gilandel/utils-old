@@ -32,10 +32,12 @@ import java.util.function.BiConsumer;
 public interface BiConsumerThrowable<T, U, E extends Throwable> extends BiConsumer<T, U> {
 
     /**
-     * Performs this operation on the given argument.
+     * Performs this operation on the given arguments.
      *
      * @param t
-     *            the input argument
+     *            the first argument
+     * @param u
+     *            the second argument
      * @throws RuntimeException
      *             On error exception
      */
@@ -49,7 +51,7 @@ public interface BiConsumerThrowable<T, U, E extends Throwable> extends BiConsum
     }
 
     /**
-     * Performs this operation on the given argument.
+     * Performs this operation on the given arguments.
      *
      * @param t
      *            the first input argument
@@ -76,15 +78,11 @@ public interface BiConsumerThrowable<T, U, E extends Throwable> extends BiConsum
      * @throws E
      *             On error exception
      */
-    default BiConsumerThrowable<T, U, E> andThen(final BiConsumerThrowable<? super T, U, E> after) throws E {
+    default BiConsumerThrowable<T, U, E> andThen(final BiConsumerThrowable<T, U, E> after) throws E {
         Objects.requireNonNull(after);
-        return (T t, U u) -> {
-            try {
-                acceptThrows(t, u);
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-            after.accept(t, u);
+        return (t, u) -> {
+            acceptThrows(t, u);
+            after.acceptThrows(t, u);
         };
     }
 }

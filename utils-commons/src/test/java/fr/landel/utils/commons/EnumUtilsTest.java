@@ -16,8 +16,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
-import fr.landel.utils.commons.EnumUtils;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 
 /**
  * Check utility class (enumerations).
@@ -37,6 +39,12 @@ public class EnumUtilsTest {
     public void testGetNullIfEmpty() {
         assertEquals(EnumUtilsData.FIELD, EnumUtils.getNullIfEmpty(EnumUtilsData.class, "FIELD"));
         assertNull(EnumUtils.getNullIfEmpty(null, "FIELD"));
+        assertNull(EnumUtils.getNullIfEmpty(EnumUtilsData.class, ""));
+
+        Logger logger = (Logger) LoggerFactory.getLogger(EnumUtils.class);
+        logger.setLevel(Level.INFO);
+        assertNull(EnumUtils.getNullIfEmpty(EnumUtilsData.class, "FIEL"));
+        logger.setLevel(null);
         assertNull(EnumUtils.getNullIfEmpty(EnumUtilsData.class, "FIEL"));
     }
 }
