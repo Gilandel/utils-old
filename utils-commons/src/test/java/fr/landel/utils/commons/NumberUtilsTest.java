@@ -22,8 +22,6 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.NumberUtils;
-
 /**
  * Check utility class (numbers).
  *
@@ -52,6 +50,10 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.isEqual(0.25d, 0.25d, 5));
         assertTrue(NumberUtils.isEqual(0.00012d, 0.00013d, 5));
         assertFalse(NumberUtils.isEqual(0.00012d, 0.00013d, 6));
+        assertTrue(NumberUtils.isEqual(0.00012d, 0.00013d, null));
+        assertTrue(NumberUtils.isEqual((Double) null, (Double) null, 5));
+        assertFalse(NumberUtils.isEqual(0.00013d, (Double) null, 5));
+        assertFalse(NumberUtils.isEqual((Double) null, 0.00013d, 5));
     }
 
     /**
@@ -73,6 +75,10 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.isEqual(0.25f, 0.25f, 5));
         assertTrue(NumberUtils.isEqual(0.000012f, 0.000013f, 5));
         assertFalse(NumberUtils.isEqual(0.00012f, 0.00013f, 6));
+        assertFalse(NumberUtils.isEqual(0.00012f, 0.00013f, null));
+        assertTrue(NumberUtils.isEqual((Float) null, (Float) null, 5));
+        assertFalse(NumberUtils.isEqual(0.00013f, (Float) null, 5));
+        assertFalse(NumberUtils.isEqual((Float) null, 0.00013f, 5));
     }
 
     /**

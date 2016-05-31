@@ -27,9 +27,7 @@ public final class EnumUtils extends org.apache.commons.lang3.EnumUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnumUtils.class);
 
     /**
-     * 
-     * Constructor
-     *
+     * Hidden constructor.
      */
     private EnumUtils() {
         super();
