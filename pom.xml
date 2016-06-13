@@ -93,33 +93,39 @@
 		<project.build.resourcesEncoding>UTF-8</project.build.resourcesEncoding>
 
 		<!-- Plugins version -->
-		<clean.plugin.version>3.0.0</clean.plugin.version>
-		<install.plugin.version>2.5.2</install.plugin.version>
+		<dependency.plugin.version>2.10</dependency.plugin.version>
 		<source.plugin.version>3.0.0</source.plugin.version>
-		<deploy.plugin.version>2.8.2</deploy.plugin.version>
 		<resources.plugin.version>3.0.1</resources.plugin.version>
-		<compiler.plugin.version>3.5.1</compiler.plugin.version>
-		<jar.plugin.version>3.0.0</jar.plugin.version>
-		<war.plugin.version>2.6</war.plugin.version>
+		
 		<verifier.plugin.version>1.1</verifier.plugin.version>
+		<clean.plugin.version>3.0.0</clean.plugin.version>
+		<compiler.plugin.version>3.5.1</compiler.plugin.version>
+		<install.plugin.version>2.5.2</install.plugin.version>
+		<deploy.plugin.version>2.8.2</deploy.plugin.version>
+		<site.plugin.version>3.5.1</site.plugin.version>
 		<release.plugin.version>2.5.3</release.plugin.version>
+		
+		<jar.plugin.version>3.0.1</jar.plugin.version>
+		<war.plugin.version>2.6</war.plugin.version>
+		<shade.plugin.version>2.4.3</shade.plugin.version>
+		
 		<maven.scm.svn.version>2.1.1</maven.scm.svn.version>
 		<assembly.plugin.version>2.6</assembly.plugin.version>
-		<dependency.plugin.version>2.10</dependency.plugin.version>
 		<buildhelper.plugin.version>1.10</buildhelper.plugin.version>
-		<site.plugin.version>3.5.1</site.plugin.version>
+		
 		<failsafe.plugin.version>2.19.1</failsafe.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
 		<cobertura.plugin.version>2.7</cobertura.plugin.version>
 		<sonar.plugin.version>3.0.2</sonar.plugin.version>
-		<license.plugin.version>1.9</license.plugin.version>
-		<javadoc.plugin.version>2.10.3</javadoc.plugin.version>
-		<versioneye.plugin.version>3.9.2</versioneye.plugin.version>
+		
 		<gpg.plugin.version>1.6</gpg.plugin.version>
 		<nexus.staging.plugin.version>1.6.7</nexus.staging.plugin.version>
 		<exec.plugin.version>1.5.0</exec.plugin.version>
-		<shade.plugin.version>2.4.3</shade.plugin.version>
+		
+		<license.plugin.version>1.9</license.plugin.version>
+		<javadoc.plugin.version>2.10.4</javadoc.plugin.version>
 		<changelog.plugin.version>2.3</changelog.plugin.version>
+		<versioneye.plugin.version>3.9.2</versioneye.plugin.version>
 
 		<!-- Dependencies version -->
 		<commons.lang.version>3.4</commons.lang.version>
@@ -136,10 +142,10 @@
 		<hibernate.version>5.2.0.Final</hibernate.version>
 		<hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
 
-		<spring.version>4.2.6.RELEASE</spring.version>
+		<spring.version>4.3.0.RELEASE</spring.version>
 		<aspectj.version>1.8.9</aspectj.version>
 
-		<jackson.version>2.7.4</jackson.version>
+		<jackson.version>2.7.5</jackson.version>
 
 		<poi.version>3.14</poi.version>
 

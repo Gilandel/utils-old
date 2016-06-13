@@ -21,18 +21,12 @@ import fr.landel.utils.commons.DateUtils;
 
 /**
  * Assertion utility class that assists in validating arguments for dates.
- * 
- * Future: manage datetime J8, offset, timezone...
- * 
+ *
  * @since 14 mai 2016
  * @author Gilles
  *
  */
 public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Comparable<O>> extends AssertObject<T, O> {
-
-    protected AbstractAssertDate(final O object) {
-        super(object);
-    }
 
     /**
      * Supported {@link Calendar} field
@@ -57,6 +51,46 @@ public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Co
             Calendar.WEEK_OF_MONTH, Calendar.DATE, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_YEAR, Calendar.DAY_OF_WEEK,
             Calendar.DAY_OF_WEEK_IN_MONTH, Calendar.HOUR, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND);
 
+    /**
+     * 
+     * Constructor
+     *
+     * @param object
+     *            the date or calendar input object
+     */
+    protected AbstractAssertDate(final O object) {
+        super(object);
+    }
+
+    /**
+     * Check if the first date is around the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if date are not around.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if date are not
+     *             closed. The standard exception is appended as suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isAround(final T date1, final T date2, final int calendarField,
             final int calendarAmount, final E exception, final CharSequence message, final Object... arguments) throws E {
 
@@ -108,6 +142,35 @@ public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Co
         return true;
     }
 
+    /**
+     * Check if the first date is NOT around the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if dates are around.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if dates are closed.
+     *             The standard exception is appended as suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isNotAround(final T date1, final T date2, final int calendarField,
             final int calendarAmount, final E exception, final CharSequence message, final Object... arguments) throws E {
 
@@ -131,11 +194,61 @@ public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Co
         }
     }
 
+    /**
+     * Check if the first date is NOT equal to the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if dates are not equal.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if dates are equal.
+     *             The standard exception is appended as suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isNotEqual(final T date1, final T date2, final E exception,
             final CharSequence message, final Object... arguments) throws E {
         AbstractAssertDate.isNotAround(date1, date2, -1, -1, exception, message, arguments);
     }
 
+    /**
+     * Check if the first date is after the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if date is not after the other one.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if dates is NOT
+     *             after. The standard exception is appended as suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isAfter(final T date1, final T date2, final E exception,
             final CharSequence message, final Object... arguments) throws E {
         if (AbstractAssertDate.compareDate(date1, date2, exception, null, null, true) <= 0) {
@@ -143,6 +256,32 @@ public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Co
         }
     }
 
+    /**
+     * Check if the first date is after or equal to the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if date is not after and not equal the other one.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if dates is NOT
+     *             after and NOT equal. The standard exception is appended as
+     *             suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isAfterOrEqual(final T date1, final T date2, final E exception,
             final CharSequence message, final Object... arguments) throws E {
         if (AbstractAssertDate.compareDate(date1, date2, exception, null, null, true) < 0) {
@@ -151,6 +290,31 @@ public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Co
         }
     }
 
+    /**
+     * Check if the first date is before the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if date is not before the other one.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if dates is NOT
+     *             before. The standard exception is appended as suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isBefore(final T date1, final T date2, final E exception,
             final CharSequence message, final Object... arguments) throws E {
         if (AbstractAssertDate.compareDate(date1, date2, exception, null, null, true) >= 0) {
@@ -159,6 +323,32 @@ public class AbstractAssertDate<T extends AbstractAssertDate<T, O>, O extends Co
         }
     }
 
+    /**
+     * Check if the first date is before or equal to the second one.
+     * 
+     * @param date1
+     *            the first date
+     * @param date2
+     *            the second date
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message, use the default assertion if null (%p
+     *            or %1$p can be used to display parameter value, see
+     *            explanation in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     *            IllegalArgumentException if at least one date is {@code null}
+     *            and if date is not before and not equal the other one.
+     * @param <T>
+     *            the type of date ({@link Date} or {@link Calendar})
+     * @param <E>
+     *            the type of exception
+     * @throws E
+     *             if at least one date is {@code null} and if dates is NOT
+     *             before and NOT equal. The standard exception is appended as
+     *             suppressed.
+     */
     protected static <T extends Comparable<T>, E extends Throwable> void isBeforeOrEqual(final T date1, final T date2, final E exception,
             final CharSequence message, final Object... arguments) throws E {
         if (AbstractAssertDate.compareDate(date1, date2, exception, null, null, true) > 0) {

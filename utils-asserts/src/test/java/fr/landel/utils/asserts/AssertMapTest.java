@@ -119,8 +119,6 @@ public class AssertMapTest {
     public void testContains() throws IOException {
         final String key1 = "element1";
         final Integer val1 = 1;
-        final String key2 = "element2";
-        final Integer val2 = 2;
 
         final Map<String, Integer> map = new HashMap<>();
         map.put(key1, val1);
@@ -139,9 +137,29 @@ public class AssertMapTest {
 
     /**
      * Test method for {@link AssertMap#doesNotContain}.
+     * 
+     * @throws IOException
+     *             On error
      */
     @Test
-    public void testDoesNotContain() {
-        // fail("Not yet implemented");
+    public void testDoesNotContain() throws IOException {
+        final String key1 = "element1";
+        final Integer val1 = 1;
+        final String key2 = "element2";
+        final Integer val2 = 2;
+
+        final Map<String, Integer> map = new HashMap<>();
+        map.put(key1, val1);
+
+        final AssertMap<String, Integer> assertMap = AssertUtils.check(map);
+
+        assertMap.isNotNull().contains(key1);
+
+        assertMap.doesNotContain(key2);
+        assertMap.doesNotContain(key2, "map contains the element %2$p");
+        assertMap.doesNotContain(key2, new IOException());
+        assertMap.doesNotContain(key2, val2);
+        assertMap.doesNotContain(key2, val2, "map contains the element %3$p");
+        assertMap.doesNotContain(key2, val2, new IOException());
     }
 }

@@ -185,9 +185,9 @@ public class AssertDateTest {
             c1.set(2016, 05, 29, 5, 5, 11);
             c2.set(2016, 05, 29, 5, 5, 5);
 
-            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5);
-            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5, "error");
-            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5, new IllegalArgumentException());
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5, "error");
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5, new IllegalArgumentException());
 
             AssertUtils.check((Calendar) null).isNotAround(c2, Calendar.SECOND, 5);
             AssertUtils.check(c1).isNotAround((Calendar) null, Calendar.SECOND, 5);
@@ -213,7 +213,7 @@ public class AssertDateTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (after)
-            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -221,7 +221,7 @@ public class AssertDateTest {
 
         try {
             // Check calendar amount = zero
-            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 0);
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -229,7 +229,7 @@ public class AssertDateTest {
 
         try {
             // Check unsupported calendar field
-            AssertUtils.check(c1).isNotAround(c2.getTime(), 20, 0);
+            AssertUtils.check(c1).isNotAround(c2, 20, 0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -239,7 +239,7 @@ public class AssertDateTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (before)
-            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
