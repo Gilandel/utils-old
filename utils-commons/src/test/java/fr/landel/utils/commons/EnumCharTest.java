@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-commons
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.commons;
 
 import static org.junit.Assert.assertEquals;
@@ -12,14 +24,6 @@ import org.junit.Test;
  *
  */
 public class EnumCharTest {
-
-    /**
-     * Test method for {@link EnumChar#EnumChar}.
-     */
-    @Test
-    public void testEnumChar() {
-        // fail("Not yet implemented");
-    }
 
     /**
      * Test method for {@link EnumChar#EnumChar(EnumChar)}.

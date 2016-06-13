@@ -44,7 +44,7 @@ public class DateUtilsTest {
     public void testGetDate() {
         Calendar calendar = Calendar.getInstance();
 
-        assertNull(DateUtils.getDate(null));
+        assertNull(DateUtils.getDate((Date) null));
 
         calendar.set(YEAR, MONTH, DAY);
         Date date1 = calendar.getTime();
@@ -133,5 +133,17 @@ public class DateUtilsTest {
 
         date2 = DateUtils.getNullIfEmpty("UNPARSEABLE", df);
         assertNull(date2);
+    }
+
+    /**
+     * Check get calendar
+     */
+    @Test
+    public void testGetCalendar() {
+        final Calendar calendar = Calendar.getInstance();
+        final Date date = calendar.getTime();
+
+        assertEquals(calendar, DateUtils.getCalendar(date));
+        assertNull(DateUtils.getCalendar((Date) null));
     }
 }

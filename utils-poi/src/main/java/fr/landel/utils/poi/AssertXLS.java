@@ -12,9 +12,7 @@
  */
 package fr.landel.utils.poi;
 
-import static fr.landel.utils.asserts.AbstractAssert.fail;
-import static fr.landel.utils.asserts.AbstractAssert.isEqual;
-import static fr.landel.utils.asserts.AbstractAssert.isNotNull;
+import static fr.landel.utils.asserts.AssertUtils.check;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -91,10 +89,10 @@ public final class AssertXLS {
                 assertXLS.checkEmbeddedObjects();
                 assertXLS.checkPictures();
             } catch (IOException e) {
-                fail("File to check cannot be loaded. ", e);
+                throw new IllegalArgumentException("File to check cannot be loaded. ", e);
             }
         } catch (IOException e) {
-            fail("Expected file cannot be loaded. ", e);
+            throw new IllegalArgumentException("Expected file cannot be loaded. ", e);
         }
     }
 
@@ -115,8 +113,8 @@ public final class AssertXLS {
                 Row rowExpected = sheetExpected.getRow(r);
                 Row row = sheet.getRow(r);
                 if (rowExpected != null || row != null) {
-                    isNotNull(rowExpected, "Row expected");
-                    isNotNull(row, "Row " + r);
+                    check(rowExpected).isNotNull("Row expected");
+                    check(row).isNotNull("Row " + r);
 
                     this.checkRow(rowExpected, row, r);
                 }
@@ -181,14 +179,14 @@ public final class AssertXLS {
                     isEqual(shapeExpected.isFlipHorizontal(), shape.isFlipHorizontal(), "Shape flip horizontal");
                     isEqual(shapeExpected.isFlipVertical(), shape.isFlipVertical(), "Shape flip vertical");
                 } else {
-                    fail("not implemented");
+                    throw new IllegalArgumentException("not implemented");
                 }
             }
         }
     }
 
     private void checkRow(final Row rowExpected, final Row row, final int rowIndex) {
-        isEqual(rowExpected.getPhysicalNumberOfCells(), row.getPhysicalNumberOfCells());
+        check(rowExpected.getPhysicalNumberOfCells()).isEqual(row.getPhysicalNumberOfCells());
         this.checkStyle(rowExpected.getRowStyle(), row.getRowStyle(), rowIndex, -1);
 
         for (int c = 0; c < row.getPhysicalNumberOfCells(); c++) {
@@ -299,7 +297,7 @@ public final class AssertXLS {
     }
 
     private void checkFonts() {
-        isEqual(this.workbookExpected.getNumberOfFonts(), this.workbook.getNumberOfFonts());
+        check(this.workbookExpected.getNumberOfFonts()).isEqual(this.workbook.getNumberOfFonts());
 
         for (short i = 0; i < this.workbookExpected.getNumberOfFonts(); i++) {
             HSSFFont fontExpected = this.workbookExpected.getFontAt(i);
@@ -320,7 +318,7 @@ public final class AssertXLS {
     }
 
     private void checkNames() {
-        isEqual(this.workbookExpected.getNumberOfNames(), this.workbook.getNumberOfNames());
+        check(this.workbookExpected.getNumberOfNames()).isEqual(this.workbook.getNumberOfNames());
 
         for (int i = 0; i < this.workbookExpected.getNumberOfNames(); i++) {
             HSSFName nameExpected = this.workbookExpected.getNameAt(i);
@@ -431,5 +429,13 @@ public final class AssertXLS {
         for (int j = 0; j < expectedBytes.length; j++) {
             isEqual(expectedBytes[j], bytes[j], "Picture bytes");
         }
+    }
+
+    private static <T> void isEqual(final T obj1, final T obj2, String message) {
+        check(obj1).isEqual(obj2, message);
+    }
+
+    private static <T> void isNotNull(final T obj, String message) {
+        check(obj).isNotNull(message);
     }
 }

@@ -25,6 +25,13 @@ import java.util.List;
 public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
+     * Hidden constructor.
+     */
+    private StringUtils() {
+        super();
+    }
+
+    /**
      * Get the char sequence if not empty and null otherwise.
      * 
      * @param cs

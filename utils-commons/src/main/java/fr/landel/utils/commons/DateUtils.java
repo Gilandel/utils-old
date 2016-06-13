@@ -14,6 +14,7 @@ package fr.landel.utils.commons;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -29,6 +30,13 @@ import org.slf4j.LoggerFactory;
 public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
+
+    /**
+     * Hidden constructor.
+     */
+    private DateUtils() {
+        super();
+    }
 
     /**
      * Date Wrapper.
@@ -95,5 +103,21 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Date getNullIfEmpty(final String date, final DateFormat df) {
         return getDefaultIfEmpty(date, df, null);
+    }
+
+    /**
+     * Get a new calendar instance from the date
+     * 
+     * @param date
+     *            The input date
+     * @return The calendar or null (if date is null)
+     */
+    public static Calendar getCalendar(final Date date) {
+        Calendar calendar = null;
+        if (date != null) {
+            calendar = Calendar.getInstance();
+            calendar.setTime(date);
+        }
+        return calendar;
     }
 }

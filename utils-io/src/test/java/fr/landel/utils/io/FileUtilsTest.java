@@ -30,9 +30,6 @@ import org.junit.After;
 import org.junit.Test;
 
 import fr.landel.utils.asserts.AssertUtils;
-import fr.landel.utils.io.EncodingUtils;
-import fr.landel.utils.io.FileSystemUtils;
-import fr.landel.utils.io.FileUtils;
 
 /**
  * Check file utils
@@ -147,8 +144,7 @@ public class FileUtilsTest {
     /**
      * Test method for
      * {@link fr.landel.utils.io.FileUtils#writeFileContent(java.io.InputStream, java.lang.String)}
-     * {@link fr.landel.utils.io.FileUtils#getFileContent(java.lang.String)}
-     * .
+     * {@link fr.landel.utils.io.FileUtils#getFileContent(java.lang.String)} .
      */
     @Test
     public void testWriteFileContentInputStreamString() {
@@ -263,6 +259,6 @@ public class FileUtilsTest {
         assertNotNull(referenceContent);
         assertNotNull(content);
 
-        AssertUtils.isEqual(referenceContent, content);
+        AssertUtils.check(content).isEqual(referenceContent);
     }
 }

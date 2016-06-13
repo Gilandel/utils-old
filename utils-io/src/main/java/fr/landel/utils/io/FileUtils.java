@@ -163,8 +163,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final String path, final Charset charset, final ClassLoader classLoader) throws IOException {
-        AssertUtils.isNotBlank(path, "The 'path' parameter cannot be null or blank");
-        AssertUtils.isNotNull(charset, "The 'charset' parameter cannot be null");
+        AssertUtils.check(path).isNotBlank("The 'path' parameter cannot be null or blank");
+        AssertUtils.check(charset).isNotNull("The 'charset' parameter cannot be null");
 
         ClassLoader loader = classLoader;
         int bufferReadSize;

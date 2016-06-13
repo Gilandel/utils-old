@@ -17,23 +17,23 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
- * Check assert
+ * Check {@link AssertArray}
  *
  * @since 10 dec. 2015
  * @author Gilles Landel
  *
  */
-public class AbstractArrayAssertTest {
+public class AssertArrayTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#hasNoNullElements(Object[], String, Object...)} .
+     * {@link Expect#hasNoNullElements(Object[], String, Object...)} .
      */
     @Test
     public void testHasNoNullElementOKsObjectArrayString() {
         try {
             String[] array = new String[] {"1", "3"};
-            AssertUtils.hasNoNullElements(array);
+            AssertUtils.check(array).hasNoNullElements();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -41,35 +41,33 @@ public class AbstractArrayAssertTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#hasNoNullElements(Object[], String, Object...)} .
+     * {@link Expect#hasNoNullElements(Object[], String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testHasNoNullElementsKOObjectArrayString() {
         String[] array = new String[] {null, "2"};
-        AssertUtils.hasNoNullElements(array);
+        AssertUtils.check(array).hasNoNullElements();
     }
 
     /**
-     * Test method for {@link AssertUtils#hasNoNullElements(java.lang.Object[])}
-     * .
+     * Test method for {@link Expect#hasNoNullElements(java.lang.Object[])} .
      */
     @Test
     public void testHasNoNullElementsOKObjectArray() {
         try {
             String[] array = new String[] {"1", "2"};
-            AssertUtils.hasNoNullElements(array, "array has null element");
+            AssertUtils.check(array).hasNoNullElements("array has null element");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#hasNoNullElements(java.lang.Object[])}
-     * .
+     * Test method for {@link Expect#hasNoNullElements(java.lang.Object[])} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testHasNoNullElementsKOObjectArray() {
         String[] array = new String[] {"", null};
-        AssertUtils.hasNoNullElements(array, "array has null element");
+        AssertUtils.check(array).hasNoNullElements("array has null element");
     }
 }

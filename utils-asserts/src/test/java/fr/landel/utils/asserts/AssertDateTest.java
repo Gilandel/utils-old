@@ -21,6 +21,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import fr.landel.utils.commons.DateUtils;
+
 /**
  * Test date assert
  *
@@ -28,50 +30,58 @@ import org.junit.Test;
  * @author Gilles
  *
  */
-public class AbstractDateAssertTest {
+public class AssertDateTest {
 
     /**
-     * Test method for {@link AssertUtils#isEqual}.
+     * Test method for {@link Expect#isEqual}.
      */
     @Test
     public void testIsEqualOK() {
         try {
-            Date date1 = new Date(1464475553640L);
-            Date date2 = new Date(1464475553640L);
+            final Date date1 = new Date(1464475553640L);
+            final Date date2 = new Date(1464475553640L);
+            final Calendar calendar1 = DateUtils.getCalendar(date1);
+            final Calendar calendar2 = DateUtils.getCalendar(date2);
 
-            AssertUtils.isEqual(date1, date2);
-            AssertUtils.isEqual((Date) null, null);
-            AssertUtils.isEqual(date1, date2, "error not equal");
-            AssertUtils.isEqual(date1, date2, new IllegalArgumentException());
+            AssertUtils.check((Date) null).isEqual((Date) null);
+            AssertUtils.check((Calendar) null).isEqual((Calendar) null);
+
+            AssertUtils.check(date1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
+                    new IllegalArgumentException());
+
+            AssertUtils.check(calendar1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
+                    new IllegalArgumentException());
+            AssertUtils.check(calendar1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isEqual}.
+     * Test method for {@link Expect#isEqual}.
      */
     @Test
     public void testIsEqualKO() {
-        Date date1 = new Date(1464475553640L);
-        Date date2 = new Date(1464475553641L);
+        final Date date1 = new Date(1464475553640L);
+        final Date date2 = new Date(1464475553641L);
 
         try {
-            AssertUtils.isEqual(date1, date2);
+            AssertUtils.check(date1).isEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isEqual(date1, null);
+            AssertUtils.check(date1).isEqual((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isEqual(null, date2);
+            AssertUtils.check((Date) null).isEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -79,31 +89,30 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isAround}.
+     * Test method for {@link Expect#isAround}.
      */
     @Test
     public void testIsAroundOK() {
         try {
-            Calendar c1 = Calendar.getInstance();
-            Calendar c2 = Calendar.getInstance();
+            final Calendar calendar1 = Calendar.getInstance();
+            final Calendar calendar2 = Calendar.getInstance();
 
-            c1.set(2016, 05, 29, 5, 5, 6);
-            c2.set(2016, 05, 29, 5, 5, 5);
+            calendar1.set(2016, 05, 29, 5, 5, 6);
+            calendar2.set(2016, 05, 29, 5, 5, 5);
 
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5);
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5, "error");
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5, new IllegalArgumentException());
+            AssertUtils.check(calendar1).isAround(calendar2, Calendar.SECOND, 5).isAround(calendar2, Calendar.SECOND, 5, "error")
+                    .isAround(calendar2, Calendar.SECOND, 5, new IllegalArgumentException());
 
-            c1.set(2016, 05, 29, 5, 5, 1);
+            calendar1.set(2016, 05, 29, 5, 5, 1);
 
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5);
+            AssertUtils.check(calendar1).isAround(calendar2, Calendar.SECOND, 5);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isAround}.
+     * Test method for {@link Expect#isAround}.
      */
     @Test
     public void testIsAroundKO() {
@@ -115,7 +124,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (after)
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 2);
+            AssertUtils.check(c1).isAround(c2, Calendar.SECOND, 2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -123,7 +132,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check date1 = null
-            AssertUtils.isAround(null, c2.getTime(), Calendar.SECOND, 2);
+            AssertUtils.check((Calendar) null).isAround(c2, Calendar.SECOND, 2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -131,7 +140,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check date2 = null
-            AssertUtils.isAround(c1.getTime(), null, Calendar.SECOND, 2);
+            AssertUtils.check(c1).isAround((Calendar) null, Calendar.SECOND, 2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -139,7 +148,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check calendar amount = zero
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 0);
+            AssertUtils.check(c1).isAround(c2, Calendar.SECOND, 0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -147,7 +156,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check unsupported calendar field
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), 20, 0);
+            AssertUtils.check(c1).isAround(c2, 20, 0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -157,7 +166,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (before)
-            AssertUtils.isAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 2);
+            AssertUtils.check(c1).isAround(c2, Calendar.SECOND, 2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -165,7 +174,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotAround}.
+     * Test method for {@link Expect#isNotAround}.
      */
     @Test
     public void testIsNotAroundOK() {
@@ -176,35 +185,35 @@ public class AbstractDateAssertTest {
             c1.set(2016, 05, 29, 5, 5, 11);
             c2.set(2016, 05, 29, 5, 5, 5);
 
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5);
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5, "error");
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5, new IllegalArgumentException());
+            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5, "error");
+            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5, new IllegalArgumentException());
 
-            AssertUtils.isNotAround(null, c2.getTime(), Calendar.SECOND, 5);
-            AssertUtils.isNotAround(c1.getTime(), null, Calendar.SECOND, 5);
+            AssertUtils.check((Calendar) null).isNotAround(c2, Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround((Calendar) null, Calendar.SECOND, 5);
 
             c1.set(2016, 05, 29, 5, 5, 1);
 
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 3);
+            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 3);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotAround}.
+     * Test method for {@link Expect#isNotAround}.
      */
     @Test
     public void testIsNotAroundKO() {
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
+        final Calendar c1 = Calendar.getInstance();
+        final Calendar c2 = Calendar.getInstance();
 
         c1.set(2016, 05, 29, 5, 5, 9);
         c2.set(2016, 05, 29, 5, 5, 5);
 
         try {
             // Check is date1 is not around the date2 by max 5s (after)
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -212,7 +221,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check calendar amount = zero
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 0);
+            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -220,7 +229,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check unsupported calendar field
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), 20, 0);
+            AssertUtils.check(c1).isNotAround(c2.getTime(), 20, 0);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -230,7 +239,7 @@ public class AbstractDateAssertTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (before)
-            AssertUtils.isNotAround(c1.getTime(), c2.getTime(), Calendar.SECOND, 5);
+            AssertUtils.check(c1).isNotAround(c2.getTime(), Calendar.SECOND, 5);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -238,26 +247,25 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEqual}.
+     * Test method for {@link Expect#isNotEqual}.
      */
     @Test
     public void testIsNotEqualOK() {
         try {
-            Date date1 = new Date(1464475553640L);
-            Date date2 = new Date(1464475553641L);
+            final Date date1 = new Date(1464475553640L);
+            final Date date2 = new Date(1464475553641L);
 
-            AssertUtils.isNotEqual(date1, date2);
-            AssertUtils.isNotEqual(null, date2);
-            AssertUtils.isNotEqual(date1, null);
-            AssertUtils.isNotEqual(date1, date2, "error equal");
-            AssertUtils.isNotEqual(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isNotEqual(date2);
+            AssertUtils.check((Date) null).isNotEqual(date2);
+            AssertUtils.check(date1).isNotEqual((Date) null).isNotEqual(date2, "error equal").isNotEqual(date2,
+                    new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEqual}.
+     * Test method for {@link Expect#isNotEqual}.
      */
     @Test
     public void testIsNotEqualKO() {
@@ -265,14 +273,14 @@ public class AbstractDateAssertTest {
         Date date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.isNotEqual(date1, date2);
+            AssertUtils.check(date1).isNotEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isNotEqual((Date) null, null);
+            AssertUtils.check((Date) null).isNotEqual((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -280,7 +288,7 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isAfter}.
+     * Test method for {@link Expect#isAfter}.
      */
     @Test
     public void testIsAfterOK() {
@@ -288,24 +296,22 @@ public class AbstractDateAssertTest {
             Date date1 = new Date(1464475553641L);
             Date date2 = new Date(1464475553640L);
 
-            AssertUtils.isAfter(date1, date2);
-            AssertUtils.isAfter(date1, date2, "error not equal");
-            AssertUtils.isAfter(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isAfter(date2).isAfter(date2, "error not equal").isAfter(date2, new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isAfter}.
+     * Test method for {@link Expect#isAfter}.
      */
     @Test
     public void testIsAfterKO() {
-        Date date1 = new Date(1464475553640L);
+        final Date date1 = new Date(1464475553640L);
         Date date2 = new Date(1464475553641L);
 
         try {
-            AssertUtils.isAfter(date1, date2);
+            AssertUtils.check(date1).isAfter(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -314,35 +320,35 @@ public class AbstractDateAssertTest {
         date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.isAfter(date1, date2);
+            AssertUtils.check(date1).isAfter(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfter(null, date2);
+            AssertUtils.check((Date) null).isAfter(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfter(null, null);
+            AssertUtils.check((Date) null).isAfter((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfter(date1, null);
+            AssertUtils.check(date1).isAfter((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfter(date1, date2, new IOException());
+            AssertUtils.check(date1).isAfter(date2, new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);
@@ -350,30 +356,28 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isAfterOrEqual}.
+     * Test method for {@link Expect#isAfterOrEqual}.
      */
     @Test
     public void testIsAfterOrEqualOK() {
         try {
             Date date1 = new Date(1464475553641L);
-            Date date2 = new Date(1464475553640L);
+            final Date date2 = new Date(1464475553640L);
 
-            AssertUtils.isAfterOrEqual(date1, date2);
-            AssertUtils.isAfterOrEqual(date1, date2, "error not equal");
-            AssertUtils.isAfterOrEqual(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isAfterOrEqual(date2).isAfterOrEqual(date2, "error not equal").isAfterOrEqual(date2,
+                    new IllegalArgumentException());
 
             date1 = new Date(1464475553640L);
 
-            AssertUtils.isAfterOrEqual(date1, date2);
-            AssertUtils.isAfterOrEqual(date1, date2, "error not equal");
-            AssertUtils.isAfterOrEqual(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isAfterOrEqual(date2).isAfterOrEqual(date2, "error not equal").isAfterOrEqual(date2,
+                    new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isAfterOrEqual}.
+     * Test method for {@link Expect#isAfterOrEqual}.
      */
     @Test
     public void testIsAfterOrEqualKO() {
@@ -381,35 +385,35 @@ public class AbstractDateAssertTest {
         Date date2 = new Date(1464475553641L);
 
         try {
-            AssertUtils.isAfterOrEqual(date1, date2);
+            AssertUtils.check(date1).isAfterOrEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfterOrEqual(null, date2);
+            AssertUtils.check((Date) null).isAfterOrEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfterOrEqual(date1, null);
+            AssertUtils.check(date1).isAfterOrEqual((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfterOrEqual(null, null);
+            AssertUtils.check((Date) null).isAfterOrEqual((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isAfterOrEqual(date1, date2, new IOException());
+            AssertUtils.check(date1).isAfterOrEqual(date2, new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);
@@ -417,32 +421,30 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isBefore}.
+     * Test method for {@link Expect#isBefore}.
      */
     @Test
     public void testIsBeforeOK() {
         try {
-            Date date1 = new Date(1464475553640L);
-            Date date2 = new Date(1464475553641L);
+            final Date date1 = new Date(1464475553640L);
+            final Date date2 = new Date(1464475553641L);
 
-            AssertUtils.isBefore(date1, date2);
-            AssertUtils.isBefore(date1, date2, "error not equal");
-            AssertUtils.isBefore(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isBefore(date2).isBefore(date2, "error not equal").isBefore(date2, new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isBefore}.
+     * Test method for {@link Expect#isBefore}.
      */
     @Test
     public void testIsBeforeKO() {
-        Date date1 = new Date(1464475553641L);
+        final Date date1 = new Date(1464475553641L);
         Date date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.isBefore(date1, date2);
+            AssertUtils.check(date1).isBefore(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -451,35 +453,35 @@ public class AbstractDateAssertTest {
         date2 = new Date(1464475553641L);
 
         try {
-            AssertUtils.isBefore(date1, date2);
+            AssertUtils.check(date1).isBefore(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBefore(null, date2);
+            AssertUtils.check((Date) null).isBefore(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBefore(date1, null);
+            AssertUtils.check(date1).isBefore((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBefore(null, null);
+            AssertUtils.check((Date) null).isBefore((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBefore(date1, date2, new IOException());
+            AssertUtils.check(date1).isBefore(date2, new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);
@@ -487,66 +489,66 @@ public class AbstractDateAssertTest {
     }
 
     /**
-     * Test method for {@link AssertUtils#isBeforeOrEqual}.
+     * Test method for {@link Expect#isBeforeOrEqual}.
      */
     @Test
     public void testIsBeforeOrEqualOK() {
         try {
             Date date1 = new Date(1464475553640L);
-            Date date2 = new Date(1464475553641L);
+            final Date date2 = new Date(1464475553641L);
 
-            AssertUtils.isBeforeOrEqual(date1, date2);
-            AssertUtils.isBeforeOrEqual(date1, date2, "error not equal");
-            AssertUtils.isBeforeOrEqual(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isBeforeOrEqual(date2);
+            AssertUtils.check(date1).isBeforeOrEqual(date2, "error not equal");
+            AssertUtils.check(date1).isBeforeOrEqual(date2, new IllegalArgumentException());
 
             date1 = new Date(1464475553641L);
 
-            AssertUtils.isBeforeOrEqual(date1, date2);
-            AssertUtils.isBeforeOrEqual(date1, date2, "error not equal");
-            AssertUtils.isBeforeOrEqual(date1, date2, new IllegalArgumentException());
+            AssertUtils.check(date1).isBeforeOrEqual(date2);
+            AssertUtils.check(date1).isBeforeOrEqual(date2, "error not equal");
+            AssertUtils.check(date1).isBeforeOrEqual(date2, new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isBeforeOrEqual}.
+     * Test method for {@link Expect#isBeforeOrEqual}.
      */
     @Test
     public void testIsBeforeOrEqualKO() {
-        Date date1 = new Date(1464475553641L);
-        Date date2 = new Date(1464475553640L);
+        final Date date1 = new Date(1464475553641L);
+        final Date date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.isBeforeOrEqual(date1, date2);
+            AssertUtils.check(date1).isBeforeOrEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBeforeOrEqual(null, date2);
+            AssertUtils.check((Date) null).isBeforeOrEqual(date2);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBeforeOrEqual(date1, null);
+            AssertUtils.check(date1).isBeforeOrEqual((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBeforeOrEqual(null, null);
+            AssertUtils.check((Date) null).isBeforeOrEqual((Date) null);
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.isBeforeOrEqual(date1, date2, new IOException());
+            AssertUtils.check(date1).isBeforeOrEqual(date2, new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);

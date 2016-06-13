@@ -46,6 +46,12 @@ public final class HexUtils {
     private static final int PERCENT_MAX = 100;
 
     /**
+     * Hidden constructor.
+     */
+    private HexUtils() {
+    }
+
+    /**
      * Convert an integer (0 to 255) into a byte (-128 to 127).
      * 
      * @param i

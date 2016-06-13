@@ -121,7 +121,7 @@ public class ScriptsReplacer {
      *            the open expression string (default: "{")
      */
     public void setExpressionOpen(String expressionOpen) {
-        AssertUtils.isNotEmpty(expressionOpen);
+        AssertUtils.check(expressionOpen).isNotEmpty();
         this.expressionOpen = expressionOpen;
     }
 
@@ -130,7 +130,7 @@ public class ScriptsReplacer {
      *            the close expression string (default: "}")
      */
     public void setExpressionClose(String expressionClose) {
-        AssertUtils.isNotEmpty(expressionClose);
+        AssertUtils.check(expressionClose).isNotEmpty();
         this.expressionClose = expressionClose;
     }
 
@@ -139,7 +139,7 @@ public class ScriptsReplacer {
      *            the open block string following the language (default: "(")
      */
     public void setBlockOpen(String blockOpen) {
-        AssertUtils.isNotEmpty(blockOpen);
+        AssertUtils.check(blockOpen).isNotEmpty();
         this.blockOpen = blockOpen;
     }
 
@@ -148,7 +148,7 @@ public class ScriptsReplacer {
      *            the close block string following the language (default: ")")
      */
     public void setBlockClose(String blockClose) {
-        AssertUtils.isNotEmpty(blockClose);
+        AssertUtils.check(blockClose).isNotEmpty();
         this.blockClose = blockClose;
     }
 
@@ -157,7 +157,7 @@ public class ScriptsReplacer {
      *            the THEN operator string (default: "??")
      */
     public void setOperatorThen(String operatorThen) {
-        AssertUtils.isNotEmpty(operatorThen);
+        AssertUtils.check(operatorThen).isNotEmpty();
         this.operatorThen = operatorThen;
     }
 
@@ -166,7 +166,7 @@ public class ScriptsReplacer {
      *            the ELSE operator string (default: "::")
      */
     public void setOperatorElse(String operatorElse) {
-        AssertUtils.isNotEmpty(operatorElse);
+        AssertUtils.check(operatorElse).isNotEmpty();
         this.operatorElse = operatorElse;
     }
 
@@ -175,7 +175,7 @@ public class ScriptsReplacer {
      *            the AND operator string (default: "&amp;&amp;")
      */
     public void setOperatorAnd(String operatorAnd) {
-        AssertUtils.isNotEmpty(operatorAnd);
+        AssertUtils.check(operatorAnd).isNotEmpty();
         this.operatorAnd = operatorAnd;
     }
 
@@ -184,7 +184,7 @@ public class ScriptsReplacer {
      *            the OR operator string (default: "||")
      */
     public void setOperatorOr(String operatorOr) {
-        AssertUtils.isNotEmpty(operatorOr);
+        AssertUtils.check(operatorOr).isNotEmpty();
         this.operatorOr = operatorOr;
     }
 
@@ -193,7 +193,7 @@ public class ScriptsReplacer {
      *            the NOT operator string (default: "!")
      */
     public void setOperatorNot(String operatorNot) {
-        AssertUtils.isNotEmpty(operatorNot);
+        AssertUtils.check(operatorNot).isNotEmpty();
         this.operatorNot = operatorNot;
     }
 
@@ -295,8 +295,7 @@ public class ScriptsReplacer {
     }
 
     private void checkInput(final StringBuilder sb) throws IllegalArgumentException {
-        AssertUtils.isNotNull(sb, "Input cannot be null");
-        AssertUtils.isGT(sb.length(), 0, "Input cannot be empty");
+        AssertUtils.check(sb).isNotNull("Input cannot be null").isNotEmpty("Input cannot be empty");
 
         int countBracketOpen = 0;
         int countBracketClose = 0;
@@ -321,35 +320,35 @@ public class ScriptsReplacer {
             countBracketOpen++;
         }
 
-        AssertUtils.isEqual(countBracketOpen, countBracketClose,
+        AssertUtils.check(countBracketOpen).isEqual(countBracketClose,
                 "The count of " + this.expressionOpen + " doesn't match the count of " + this.expressionClose + ", input: " + sb);
     }
 
     private void checkReplacements(final Map<String, String> replacements, final boolean checkVariables) throws IllegalArgumentException {
         for (Entry<String, String> entry : replacements.entrySet()) {
-            AssertUtils.isNotNull(entry.getKey(), "Replacement key cannot be null");
-            AssertUtils.isNotNull(entry.getValue(), "Replacement value cannot be null");
+            AssertUtils.check(entry.getKey()).isNotNull("Replacement key cannot be null");
+            AssertUtils.check(entry.getValue()).isNotNull("Replacement value cannot be null");
 
             final String errorKey = "Replacement key cannot contains: ";
-            AssertUtils.isEqual(entry.getKey().indexOf(this.expressionOpen), -1, errorKey + this.expressionOpen);
-            AssertUtils.isEqual(entry.getKey().indexOf(this.expressionClose), -1, errorKey + this.expressionClose);
-            AssertUtils.isEqual(entry.getKey().indexOf(this.operatorThen), -1, errorKey + this.operatorThen);
-            AssertUtils.isEqual(entry.getKey().indexOf(this.operatorElse), -1, errorKey + this.operatorElse);
+            AssertUtils.check(entry.getKey()).doesNotContain(this.expressionOpen, errorKey + this.expressionOpen)
+                    .doesNotContain(this.expressionClose, errorKey + this.expressionClose)
+                    .doesNotContain(this.operatorThen, errorKey + this.operatorThen)
+                    .doesNotContain(this.operatorElse, errorKey + this.operatorElse);
 
             final String errorValue = "Replacement value cannot contains: ";
-            AssertUtils.isEqual(entry.getValue().indexOf(this.expressionOpen), -1, errorValue + this.expressionOpen);
-            AssertUtils.isEqual(entry.getValue().indexOf(this.expressionClose), -1, errorValue + this.expressionClose);
-            AssertUtils.isEqual(entry.getValue().indexOf(this.operatorThen), -1, errorValue + this.operatorThen);
-            AssertUtils.isEqual(entry.getValue().indexOf(this.operatorElse), -1, errorValue + this.operatorElse);
+            AssertUtils.check(entry.getValue()).doesNotContain(this.expressionOpen, errorValue + this.expressionOpen)
+                    .doesNotContain(this.expressionClose, errorValue + this.expressionClose)
+                    .doesNotContain(this.operatorThen, errorValue + this.operatorThen)
+                    .doesNotContain(this.operatorElse, errorValue + this.operatorElse);
 
             if (checkVariables) {
                 // Avoid some SQL injections but not all!, parameters has to be
                 // checked before
-                AssertUtils.isEqual(StringUtils.countMatches(entry.getValue(), SINGLE_QUOTE) % 2, 0,
+                AssertUtils.check(StringUtils.countMatches(entry.getValue(), SINGLE_QUOTE) % 2).isEqual(0,
                         "Replacement value has to contain only pairs of: " + SINGLE_QUOTE);
-                AssertUtils.isEqual(
-                        StringUtils.countMatches(StringUtils.replace(entry.getValue(), SINGLE_QUOTE + SINGLE_QUOTE, ""), SINGLE_QUOTE), 0,
-                        "Replacement value has to contain only group of pairs of: " + SINGLE_QUOTE);
+                AssertUtils.check(
+                        StringUtils.countMatches(StringUtils.replace(entry.getValue(), SINGLE_QUOTE + SINGLE_QUOTE, ""), SINGLE_QUOTE))
+                        .isEqual(0, "Replacement value has to contain only group of pairs of: " + SINGLE_QUOTE);
             }
         }
     }

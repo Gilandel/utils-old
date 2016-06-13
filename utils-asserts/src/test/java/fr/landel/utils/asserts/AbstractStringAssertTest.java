@@ -31,114 +31,109 @@ import org.junit.Test;
 public class AbstractStringAssertTest {
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(String, String, Object...)}
-     * .
+     * Test method for {@link Expect#isNotEmpty(String, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKStringString() {
         try {
-            AssertUtils.isNotEmpty("a", "empty string");
+            AssertUtils.check("a").isNotEmpty("empty string");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(String, String, Object...)}
-     * .
+     * Test method for {@link Expect#isNotEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOStringString() {
-        AssertUtils.isNotEmpty("", "empty string");
+        AssertUtils.check("").isNotEmpty("empty string");
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(String, String, Object...)}
-     * .
+     * Test method for {@link Expect#isNotEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2StringString() {
-        AssertUtils.isNotEmpty((String) null, "empty string");
+        AssertUtils.check((String) null).isNotEmpty("empty string");
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.lang.String)} .
+     * Test method for {@link Expect#isNotEmpty(java.lang.String)} .
      */
     @Test
     public void testIsNotEmptyOKString() {
         try {
-            AssertUtils.isNotEmpty("z");
+            AssertUtils.check("z").isNotEmpty();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.lang.String)} .
+     * Test method for {@link Expect#isNotEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOString() {
-        AssertUtils.isNotEmpty("");
+        AssertUtils.check("").isNotEmpty();
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.lang.String)} .
+     * Test method for {@link Expect#isNotEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2String() {
-        AssertUtils.isNotEmpty((String) null);
+        AssertUtils.check((String) null).isNotEmpty();
     }
 
     /**
-     * Test method for
-     * {@link AssertUtils#isNotEmpty(Object[], String, Object...)} .
+     * Test method for {@link Expect#isNotEmpty(Object[], String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKObjectArrayString() {
         try {
-            AssertUtils.isNotEmpty(Arrays.asList("").toArray(), "empty array");
+            AssertUtils.check(Arrays.asList("").toArray()).isNotEmpty("empty array");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertUtils#isNotEmpty(Object[], String, Object...)} .
+     * Test method for {@link Expect#isNotEmpty(Object[], String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOObjectArrayString() {
-        AssertUtils.isNotEmpty(Collections.emptyList().toArray(), "empty array");
+        AssertUtils.check(Collections.emptyList().toArray()).isNotEmpty("empty array");
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.lang.Object[])} .
+     * Test method for {@link Expect#isNotEmpty(java.lang.Object[])} .
      */
     @Test
     public void testIsNotEmptyOKObjectArray() {
         try {
-            AssertUtils.isNotEmpty(Arrays.asList("").toArray());
+            AssertUtils.check(Arrays.asList("").toArray()).isNotEmpty();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.lang.Object[])} .
+     * Test method for {@link Expect#isNotEmpty(java.lang.Object[])} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOObjectArray() {
-        AssertUtils.isNotEmpty(Collections.emptyList().toArray());
+        AssertUtils.check(Collections.emptyList().toArray()).isNotEmpty();
     }
 
     /**
      * Test method for
-     * {@link AssertUtils#isNotEmpty(java.util.Collection, String, Object...)} .
+     * {@link Expect#isNotEmpty(java.util.Collection, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQString() {
         try {
-            AssertUtils.isNotEmpty(Arrays.asList(""), "empty collection");
+            AssertUtils.check(Arrays.asList("")).isNotEmpty("empty collection");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -146,209 +141,207 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#isNotEmpty(java.util.Collection, String, Object...)} .
+     * {@link Expect#isNotEmpty(java.util.Collection, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQString() {
-        AssertUtils.isNotEmpty(Collections.emptyList(), "empty collection");
+        AssertUtils.check(Collections.emptyList()).isNotEmpty("empty collection");
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.util.Collection)} .
+     * Test method for {@link Expect#isNotEmpty(java.util.Collection)} .
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQ() {
         try {
-            AssertUtils.isNotEmpty(Arrays.asList(""));
+            AssertUtils.check(Arrays.asList("")).isNotEmpty();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.util.Collection)} .
+     * Test method for {@link Expect#isNotEmpty(java.util.Collection)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQ() {
-        AssertUtils.isNotEmpty(Collections.emptyList());
+        AssertUtils.check(Collections.emptyList()).isNotEmpty();
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(Map, String, Object...)} .
+     * Test method for {@link Expect#isNotEmpty(Map, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQString() {
         try {
             Map<String, String> map = new HashMap<>();
             map.put("f", "f");
-            AssertUtils.isNotEmpty(map, "empty");
+            AssertUtils.check(map).isNotEmpty("empty");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(Map, String, Object...)} .
+     * Test method for {@link Expect#isNotEmpty(Map, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQString() {
-        AssertUtils.isNotEmpty(new HashMap<String, String>(), "empty");
+        AssertUtils.check(new HashMap<String, String>()).isNotEmpty("empty");
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.util.Map)} .
+     * Test method for {@link Expect#isNotEmpty(java.util.Map)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQ() {
         try {
             Map<String, String> map = new HashMap<>();
             map.put("fg", "fg");
-            AssertUtils.isNotEmpty(map);
+            AssertUtils.check(map).isNotEmpty();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotEmpty(java.util.Map)} .
+     * Test method for {@link Expect#isNotEmpty(java.util.Map)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQ() {
-        AssertUtils.isNotEmpty(new HashMap<String, String>());
+        AssertUtils.check(new HashMap<String, String>()).isNotEmpty();
     }
 
     /**
-     * Test method for {@link AssertUtils#isEmpty(String, String, Object...)} .
+     * Test method for {@link Expect#isEmpty(String, String, Object...)} .
      */
     @Test
     public void testIsEmptyOKStringString() {
         try {
-            AssertUtils.isEmpty(null, "not empty or null");
-            AssertUtils.isEmpty("", "not empty");
+            AssertUtils.check((String) null).isEmpty("not empty or null");
+            AssertUtils.check("").isEmpty("not empty");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isEmpty(String, String, Object...)} .
+     * Test method for {@link Expect#isEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOStringString() {
-        AssertUtils.isEmpty("r", "not empty");
+        AssertUtils.check("r").isEmpty("not empty");
     }
 
     /**
-     * Test method for {@link AssertUtils#isEmpty(java.lang.String)} .
+     * Test method for {@link Expect#isEmpty(java.lang.String)} .
      */
     @Test
     public void testIsEmptyOKString() {
         try {
-            AssertUtils.isEmpty(null);
-            AssertUtils.isEmpty("");
+            AssertUtils.check((String) null).isEmpty();
+            AssertUtils.check("").isEmpty();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isEmpty(java.lang.String)} .
+     * Test method for {@link Expect#isEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOString() {
-        AssertUtils.isEmpty("e");
+        AssertUtils.check("e").isEmpty();
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotBlank(String, String, Object...)}
-     * .
+     * Test method for {@link Expect#isNotBlank(String, String, Object...)} .
      */
     @Test
     public void testIsNotBlankOKStringString() {
         try {
-            AssertUtils.isNotBlank("   \t sds  ", "blank");
+            AssertUtils.check("   \t sds  ").isNotBlank("blank");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotBlank(String, String, Object...)}
-     * .
+     * Test method for {@link Expect#isNotBlank(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOStringString() {
-        AssertUtils.isNotBlank("   \t    ", "blank");
+        AssertUtils.check("   \t    ").isNotBlank("blank");
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotBlank(java.lang.String)} .
+     * Test method for {@link Expect#isNotBlank(java.lang.String)} .
      */
     @Test
     public void testIsNotBlankOKString() {
         try {
-            AssertUtils.isNotBlank("    \t  e ");
+            AssertUtils.check("    \t  e ").isNotBlank();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isNotBlank(java.lang.String)} .
+     * Test method for {@link Expect#isNotBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOString() {
-        AssertUtils.isNotBlank("    \t   ");
+        AssertUtils.check("    \t   ").isNotBlank();
     }
 
     /**
-     * Test method for {@link AssertUtils#isBlank(String, String, Object...)} .
+     * Test method for {@link Expect#isBlank(String, String, Object...)} .
      */
     @Test
     public void testIsBlankOKStringString() {
         try {
-            AssertUtils.isBlank("   \t   ", "not blank");
+            AssertUtils.check("   \t   ").isBlank("not blank");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isBlank(String, String, Object...)} .
+     * Test method for {@link Expect#isBlank(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOStringString() {
-        AssertUtils.isBlank("   \t d   ", "not blank");
+        AssertUtils.check("   \t d   ").isBlank("not blank");
     }
 
     /**
-     * Test method for {@link AssertUtils#isBlank(java.lang.String)} .
+     * Test method for {@link Expect#isBlank(java.lang.String)} .
      */
     @Test
     public void testIsBlankOKString() {
         try {
-            AssertUtils.isBlank("   \t   ");
+            AssertUtils.check("   \t   ").isBlank();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertUtils#isBlank(java.lang.String)} .
+     * Test method for {@link Expect#isBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOString() {
-        AssertUtils.isBlank("      j ");
+        AssertUtils.check("      j ").isBlank();
     }
 
     /**
      * Test method for
-     * {@link AssertUtils#doesNotContain(String, String, String, Object...)} .
+     * {@link Expect#doesNotContain(String, String, String, Object...)} .
      */
     @Test
     public void testDoesNotContainOKStringStringString() {
         try {
-            AssertUtils.doesNotContain("titi part en vacances", "toto", "not found");
+            AssertUtils.check("titi part en vacances").doesNotContain("toto", "not found");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -356,21 +349,21 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#doesNotContain(String, String, String, Object...)} .
+     * {@link Expect#doesNotContain(String, String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringStringString() {
-        AssertUtils.doesNotContain("titi part en vacances", "titi", "not found");
+        AssertUtils.check("titi part en vacances").doesNotContain("titi", "not found");
     }
 
     /**
      * Test method for
-     * {@link AssertUtils#doesNotContain(java.lang.String, java.lang.String)} .
+     * {@link Expect#doesNotContain(java.lang.String, java.lang.String)} .
      */
     @Test
     public void testDoesNotContainOKStringString() {
         try {
-            AssertUtils.doesNotContain("toto part en vacances", "tutu");
+            AssertUtils.check("toto part en vacances").doesNotContain("tutu");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -378,21 +371,21 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#doesNotContain(java.lang.String, java.lang.String)} .
+     * {@link Expect#doesNotContain(java.lang.String, java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringString() {
-        AssertUtils.doesNotContain("tata part en vacances", "tata");
+        AssertUtils.check("tata part en vacances").doesNotContain("tata");
     }
 
     /**
      * Test method for
-     * {@link AssertUtils#contains(java.lang.String, java.lang.String)} .
+     * {@link Expect#contains(java.lang.String, java.lang.String)} .
      */
     @Test
     public void testContainsOKStringString() {
         try {
-            AssertUtils.contains("toto part en vacances", "toto");
+            AssertUtils.check("toto part en vacances").contains("toto");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -400,21 +393,21 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#contains(java.lang.String, java.lang.String)} .
+     * {@link Expect#contains(java.lang.String, java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringString() {
-        AssertUtils.contains("tata part en vacances", "tutu");
+        AssertUtils.check("tata part en vacances").contains("tutu");
     }
 
     /**
      * Test method for
-     * {@link AssertUtils#contains(String, String, String, Object...)} .
+     * {@link Expect#contains(String, String, String, Object...)} .
      */
     @Test
     public void testContainsOKStringStringString() {
         try {
-            AssertUtils.contains("toto part en vacances", "toto", "text not found");
+            AssertUtils.check("toto part en vacances").contains("toto", "text not found");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -422,10 +415,10 @@ public class AbstractStringAssertTest {
 
     /**
      * Test method for
-     * {@link AssertUtils#contains(String, String, String, Object...)} .
+     * {@link Expect#contains(String, String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringStringString() {
-        AssertUtils.contains("tata part en vacances", "tutu", "text not found");
+        AssertUtils.check("tata part en vacances").contains("tutu", "text not found");
     }
 }

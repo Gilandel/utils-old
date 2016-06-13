@@ -12,8 +12,11 @@
  */
 package fr.landel.utils.asserts;
 
-import java.util.Locale;
 import java.util.regex.Pattern;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.StringDescription;
 
 import fr.landel.utils.commons.NumberUtils;
 import fr.landel.utils.commons.StringUtils;
@@ -24,224 +27,120 @@ import fr.landel.utils.commons.StringUtils;
  * @since 14 mai 2016
  * @author Gilles
  *
+ * @param <T>
+ *            the class type
  */
-public abstract class AbstractAssert {
+public class AssertObject<T extends AssertObject<T, O>, O> {
 
     private static final String ASSERTION_FAILED = "[Assertion failed]";
     private static final Pattern PATTERN_PARAMETERS = Pattern.compile("(%(\\d+\\$)?p)");
 
-    private static Locale locale = Locale.US;
+    private O object;
 
     /**
-     * @return the locale
+     * 
+     * Constructor
+     *
+     * @param object
+     *            The object to check
      */
-    public static final Locale getLocale() {
-        return AbstractAssert.locale;
+    protected AssertObject(final O object) {
+        this.object = object;
     }
 
     /**
-     * @param locale
-     *            the locale to set
+     * @return this
      */
-    public static final void setLocale(final Locale locale) {
-        AbstractAssert.locale = locale;
+    @SuppressWarnings("unchecked")
+    protected T getThis() {
+        return (T) this;
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code true}.
+     * @return the object to check
+     */
+    protected O get() {
+        return this.object;
+    }
+
+    /**
+     * Assert that an object is {@code null}.
      * 
      * <pre>
-     * Assert.isFalse(i &gt; 0);
+     * AssertUtils.check(object).isNull();
      * </pre>
      * 
-     * @param expression
-     *            a boolean expression
+     * @return this
      * @throws IllegalArgumentException
-     *             if expression is {@code false}
+     *             if the object is not {@code null}
      */
-    public static void isFalse(final boolean expression) {
-        isFalse(expression, (CharSequence) null);
+    public T isNull() {
+        return this.isNull((CharSequence) null);
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code true}.
+     * Assert that an object is {@code null}.
      * 
      * <pre>
-     * Assert.isFalse(i &gt; 0, &quot;The value must be greater than zero&quot;);
+     * AssertUtils.check(object).isNull(&quot;The value must be null&quot;);
      * </pre>
      * 
-     * @param expression
-     *            a boolean expression
      * @param message
      *            the exception message to use if the assertion fails (%p or
      *            %1$p can be used to display parameter value, see explanation
      *            in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
+     * @return this
      * @throws IllegalArgumentException
-     *             if expression is {@code false}
+     *             if the object is not {@code null}
      */
-    public static void isFalse(final boolean expression, final CharSequence message, final Object... arguments) {
-        isFalse(expression, null, message, arguments);
+    public T isNull(final CharSequence message, final Object... arguments) {
+        isNull(this.object, null, message, arguments);
+
+        return this.getThis();
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code true}.
+     * Assert that an object is {@code null}.
      * 
      * <pre>
-     * Assert.isFalse(i &gt; 0, exceptionToThrowOnError);
+     * AssertUtils.check(object).isNull(exceptionToThrowOnError);
      * </pre>
      * 
-     * @param expression
-     *            a boolean expression
      * @param exception
      *            the exception to throw on error
+     * @return this
      * @param <E>
-     *            The type of exception
+     *            the type of exception
      * @throws E
-     *             if expression is {@code false}
+     *             if the object is not {@code null}
      */
-    public static <E extends Throwable> void isFalse(final boolean expression, final E exception) throws E {
-        isFalse(expression, exception, null);
-    }
+    public <E extends Throwable> T isNull(final E exception) throws E {
+        isNull(this.object, exception, null);
 
-    private static <E extends Throwable> void isFalse(final boolean expression, final E exception, final CharSequence message,
-            final Object... arguments) throws E {
-        if (expression) {
-            manageExceptions("this expression must be false", exception, message, new Object[] {expression}, arguments);
-        }
+        return this.getThis();
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code false}.
+     * Assert that an object is {@code null}.
      * 
-     * <pre>
-     * Assert.isTrue(i &gt; 0);
-     * </pre>
-     * 
-     * @param expression
-     *            a boolean expression
-     * @throws IllegalArgumentException
-     *             if expression is {@code false}
-     */
-    public static void isTrue(final boolean expression) {
-        isTrue(expression, (CharSequence) null);
-    }
-
-    /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code false}.
-     * 
-     * <pre>
-     * Assert.isTrue(i &gt; 0, &quot;The value must be greater than zero&quot;);
-     * </pre>
-     * 
-     * @param expression
-     *            a boolean expression
+     * @param object
+     *            the object to check
+     * @param exception
+     *            the exception to throw on error
      * @param message
      *            the exception message to use if the assertion fails (%p or
      *            %1$p can be used to display parameter value, see explanation
      *            in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
-     * @throws IllegalArgumentException
-     *             if expression is {@code false}
-     */
-    public static void isTrue(final boolean expression, final CharSequence message, final Object... arguments) {
-        isTrue(expression, null, message, arguments);
-    }
-
-    /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code false}.
-     * 
-     * <pre>
-     * Assert.isTrue(i &gt; 0, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param expression
-     *            a boolean expression
-     * @param exception
-     *            the exception to throw on error
      * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if expression is {@code false}
-     */
-    public static <E extends Throwable> void isTrue(final boolean expression, final E exception) throws E {
-        isTrue(expression, exception, null);
-    }
-
-    private static <E extends Throwable> void isTrue(final boolean expression, final E exception, final CharSequence message,
-            final Object... arguments) throws E {
-        if (!expression) {
-            manageExceptions("this expression must be true", exception, message, new Object[] {expression}, arguments);
-        }
-    }
-
-    /**
-     * Assert that an object is {@code null} .
-     * 
-     * <pre>
-     * Assert.isNull(value);
-     * </pre>
-     * 
-     * @param object
-     *            the object to check
-     * @throws IllegalArgumentException
-     *             if the object is not {@code null}
-     */
-    public static void isNull(final Object object) {
-        isNull(object, (CharSequence) null);
-    }
-
-    /**
-     * Assert that an object is {@code null} .
-     * 
-     * <pre>
-     * Assert.isNull(value, &quot;The value must be null&quot;);
-     * </pre>
-     * 
-     * @param object
-     *            the object to check
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @throws IllegalArgumentException
-     *             if the object is not {@code null}
-     */
-    public static void isNull(final Object object, final CharSequence message, final Object... arguments) {
-        isNull(object, null, message, arguments);
-    }
-
-    /**
-     * Assert that an object is {@code null} .
-     * 
-     * <pre>
-     * Assert.isNull(value, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param object
-     *            the object to check
-     * @param exception
-     *            the exception to throw on error
-     * @param <E>
-     *            The type of exception
+     *            the type of exception
      * @throws E
      *             if the object is not {@code null}
      */
-    public static <E extends Throwable> void isNull(final CharSequence object, final E exception) throws E {
-        isNull(object, exception, null);
-    }
-
-    private static <E extends Throwable> void isNull(final Object object, final E exception, final CharSequence message,
+    protected static <E extends Throwable> void isNull(final Object object, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (object != null) {
             manageExceptions("the object argument must be null", exception, message, new Object[] {object}, arguments);
@@ -249,64 +148,83 @@ public abstract class AbstractAssert {
     }
 
     /**
-     * Assert that an object is not {@code null} .
+     * Assert that an object is not {@code null}.
      * 
      * <pre>
-     * Assert.isNotNull(object);
+     * AssertUtils.check(object).isNotNull();
      * </pre>
      * 
-     * @param object
-     *            the object to check
+     * @return this
      * @throws IllegalArgumentException
      *             if the object is {@code null}
      */
-    public static void isNotNull(final Object object) {
-        isNotNull(object, (CharSequence) null);
+    public T isNotNull() {
+        return this.isNotNull((CharSequence) null);
     }
 
     /**
-     * Assert that an object is not {@code null} .
+     * Assert that an object is not {@code null}.
      * 
      * <pre>
-     * Assert.isNotNull(clazz, &quot;The class must not be null&quot;);
+     * AssertUtils.check(object).isNotNull(&quot;The object must not be null&quot;);
      * </pre>
      * 
-     * @param object
-     *            the object to check
      * @param message
      *            the exception message to use if the assertion fails (%p or
      *            %1$p can be used to display parameter value, see explanation
      *            in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
+     * @return this
      * @throws IllegalArgumentException
      *             if the object is {@code null}
      */
-    public static void isNotNull(final Object object, final CharSequence message, final Object... arguments) {
-        isNotNull(object, null, message, arguments);
+    public T isNotNull(final CharSequence message, final Object... arguments) {
+        isNotNull(this.object, null, message, arguments);
+
+        return this.getThis();
     }
 
     /**
-     * Assert that an object is not {@code null} .
+     * Assert that an object is not {@code null}.
      * 
      * <pre>
-     * Assert.isNotNull(clazz, exceptionToThrowOnError);
+     * AssertUtils.check(object).isNotNull(exceptionToThrowOnError);
      * </pre>
      * 
-     * @param object
-     *            the object to check
      * @param exception
      *            the exception to throw on error
+     * @return this
      * @param <E>
      *            The type of exception
      * @throws E
      *             if the object is {@code null}
      */
-    public static <E extends Throwable> void isNotNull(final Object object, final E exception) throws E {
-        isNotNull(object, exception, null);
+    public <E extends Throwable> T isNotNull(final E exception) throws E {
+        isNotNull(this.object, exception, null);
+
+        return this.getThis();
     }
 
-    private static <E extends Throwable> void isNotNull(final Object object, final E exception, final CharSequence message,
+    /**
+     * Assert that an object is not {@code null}.
+     * 
+     * @param object
+     *            the object to check
+     * @param exception
+     *            the exception to throw on error
+     * @param message
+     *            the exception message to use if the assertion fails (%p or
+     *            %1$p can be used to display parameter value, see explanation
+     *            in the class description)
+     * @param arguments
+     *            the message arguments (use with String.format)
+     * @param <E>
+     *            The type of exception
+     * @throws E
+     *             if the object is {@code null}
+     */
+    protected static <E extends Throwable> void isNotNull(final Object object, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (object == null) {
             manageExceptions("this argument is required; it must not be null", exception, message, new Object[] {object}, arguments);
@@ -319,18 +237,17 @@ public abstract class AbstractAssert {
      * 
      * 
      * <pre>
-     * Assert.isNotEqual(foo1, foo2);
+     * AssertUtils.check(object).isNotEqual(foo1, foo2);
      * </pre>
      * 
-     * @param obj1
-     *            the first object
-     * @param obj2
+     * @param object
      *            the second object
+     * @return this
      * @throws IllegalArgumentException
      *             if both objects are {@code null} or are equal.
      */
-    public static void isNotEqual(final Object obj1, final Object obj2) {
-        isNotEqual(obj1, obj2, (CharSequence) null);
+    public T isNotEqual(final Object object) {
+        return this.isNotEqual(object, (CharSequence) null);
     }
 
     /**
@@ -339,12 +256,10 @@ public abstract class AbstractAssert {
      * 
      * 
      * <pre>
-     * Assert.isNotEqual(foo1, foo2, message);
+     * AssertUtils.check(object).isNotEqual(foo1, foo2, message);
      * </pre>
      * 
-     * @param obj1
-     *            the first object
-     * @param obj2
+     * @param object
      *            the second object
      * @param message
      *            the exception message, use the default assertion if null (%p
@@ -352,11 +267,14 @@ public abstract class AbstractAssert {
      *            explanation in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
+     * @return this
      * @throws IllegalArgumentException
      *             if both objects are {@code null} or are equal.
      */
-    public static void isNotEqual(final Object obj1, final Object obj2, final CharSequence message, final Object... arguments) {
-        isNotEqual(obj1, obj2, null, message, arguments);
+    public T isNotEqual(final Object object, final CharSequence message, final Object... arguments) {
+        isNotEqual(this.object, object, null, message, arguments);
+
+        return this.getThis();
     }
 
     /**
@@ -365,26 +283,27 @@ public abstract class AbstractAssert {
      * 
      * 
      * <pre>
-     * Assert.isNotEqual(foo1, foo2, exceptionToThrowOnError);
+     * AssertUtils.check(object).isNotEqual(foo1, foo2, exceptionToThrowOnError);
      * </pre>
      * 
-     * @param obj1
-     *            the first object
-     * @param obj2
+     * @param object
      *            the second object
      * @param exception
      *            the exception to throw on error
+     * @return this
      * @param <E>
      *            The type of exception
      * @throws E
      *             if both are {@code null} or if objects are not equal. The
      *             standard exception is appended as suppressed.
      */
-    public static <E extends Throwable> void isNotEqual(final Object obj1, final Object obj2, final E exception) throws E {
-        isNotEqual(obj1, obj2, exception, null);
+    public <E extends Throwable> T isNotEqual(final Object object, final E exception) throws E {
+        isNotEqual(this.object, object, exception, null);
+
+        return this.getThis();
     }
 
-    private static <E extends Throwable> void isNotEqual(final Object obj1, final Object obj2, final E exception,
+    protected static <E extends Throwable> void isNotEqual(final Object obj1, final Object obj2, final E exception,
             final CharSequence message, final Object... arguments) throws E {
         if (obj1 == null && obj2 == null) {
             manageExceptions("Both objects are null.", exception, message, new Object[] {obj1, obj2}, arguments);
@@ -404,19 +323,18 @@ public abstract class AbstractAssert {
      * 
      * 
      * <pre>
-     * Assert.isEqual(foo1, foo2);
+     * AssertUtils.check(object).isEqual(foo1, foo2);
      * </pre>
      * 
-     * @param obj1
-     *            the first object
-     * @param obj2
+     * @param object
      *            the second object
+     * @return this
      * @throws IllegalArgumentException
      *             if only one object is {@code null} and if objects are not
      *             equal.
      */
-    public static void isEqual(final Object obj1, final Object obj2) {
-        isEqual(obj1, obj2, (CharSequence) null);
+    public T isEqual(final Object object) {
+        return this.isEqual(object, (CharSequence) null);
     }
 
     /**
@@ -425,12 +343,10 @@ public abstract class AbstractAssert {
      * 
      * 
      * <pre>
-     * Assert.isEqual(foo1, foo2, message);
+     * AssertUtils.check(object).isEqual(foo1, foo2, message);
      * </pre>
      * 
-     * @param obj1
-     *            the first object
-     * @param obj2
+     * @param object
      *            the second object
      * @param message
      *            the exception message, use the default assertion if null (%p
@@ -438,12 +354,15 @@ public abstract class AbstractAssert {
      *            explanation in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
+     * @return this
      * @throws IllegalArgumentException
      *             if only one object is {@code null} and not the other one or
      *             are not equal.
      */
-    public static void isEqual(final Object obj1, final Object obj2, final CharSequence message, final Object... arguments) {
-        isEqual(obj1, obj2, null, message, arguments);
+    public T isEqual(final Object object, final CharSequence message, final Object... arguments) {
+        isEqual(this.object, object, null, message, arguments);
+
+        return this.getThis();
     }
 
     /**
@@ -451,29 +370,30 @@ public abstract class AbstractAssert {
      * {@code CharSequence} implementation like StringBuilder)
      * 
      * <pre>
-     * Assert.isEqual(foo1, foo2, exceptionToThrowOnError);
+     * AssertUtils.check(object).isEqual(foo1, foo2, exceptionToThrowOnError);
      * </pre>
      * 
-     * @param obj1
-     *            the first object
-     * @param obj2
+     * @param object
      *            the second object
      * @param exception
      *            the exception to throw on error
+     * @return this
      * @param <E>
      *            The type of exception
      * @throws E
      *             if at least one object is {@code null} and if objects are not
      *             equal. The standard exception is appended as suppressed.
      */
-    public static <E extends Throwable> void isEqual(final Object obj1, final Object obj2, final E exception) throws E {
-        isEqual(obj1, obj2, exception, null);
+    public <E extends Throwable> T isEqual(final Object object, final E exception) throws E {
+        isEqual(this.object, object, exception, null);
+
+        return this.getThis();
     }
 
-    private static <E extends Throwable> void isEqual(final Object obj1, final Object obj2, final E exception, final CharSequence message,
+    protected static <E extends Throwable> void isEqual(final Object obj1, final Object obj2, final E exception, final CharSequence message,
             final Object... arguments) throws E {
         if (obj1 != null && obj2 != null && !obj1.equals(obj2)) {
-            if (!CharSequence.class.isAssignableFrom(obj1.getClass()) || !CharSequence.class.isAssignableFrom(obj2.getClass())
+            if (!CharSequence.class.isAssignableFrom(obj1.getClass()) || !CharSequence.class.isAssignableFrom(obj1.getClass())
                     || !obj1.toString().equals(obj2.toString())) {
                 manageExceptions("Object1 is not equal to Object2.", exception, message, new Object[] {obj1, obj2}, arguments);
             }
@@ -488,72 +408,73 @@ public abstract class AbstractAssert {
      * Assert that the provided object is an instance of the provided class.
      * 
      * <pre>
-     * Assert.instanceOf(Foo.class, foo);
+     * AssertUtils.check(object).instanceOf(Foo.class, foo);
      * </pre>
      * 
      * @param clazz
      *            the required class
-     * @param obj
-     *            the object to check
+     * @return this
      * @throws IllegalArgumentException
      *             if the object is not an instance of clazz
      * @see Class#isInstance
      */
-    public static void isInstanceOf(final Class<?> clazz, final Object obj) {
-        isInstanceOf(clazz, obj, (CharSequence) null);
+    public T isInstanceOf(final Class<?> clazz) {
+        return this.isInstanceOf(clazz, (CharSequence) null);
     }
 
     /**
      * Assert that the provided object is an instance of the provided class.
      * 
      * <pre>
-     * Assert.instanceOf(Foo.class, foo);
+     * AssertUtils.check(object).instanceOf(Foo.class, foo);
      * </pre>
      * 
      * @param type
      *            the type to check against
-     * @param obj
-     *            the object to check
      * @param message
      *            the exception message, use the default assertion if null (%p
      *            or %1$p can be used to display parameter value, see
      *            explanation in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
+     * @return this
      * @throws IllegalArgumentException
      *             if the object is not an instance of clazz
      * @see Class#isInstance
      */
-    public static void isInstanceOf(final Class<?> type, final Object obj, final CharSequence message, final Object... arguments) {
-        isInstanceOf(type, obj, null, message, arguments);
+    public T isInstanceOf(final Class<?> type, final CharSequence message, final Object... arguments) {
+        isInstanceOf(this.object, type, null, message, arguments);
+
+        return this.getThis();
     }
 
     /**
      * Assert that the provided object is an instance of the provided class.
      * 
      * <pre>
-     * Assert.instanceOf(Foo.class, foo);
+     * AssertUtils.check(object).instanceOf(Foo.class, foo);
      * </pre>
      * 
      * @param type
      *            the type to check against
-     * @param obj
-     *            the object to check
      * @param exception
      *            the exception to throw on error
+     * @return this
      * @param <E>
      *            The type of exception
      * @throws E
      *             if condition doesn't match.
      * @see Class#isInstance
      */
-    public static <E extends Throwable> void isInstanceOf(final Class<?> type, final Object obj, final E exception) throws E {
-        isInstanceOf(type, obj, exception, null);
+    public <E extends Throwable> T isInstanceOf(final Class<?> type, final E exception) throws E {
+        isInstanceOf(this.object, type, exception, null);
+
+        return this.getThis();
     }
 
-    private static <E extends Throwable> void isInstanceOf(final Class<?> type, final Object obj, final E exception,
+    protected static <E extends Throwable> void isInstanceOf(final Object obj, final Class<?> type, final E exception,
             final CharSequence message, final Object... arguments) throws E {
-        isNotNull(type, "Type to check against must not be null", exception);
+        isNotNull(type, null, "Type to check against must not be null", exception);
         if (!type.isInstance(obj)) {
 
             final String clazzName = getClassName(obj);
@@ -564,6 +485,13 @@ public abstract class AbstractAssert {
         }
     }
 
+    /**
+     * Get the class name
+     * 
+     * @param obj
+     *            the object
+     * @return the class name or the string "null"
+     */
     private static String getClassName(final Object obj) {
         final String clazzName;
         if (obj != null) {
@@ -583,13 +511,12 @@ public abstract class AbstractAssert {
      * 
      * @param type
      *            the type to check
-     * @param superType
-     *            the super type to check
+     * @return this
      * @throws IllegalArgumentException
      *             if the classes are not assignable
      */
-    public static void isAssignable(final Class<?> type, final Class<?> superType) {
-        isAssignable(type, superType, (CharSequence) null);
+    public T isAssignable(final Class<?> type) {
+        return this.isAssignable(type, (CharSequence) null);
     }
 
     /**
@@ -601,20 +528,22 @@ public abstract class AbstractAssert {
      * 
      * @param type
      *            the type to check against
-     * @param superType
-     *            the super type to check
      * @param message
      *            the exception message, use the default assertion if null (%p
      *            or %1$p can be used to display parameter value, see
      *            explanation in the class description)
      * @param arguments
      *            the message arguments (use with String.format) message looks
-     *            OK when appended to it.
+     * @return this OK when appended to it.
      * @throws IllegalArgumentException
      *             if the classes are not assignable
      */
-    public static void isAssignable(final Class<?> type, final Class<?> superType, final CharSequence message, final Object... arguments) {
-        isAssignable(type, superType, null, message, arguments);
+    public T isAssignable(final Class<?> type, final CharSequence message, final Object... arguments) {
+        isNotNull();
+
+        AssertClass.isAssignable(type, this.object.getClass(), null, message, arguments);
+
+        return this.getThis();
     }
 
     /**
@@ -626,148 +555,86 @@ public abstract class AbstractAssert {
      * 
      * @param type
      *            the type to check against
-     * @param superType
-     *            the super type to check
      * @param exception
      *            the exception to throw on error
+     * @return this
      * @param <E>
      *            The type of exception
      * @throws E
      *             if the classes are not assignable. The standard exception is
      *             appended as suppressed.
      */
-    public static <E extends Throwable> void isAssignable(final Class<?> type, final Class<?> superType, final E exception) throws E {
-        isAssignable(superType, superType, exception, null);
-    }
+    public <E extends Throwable> T isAssignable(final Class<?> type, final E exception) throws E {
+        isNotNull();
 
-    private static <E extends Throwable> void isAssignable(final Class<?> type, final Class<?> superType, final E exception,
-            final CharSequence message, final Object... arguments) throws E {
-        isNotNull(type, "Type to check against must not be null");
-        if (superType == null || !type.isAssignableFrom(superType)) {
-            manageExceptions(superType + " is not assignable to " + type, exception, message, new Object[] {type, superType}, arguments);
-        }
+        AssertClass.isAssignable(type, this.object.getClass(), exception, null);
+
+        return this.getThis();
     }
 
     /**
-     * Assert a boolean expression, throwing {@link IllegalStateException} if
-     * the test result is {@code false}.
-     * <p>
-     * Call {@link #isTrue(boolean)} if you wish to throw
-     * {@link IllegalArgumentException} on an assertion failure.
+     * The equivalent of JUnit/hamcrest assertThat
      * 
-     * <pre>
-     * Assert.state(id == null);
-     * </pre>
-     * 
-     * @param expression
-     *            a boolean expression
-     * @throws IllegalStateException
-     *             if the supplied expression is {@code false}
+     * @param matcher
+     *            an hamcrest matcher
+     * @return this
+     * @throws IllegalArgumentException
+     *             if matcher doesn't match
      */
-    public static void state(final boolean expression) {
-        state(expression, (CharSequence) null);
+    public T that(final Matcher<? super O> matcher) {
+        return this.that(matcher, (String) null);
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalStateException} if
-     * the test result is {@code false}. Call isTrue if you wish to throw
-     * IllegalArgumentException on an assertion failure.
+     * The equivalent of JUnit/hamcrest assertThat
      * 
-     * <pre>
-     * Assert.state(id == null, &quot;The id property must not already be initialized&quot;);
-     * </pre>
-     * 
-     * @param expression
-     *            a boolean expression
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @throws IllegalStateException
-     *             if expression is {@code false}
-     */
-    public static void state(final boolean expression, final CharSequence message, final Object... arguments) {
-        if (!expression) {
-            throw new IllegalStateException(getMessage("this state invariant must be true", message, new Object[] {expression}, arguments));
-        }
-    }
-
-    /**
-     * Assert a boolean expression, appending {@code IllegalStateException} if
-     * the test result is {@code false}. Call isTrue if you wish to throw
-     * IllegalArgumentException on an assertion failure.
-     * 
-     * <pre>
-     * Assert.state(id == null, &quot;The id property must not already be initialized&quot;);
-     * </pre>
-     * 
-     * @param expression
-     *            a boolean expression
-     * @param exception
-     *            the exception to throw on error
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if expression is {@code false}. The standard exception is
-     *             appended as suppressed.
-     */
-    public static <E extends Throwable> void state(final boolean expression, final E exception) throws E {
-        if (!expression) {
-            exception.addSuppressed(new IllegalStateException("this state invariant must be true"));
-            throw exception;
-        }
-    }
-
-    /**
-     * Fail, throwing {@link IllegalStateException}.
-     * 
-     * <pre>
-     * Assert.fail(&quot;Error&quot;);
-     * Assert.fail(&quot;Error type: %s&quot;, &quot;access exception&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            a message, if {@code null} use the default assertion message
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @throws IllegalStateException
-     *             in all cases
-     */
-    public static void fail(final CharSequence message, final Object... arguments) {
-        fail(null, message, arguments);
-    }
-
-    /**
-     * Fail, throwing E.
-     * 
-     * <pre>
-     * Assert.fail(new Exception(), &quot;Error&quot;);
-     * Assert.fail(new IOException(), &quot;Error type: %s&quot;, &quot;access exception&quot;);
-     * </pre>
-     * 
-     * 
-     * @param throwable
-     *            the cause exception
+     * @param matcher
+     *            an hamcrest matcher
      * @param message
      *            a message, if {@code null} use the default assertion message
      *            (%p or %1$p can be used to display parameter value, see
      *            explanation in the class description)
      * @param arguments
      *            the message arguments (use with String.format)
-     * @param <E>
-     *            The exception type
-     * @throws E
-     *             in all cases
+     * @return this
+     * @throws IllegalArgumentException
+     *             if matcher doesn't match
      */
-    public static <E extends Throwable> void fail(final E throwable, final CharSequence message, final Object... arguments) throws E {
-        final IllegalStateException exception = new IllegalStateException(getMessage("", message, new Object[] {throwable}, arguments));
-        if (throwable != null) {
-            throwable.addSuppressed(exception);
-            throw throwable;
+    public T that(final Matcher<? super O> matcher, final String message, final Object... arguments) {
+        that(this.object, matcher, null, message, arguments);
+
+        return this.getThis();
+    }
+
+    /**
+     * The equivalent of JUnit/hamcrest assertThat
+     * 
+     * @param matcher
+     *            an hamcrest matcher
+     * @param exception
+     *            the exception to throw on error
+     * @return this
+     * @param <E>
+     *            The type of exception
+     * @throws E
+     *             if condition doesn't match.
+     */
+    public <E extends Throwable> T that(final Matcher<? super O> matcher, final E exception) throws E {
+        that(this.object, matcher, exception, null);
+
+        return this.getThis();
+    }
+
+    protected static <O, E extends Throwable> void that(final O actual, final Matcher<? super O> matcher, final E exception,
+            final String message, final Object... arguments) throws E {
+        if (!matcher.matches(actual)) {
+            Description description = new StringDescription();
+            description.appendText("Expected: ");
+            description.appendDescriptionOf(matcher).appendText("\n     but: ");
+            matcher.describeMismatch(actual, description);
+
+            manageExceptions(description.toString(), exception, message, new Object[] {actual, matcher}, arguments);
         }
-        throw exception;
     }
 
     /**
@@ -852,7 +719,7 @@ public abstract class AbstractAssert {
                 }
             }
             if (arguments != null && arguments.length > 0) {
-                msg = String.format(AbstractAssert.locale, msg, arguments);
+                msg = String.format(AssertUtils.getLocale(), msg, arguments);
             }
         } else {
             msg = defaultString.toString();
