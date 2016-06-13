@@ -37,24 +37,36 @@ public class AssertDateTest {
      */
     @Test
     public void testIsEqualOK() {
-        try {
-            final Date date1 = new Date(1464475553640L);
-            final Date date2 = new Date(1464475553640L);
-            final Calendar calendar1 = DateUtils.getCalendar(date1);
-            final Calendar calendar2 = DateUtils.getCalendar(date2);
+        final Date date1 = new Date(1464475553640L);
+        final Date date2 = new Date(1464475553640L);
+        final Calendar calendar1 = DateUtils.getCalendar(date1);
+        final Calendar calendar2 = DateUtils.getCalendar(date2);
 
+        try {
             AssertUtils.check((Date) null).isEqual((Date) null);
             AssertUtils.check((Calendar) null).isEqual((Calendar) null);
 
             AssertUtils.check(date1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
-            AssertUtils.check(date1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
-                    new IllegalArgumentException());
 
             AssertUtils.check(calendar1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
                     new IllegalArgumentException());
-            AssertUtils.check(calendar1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
+        }
+
+        try {
+            AssertUtils.check(date1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
+                    new IllegalArgumentException());
+            fail("Has to raise an exception");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            AssertUtils.check(calendar1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
+            fail("Has to raise an exception");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
         }
     }
 
