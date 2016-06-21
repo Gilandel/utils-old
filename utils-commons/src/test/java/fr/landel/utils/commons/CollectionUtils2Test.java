@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.commons;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -509,5 +511,22 @@ public class CollectionUtils2Test {
         Class<Map<String, Object>> clazz9 = CollectionUtils2.getMapClass(String.class, null);
         assertNotNull(clazz9);
         assertTrue(HashMap.class.isAssignableFrom(clazz9));
+    }
+
+    /**
+     * Test method for {@link CollectionUtils2#getOrPut}.
+     */
+    @Test
+    public void testGetOrPut() {
+        Map<String, String> map = new HashMap<>();
+
+        assertFalse(map.containsKey("key"));
+
+        String value = CollectionUtils2.getOrPut(map, "key", "value");
+        assertTrue(map.containsKey("key"));
+        assertEquals("value", value);
+
+        value = CollectionUtils2.getOrPut(map, "key", "value2");
+        assertEquals("value", value);
     }
 }

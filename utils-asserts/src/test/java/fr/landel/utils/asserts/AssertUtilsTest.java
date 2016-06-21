@@ -91,7 +91,7 @@ public class AssertUtilsTest {
         colors.add(Color.BLUE);
         colors.add(Color.CYAN);
 
-        AssertUtils.check(colors).that(Matchers.hasSize(colors.size() - 1));
+        AssertUtils.check(colors).that(Matchers.hasSize(colors.size() - 1), new IllegalArgumentException());
     }
 
     /**

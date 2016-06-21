@@ -32,7 +32,6 @@ import fr.landel.utils.commons.StringUtils;
  */
 public class AssertObject<T extends AssertObject<T, O>, O> {
 
-    private static final String ASSERTION_FAILED = "[Assertion failed]";
     private static final Pattern PATTERN_PARAMETERS = Pattern.compile("(%(\\d+\\$)?p)");
 
     private O object;
@@ -539,7 +538,7 @@ public class AssertObject<T extends AssertObject<T, O>, O> {
      *             if the classes are not assignable
      */
     public T isAssignable(final Class<?> type, final CharSequence message, final Object... arguments) {
-        isNotNull();
+        this.isNotNull();
 
         AssertClass.isAssignable(type, this.object.getClass(), null, message, arguments);
 
@@ -565,7 +564,7 @@ public class AssertObject<T extends AssertObject<T, O>, O> {
      *             appended as suppressed.
      */
     public <E extends Throwable> T isAssignable(final Class<?> type, final E exception) throws E {
-        isNotNull();
+        this.isNotNull();
 
         AssertClass.isAssignable(type, this.object.getClass(), exception, null);
 
@@ -724,6 +723,6 @@ public class AssertObject<T extends AssertObject<T, O>, O> {
         } else {
             msg = defaultString.toString();
         }
-        return new StringBuilder().append(ASSERTION_FAILED).append(" ").append(msg).toString();
+        return new StringBuilder().append(AssertUtils.getAssertionPrefix()).append(msg).toString();
     }
 }

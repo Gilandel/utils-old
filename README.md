@@ -15,7 +15,7 @@ gestion du mapping par champ de nom différent
 gestion de la mise en cache du mapping (reflection java) via scan
 gestion de l'annotation et des types transient
 
-dans le cas de collection non trie, exploiter le stream parallelisme
+dans le cas de collection non trie, exploiter le stream parallelise
 
 nouvelles proprietes du mappable (@MappableProperty(name, constructor, comparator, mode, deep, converter, targetClass)
 possibilite de typer les collections (@MappableProperty(constructor=TreeSet.class, comparator=Comparator) private Set<DTO> test;
@@ -29,9 +29,6 @@ mise en place de JMH
 
 scripts loader multi config (replacer/loader) config commune geree par le loader
 public static getValues()
-
-AssertUtils date avec ecart millisecondes/ sec/ min/ heures...
-Meilleure remontée des params (interface pour exception pour injecter les parametres / messages?
 
 
 # utils

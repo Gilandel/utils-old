@@ -30,8 +30,8 @@ import org.junit.Test;
 public class AssertObjectTest {
 
     /**
-     * Test method for {@link Expect#getLocale()}
-     * {@link Expect#setLocale(Locale)}.
+     * Test method for {@link AssertObject#getLocale()}
+     * {@link AssertObject#setLocale(Locale)}.
      */
     @Test
     public void testLocale() {
@@ -45,7 +45,24 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isFalse(boolean, String, Object...)} .
+     * Test method for {@link AssertObject#getAssertionPrefix}
+     * {@link AssertObject#setAssertionPrefix(String)}.
+     */
+    @Test
+    public void testAssertionPrefix() {
+        try {
+            assertEquals("[Assertion failed] ", AssertUtils.getAssertionPrefix());
+            AssertUtils.setAssertionPrefix("");
+            assertEquals("", AssertUtils.getAssertionPrefix());
+            AssertUtils.setAssertionPrefix("[Assertion failed] ");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
+    }
+
+    /**
+     * Test method for {@link AssertObject#isFalse(boolean, String, Object...)}
+     * .
      */
     @Test
     public void testIsFalseOKBooleanString() {
@@ -58,7 +75,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isFalse(boolean, String, Object...)} .
+     * Test method for {@link AssertObject#isFalse(boolean, String, Object...)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBooleanString() {
@@ -66,7 +84,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isFalse(boolean)} .
+     * Test method for {@link ExpecAssertUtilslse(boolean)} .
      */
     @Test
     public void testIsFalseOKBoolean() {
@@ -78,7 +96,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isFalse(boolean)} .
+     * Test method for {@link AssertObject#isFalse(boolean)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBoolean() {
@@ -86,7 +104,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isTrue(boolean, String, Object...)} .
+     * Test method for {@link AssertObject#isTrue(boolean, String, Object...)} .
      */
     @Test
     public void testIsTrueOKBooleanString() {
@@ -98,7 +116,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isTrue(boolean, String, Object...)} .
+     * Test method for {@link AssertObject#isTrue(boolean, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBooleanString() {
@@ -106,7 +124,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isTrue(boolean)} .
+     * Test method for {@link AssertObject#isTrue(boolean)} .
      */
     @Test
     public void testIsTrueOKBoolean() {
@@ -118,7 +136,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isTrue(boolean)} .
+     * Test method for {@link AssertObject#isTrue(boolean)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBoolean() {
@@ -126,7 +144,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNull(Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNull(Object, String, Object...)} .
      */
     @Test
     public void testIsNullOKObjectString() {
@@ -139,7 +157,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNull(Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNull(Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObjectString() {
@@ -147,7 +165,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNull(java.lang.Object)} .
      */
     @Test
     public void testIsNullOKObject() {
@@ -159,7 +177,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNull(java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObject() {
@@ -167,7 +185,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNotNull(Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNotNull(Object, String, Object...)}
+     * .
      */
     @Test
     public void testIsNotNullOKObjectString() {
@@ -179,7 +198,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNotNull(Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNotNull(Object, String, Object...)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObjectString() {
@@ -187,7 +207,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNotNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotNull(java.lang.Object)} .
      */
     @Test
     public void testIsNotNullOKObject() {
@@ -199,7 +219,7 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isNotNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotNull(java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObject() {
@@ -208,7 +228,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
      */
     @Test
     public void testIsNotEqualOKObjectObject() {
@@ -228,7 +248,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObject() {
@@ -237,7 +257,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOCharSequence() {
@@ -248,7 +268,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKONull() {
@@ -257,7 +277,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
      * 
      * @throws IOException
      *             On errors
@@ -269,7 +289,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(Object, Object, String, Object...)} .
+     * {@link AssertObject#isNotEqual(Object, Object, String, Object...)} .
      */
     @Test
     public void testIsNotEqualOKObjectObjectString() {
@@ -282,7 +302,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isNotEqual(Object, Object, String, Object...)} .
+     * {@link AssertObject#isNotEqual(Object, Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObjectString() {
@@ -291,10 +311,10 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isEqual(java.lang.Object, java.lang.Object)} .
      * 
      * @throws IOException
-     *             Expected exception if isEqual fails
+     *             AssertUtilsed exception if isEqual fails
      */
     @Test
     public void testIsEqualOKObjectObject() throws IOException {
@@ -312,7 +332,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isEqual(java.lang.Object, java.lang.Object)} .
+     * {@link AssertObject#isEqual(java.lang.Object, java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObject() {
@@ -320,8 +340,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isEqual(Object, Object, String, Object...)}
-     * .
+     * Test method for
+     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
      */
     @Test
     public void testIsEqualOKObjectObjectString() {
@@ -334,8 +354,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isEqual(Object, Object, String, Object...)}
-     * .
+     * Test method for
+     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObjectString() {
@@ -343,8 +363,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isEqual(Object, Object, String, Object...)}
-     * .
+     * Test method for
+     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKONullObjectString() {
@@ -352,8 +372,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isEqual(Object, Object, String, Object...)}
-     * .
+     * Test method for
+     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectNullString() {
@@ -361,8 +381,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isEqual(Object, Object, String, Object...)}
-     * .
+     * Test method for
+     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOIntegerStringString() {
@@ -370,8 +390,8 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link Expect#isEqual(Object, Object, String, Object...)}
-     * .
+     * Test method for
+     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOStringIntegerString() {
@@ -380,7 +400,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isInstanceOf(java.lang.Class, java.lang.Object)} .
+     * {@link AssertObject#isInstanceOf(java.lang.Class, java.lang.Object)} .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObject() {
@@ -394,7 +414,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isInstanceOf(java.lang.Class, java.lang.Object)} .
+     * {@link AssertObject#isInstanceOf(java.lang.Class, java.lang.Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObject() {
@@ -403,7 +423,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isInstanceOf(Class, Object, String, Object...)} .
+     * {@link AssertObject#isInstanceOf(Class, Object, String, Object...)} .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObjectString() {
@@ -416,7 +436,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isInstanceOf(Class, Object, String, Object...) )} .
+     * {@link AssertObject#isInstanceOf(Class, Object, String, Object...) )} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObjectString() {
@@ -425,7 +445,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isInstanceOf(Class, Object, String, Object...) )} .
+     * {@link AssertObject#isInstanceOf(Class, Object, String, Object...) )} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKONull() {
@@ -434,7 +454,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isAssignable(java.lang.Class, java.lang.Class)} .
+     * {@link AssertObject#isAssignable(java.lang.Class, java.lang.Class)} .
      * 
      * @throws IOException
      *             On errors
@@ -450,7 +470,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isAssignable(java.lang.Class, java.lang.Class)} .
+     * {@link AssertObject#isAssignable(java.lang.Class, java.lang.Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsAssignableKOClassOfQClassOfQ() {
@@ -459,7 +479,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isAssignable(Class, Class, String, Object...)} .
+     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
      */
     @Test
     public void testIsAssignableOKClassOfQClassOfQString() {
@@ -472,7 +492,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isAssignable(Class, Class, String, Object...)} .
+     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsAssignableKOClassOfQClassOfQString() {
@@ -481,7 +501,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isAssignable(Class, Class, String, Object...)} .
+     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsAssignableKOTypeNull() {
@@ -490,7 +510,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#isAssignable(Class, Class, String, Object...)} .
+     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsAssignableKOSuperTypeNull() {
@@ -499,7 +519,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
+     * {@link AssertObject#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
      * .
      */
     @Test
@@ -521,7 +541,7 @@ public class AssertObjectTest {
 
     /**
      * Test method for
-     * {@link Expect#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
+     * {@link AssertObject#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
      * .
      */
     @Test(expected = IllegalArgumentException.class)

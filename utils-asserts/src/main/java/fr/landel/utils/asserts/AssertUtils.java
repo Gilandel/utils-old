@@ -82,8 +82,21 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public class AssertUtils {
 
+    /**
+     * Default assertion prefix
+     */
+    private static final String ASSERTION_FAILED = "[Assertion failed] ";
+
+    /**
+     * Default locale
+     */
     private static Locale locale = Locale.US;
 
+    private static String assertionPrefix = ASSERTION_FAILED;
+
+    /**
+     * Hidden constructor
+     */
     private AssertUtils() {
     }
 
@@ -100,6 +113,21 @@ public class AssertUtils {
      */
     public static final void setLocale(final Locale locale) {
         AssertUtils.locale = locale;
+    }
+
+    /**
+     * @return the assertionPrefix
+     */
+    public static String getAssertionPrefix() {
+        return AssertUtils.assertionPrefix;
+    }
+
+    /**
+     * @param assertionPrefix
+     *            the assertionPrefix to set
+     */
+    public static void setAssertionPrefix(String assertionPrefix) {
+        AssertUtils.assertionPrefix = assertionPrefix;
     }
 
     public static <N extends Number & Comparable<N>> AssertNumber<N> check(final N number) {
