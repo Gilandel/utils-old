@@ -93,6 +93,13 @@ public class ScriptsLoader {
     }
 
     /**
+     * @return the replacer
+     */
+    public ScriptsReplacer getReplacer() {
+        return this.replacer;
+    }
+
+    /**
      * @param path
      *            The base path (default path: scripts/)
      */
