@@ -78,15 +78,15 @@ public final class FileUtils {
      *            The path of the file
      * @param charset
      *            The file charset
-     * @return The buffered content or {@code null} if path is {@code null}
+     * @return The buffered content
      * @throws IOException
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final String path, final Charset charset) throws IOException {
-        if (path != null) {
-            return FileUtils.getFileContent(new File(path), charset);
-        }
-        return null;
+        AssertUtils.check(path).isNotNull("The 'path' parameter cannot be null");
+        AssertUtils.check(charset).isNotNull("The 'charset' parameter cannot be null");
+
+        return FileUtils.getFileContent(new File(path), charset);
     }
 
     /**
@@ -101,6 +101,9 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final File file, final Charset charset) throws IOException {
+        AssertUtils.check(file).isNotNull("The 'file' parameter cannot be null");
+        AssertUtils.check(charset).isNotNull("The 'charset' parameter cannot be null");
+
         final StringBuilder buffer;
 
         final BufferedInputStream bis = StreamUtils.createBufferedInputStream(file);
@@ -137,6 +140,9 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final InputStream inputStream, final Charset charset) throws IOException {
+        AssertUtils.check(inputStream).isNotNull("The 'inpuStream' parameter cannot be null");
+        AssertUtils.check(charset).isNotNull("The 'charset' parameter cannot be null");
+
         int bufferReadSize;
         final StringBuilder buffer = new StringBuilder();
 
@@ -175,6 +181,8 @@ public final class FileUtils {
         }
 
         try (InputStream is = loader.getResourceAsStream(path)) {
+            AssertUtils.check(is).isNotNull("The 'inputStream' from the classpath cannot be null");
+
             while ((bufferReadSize = is.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
                 buffer.append(new String(BUFFER, 0, bufferReadSize, charset));
             }
@@ -204,7 +212,6 @@ public final class FileUtils {
             bos.write(buffer.toString().getBytes(charset));
 
             CloseableManager.close(file);
-
         }
     }
 
@@ -222,9 +229,10 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during writing
      */
     public static void writeFileContent(final StringBuilder buffer, final String path, final Charset charset) throws IOException {
-        if (path != null) {
-            writeFileContent(buffer, new File(path), charset);
-        }
+        AssertUtils.check(path).isNotNull("The 'path' parameter cannot be null");
+        AssertUtils.check(charset).isNotNull("The 'charset' parameter cannot be null");
+
+        writeFileContent(buffer, new File(path), charset);
     }
 
     /**
@@ -239,11 +247,9 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static void writeFileContent(final InputStream inputStream, final String path) throws IOException {
-        final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(path);
+        AssertUtils.check(path).isNotNull("The 'path' parameter cannot be null");
 
-        writeStream(inputStream, bos);
-
-        CloseableManager.close(path);
+        writeFileContent(inputStream, new File(path));
     }
 
     /**
@@ -258,6 +264,9 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static void writeFileContent(final InputStream inputStream, final File file) throws IOException {
+        AssertUtils.check(inputStream).isNotNull("The 'inpuStream' parameter cannot be null");
+        AssertUtils.check(file).isNotNull("The 'file' parameter cannot be null");
+
         final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(file);
 
         writeStream(inputStream, bos);
@@ -276,6 +285,9 @@ public final class FileUtils {
      *             thrown if problems occurs during reading
      */
     public static void writeStream(final InputStream inputStream, final OutputStream outputStream) throws IOException {
+        AssertUtils.check(inputStream).isNotNull("The 'inpuStream' parameter cannot be null");
+        AssertUtils.check(outputStream).isNotNull("The 'outputStream' parameter cannot be null");
+
         int bufferReadSize;
 
         while ((bufferReadSize = inputStream.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
@@ -297,10 +309,9 @@ public final class FileUtils {
      *             If parameters are null or not files
      */
     public static boolean isEqual(final String path1, final String path2) {
-        if (path1 != null && path2 != null) {
-            return FileUtils.isEqual(new File(path1), new File(path2));
-        }
-        throw new IllegalArgumentException("The paths paramater are invalid");
+        AssertUtils.check(path1, path2).areNotNull("The 'path1' or 'path2' parameters cannot be null");
+
+        return FileUtils.isEqual(new File(path1), new File(path2));
     }
 
     /**
