@@ -203,9 +203,11 @@ public class ScriptsLoader {
      * 
      * @param path
      *            The scripts path
+     * @param <E>
+     *            The type of script list
      * @return The StringBuilder
      */
-    public StringBuilder get(final ScriptsList<?> path) {
+    public <E extends ScriptsList<E>> StringBuilder get(final ScriptsList<E> path) {
         return this.get(path, new HashMap<String, String>(), false);
     }
 
@@ -218,9 +220,13 @@ public class ScriptsLoader {
      *            The key to replace
      * @param value
      *            The replacement value
+     * @param <E>
+     *            The type of script list
+     * @param <V>
+     *            The type of replacement values
      * @return The StringBuilder
      */
-    public StringBuilder get(final ScriptsList<?> path, final String key, final String value) {
+    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final String key, final V value) {
         return this.get(path, key, value, true);
     }
 
@@ -235,11 +241,16 @@ public class ScriptsLoader {
      *            The replacement value
      * @param checkVariables
      *            En/Disable variables to avoid SQL injections
+     * @param <E>
+     *            The type of script list
+     * @param <V>
+     *            The type of replacement value
      * @return The StringBuilder
      */
-    public StringBuilder get(final ScriptsList<?> path, final String key, final String value, final boolean checkVariables) {
+    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final String key, final V value,
+            final boolean checkVariables) {
         if (key != null) {
-            final Map<String, String> replacements = new HashMap<>();
+            final Map<String, V> replacements = new HashMap<>();
             replacements.put(key, value);
 
             return this.get(path, replacements, checkVariables);
@@ -254,9 +265,13 @@ public class ScriptsLoader {
      *            The scripts path
      * @param replacements
      *            The entries (keys to replace, replacement values)
+     * @param <E>
+     *            The type of script list
+     * @param <V>
+     *            The type of replacement values
      * @return The StringBuilder
      */
-    public StringBuilder get(final ScriptsList<?> path, final Map<String, String> replacements) {
+    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final Map<String, V> replacements) {
         return this.get(path, replacements, true);
     }
 
@@ -269,23 +284,22 @@ public class ScriptsLoader {
      *            The entries (keys to replace, replacement values)
      * @param checkVariables
      *            En/Disable variables to avoid SQL injections
+     * @param <E>
+     *            The type of script list
+     * @param <V>
+     *            The type of replacement values
      * @return The StringBuilder
      */
-    public StringBuilder get(final ScriptsList<?> path, final Map<String, String> replacements, final boolean checkVariables) {
+    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final Map<String, V> replacements,
+            final boolean checkVariables) {
         if (this.scripts.containsKey(path)) {
             final StringBuilder builder = new StringBuilder(this.scripts.get(path));
-
-            LOGGER.info("remove comments");
 
             if (this.removeComments) {
                 this.removeComments(builder);
             }
 
-            LOGGER.info("replacing");
-
             this.replacer.replace(builder, replacements, checkVariables);
-
-            LOGGER.info("removeBlankLines");
 
             if (this.removeBlankLines) {
                 this.removeBlankLines(builder);

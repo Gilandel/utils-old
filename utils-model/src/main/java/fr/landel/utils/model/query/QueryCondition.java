@@ -13,9 +13,6 @@
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import org.apache.commons.lang3.StringUtils;
 
 import fr.landel.utils.model.AbstractEntity;
 
@@ -26,12 +23,7 @@ import fr.landel.utils.model.AbstractEntity;
  * @author Gilles
  *
  */
-public class QueryCondition extends ArrayList<String> {
-
-    /**
-     * The equal operator
-     */
-    public static final String EQUAL = QueryBuilder.EQUAL;
+public class QueryCondition extends AbstractQueryBuilder {
 
     /**
      * The null value
@@ -114,17 +106,17 @@ public class QueryCondition extends ArrayList<String> {
         add(operator);
 
         if (IN.equalsIgnoreCase(operator)) {
-            add(QueryBuilder.PARENTHESIS_OPEN);
+            add(PARENTHESIS_OPEN);
         }
 
-        if (parameter.startsWith(QueryBuilder.COLON) || NULL.equalsIgnoreCase(parameter)) {
+        if (parameter.startsWith(COLON) || NULL.equalsIgnoreCase(parameter)) {
             add(parameter);
         } else {
-            add(QueryBuilder.COLON + parameter);
+            add(COLON + parameter);
         }
 
         if (IN.equalsIgnoreCase(operator)) {
-            add(QueryBuilder.PARENTHESIS_CLOSE);
+            add(PARENTHESIS_CLOSE);
         }
     }
 
@@ -145,14 +137,14 @@ public class QueryCondition extends ArrayList<String> {
      */
     public <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryCondition(final QueryBuilder<E, K> query,
             final String operator, final String parameter) {
-        add(QueryBuilder.PARENTHESIS_OPEN);
+        add(PARENTHESIS_OPEN);
         addAll(query);
-        add(QueryBuilder.PARENTHESIS_CLOSE);
+        add(PARENTHESIS_CLOSE);
         add(operator);
-        if (parameter.startsWith(QueryBuilder.COLON)) {
+        if (parameter.startsWith(COLON)) {
             add(parameter);
         } else {
-            add(QueryBuilder.COLON + parameter);
+            add(COLON + parameter);
         }
     }
 
@@ -176,9 +168,9 @@ public class QueryCondition extends ArrayList<String> {
             add(NOT_EXISTS);
         }
 
-        add(QueryBuilder.PARENTHESIS_OPEN);
+        add(PARENTHESIS_OPEN);
         addAll(query);
-        add(QueryBuilder.PARENTHESIS_CLOSE);
+        add(PARENTHESIS_CLOSE);
     }
 
     /**
@@ -220,10 +212,5 @@ public class QueryCondition extends ArrayList<String> {
      */
     public QueryCondition(final String condition) {
         add(condition);
-    }
-
-    @Override
-    public String toString() {
-        return StringUtils.join(this, QueryBuilder.SPACE);
     }
 }

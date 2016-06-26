@@ -13,11 +13,9 @@
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import fr.landel.utils.commons.StringUtils;
-
 import fr.landel.utils.model.AbstractEntity;
 
 /**
@@ -34,37 +32,7 @@ import fr.landel.utils.model.AbstractEntity;
  * @param <K>
  *            The primary key type
  */
-public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> extends ArrayList<String> {
-
-    /**
-     * The opened parenthesis character
-     */
-    public static final String PARENTHESIS_OPEN = "(";
-
-    /**
-     * The closed parenthesis character
-     */
-    public static final String PARENTHESIS_CLOSE = ")";
-
-    /**
-     * The 'all' character
-     */
-    public static final String ALL = "*";
-
-    /**
-     * The space character
-     */
-    protected static final String SPACE = " ";
-
-    /**
-     * The colon character
-     */
-    protected static final String COLON = ":";
-
-    /**
-     * The equal operator
-     */
-    protected static final String EQUAL = "=";
+public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> extends AbstractQueryBuilder {
 
     /**
      * Serial
@@ -132,11 +100,6 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
         }
     }
 
-    @Override
-    public String toString() {
-        return StringUtils.join(this, SPACE);
-    }
-
     /**
      * Add an entity entity.
      * 
@@ -177,6 +140,22 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
     /**
      * Select builder.
      * 
+     * @param queryDTO
+     *            The DTO query
+     * @return the current query builder
+     */
+    public QueryBuilder<E, K> select(final QueryDTO queryDTO) {
+        this.add(SELECT);
+        if (queryDTO != null) {
+            this.add(queryDTO.toString());
+        }
+
+        return this;
+    }
+
+    /**
+     * Select builder.
+     * 
      * @param selection
      *            The selection (columns list...)
      * @return the current query builder
@@ -201,7 +180,8 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
      *            the primary key type
      * @return the current query builder
      */
-    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder<E, K> select(final QueryBuilder<T, Y> query) {
+    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder<E, K> select(
+            final QueryBuilder<T, Y> query) {
         this.select("");
         return this.append(query);
     }
@@ -312,7 +292,8 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
      *            the primary key type
      * @return the current query builder
      */
-    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder<E, K> where(final QueryBuilder<T, Y> query) {
+    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder<E, K> where(
+            final QueryBuilder<T, Y> query) {
         this.where();
         return this.append(query);
     }
@@ -815,7 +796,8 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
      *            the primary key type
      * @return the current query builder
      */
-    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder<E, K> append(final QueryBuilder<T, Y> query) {
+    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder<E, K> append(
+            final QueryBuilder<T, Y> query) {
         if (query != null) {
             this.add(PARENTHESIS_OPEN);
             addAll(query);

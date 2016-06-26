@@ -13,6 +13,7 @@
 package fr.landel.utils.scripts;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -225,6 +226,8 @@ public class ScriptsReplacer {
      *            The string builder
      * @param replacements
      *            the replacements (entry: key=value)
+     * @param <V>
+     *            The type of values
      * @throws IllegalArgumentException
      *             If number of brackets open and close doesn't match. If
      *             brackets are found in key replacement or in value
@@ -232,7 +235,7 @@ public class ScriptsReplacer {
      *             quote (avoid some SQL injections but not all, parameters have
      *             to be checked)
      */
-    public void replace(final StringBuilder sb, final Map<String, String> replacements) throws IllegalArgumentException {
+    public <V> void replace(final StringBuilder sb, final Map<String, V> replacements) throws IllegalArgumentException {
         this.replace(sb, replacements, false);
     }
 
@@ -267,6 +270,8 @@ public class ScriptsReplacer {
      * @param checkVariables
      *            En/Disable variables to avoid SQL injections (check single
      *            quote in variables)
+     * @param <V>
+     *            The type of values
      * @throws IllegalArgumentException
      *             If number of brackets open and close doesn't match. If
      *             brackets are found in key replacement or in value
@@ -274,16 +279,21 @@ public class ScriptsReplacer {
      *             quote (avoid some SQL injections but not all, parameters have
      *             to be checked)
      */
-    public void replace(final StringBuilder sb, final Map<String, String> replacements, final boolean checkVariables)
+    public <V> void replace(final StringBuilder sb, final Map<String, V> replacements, final boolean checkVariables)
             throws IllegalArgumentException {
         // first check if the input is valid
         this.checkInput(sb);
 
+        final Map<String, String> replacementsSTR = new HashMap<>();
+        for (Entry<String, V> entry : replacements.entrySet()) {
+            replacementsSTR.put(entry.getKey(), String.valueOf(entry.getValue()));
+        }
+
         // check if replacements ar valid
-        this.checkReplacements(replacements, checkVariables);
+        this.checkReplacements(replacementsSTR, checkVariables);
 
         // replace all keys with their variables
-        for (Entry<String, String> entry : replacements.entrySet()) {
+        for (Entry<String, String> entry : replacementsSTR.entrySet()) {
             this.replaceSimples(sb, entry.getKey(), entry.getValue());
         }
 
@@ -291,7 +301,7 @@ public class ScriptsReplacer {
         this.clearUnknownSimples(sb);
 
         // replace conditions
-        this.replaceConditions(sb, replacements);
+        this.replaceConditions(sb, replacementsSTR);
     }
 
     private void checkInput(final StringBuilder sb) throws IllegalArgumentException {
