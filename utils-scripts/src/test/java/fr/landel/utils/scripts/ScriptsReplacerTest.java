@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.landel.utils.scripts.ScriptsReplacer;
-
 /**
  * Check scripts replacer
  *
@@ -155,7 +153,7 @@ public class ScriptsReplacerTest {
             for (Entry<String, String> input : inputs.entrySet()) {
                 sb = new StringBuilder(input.getKey());
 
-                replacer.replace(sb, replacements, true);
+                replacer.replace(sb, replacements);
 
                 fail("Has to throw exception: " + sb.toString());
             }
@@ -181,7 +179,7 @@ public class ScriptsReplacerTest {
             for (Entry<String, String> input : inputs.entrySet()) {
                 sb = new StringBuilder(input.getKey());
 
-                replacer.replace(sb, replacements, true);
+                replacer.replace(sb, replacements);
 
                 fail("Has to throw exception: " + sb.toString());
             }

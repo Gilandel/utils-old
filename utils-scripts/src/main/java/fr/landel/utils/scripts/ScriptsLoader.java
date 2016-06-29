@@ -35,26 +35,6 @@ import fr.landel.utils.io.FileUtils;
 public class ScriptsLoader {
 
     /**
-     * The SQL comment tag (one line)
-     */
-    public static final String COMMENT_SQL = "--";
-
-    /**
-     * The standard comment tag (one line)
-     */
-    public static final String COMMENT_STANDARD = "//";
-
-    /**
-     * The open comment tag (multi-lines)
-     */
-    public static final String COMMENT_OPEN = "/*";
-
-    /**
-     * The close comment tag (multi-lines)
-     */
-    public static final String COMMENT_CLOSE = "*/";
-
-    /**
      * Scripts path
      */
     private static final String DEFAULT_PATH = "scripts/";
@@ -67,12 +47,7 @@ public class ScriptsLoader {
     private final Map<ScriptsList<?>, StringBuilder> scripts;
     private final ScriptsReplacer replacer;
 
-    private boolean removeComments;
-    private boolean removeBlankLines;
     private String path;
-    private String oneLineCommentOperator;
-    private String multiLineCommentOperatorOpen;
-    private String multiLineCommentOperatorClose;
 
     /**
      * Constructor
@@ -83,13 +58,9 @@ public class ScriptsLoader {
         this.scripts = new HashMap<>();
         this.replacer = new ScriptsReplacer();
 
-        this.removeComments = Boolean.TRUE;
-        this.removeBlankLines = Boolean.TRUE;
         this.path = DEFAULT_PATH;
 
-        this.oneLineCommentOperator = COMMENT_SQL;
-        this.multiLineCommentOperatorOpen = COMMENT_OPEN;
-        this.multiLineCommentOperatorClose = COMMENT_CLOSE;
+        this.replacer.setTemplate(AbstractScriptsTemplate.TEMPLATE_SQL);
     }
 
     /**
@@ -148,57 +119,6 @@ public class ScriptsLoader {
     }
 
     /**
-     * @param oneLineCommentOperator
-     *            the oneLineCommentOperator to set (default: "--")
-     */
-    public void setOneLineCommentOperator(final String oneLineCommentOperator) {
-        this.oneLineCommentOperator = oneLineCommentOperator;
-    }
-
-    /**
-     * The multi line comment operator
-     * 
-     * @param multiLineCommentOperatorOpen
-     *            the multi line open comment operator (default: "/*")
-     * @param multiLineCommentOperatorClose
-     *            the multi line close comment operator (default: "&#42;/")
-     */
-    public void setMultiLineCommentOperators(final String multiLineCommentOperatorOpen, final String multiLineCommentOperatorClose) {
-        this.multiLineCommentOperatorOpen = multiLineCommentOperatorOpen;
-        this.multiLineCommentOperatorClose = multiLineCommentOperatorClose;
-    }
-
-    /**
-     * @return the removeComments
-     */
-    public boolean isRemoveComments() {
-        return this.removeComments;
-    }
-
-    /**
-     * @param removeComments
-     *            the removeComments to set
-     */
-    public void setRemoveComments(boolean removeComments) {
-        this.removeComments = removeComments;
-    }
-
-    /**
-     * @return the removeBlankLines
-     */
-    public boolean isRemoveBlankLines() {
-        return this.removeBlankLines;
-    }
-
-    /**
-     * @param removeBlankLines
-     *            the removeBlankLines to set
-     */
-    public void setRemoveBlankLines(boolean removeBlankLines) {
-        this.removeBlankLines = removeBlankLines;
-    }
-
-    /**
      * Get the scripts file
      * 
      * @param path
@@ -208,7 +128,7 @@ public class ScriptsLoader {
      * @return The StringBuilder
      */
     public <E extends ScriptsList<E>> StringBuilder get(final ScriptsList<E> path) {
-        return this.get(path, new HashMap<String, String>(), false);
+        return this.get(path, new HashMap<String, String>());
     }
 
     /**
@@ -220,40 +140,18 @@ public class ScriptsLoader {
      *            The key to replace
      * @param value
      *            The replacement value
-     * @param <E>
-     *            The type of script list
-     * @param <V>
-     *            The type of replacement values
-     * @return The StringBuilder
-     */
-    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final String key, final V value) {
-        return this.get(path, key, value, true);
-    }
-
-    /**
-     * Get the scripts file
-     * 
-     * @param path
-     *            The scripts path
-     * @param key
-     *            The key to replace
-     * @param value
-     *            The replacement value
-     * @param checkVariables
-     *            En/Disable variables to avoid SQL injections
      * @param <E>
      *            The type of script list
      * @param <V>
      *            The type of replacement value
      * @return The StringBuilder
      */
-    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final String key, final V value,
-            final boolean checkVariables) {
+    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final String key, final V value) {
         if (key != null) {
             final Map<String, V> replacements = new HashMap<>();
             replacements.put(key, value);
 
-            return this.get(path, replacements, checkVariables);
+            return this.get(path, replacements);
         }
         return null;
     }
@@ -272,36 +170,16 @@ public class ScriptsLoader {
      * @return The StringBuilder
      */
     public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final Map<String, V> replacements) {
-        return this.get(path, replacements, true);
-    }
-
-    /**
-     * Get the scripts file
-     * 
-     * @param path
-     *            The scripts path
-     * @param replacements
-     *            The entries (keys to replace, replacement values)
-     * @param checkVariables
-     *            En/Disable variables to avoid SQL injections
-     * @param <E>
-     *            The type of script list
-     * @param <V>
-     *            The type of replacement values
-     * @return The StringBuilder
-     */
-    public <E extends ScriptsList<E>, V> StringBuilder get(final ScriptsList<E> path, final Map<String, V> replacements,
-            final boolean checkVariables) {
         if (this.scripts.containsKey(path)) {
             final StringBuilder builder = new StringBuilder(this.scripts.get(path));
 
-            if (this.removeComments) {
+            if (this.replacer.getTemplate().isRemoveComments()) {
                 this.removeComments(builder);
             }
 
-            this.replacer.replace(builder, replacements, checkVariables);
+            this.replacer.replace(builder, replacements);
 
-            if (this.removeBlankLines) {
+            if (this.replacer.getTemplate().isRemoveBlankLines()) {
                 this.removeBlankLines(builder);
             }
 
@@ -315,7 +193,7 @@ public class ScriptsLoader {
         int endComments = 0;
 
         // removes line comments
-        while ((startComments = builder.indexOf(this.oneLineCommentOperator)) > -1) {
+        while ((startComments = builder.indexOf(this.replacer.getTemplate().getOneLineCommentOperator())) > -1) {
             // For Windows / Mac / Unix
             int cr = builder.indexOf(NEW_LINE, startComments);
             int lf = builder.indexOf(LINE_RETURN, startComments);
@@ -334,8 +212,8 @@ public class ScriptsLoader {
         }
 
         // removes multi-lines comments
-        while ((startComments = builder.indexOf(this.multiLineCommentOperatorOpen)) > -1) {
-            endComments = builder.indexOf(this.multiLineCommentOperatorClose, startComments);
+        while ((startComments = builder.indexOf(this.replacer.getTemplate().getMultiLineCommentOperatorOpen())) > -1) {
+            endComments = builder.indexOf(this.replacer.getTemplate().getMultiLineCommentOperatorClose(), startComments);
             if (endComments > startComments) {
                 builder.delete(startComments, endComments + 2);
             } else {
