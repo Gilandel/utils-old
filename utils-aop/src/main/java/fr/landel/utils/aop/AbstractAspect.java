@@ -332,11 +332,12 @@ public abstract class AbstractAspect {
                     this.logger.debug(this.getSignature(call) + ", running time: " + clock.getTotalTimeMillis() + " ms");
                 }
             }
-        }
-        try {
-            return call.proceed();
-        } catch (final Throwable t) {
-        	 throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
-        }
+        } else {
+			try {
+				return call.proceed();
+			} catch (final Throwable t) {
+				 throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
+			}
+		}
     }
 }
