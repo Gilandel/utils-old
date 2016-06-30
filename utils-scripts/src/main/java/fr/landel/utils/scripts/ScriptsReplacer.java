@@ -42,7 +42,7 @@ public class ScriptsReplacer {
     public ScriptsReplacer() {
         super();
 
-        this.template = AbstractScriptsTemplate.TEMPLATE_SQL;
+        this.template = ScriptsTemplate.TEMPLATE_SQL;
     }
 
     /**
