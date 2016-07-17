@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 import org.junit.After;
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AssertUtils;
+import fr.landel.utils.asserts.Assertor;
 
 /**
  * Check file utils
@@ -259,6 +259,6 @@ public class FileUtilsTest {
         assertNotNull(referenceContent);
         assertNotNull(content);
 
-        AssertUtils.check(content).isEqual(referenceContent);
+        Assertor.that(content).isEqual(referenceContent);
     }
 }

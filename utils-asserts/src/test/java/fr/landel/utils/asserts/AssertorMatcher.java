@@ -33,7 +33,7 @@ import org.junit.Test;
  * @author Gilles Landel
  *
  */
-public class AssertUtilsTest {
+public class AssertorMatcher {
 
     /**
      * Test method for {@link Expect#that(Object, Matcher)} .
@@ -73,7 +73,7 @@ public class AssertUtilsTest {
             List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
                     matcherCyan);
 
-            AssertUtils.check(colors).that(Matchers.hasSize(nbColors)).that(Matchers.contains(matcherList));
+            Assertor.that(colors).matches(Matchers.hasSize(nbColors)).and().matches(Matchers.contains(matcherList)).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -91,20 +91,20 @@ public class AssertUtilsTest {
         colors.add(Color.BLUE);
         colors.add(Color.CYAN);
 
-        AssertUtils.check(colors).that(Matchers.hasSize(colors.size() - 1), new IllegalArgumentException());
+        Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1)).toThrow();
     }
 
     /**
-     * Test method for {@link AssertUtils#check} .
+     * Test method for {@link Assertor#check} .
      */
     public void testCheck() {
-        assertTrue(AssertIterable.class.isAssignableFrom(AssertUtils.check(new ArrayList<Color>()).getClass()));
-        assertTrue(AssertObject.class.isAssignableFrom(AssertUtils.check(Color.BLACK).getClass()));
-        assertTrue(AssertMap.class.isAssignableFrom(AssertUtils.check(new HashMap<String, Integer>()).getClass()));
-        assertTrue(AssertNumber.class.isAssignableFrom(AssertUtils.check(12).getClass()));
-        assertTrue(AssertCharSequence.class.isAssignableFrom(AssertUtils.check("test").getClass()));
-        assertTrue(AssertArray.class.isAssignableFrom(AssertUtils.check(new String[0]).getClass()));
-        assertTrue(AssertDate.class.isAssignableFrom(AssertUtils.check(new Date()).getClass()));
-        assertTrue(AssertClass.class.isAssignableFrom(AssertUtils.check(String.class).getClass()));
+        assertTrue(AssertIterable.class.isAssignableFrom(Assertor.that(new ArrayList<Color>()).getClass()));
+        assertTrue(AssertObject.class.isAssignableFrom(Assertor.that(Color.BLACK).getClass()));
+        assertTrue(AssertMap.class.isAssignableFrom(Assertor.that(new HashMap<String, Integer>()).getClass()));
+        assertTrue(AssertNumber.class.isAssignableFrom(Assertor.that(12).getClass()));
+        assertTrue(AssertCharSequence.class.isAssignableFrom(Assertor.that("test").getClass()));
+        assertTrue(AssertArray.class.isAssignableFrom(Assertor.that(new String[0]).getClass()));
+        assertTrue(AssertDate.class.isAssignableFrom(Assertor.that(new Date()).getClass()));
+        assertTrue(AssertClass.class.isAssignableFrom(Assertor.that(String.class).getClass()));
     }
 }

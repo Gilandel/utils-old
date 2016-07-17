@@ -57,7 +57,8 @@ public final class CollectionUtils2 {
 
     /**
      * To array an iterable (take the type of the first element, otherwise use
-     * the default 'toArray(new T[0])')
+     * the default 'toArray(new T[0])'). Returns {@code null} if the iterable is
+     * empty.
      * 
      * @param iterable
      *            The input iterable (required)
@@ -479,23 +480,27 @@ public final class CollectionUtils2 {
     public static <K, V> Class<Map<K, V>> getMapClass(final Class<K> keyType, final Class<V> valueType) {
         return CastGenerics.getClass(new HashMap<K, V>());
     }
-    
+
     /**
-     * Get the value from the map, in case of null, put the value into the map at the specified key.
+     * Get the value from the map, in case of null, put the value into the map
+     * at the specified key.
      * 
-     * @param map The input map
-     * @param key The key
-     * @param defaultValue The value if no key or if value equals null
+     * @param map
+     *            The input map
+     * @param key
+     *            The key
+     * @param defaultValue
+     *            The value if no key or if value equals null
      * @return The value or the default value
      */
     public static <K, V> V getOrPut(final Map<K, V> map, final K key, final V defaultValue) {
-    	V value = map.get(key);
-    	
-    	if (value == null) {
-    		value = defaultValue;
-    		map.put(key, defaultValue);
-    	}
-    	
-    	return value;
+        V value = map.get(key);
+
+        if (value == null) {
+            value = defaultValue;
+            map.put(key, defaultValue);
+        }
+
+        return value;
     }
 }

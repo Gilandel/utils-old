@@ -55,11 +55,6 @@
 
 		<!-- Unit testing -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-io</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

@@ -90,7 +90,7 @@ public abstract class AbstractAspect {
      *            join point
      * @return the signature
      */
-    private String getSignature(final JoinPoint joinPoint) {
+    protected String getSignature(final JoinPoint joinPoint) {
         final StringBuffer signBuilder = new StringBuffer();
 
         signBuilder.append(joinPoint.getTarget().getClass());
@@ -123,7 +123,7 @@ public abstract class AbstractAspect {
      * @param object
      *            object
      */
-    private void appendObject(final StringBuffer logEntry, final Object object) {
+    protected void appendObject(final StringBuffer logEntry, final Object object) {
         final Class<?> objClass = object.getClass();
 
         if (!this.checkSimpleType(logEntry, object, objClass)) {
@@ -151,7 +151,7 @@ public abstract class AbstractAspect {
      *            object classs
      * @return <code>true</code> if simple type, <code>false</code> otherwise
      */
-    private boolean checkSimpleType(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected boolean checkSimpleType(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
         boolean done = false;
 
         if (String.class.equals(objClass)) {
@@ -185,7 +185,7 @@ public abstract class AbstractAspect {
      *            date
      * @return the formatted date
      */
-    private String formatDate(final Date date) {
+    protected String formatDate(final Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
@@ -206,7 +206,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    private void appendArray(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendArray(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Object[] objects = (Object[]) object;
 
@@ -235,7 +235,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    private void appendIterator(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendIterator(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Iterator<?> iterator;
         if (Iterable.class.isAssignableFrom(objClass)) {
@@ -272,7 +272,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    private void appendMap(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendMap(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Map<?, ?> map = (Map<?, ?>) object;
 
@@ -333,11 +333,11 @@ public abstract class AbstractAspect {
                 }
             }
         } else {
-			try {
-				return call.proceed();
-			} catch (final Throwable t) {
-				 throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
-			}
-		}
+            try {
+                return call.proceed();
+            } catch (final Throwable t) {
+                throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
+            }
+        }
     }
 }

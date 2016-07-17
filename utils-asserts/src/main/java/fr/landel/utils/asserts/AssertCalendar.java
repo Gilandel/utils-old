@@ -38,69 +38,32 @@ public class AssertCalendar extends AbstractAssertDate<AssertCalendar, Calendar>
      * Assert that the first date is equal to the second one.
      * 
      * <pre>
-     * AssertUtils.check(date1).isEqual(date2);
+     * Assertor.that(date1).isEqual(date2).toThrow();
+     * Assertor.that(date1).isEqual(date2).getResult();
      * </pre>
      * 
      * @param date
      *            The second date
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date are not
-     *             equal.
+     * @return the operator
      */
-    public AssertCalendar isEqual(final Calendar date) {
-        return this.isEqual(date, (CharSequence) null);
+    public Operator<AssertCalendar, Calendar> isEqual(final Calendar date) {
+        return super.isEqual(date);
     }
 
     /**
-     * Assert that the first date is equal to the second one.
+     * Assert that the first date is not equal to the second one.
      * 
      * <pre>
-     * AssertUtils.check(date1).isEqual(date2, &quot;The dates are not equal&quot;);
+     * Assertor.that(date1).isNotEqual(date2).toThrow();
+     * Assertor.that(date1).isNotEqual(date2).getResult();
      * </pre>
      * 
      * @param date
      *            The second date
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date are not
-     *             equal.
+     * @return the operator
      */
-    public AssertCalendar isEqual(final Calendar date, final CharSequence message, final Object... arguments) {
-        AssertCalendar.isAround(this.get(), date, -1, -1, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isEqual(date2, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param date
-     *            The second date message the exception message, use the default
-     *            assertion if null
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if at least one date is {@code null} and if date are not
-     *             equal. The standard exception is appended as suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isEqual(final Calendar date, final E exception) throws E {
-        AssertCalendar.isAround(this.get(), date, -1, -1, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isNotEqual(final Calendar date) {
+        return super.isNotEqual(date);
     }
 
     /**
@@ -108,7 +71,8 @@ public class AssertCalendar extends AbstractAssertDate<AssertCalendar, Calendar>
      * calendar field and amount.
      * 
      * <pre>
-     * AssertUtils.check(date1).isAround(date2, Calendar.MINUTE, 5, exceptionToThrowOnError);
+     * Assertor.that(date1).isAround(date2, Calendar.MINUTE, 5).toThrow();
+     * Assertor.that(date1).isAround(date2, Calendar.MINUTE, 5).getResult();
      * // Check that the first date is 5 minutes around the second one.
      * </pre>
      * 
@@ -121,79 +85,10 @@ public class AssertCalendar extends AbstractAssertDate<AssertCalendar, Calendar>
      *            The calendar field
      * @param calendarAmount
      *            The calendar amount
-     * @return this
+     * @return the operator
      */
-    public AssertCalendar isAround(final Calendar date, final int calendarField, final int calendarAmount) {
-        return this.isAround(date, calendarField, calendarAmount, (CharSequence) null);
-    }
-
-    /**
-     * Assert that the first date is around to the second one following the
-     * calendar field and amount.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isAround(date2, Calendar.MINUTE, 5, exceptionToThrowOnError);
-     * // Check that the first date is 5 minutes around the second one.
-     * </pre>
-     * 
-     * @see #SUPPORTED_FIELDS
-     * 
-     * @param date
-     *            The second date message the exception message, use the default
-     *            assertion if null
-     * @param calendarField
-     *            The calendar field
-     * @param calendarAmount
-     *            The calendar amount
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     *            IllegalArgumentException if at least one date is {@code null}
-     *            and if date are not around.
-     * @return this
-     */
-    public AssertCalendar isAround(final Calendar date, final int calendarField, final int calendarAmount, final CharSequence message,
-            final Object... arguments) {
-        AssertCalendar.isAround(this.get(), date, calendarField, calendarAmount, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is around to the second one following the
-     * calendar field and amount.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isAround(date2, Calendar.MINUTE, 5, exceptionToThrowOnError);
-     * // Check that the first date is 5 minutes around the second one.
-     * </pre>
-     * 
-     * @see #SUPPORTED_FIELDS
-     * 
-     * @param date
-     *            The second date message the exception message, use the default
-     *            assertion if null
-     * @param calendarField
-     *            The calendar field
-     * @param calendarAmount
-     *            The calendar amount
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if at least one date is {@code null} and if date are not
-     *             equal. The standard exception is appended as suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isAround(final Calendar date, final int calendarField, final int calendarAmount,
-            final E exception) throws E {
-        AssertCalendar.isAround(this.get(), date, calendarField, calendarAmount, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isAround(final Calendar date, final int calendarField, final int calendarAmount) {
+        return super.isAround(date, calendarField, calendarAmount);
     }
 
     /**
@@ -201,7 +96,8 @@ public class AssertCalendar extends AbstractAssertDate<AssertCalendar, Calendar>
      * calendar field and amount.
      * 
      * <pre>
-     * AssertUtils.check(date1).isNotAround(date2, Calendar.MINUTE, 5, exceptionToThrowOnError);
+     * Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).toThrow();
+     * Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).getResult();
      * // Check that the first date is 5 minutes not around the second one.
      * </pre>
      * 
@@ -214,422 +110,73 @@ public class AssertCalendar extends AbstractAssertDate<AssertCalendar, Calendar>
      *            The calendar field
      * @param calendarAmount
      *            The calendar amount
-     * @return this
+     * @return the operator
      */
-    public AssertCalendar isNotAround(final Calendar date, final int calendarField, final int calendarAmount) {
-        this.isNotAround(date, calendarField, calendarAmount, (CharSequence) null);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is not around to the second one following the
-     * calendar field and amount.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isNotAround(date2, Calendar.MINUTE, 5, exceptionToThrowOnError);
-     * // Check that the first date is 5 minutes not around the second one.
-     * </pre>
-     * 
-     * @see #SUPPORTED_FIELDS
-     * 
-     * @param date
-     *            The second date message the exception message, use the default
-     *            assertion if null
-     * @param calendarField
-     *            The calendar field
-     * @param calendarAmount
-     *            The calendar amount
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     *            IllegalArgumentException if date are around.
-     * @return this
-     */
-    public AssertCalendar isNotAround(final Calendar date, final int calendarField, final int calendarAmount, final CharSequence message,
-            final Object... arguments) {
-        AssertCalendar.isNotAround(this.get(), date, calendarField, calendarAmount, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is not around to the second one following the
-     * calendar field and amount.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isNotAround(date2, Calendar.MINUTE, 5, exceptionToThrowOnError);
-     * // Check that the first date is 5 minutes not around the second one.
-     * </pre>
-     * 
-     * @see #SUPPORTED_FIELDS
-     * 
-     * @param date
-     *            The second date message the exception message, use the default
-     *            assertion if null
-     * @param calendarField
-     *            The calendar field
-     * @param calendarAmount
-     *            The calendar amount
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             If date are around. The standard exception is appended as
-     *             suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isNotAround(final Calendar date, final int calendarField, final int calendarAmount,
-            final E exception) throws E {
-        AssertCalendar.isNotAround(this.get(), date, calendarField, calendarAmount, exception, null);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is not equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isNotEqual(date2);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date are equal.
-     */
-    public AssertCalendar isNotEqual(final Calendar date) {
-        return this.isNotEqual(date, (CharSequence) null);
-    }
-
-    /**
-     * Assert that the first date is not equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isNotEqual(date2, &quot;The dates are equal&quot;);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date are equal.
-     */
-    public AssertCalendar isNotEqual(final Calendar date, final CharSequence message, final Object... arguments) {
-        AssertCalendar.isNotEqual(this.get(), date, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is not equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isNotEqual(date2, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param date
-     *            The second date message the exception message, use the default
-     *            assertion if null
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if at least one date is {@code null} and if date are equal.
-     *             The standard exception is appended as suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isNotEqual(final Calendar date, final E exception) throws E {
-        AssertCalendar.isNotEqual(this.get(), date, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isNotAround(final Calendar date, final int calendarField, final int calendarAmount) {
+        return super.isNotAround(date, calendarField, calendarAmount);
     }
 
     /**
      * Assert that the first date is after than the second one.
      * 
      * <pre>
-     * AssertUtils.check(date1).isAfter(date2);
+     * Assertor.that(date1).isAfter(date2).toThrow();
+     * Assertor.that(date1).isAfter(date2).getResult();
      * </pre>
      * 
      * @param date
      *            The second date
-     * @return this
-     * @throws IllegalArgumentException
-     *             If at least one date is {@code null} and if date1 is not
-     *             after than date2.
+     * @return the operator
      */
-    public AssertCalendar isAfter(final Calendar date) {
-        return this.isAfter(date, (CharSequence) null);
-    }
-
-    /**
-     * Assert that the first date is after than the second one. In message,
-     * parameters can be used through format '%p' (first %p will be replaced by
-     * first parameter, second...).
-     * 
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isAfter(date2, &quot;The date1 is not after than date2&quot;);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             If at least one date is {@code null} and if date is not after
-     *             than date2
-     */
-    public AssertCalendar isAfter(final Calendar date, final CharSequence message, final Object... arguments) {
-        AssertCalendar.isAfter(this.get(), date, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is after than the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isAfter(date2, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             If at least one date is {@code null} and if date is not after
-     *             than date2. The standard exception is appended as suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isAfter(final Calendar date, final E exception) throws E {
-        AssertCalendar.isAfter(this.get(), date, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isAfter(final Calendar date) {
+        return super.isAfter(date);
     }
 
     /**
      * Assert that the first date is after than or equal to the second one.
      * 
      * <pre>
-     * AssertUtils.check(date1).isAfterOrEqual(date2);
+     * Assertor.that(date1).isAfterOrEqual(date2).toThrow();
+     * Assertor.that(date1).isAfterOrEqual(date2).getResult();
      * </pre>
      * 
      * @param date
      *            The second date
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date1 is before
-     *             than date2.
+     * @return the operator
      */
-    public AssertCalendar isAfterOrEqual(final Calendar date) {
-        return this.isAfterOrEqual(date, (CharSequence) null);
-    }
-
-    /**
-     * Assert that the first date is after than or equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isAfterOrEqual(date2, &quot;The date1 is not after than and not equal to date2&quot;);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date1 is before
-     *             than date2.
-     */
-    public AssertCalendar isAfterOrEqual(final Calendar date, final CharSequence message, final Object... arguments) {
-        AssertCalendar.isAfterOrEqual(this.get(), date, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is after than or equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isAfterOrEqual(date2, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if at least one date is {@code null} and if date1 is before
-     *             than date2. The standard exception is appended as suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isAfterOrEqual(final Calendar date, final E exception) throws E {
-        AssertCalendar.isAfterOrEqual(this.get(), date, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isAfterOrEqual(final Calendar date) {
+        return super.isAfterOrEqual(date);
     }
 
     /**
      * Assert that the first date is before than the second one.
      * 
      * <pre>
-     * AssertUtils.check(date1).isBefore(date2);
+     * Assertor.that(date1).isBefore(date2).toThrow();
+     * Assertor.that(date1).isBefore(date2).getResult();
      * </pre>
      * 
      * @param date
      *            The second date
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date1 is not
-     *             before than date2.
+     * @return the operator
      */
-    public AssertCalendar isBefore(final Calendar date) {
-        return this.isBefore(date, (CharSequence) null);
-    }
-
-    /**
-     * Assert that the first date is before than the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isBefore(date2, &quot;The date1 is not before than date2&quot;);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date1 is not
-     *             before than date2.
-     */
-    public AssertCalendar isBefore(final Calendar date, final CharSequence message, final Object... arguments) {
-        AssertCalendar.isBefore(this.get(), date, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is before than the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isBefore(date2, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if at least one date is {@code null} and if date1 is not
-     *             before than date2. The standard exception is appended as
-     *             suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isBefore(final Calendar date, final E exception) throws E {
-        AssertCalendar.isBefore(this.get(), date, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isBefore(final Calendar date) {
+        return super.isBefore(date);
     }
 
     /**
      * Assert that the first date is before than or equal to the second one.
      * 
      * <pre>
-     * AssertUtils.check(date1).isBeforeOrEqual(date2);
+     * Assertor.that(date1).isBeforeOrEqual(date2).toThrow();
+     * Assertor.that(date1).isBeforeOrEqual(date2).getResult();
      * </pre>
      * 
      * @param date
      *            The second date
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date1 is after
-     *             than date2.
+     * @return the operator
      */
-    public AssertCalendar isBeforeOrEqual(final Calendar date) {
-        return this.isBeforeOrEqual(date, (CharSequence) null);
-    }
-
-    /**
-     * Assert that the first date is before than or equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isBeforeOrEqual(date2, &quot;The date1 is not before than and not equal to date2&quot;);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param message
-     *            the exception message, use the default assertion if null (%p
-     *            or %1$p can be used to display parameter value, see
-     *            explanation in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if at least one date is {@code null} and if date1 is after
-     *             than date2.
-     */
-    public AssertCalendar isBeforeOrEqual(final Calendar date, final CharSequence message, final Object... arguments) {
-        AssertCalendar.isBeforeOrEqual(this.get(), date, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the first date is before than or equal to the second one.
-     * 
-     * <pre>
-     * AssertUtils.check(date1).isBeforeOrEqual(date2, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param date
-     *            The second date
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if at least one date is {@code null} and if date1 is after
-     *             than date2. The standard exception is appended as suppressed.
-     */
-    public <E extends Throwable> AssertCalendar isBeforeOrEqual(final Calendar date, final E exception) throws E {
-        AssertCalendar.isBeforeOrEqual(this.get(), date, exception, null);
-
-        return this;
+    public Operator<AssertCalendar, Calendar> isBeforeOrEqual(final Calendar date) {
+        return super.isBeforeOrEqual(date);
     }
 }

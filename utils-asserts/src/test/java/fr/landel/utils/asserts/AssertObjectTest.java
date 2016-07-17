@@ -13,15 +13,19 @@
 package fr.landel.utils.asserts;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
 import org.junit.Test;
 
 /**
- * Check assert
+ * Check assertor
  *
  * @since 10 dec. 2015
  * @author Gilles Landel
@@ -36,485 +40,477 @@ public class AssertObjectTest {
     @Test
     public void testLocale() {
         try {
-            assertEquals(Locale.US, AssertUtils.getLocale());
-            AssertUtils.setLocale(Locale.FRANCE);
-            assertEquals(Locale.FRANCE, AssertUtils.getLocale());
+            assertEquals(Locale.US, Assertor.getLocale());
+            Assertor.setLocale(Locale.FRANCE);
+            assertEquals(Locale.FRANCE, Assertor.getLocale());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#getAssertionPrefix}
+     * Test method for {@link AssertObject#getAssertionPrefix()}
      * {@link AssertObject#setAssertionPrefix(String)}.
      */
     @Test
     public void testAssertionPrefix() {
         try {
-            assertEquals("[Assertion failed] ", AssertUtils.getAssertionPrefix());
-            AssertUtils.setAssertionPrefix("");
-            assertEquals("", AssertUtils.getAssertionPrefix());
-            AssertUtils.setAssertionPrefix("[Assertion failed] ");
+            assertEquals("[Assertion failed] ", Assertor.getAssertionPrefix());
+            Assertor.setAssertionPrefix("");
+            assertEquals("", Assertor.getAssertionPrefix());
+            Assertor.setAssertionPrefix("[Assertion failed] ");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isFalse(boolean, String, Object...)}
-     * .
+     * Test method for {@link AssertObject#getObjectClass()}.
+     */
+    @Test
+    public void testGetObjectClasses() {
+        assertNotNull(Assertor.that(new Object()).getObjectClass());
+    }
+
+    /**
+     * Test method for {@link AssertObject#combine()} .
+     */
+    @Test
+    public void testCombine() {
+        AssertCharSequence<String> assertor = Assertor.that("text");
+        assertor.contains("__");
+        assertFalse(assertor.contains("ext").getResult());
+        assertTrue(assertor.contains("__").or().contains("ext").getResult());
+        assertTrue(assertor.contains("__").xor().contains("ext").getResult());
+
+        assertFalse(assertor.contains("__").or().contains("ext").and("toto").contains("to").and().contains("r").getResult());
+        assertTrue(assertor.contains("__").xor().contains("ext").and("toti").contains("to").and().contains("i").getResult());
+    }
+
+    /**
+     * Test method for {@link AssertBoolean#isFalse()} .
      */
     @Test
     public void testIsFalseOKBooleanString() {
         try {
-            AssertUtils.check(false).isFalse("not false");
-            AssertUtils.check(false).isFalse(new IllegalArgumentException());
+            Assertor.that(false).isFalse().toThrow("not false");
+            Assertor.that(false).isFalse().toThrow(new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isFalse(boolean, String, Object...)}
-     * .
+     * Test method for {@link AssertBoolean#isFalse()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBooleanString() {
-        AssertUtils.check(true).isFalse("not false");
+        Assertor.that(true).isFalse().toThrow("not false");
     }
 
     /**
-     * Test method for {@link ExpecAssertUtilslse(boolean)} .
+     * Test method for {@link AssertBoolean#isFalse()} .
      */
     @Test
     public void testIsFalseOKBoolean() {
         try {
-            AssertUtils.check(false).isFalse();
+            Assertor.that(false).isFalse();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isFalse(boolean)} .
+     * Test method for {@link AssertBoolean#isFalse()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsFalseKOBoolean() {
-        AssertUtils.check(true).isFalse();
+        Assertor.that(true).isFalse().toThrow();
     }
 
     /**
-     * Test method for {@link AssertObject#isTrue(boolean, String, Object...)} .
+     * Test method for {@link AssertBoolean#isTrue()} .
      */
     @Test
     public void testIsTrueOKBooleanString() {
         try {
-            AssertUtils.check(true).isTrue("not true").isTrue(new IllegalArgumentException());
+            Assertor.that(true).isTrue().and().isTrue().toThrow("not true");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isTrue(boolean, String, Object...)} .
+     * Test method for {@link AssertBoolean#isTrue()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBooleanString() {
-        AssertUtils.check(false).isTrue("not true");
+        Assertor.that(false).isTrue().toThrow("not true");
     }
 
     /**
-     * Test method for {@link AssertObject#isTrue(boolean)} .
+     * Test method for {@link AssertBoolean#isTrue()} .
      */
     @Test
     public void testIsTrueOKBoolean() {
         try {
-            AssertUtils.check(true).isTrue();
+            Assertor.that(true).isTrue();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isTrue(boolean)} .
+     * Test method for {@link AssertBoolean#isTrue()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsTrueKOBoolean() {
-        AssertUtils.check(false).isTrue();
+        Assertor.that(false).isTrue().toThrow();
     }
 
     /**
-     * Test method for {@link AssertObject#isNull(Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNull()} .
      */
     @Test
     public void testIsNullOKObjectString() {
         try {
-            AssertUtils.check((Object) null).isNull("not null object");
-            AssertUtils.check((Object) null).isNull(new IllegalArgumentException());
+            Assertor.that((Object) null).isNull().toThrow("not null object");
+            Assertor.that((Object) null).isNull().toThrow(new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isNull(Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObjectString() {
-        AssertUtils.check("").isNull("not null object");
+        Assertor.that("").isNull().toThrow("not null object");
     }
 
     /**
-     * Test method for {@link AssertObject#isNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNull()} .
      */
     @Test
     public void testIsNullOKObject() {
         try {
-            AssertUtils.check((Object) null).isNull();
+            Assertor.that((Object) null).isNull();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObject() {
-        AssertUtils.check("").isNull();
+        Assertor.that("").isNull().toThrow();
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull(Object, String, Object...)}
-     * .
+     * Test method for {@link AssertObject#isNotNull()} .
      */
     @Test
     public void testIsNotNullOKObjectString() {
         try {
-            AssertUtils.check(1).isNotNull("null object").isNotNull(new IllegalArgumentException());
+            Assertor.that(1).isNotNull().toThrow("null object");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull(Object, String, Object...)}
-     * .
+     * Test method for {@link AssertObject#isNotNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObjectString() {
-        AssertUtils.check((Object) null).isNotNull("null object");
+        Assertor.that((Object) null).isNotNull().toThrow("null object");
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotNull()} .
      */
     @Test
     public void testIsNotNullOKObject() {
         try {
-            AssertUtils.check(1).isNotNull();
+            Assertor.that(1).isNotNull();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull(java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObject() {
-        AssertUtils.check((Object) null).isNotNull();
+        Assertor.that((Object) null).isNotNull().toThrow(new IllegalArgumentException());
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      */
     @Test
     public void testIsNotEqualOKObjectObject() {
         try {
-            AssertUtils.check("texte9").isNotEqual("texte10").isNotEqual(5);
-            AssertUtils.check(5).isNotEqual("texte10");
-            AssertUtils.check("texte9").isNotEqual(null);
-            AssertUtils.check((String) null).isNotEqual("texte10");
+            Assertor.that("texte9").isNotEqual("texte10").and().isNotEqual(5);
+            Assertor.that(5).isNotEqual("texte10");
+            Assertor.that("texte9").isNotEqual(null);
+            Assertor.that((String) null).isNotEqual("texte10");
 
             StringBuilder sb1 = new StringBuilder("texte9");
             StringBuilder sb2 = new StringBuilder("texte10");
-            AssertUtils.check(sb1).isNotEqual(sb2).isNotEqual(sb2, new IllegalArgumentException());
+            Assertor.that(sb1).isNotEqual(sb2).toThrow(new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObject() {
-        AssertUtils.check("texte11").isNotEqual("texte11");
+        Assertor.that("texte11").isNotEqual("texte11").toThrow();
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOCharSequence() {
         StringBuilder sb1 = new StringBuilder("texte11");
         StringBuilder sb2 = new StringBuilder("texte11");
-        AssertUtils.check(sb1).isNotEqual(sb2);
+        Assertor.that(sb1).isNotEqual(sb2).toThrow();
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKONull() {
-        AssertUtils.check((Object) null).isNotEqual(null);
+        Assertor.that((Object) null).isNotEqual(null).toThrow();
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      * 
      * @throws IOException
      *             On errors
      */
     @Test(expected = IOException.class)
     public void testIsNotEqualKONullException() throws IOException {
-        AssertUtils.check((Object) null).isNotEqual(null, new IOException());
+        Assertor.that((Object) null).isNotEqual(null).toThrow(new IOException());
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      */
     @Test
     public void testIsNotEqualOKObjectObjectString() {
         try {
-            AssertUtils.check("texte8").isNotEqual("texte7", "equal");
+            Assertor.that("texte8").isNotEqual("texte7").toThrow("equal");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isNotEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObjectString() {
-        AssertUtils.check("texte6").isNotEqual("texte6", "equal");
+        Assertor.that("texte6").isNotEqual("texte6").toThrow("equal");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      * 
      * @throws IOException
-     *             AssertUtilsed exception if isEqual fails
+     *             exception if isEqual fails
      */
     @Test
     public void testIsEqualOKObjectObject() throws IOException {
         try {
-            AssertUtils.check("texte4").isEqual("texte4");
-            AssertUtils.check(5).isEqual(5).isEqual(5, new IOException());
+            Assertor.that("texte4").isEqual("texte4");
+            Assertor.that(5).isEqual(5).toThrow(new IOException());
 
             StringBuilder sb1 = new StringBuilder("texte4");
             StringBuilder sb2 = new StringBuilder("texte4");
-            AssertUtils.check(sb1).isEqual(sb2).isEqual(sb2, new IOException());
+            Assertor.that(sb1).isEqual(sb2).toThrow(new IOException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(java.lang.Object, java.lang.Object)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObject() {
-        AssertUtils.check("texte5").isEqual("texte3");
+        Assertor.that("texte5").isEqual("texte3").toThrow();
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test
     public void testIsEqualOKObjectObjectString() {
         try {
-            AssertUtils.check("texte0").isEqual("texte0", "not equals");
-            AssertUtils.check((Object) null).isEqual(null, "not equals");
+            Assertor.that("texte0").isEqual("texte0").toThrow("not equals");
+            Assertor.that((Object) null).isEqual(null).toThrow("not equals");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObjectString() {
-        AssertUtils.check("texte1").isEqual("texte2", "not equals");
+        Assertor.that("texte1").isEqual("texte2").toThrow("not equals");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKONullObjectString() {
-        AssertUtils.check((Object) null).isEqual("texte2", "not equals");
+        Assertor.that((Object) null).isEqual("texte2").toThrow("not equals");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectNullString() {
-        AssertUtils.check("texte1").isEqual(null, "not equals");
+        Assertor.that("texte1").isEqual(null).toThrow("not equals");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOIntegerStringString() {
-        AssertUtils.check(5).isEqual("test", "not equals");
+        Assertor.that(5).isEqual("test").toThrow("not equals");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isEqual(Object, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOStringIntegerString() {
-        AssertUtils.check("test").isEqual(5, "not equals");
+        Assertor.that("test").isEqual(5).toThrow("not equals");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isInstanceOf(java.lang.Class, java.lang.Object)} .
+     * Test method for {@link AssertObject#isInstanceOf(Class)} .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObject() {
         try {
-            AssertUtils.check(new IOException()).isInstanceOf(IOException.class).isInstanceOf(IOException.class,
-                    new IllegalArgumentException());
+            Assertor.that(new IOException()).isInstanceOf(IOException.class).toThrow(new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isInstanceOf(java.lang.Class, java.lang.Object)} .
+     * Test method for {@link AssertObject#isInstanceOf(Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObject() {
-        AssertUtils.check(new Exception()).isInstanceOf(IOException.class);
+        Assertor.that(new Exception()).isInstanceOf(IOException.class).toThrow();
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isInstanceOf(Class, Object, String, Object...)} .
+     * Test method for {@link AssertObject#isInstanceOf(Class)} .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObjectString() {
         try {
-            AssertUtils.check(new IOException()).isInstanceOf(IOException.class, "not instance of");
+            Assertor.that(new IOException()).isInstanceOf(IOException.class).toThrow("not instance of");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isInstanceOf(Class, Object, String, Object...) )} .
+     * Test method for {@link AssertObject#isInstanceOf(Class) )} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObjectString() {
-        AssertUtils.check(new Exception()).isInstanceOf(IOException.class, "not instance of");
+        Assertor.that(new Exception()).isInstanceOf(IOException.class).toThrow("not instance of");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isInstanceOf(Class, Object, String, Object...) )} .
+     * Test method for {@link AssertObject#isInstanceOf(Class) )} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKONull() {
-        AssertUtils.check((Object) null).isInstanceOf(IOException.class, "not instance of");
+        Assertor.that((Object) null).isInstanceOf(IOException.class).toThrow("not instance of");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isAssignable(java.lang.Class, java.lang.Class)} .
+     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
      * 
      * @throws IOException
      *             On errors
      */
     @Test
-    public void testIsAssignableOKClassOfQClassOfQ() throws IOException {
+    public void testisAssignableFromOKClassOfQClassOfQ() throws IOException {
         try {
-            AssertUtils.check(IOException.class).isAssignable(Exception.class).isAssignable(Exception.class, new IOException());
+            Assertor.that(IOException.class).isAssignableFrom(Exception.class).toThrow(new IOException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isAssignable(java.lang.Class, java.lang.Class)} .
+     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testIsAssignableKOClassOfQClassOfQ() {
-        AssertUtils.check(Exception.class).isAssignable(IOException.class);
+    public void testisAssignableFromKOClassOfQClassOfQ() {
+        Assertor.that(Exception.class).isAssignableFrom(IOException.class).toThrow();
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
+     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
      */
     @Test
-    public void testIsAssignableOKClassOfQClassOfQString() {
+    public void testisAssignableFromOKClassOfQClassOfQString() {
         try {
-            AssertUtils.check(IOException.class).isAssignable(Exception.class, "msg");
+            Assertor.that(IOException.class).isAssignableFrom(Exception.class).toThrow("msg");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
+     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testIsAssignableKOClassOfQClassOfQString() {
-        AssertUtils.check(Exception.class).isAssignable(IOException.class, "msg");
+    public void testisAssignableFromKOClassOfQClassOfQString() {
+        Assertor.that(Exception.class).isAssignableFrom(IOException.class).toThrow("msg");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
+     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testIsAssignableKOTypeNull() {
-        AssertUtils.check((Object) null).isAssignable(Exception.class, "msg");
+    public void testisAssignableFromKOTypeNull() {
+        Assertor.that((Object) null).isAssignableFrom(Exception.class).toThrow("msg");
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#isAssignable(Class, Class, String, Object...)} .
+     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testIsAssignableKOSuperTypeNull() {
-        AssertUtils.check((Object) null).isAssignable(IOException.class, "msg");
+    public void testisAssignableFromKOSuperTypeNull() {
+        Assertor.that((Object) null).isAssignableFrom(IOException.class).toThrow("msg");
     }
 
     /**
@@ -527,15 +523,35 @@ public class AssertObjectTest {
         // TEST GET MESSAGE
 
         try {
-            AssertUtils.check("texte11").isNotEqual("texte11", "texte '%2$p' is not equal to '%1$p', %s", "args");
+            Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$p' is not equal to '%1$p', %s", "args");
+            fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals("[Assertion failed] texte 'texte11' is not equal to 'texte11', args", e.getMessage());
         }
 
         try {
-            AssertUtils.check("texte11").isEqual("texte12", "texte '%2$p' is not equal to '%1$p' or '%p' != '%p'%p...%0$p%3$p");
+            Assertor.that("texte11").isEqual("texte12").toThrow("texte '%2$p' is not equal to '%1$p' or '%p' != '%p'%p...%0$p%3$p");
+            fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals("[Assertion failed] texte 'texte12' is not equal to 'texte11' or 'texte11' != 'texte12'...", e.getMessage());
+        }
+
+        try {
+            Assertor.that("texte11").isBlank().or().isNotEqual("texte11").toThrow();
+            fail("Expect an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals(
+                    "[Assertion failed] this String argument 'texte11' must be null, empty or blank OR Object 'texte11' is equal to Object 'texte11'.",
+                    e.getMessage());
+        }
+
+        try {
+            Assertor.that("texte11").isBlank().or("texte12").isEqual("texte13").toThrow();
+            fail("Expect an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals(
+                    "[Assertion failed] this String argument 'texte11' must be null, empty or blank OR Object 'texte12' is not equal to Object 'texte13'.",
+                    e.getMessage());
         }
     }
 
@@ -546,6 +562,23 @@ public class AssertObjectTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testGetMessageNullObject() {
-        AssertUtils.check("texte11").isNotEqual("texte11", "texte '%2$p' is not equal to '%1$p', %s", (Object[]) null);
+        Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$p' is not equal to '%1$p', %s", (Object[]) null);
+    }
+
+    /**
+     * Test method for {@link AssertObject#validate} .
+     */
+    @Test
+    public void testValidate() {
+        assertTrue(Assertor.that((Object) 0).validate((Object obj) -> {
+            return obj != null;
+        }).getResult());
+
+        assertFalse(Assertor.that("/var/log/dev.log").validate((String path) -> {
+            if (!new File(path).exists()) {
+                throw new IOException();
+            }
+            return true;
+        }).getResult());
     }
 }

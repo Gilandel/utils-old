@@ -23,436 +23,183 @@ import fr.landel.utils.commons.StringUtils;
  */
 public class AssertCharSequence<S extends CharSequence> extends AssertObject<AssertCharSequence<S>, S> {
 
+    /**
+     * 
+     * Constructor
+     *
+     * @param object
+     *            The object to check
+     */
     protected AssertCharSequence(final S object) {
         super(object);
     }
 
     /**
-     * Assert that the given String is not empty; that is, it must not be
-     * {@code null} and not the empty String.
+     * Asserts that the given String has the specified length. The
+     * {@code String} cannot not be {@code null}.
      * 
      * <pre>
-     * AssertUtils.isNotEmpty(name);
+     * Assertor.that(name).hasLength(5).toThrow();
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text is empty
+     * @return the operator
      */
-    public AssertCharSequence<S> isNotEmpty() {
-        return this.isNotEmpty((String) null);
-    }
+    public Operator<AssertCharSequence<S>, S> hasLength(final int length) {
+        boolean condition = true;
+        final StringBuilder message = new StringBuilder();
 
-    /**
-     * Assert that the given String is not empty; that is, it must not be
-     * {@code null} and not the empty String.
-     * 
-     * <pre>
-     * AssertUtils.isNotEmpty(name, &quot;Name must not be empty&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text is empty
-     */
-    public AssertCharSequence<S> isNotEmpty(final String message, final Object... arguments) {
-        AssertCharSequence.isNotEmpty(this.get(), null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the given String is not empty; that is, it must not be
-     * {@code null} and not the empty String.
-     * 
-     * <pre>
-     * AssertUtils.isNotEmpty(name, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param exception
-     *            the exception to throw on error
-     * 
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the text is empty
-     */
-    public <E extends Throwable> AssertCharSequence<S> isNotEmpty(final E exception) throws E {
-        AssertCharSequence.isNotEmpty(this.get(), exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void isNotEmpty(final CharSequence text, final E exception, final String message,
-            final Object... arguments) throws E {
-        if (StringUtils.isEmpty(text)) {
-            manageExceptions("this String argument must have length; it must not be null or empty", exception, message, new Object[] {text},
-                    arguments);
+        if (length < 0) {
+            condition = false;
+            message.append("the length parameter cannot be lower than 0");
+        } else if (this.get() == null) {
+            condition = false;
+            message.append("the checked string is null");
+        } else if (this.get().length() != length) {
+            condition = false;
+            message.append("this String argument '").append(this.getParam()).append("' don't have the specified length '").append(length)
+                    .append("'");
         }
+
+        return this.combine(condition, message, length);
     }
 
     /**
-     * Assert that the given String is {@code null} or empty.
+     * Asserts that the given String has not the specified length. The
+     * {@code String} cannot not be {@code null}.
      * 
      * <pre>
-     * AssertUtils.isEmpty(name, &quot;Name must not be empty&quot;);
+     * Assertor.that(name).hasNotLength(5).toThrow();
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text is empty
+     * @return the operator
      */
-    public AssertCharSequence<S> isEmpty() {
-        return this.isEmpty((String) null);
-    }
+    public Operator<AssertCharSequence<S>, S> hasNotLength(final int length) {
+        boolean condition = true;
+        final StringBuilder message = new StringBuilder();
 
-    /**
-     * Assert that the given String is {@code null} or empty.
-     * 
-     * <pre>
-     * AssertUtils.isEmpty(name, &quot;Name must not be empty&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text is empty
-     */
-    public AssertCharSequence<S> isEmpty(final String message, final Object... arguments) {
-        AssertCharSequence.isEmpty(this.get(), null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the given String is {@code null} or empty.
-     * 
-     * <pre>
-     * AssertUtils.isEmpty(name, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param exception
-     *            the exception to throw on error
-     * 
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the text is empty
-     */
-    public <E extends Throwable> AssertCharSequence<S> isEmpty(final E exception) throws E {
-        AssertCharSequence.isEmpty(this.get(), exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void isEmpty(final CharSequence text, final E exception, final String message,
-            final Object... arguments) throws E {
-        if (StringUtils.isNotEmpty(text)) {
-            manageExceptions("this String argument must be null or empty", exception, message, new Object[] {text}, arguments);
+        if (length < 0) {
+            condition = false;
+            message.append("the length parameter cannot be lower than 0");
+        } else if (this.get() == null) {
+            condition = false;
+            message.append("the checked string is null");
+        } else if (this.get().length() == length) {
+            condition = false;
+            message.append("this String argument '").append(this.getParam()).append("' have the specified length '").append(length)
+                    .append("'");
         }
+
+        return this.combine(condition, message, length);
     }
 
     /**
-     * Assert that the given String has valid text content; that is, it must not
-     * be {@code null} and must contain at least one non-whitespace character.
+     * Asserts that the given {@code String} is not empty; that is, it must not
+     * be {@code null} and not the empty {@code String}.
      * 
      * <pre>
-     * AssertUtils.isNotBlank(name, &quot;'name' must not be empty&quot;);
+     * Assertor.that(name).isNotEmpty().toThrow();
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text does not contain valid text content
+     * @return the operator
      */
-    public AssertCharSequence<S> isNotBlank() {
-        return this.isNotBlank((String) null);
+    public Operator<AssertCharSequence<S>, S> isNotEmpty() {
+        return this.combine(StringUtils.isNotEmpty(this.get()), new StringBuilder("this String argument '").append(this.getParam())
+                .append("' must have length; it must not be null or empty"));
     }
 
     /**
-     * Assert that the given String has valid text content; that is, it must not
-     * be {@code null} and must contain at least one non-whitespace character.
+     * Asserts that the given {@code String} is {@code null} or empty.
      * 
      * <pre>
-     * AssertUtils.isNotBlank(name, &quot;'name' must not be empty&quot;);
+     * Assertor.that(name).isEmpty().toThrow(&quot;Name must not be empty&quot;);
      * </pre>
      * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text does not contain valid text content
+     * @return the operator
      */
-    public AssertCharSequence<S> isNotBlank(final String message, final Object... arguments) {
-        AssertCharSequence.isNotBlank(this.get(), null, message, arguments);
-
-        return this;
+    public Operator<AssertCharSequence<S>, S> isEmpty() {
+        return this.combine(StringUtils.isEmpty(this.get()),
+                new StringBuilder("this String argument '").append(this.getParam()).append("' must be null or empty"));
     }
 
     /**
-     * Assert that the given String has valid text content; that is, it must not
-     * be {@code null} and must contain at least one non-whitespace character.
+     * Asserts that the given {@code String} has valid text content; that is, it
+     * must not be {@code null} and must contain at least one non-whitespace
+     * character.
      * 
      * <pre>
-     * AssertUtils.isNotBlank(name, exceptionToThrowOnError);
+     * Assertor.that(name).isNotBlank().toThrow();
      * </pre>
      * 
-     * @param exception
-     *            the exception to throw on error
-     * 
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the text does not contain valid text content
+     * @return the operator
      */
-    public <E extends Throwable> AssertCharSequence<S> isNotBlank(final E exception) throws E {
-        AssertCharSequence.isNotBlank(this.get(), exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void isNotBlank(final CharSequence text, final E exception, final String message,
-            final Object... arguments) throws E {
-        if (StringUtils.isBlank(text)) {
-            manageExceptions("this String argument must have text; it must not be null, empty, or blank", exception, message,
-                    new Object[] {text}, arguments);
-        }
+    public Operator<AssertCharSequence<S>, S> isNotBlank() {
+        return this.combine(StringUtils.isNotBlank(this.get()), new StringBuilder("this String argument '").append(this.getParam())
+                .append("' must have text; it must not be null, empty, or blank"));
     }
 
     /**
-     * Assert that the given String is {@code null}, empty or has blank text
-     * content.
+     * Asserts that the given {@code String} is {@code null}, empty or has blank
+     * text content.
      * 
      * <pre>
-     * AssertUtils.isBlank(name, &quot;'name' must be null, empty or blank&quot;);
+     * Assertor.that(name).isBlank().toThrow();
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text does not contain valid text content
+     * @return the operator
      */
-    public AssertCharSequence<S> isBlank() {
-        return this.isBlank((String) null);
+    public Operator<AssertCharSequence<S>, S> isBlank() {
+        return this.combine(StringUtils.isBlank(this.get()),
+                new StringBuilder("this String argument '").append(this.getParam()).append("' must be null, empty or blank"));
     }
 
     /**
-     * Assert that the given String is {@code null}, empty or has blank text
-     * content.
+     * Asserts that the given text contains the given substring.
      * 
      * <pre>
-     * AssertUtils.isBlank(name, &quot;'name' must be null, empty or blank&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text does not contain valid text content
-     */
-    public AssertCharSequence<S> isBlank(final String message, final Object... arguments) {
-        AssertCharSequence.isBlank(this.get(), null, message, arguments);
-
-        return this;
-    }
-
-    /***
-     * Assert that the given String is {@code null}, empty or has blank text
-     * content.
-     * 
-     * <pre>
-     * AssertUtils.isBlank(name, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param exception
-     *            the exception to throw on error
-     * 
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the text does not contain valid text content
-     */
-    public <E extends Throwable> AssertCharSequence<S> isBlank(final E exception) throws E {
-        AssertCharSequence.isBlank(this.get(), exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void isBlank(final CharSequence text, final E exception, final String message,
-            final Object... arguments) throws E {
-        if (StringUtils.isNotBlank(text)) {
-            manageExceptions("this String argument must be null, empty or blank", exception, message, new Object[] {text}, arguments);
-        }
-    }
-
-    /**
-     * Assert that the given text contains the given substring.
-     * 
-     * <pre>
-     * AssertUtils.contains(name, &quot;rod&quot;);
+     * Assertor.that(fullName).contains(name).toThrow();
      * </pre>
      * 
      * @param substring
      *            the substring to find within the text
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text contains the substring
+     * @return the operator
      */
-    public AssertCharSequence<S> contains(final String substring) {
-        return this.contains(substring, (String) null);
+    public Operator<AssertCharSequence<S>, S> contains(final String substring) {
+        return this.combine(
+                StringUtils.isNotEmpty(this.get()) && StringUtils.isNotEmpty(substring) && containsCharSequence(this.get(), substring),
+                new StringBuilder("this String argument '").append(this.getParam()).append("' must contain the substring '")
+                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
+                substring);
     }
 
     /**
-     * Assert that the given text contains the given substring.
+     * Asserts that the given text does not contain the given substring.
      * 
      * <pre>
-     * AssertUtils.contains(name, &quot;rod&quot;, &quot;Name must contain 'rod'&quot;);
+     * Assertor.that(fullName).doesNotContain(name).toThrow(exceptionToThrowOnError);
      * </pre>
      * 
      * @param substring
      *            the substring to find within the text
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text contains the substring
+     * @return the operator
      */
-    public AssertCharSequence<S> contains(final String substring, final String message, final Object... arguments) {
-        AssertCharSequence.contains(this.get(), substring, null, message, arguments);
-
-        return this;
+    public Operator<AssertCharSequence<S>, S> doesNotContain(final String substring) {
+        return this.combine(
+                StringUtils.isNotEmpty(this.get()) && StringUtils.isNotEmpty(substring) && !containsCharSequence(this.get(), substring),
+                new StringBuilder("this String argument '").append(this.getParam()).append("' must not contain the substring '")
+                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
+                substring);
     }
 
     /**
-     * Assert that the given text contains the given substring.
+     * Searches in char sequence, if the specified sub sequence exists in.
+     * {@code null} values have to be checked before.
      * 
-     * <pre>
-     * AssertUtils.contains(name, &quot;rod&quot;, exceptionToThrowOnError);
-     * </pre>
-     * 
+     * @param textToSearch
+     *            where to search
      * @param substring
-     *            the substring to find within the text
-     * @param exception
-     *            the exception to throw on error
-     * 
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the text contains the substring
+     *            chat to search
+     * @return {@code true} if found, {@code false} otherwise
      */
-    public <E extends Throwable> AssertCharSequence<S> contains(final String substring, final E exception) throws E {
-        AssertCharSequence.contains(this.get(), substring, exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void contains(final CharSequence textToSearch, final String substring, final E exception,
-            final String message, final Object... arguments) throws E {
-        if (StringUtils.isNotEmpty(textToSearch) && StringUtils.isNotEmpty(substring) && !containsCharSequence(textToSearch, substring)) {
-            manageExceptions("this String argument must contain the substring [" + substring + "]", exception, message,
-                    new Object[] {textToSearch, substring}, arguments);
-        }
-    }
-
-    /**
-     * Assert that the given text does not contain the given substring.
-     * 
-     * <pre>
-     * AssertUtils.doesNotContain(name, &quot;rod&quot;);
-     * </pre>
-     * 
-     * @param substring
-     *            the substring to find within the text
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text contains the substring
-     */
-    public AssertCharSequence<S> doesNotContain(final String substring) {
-        return this.doesNotContain(substring, (String) null);
-    }
-
-    /**
-     * Assert that the given text does not contain the given substring.
-     * 
-     * <pre>
-     * AssertUtils.doesNotContain(name, &quot;rod&quot;, &quot;Name must not contain 'rod'&quot;);
-     * </pre>
-     * 
-     * @param substring
-     *            the substring to find within the text
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the text contains the substring
-     */
-    public AssertCharSequence<S> doesNotContain(final String substring, final String message, final Object... arguments) {
-        AssertCharSequence.doesNotContain(this.get(), substring, null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that the given text does not contain the given substring.
-     * 
-     * <pre>
-     * AssertUtils.doesNotContain(fullName, name, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param substring
-     *            the substring to find within the text
-     * @param exception
-     *            the exception to throw on error
-     * @param <E>
-     *            The type of exception
-     * @return this
-     * @throws E
-     *             if the text contains the substring
-     */
-    public <E extends Throwable> AssertCharSequence<S> doesNotContain(final String substring, final E exception) throws E {
-        AssertCharSequence.doesNotContain(this.get(), substring, exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void doesNotContain(final CharSequence textToSearch, final String substring, final E exception,
-            final String message, final Object... arguments) throws E {
-        if (StringUtils.isNotEmpty(textToSearch) && StringUtils.isNotEmpty(substring) && containsCharSequence(textToSearch, substring)) {
-            manageExceptions("this String argument must not contain the substring [" + substring + "]", exception, message,
-                    new Object[] {textToSearch, substring}, arguments);
-        }
-    }
-
     private static boolean containsCharSequence(final CharSequence textToSearch, final CharSequence substring) {
         int p = 0;
         int l = substring.length();

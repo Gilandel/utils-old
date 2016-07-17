@@ -131,4 +131,21 @@ public final class ClassUtils {
         }
         return false;
     }
+
+    /**
+     * Get the class name or {@code null}
+     * 
+     * @param object
+     *            The object to check
+     * @return The string
+     */
+    public static String getName(final Object object) {
+        final String clazzName;
+        if (object != null) {
+            clazzName = object.getClass().getName();
+        } else {
+            clazzName = "null";
+        }
+        return clazzName;
+    }
 }

@@ -1,6 +1,18 @@
+/*-
+ * #%L
+ * utils-scripts
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.scripts;
 
-import fr.landel.utils.asserts.AssertUtils;
+import fr.landel.utils.asserts.Assertor;
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.commons.stream.ConsumerThrowable;
 
@@ -92,27 +104,26 @@ public interface ScriptsTemplate {
     /**
      * Throwable consumer to check variable value in SQL scripts. If the value
      * contains single quote alone (not by pair) an
-     * {@link IllegalArgumentExecption} is thrown.
+     * {@link IllegalArgumentException} is thrown.
      */
     ConsumerThrowable<String, IllegalArgumentException> CHECKER_SQL = (v) -> {
         // Avoid some SQL injections but not all!, parameters has to be
         // checked before
-        AssertUtils.check(StringUtils.countMatches(v, SINGLE_QUOTE) % 2).isEqual(0,
-                "Replacement value has to contain only pairs of: " + SINGLE_QUOTE);
-        AssertUtils.check(StringUtils.countMatches(StringUtils.replace(v, SINGLE_QUOTE + SINGLE_QUOTE, ""), SINGLE_QUOTE)).isEqual(0,
-                "Replacement value has to contain only group of pairs of: " + SINGLE_QUOTE);
+        Assertor.that(StringUtils.countMatches(v, SINGLE_QUOTE) % 2).isEqual(0)
+                .toThrow("Replacement value has to contain only pairs of: " + SINGLE_QUOTE);
+        Assertor.that(StringUtils.countMatches(StringUtils.replace(v, SINGLE_QUOTE + SINGLE_QUOTE, ""), SINGLE_QUOTE)).isEqual(0)
+                .toThrow("Replacement value has to contain only group of pairs of: " + SINGLE_QUOTE);
     };
 
     /**
      * Throwable consumer to check variable value in JSON scripts (like
      * ElasticSearch queries). If the value contains brackets, braces, or single
-     * quote an {@link IllegalArgumentExecption} is thrown.
+     * quote an {@link IllegalArgumentException} is thrown.
      */
     ConsumerThrowable<String, IllegalArgumentException> CHECKER_JSON = (v) -> {
         // Avoid some JSON injections but not all!, parameters has to be
         // checked before
-        AssertUtils.check(v).contains(EXPRESSION_OPEN, "Replacement value hasn't to contain brackets").contains(EXPRESSION_CLOSE,
-                "Replacement value hasn't to contain brackets");
+        Assertor.that(v).contains(EXPRESSION_OPEN).and().contains(EXPRESSION_CLOSE).toThrow("Replacement value hasn't to contain brackets");
     };
 
     /**

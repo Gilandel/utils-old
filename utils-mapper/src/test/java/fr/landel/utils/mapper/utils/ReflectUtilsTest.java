@@ -22,7 +22,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -45,7 +44,7 @@ import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.landel.utils.asserts.AssertUtils;
+import fr.landel.utils.asserts.Assertor;
 import fr.landel.utils.asserts.Expect;
 import fr.landel.utils.commons.CastGenerics;
 import fr.landel.utils.mapper.MapperException;
@@ -58,21 +57,6 @@ import fr.landel.utils.mapper.MapperException;
  *
  */
 public class ReflectUtilsTest {
-
-    private static final Comparator<Class<?>> COMPARATOR_CLASS = new Comparator<Class<?>>() {
-        @Override
-        public int compare(final Class<?> o1, final Class<?> o2) {
-            int compare = 0;
-            if (o1 != null && o2 != null) {
-                compare = o1.getName().compareTo(o2.getName());
-            } else if (o1 != null) {
-                compare = 1;
-            } else if (o2 != null) {
-                compare = -1;
-            }
-            return compare;
-        }
-    };
 
     private ReflectUtils ru;
 
@@ -548,7 +532,7 @@ public class ReflectUtilsTest {
 
         assertNotNull(classes);
 
-        AssertUtils.check(classes).contains(new Class<?>[] {Observable.class, Collection.class}, COMPARATOR_CLASS);
+        Assertor.that(classes).contains(new Class<?>[] {Observable.class, Collection.class}).toThrow();
     }
 
     /**
@@ -561,7 +545,7 @@ public class ReflectUtilsTest {
     public void testNewInstance() throws MapperException {
         Observable obs = this.ru.newInstance(Observable.class);
         assertNotNull(obs);
-        AssertUtils.check(obs).isInstanceOf(Observable.class);
+        Assertor.that(obs).isInstanceOf(Observable.class);
 
         Expect.exception(() -> {
             this.ru.newInstance(null);
@@ -600,7 +584,7 @@ public class ReflectUtilsTest {
         @SuppressWarnings("unchecked")
         List<String> list = this.ru.newInstanceCollection(MyList.class, List.class, String.class);
         assertNotNull(obs);
-        AssertUtils.check(list).isAssignable(ArrayList.class);
+        Assertor.that(list).isAssignableFrom(ArrayList.class);
 
         Collection<?> myCollection = new UnboundedFifoBuffer(1);
 
@@ -614,9 +598,9 @@ public class ReflectUtilsTest {
         Collection<X> obs;
         obs = this.ru.newInstanceCollection(collection, CastGenerics.getClass(newObject));
         assertNotNull(obs);
-        AssertUtils.check(obs).isAssignable(expectedClass);
+        Assertor.that(obs).isAssignableFrom(expectedClass);
         obs.add(newObject);
-        AssertUtils.check(obs).isNotEmpty();
+        Assertor.that(obs).isNotEmpty();
     }
 
     private <X, O extends Collection<X>> void checkNewCollectionInstance(final X newObject, final Collection<X> collection,
@@ -633,9 +617,9 @@ public class ReflectUtilsTest {
             obs = this.ru.newInstanceCollection(CastGenerics.getClass(collection), outputType, null);
         }
         assertNotNull(obs);
-        AssertUtils.check(obs).isAssignable(expectedClass);
+        Assertor.that(obs).isAssignableFrom(expectedClass);
         obs.add(newObject);
-        AssertUtils.check(obs).isNotEmpty();
+        Assertor.that(obs).isNotEmpty();
     }
 
     /**
@@ -693,9 +677,9 @@ public class ReflectUtilsTest {
     public void testNewInstanceMapClassOfQClassOfKClassOfV() throws MapperException {
         Map<String, String> map = this.ru.newInstanceMap(HashMap.class, String.class, String.class);
         assertNotNull(map);
-        AssertUtils.check(map).isAssignable(HashMap.class);
+        Assertor.that(map).isAssignableFrom(HashMap.class);
         map.put("k", "v");
-        AssertUtils.check(map).isNotEmpty();
+        Assertor.that(map).isNotEmpty();
     }
 
     /**
@@ -709,9 +693,9 @@ public class ReflectUtilsTest {
     public void testNewInstanceMapClassOfQClassOfV() throws MapperException {
         Map<String, Object> map = this.ru.newInstanceMap(HashMap.class, String.class);
         assertNotNull(map);
-        AssertUtils.check(map).isAssignable(HashMap.class);
+        Assertor.that(map).isAssignableFrom(HashMap.class);
         map.put("k", "v");
-        AssertUtils.check(map).isNotEmpty();
+        Assertor.that(map).isNotEmpty();
     }
 
     /**
@@ -724,21 +708,21 @@ public class ReflectUtilsTest {
     public void testNewInstanceMapClassOfQ() throws MapperException {
         Map<Object, Object> map = this.ru.newInstanceMap(HashMap.class, Object.class);
         assertNotNull(map);
-        AssertUtils.check(map).isAssignable(HashMap.class);
+        Assertor.that(map).isAssignableFrom(HashMap.class);
         map.put("k", "v");
-        AssertUtils.check(map).isNotEmpty();
+        Assertor.that(map).isNotEmpty();
 
         map = this.ru.newInstanceMap(TreeMap.class, Object.class);
         assertNotNull(map);
-        AssertUtils.check(map).isAssignable(TreeMap.class);
+        Assertor.that(map).isAssignableFrom(TreeMap.class);
         map.put("k", "v");
-        AssertUtils.check(map).isNotEmpty();
+        Assertor.that(map).isNotEmpty();
 
         map = this.ru.newInstanceMap(Hashtable.class, Object.class);
         assertNotNull(map);
-        AssertUtils.check(map).isAssignable(Hashtable.class);
+        Assertor.that(map).isAssignableFrom(Hashtable.class);
         map.put("k", "v");
-        AssertUtils.check(map).isNotEmpty();
+        Assertor.that(map).isNotEmpty();
 
         Expect.exception(() -> {
             this.ru.newInstanceMap(null);

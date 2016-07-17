@@ -200,6 +200,7 @@ public class CollectionUtils2Test {
             assertNull(CollectionUtils2.toArray(null));
 
             points.clear();
+
             assertNull(CollectionUtils2.toArray(points));
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");

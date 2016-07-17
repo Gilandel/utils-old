@@ -14,7 +14,17 @@ package fr.landel.utils.commons;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoLocalDateTime;
+import java.time.chrono.ChronoZonedDateTime;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Comparators list (byte, short, integer, long, float, double, big integer, big
@@ -29,218 +39,228 @@ public class Comparators {
     /**
      * Byte comparator (handle null)
      */
-    public static final Comparator<Byte> BYTE = new Comparator<Byte>() {
-        @Override
-        public int compare(final Byte o1, final Byte o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse byte comparator (handle null)
-     */
-    public static final Comparator<Byte> BYTE_REVERSE = new Comparator<Byte>() {
-        @Override
-        public int compare(final Byte o1, final Byte o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Byte> BYTE = new BiComparator<>();
 
     /**
      * Short comparator (handle null)
      */
-    public static final Comparator<Short> SHORT = new Comparator<Short>() {
-        @Override
-        public int compare(final Short o1, final Short o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse short comparator (handle null)
-     */
-    public static final Comparator<Short> SHORT_REVERSE = new Comparator<Short>() {
-        @Override
-        public int compare(final Short o1, final Short o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Short> SHORT = new BiComparator<>();
 
     /**
      * Integer comparator (handle null)
      */
-    public static final Comparator<Integer> INTEGER = new Comparator<Integer>() {
-        @Override
-        public int compare(final Integer o1, final Integer o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse integer comparator (handle null)
-     */
-    public static final Comparator<Integer> INTEGER_REVERSE = new Comparator<Integer>() {
-        @Override
-        public int compare(final Integer o1, final Integer o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Integer> INTEGER = new BiComparator<>();
 
     /**
      * Long comparator (handle null)
      */
-    public static final Comparator<Long> LONG = new Comparator<Long>() {
-        @Override
-        public int compare(final Long o1, final Long o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse long comparator (handle null)
-     */
-    public static final Comparator<Long> LONG_REVERSE = new Comparator<Long>() {
-        @Override
-        public int compare(final Long o1, final Long o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Long> LONG = new BiComparator<>();
 
     /**
      * Float comparator (handle null)
      */
-    public static final Comparator<Float> FLOAT = new Comparator<Float>() {
-        @Override
-        public int compare(final Float o1, final Float o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse float comparator (handle null)
-     */
-    public static final Comparator<Float> FLOAT_REVERSE = new Comparator<Float>() {
-        @Override
-        public int compare(final Float o1, final Float o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Float> FLOAT = new BiComparator<>();
 
     /**
      * Double comparator (handle null)
      */
-    public static final Comparator<Double> DOUBLE = new Comparator<Double>() {
-        @Override
-        public int compare(final Double o1, final Double o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse double comparator (handle null)
-     */
-    public static final Comparator<Double> DOUBLE_REVERSE = new Comparator<Double>() {
-        @Override
-        public int compare(final Double o1, final Double o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Double> DOUBLE = new BiComparator<>();
 
     /**
      * Big integer comparator (handle null)
      */
-    public static final Comparator<BigInteger> BIG_INTEGER = new Comparator<BigInteger>() {
-        @Override
-        public int compare(final BigInteger o1, final BigInteger o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse big integer comparator (handle null)
-     */
-    public static final Comparator<BigInteger> BIG_INTEGER_REVERSE = new Comparator<BigInteger>() {
-        @Override
-        public int compare(final BigInteger o1, final BigInteger o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<BigInteger> BIG_INTEGER = new BiComparator<>();
 
     /**
      * Big decimal comparator (handle null)
      */
-    public static final Comparator<BigDecimal> BIG_DECIMAL = new Comparator<BigDecimal>() {
-        @Override
-        public int compare(final BigDecimal o1, final BigDecimal o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse big decimal comparator (handle null)
-     */
-    public static final Comparator<BigDecimal> BIG_DECIMAL_REVERSE = new Comparator<BigDecimal>() {
-        @Override
-        public int compare(final BigDecimal o1, final BigDecimal o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<BigDecimal> BIG_DECIMAL = new BiComparator<>();
 
     /**
      * Character comparator (handle null)
      */
-    public static final Comparator<Character> CHAR = new Comparator<Character>() {
-        @Override
-        public int compare(final Character o1, final Character o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
-
-    /**
-     * Reverse character comparator (handle null)
-     */
-    public static final Comparator<Character> CHAR_REVERSE = new Comparator<Character>() {
-        @Override
-        public int compare(final Character o1, final Character o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Character> CHAR = new BiComparator<>();
 
     /**
      * String comparator (handle null)
      */
-    public static final Comparator<String> STRING = new Comparator<String>() {
-        @Override
-        public int compare(final String o1, final String o2) {
-            return Comparators.compare(o1, o2);
-        }
-    };
+    public static final BiComparator<String> STRING = new BiComparator<>();
 
     /**
-     * Reverse string comparator (handle null)
+     * Date comparator (handle null)
      */
-    public static final Comparator<String> STRING_REVERSE = new Comparator<String>() {
-        @Override
-        public int compare(final String o1, final String o2) {
-            return Comparators.compareReverse(o1, o2);
-        }
-    };
+    public static final BiComparator<Date> DATE = new BiComparator<>();
 
-    private static <T extends Comparable<T>> int compare(final T o1, final T o2) {
+    /**
+     * Calendar comparator (handle null)
+     */
+    public static final BiComparator<Calendar> CALENDAR = new BiComparator<>();
+
+    /**
+     * Duration comparator (handle null)
+     */
+    public static final BiComparator<Duration> DURATION = new BiComparator<>();
+
+    /**
+     * Instant comparator (handle null)
+     */
+    public static final BiComparator<Instant> INSTANT = new BiComparator<>();
+
+    /**
+     * OffsetTime comparator (handle null)
+     */
+    public static final BiComparator<OffsetTime> OFFSET_TIME = new BiComparator<>();
+
+    /**
+     * OffsetDateTime comparator (handle null)
+     */
+    public static final BiComparator<OffsetDateTime> OFFSET_DATETIME = new BiComparator<>();
+
+    /**
+     * LocalTime comparator (handle null)
+     */
+    public static final BiComparator<LocalTime> LOCAL_TIME = new BiComparator<>();
+
+    /**
+     * ChronoLocalDate comparator (handle null)
+     */
+    public static final BiComparator<ChronoLocalDate> LOCAL_DATE = new BiComparator<>();
+
+    /**
+     * {@link ChronoLocalDateTime} comparator (handle null)
+     */
+    public static final BiComparator<ChronoLocalDateTime<?>> LOCAL_DATETIME = new BiComparator<ChronoLocalDateTime<?>>();
+
+    /**
+     * ChronoZonedDateTime comparator (handle null)
+     */
+    public static final BiComparator<ChronoZonedDateTime<?>> ZONED_DATETIME = new BiComparator<ChronoZonedDateTime<?>>();
+
+    /**
+     * Compare two comparables
+     * 
+     * @param o1
+     *            The first value
+     * @param o2
+     *            The second value
+     * @param <T>
+     *            The comparable type
+     * @return The comparison, if o1 is {@code null}, returns
+     *         {@link Integer#MIN_VALUE} and if o2 is {@code null}, returns
+     *         {@link Integer#MAX_VALUE}
+     */
+    public static <T extends Comparable<T>> int compare(final T o1, final T o2) {
+        int result;
         if (o1 == null) {
-            return Integer.MIN_VALUE;
+            if (o2 == null) {
+                result = 0;
+            } else {
+                result = Integer.MIN_VALUE;
+            }
         } else if (o2 == null) {
-            return Integer.MAX_VALUE;
+            result = Integer.MAX_VALUE;
+        } else {
+            result = o1.compareTo(o2);
         }
-        return o1.compareTo(o2);
+        return result;
     }
 
-    private static <T extends Comparable<T>> int compareReverse(final T o1, final T o2) {
+    /**
+     * Compare two comparables (in reverse mode)
+     * 
+     * @param o1
+     *            The first value
+     * @param o2
+     *            The second value
+     * @param <T>
+     *            The comparable type
+     * @return The reverse comparison, if o1 is {@code null}, returns
+     *         {@link Integer#MAX_VALUE} and if o2 is {@code null}, returns
+     *         {@link Integer#MIN_VALUE}
+     */
+    public static <T extends Comparable<T>> int compareReverse(final T o1, final T o2) {
+        int result;
         if (o1 == null) {
-            return Integer.MAX_VALUE;
+            if (o2 == null) {
+                result = 0;
+            } else {
+                result = Integer.MAX_VALUE;
+            }
         } else if (o2 == null) {
-            return Integer.MIN_VALUE;
+            result = Integer.MIN_VALUE;
+        } else {
+            result = o2.compareTo(o1);
         }
-        return o2.compareTo(o1);
+        return result;
+    }
+
+    /**
+     * Implementation of comparator
+     *
+     * @since 2 juil. 2016
+     * @author Gilles
+     *
+     * @param <T>
+     *            The comparable type
+     */
+    private static class ComparatorImpl<T extends Comparable<T>> implements Comparator<T> {
+        @Override
+        public int compare(final T o1, final T o2) {
+            return Comparators.compare(o1, o2);
+        }
+    }
+
+    /**
+     * Implementation of reverse comparator
+     *
+     * @since 2 juil. 2016
+     * @author Gilles
+     *
+     * @param <T>
+     *            The comparable type
+     */
+    private static class ComparatorReverseImpl<T extends Comparable<T>> implements Comparator<T> {
+        @Override
+        public int compare(final T o1, final T o2) {
+            return Comparators.compareReverse(o1, o2);
+        }
+    }
+
+    /**
+     * Class to create bi-directional comparators
+     *
+     * @since 2 juil. 2016
+     * @author Gilles
+     *
+     * @param <T>
+     *            The comparable type
+     */
+    public static class BiComparator<T extends Comparable<T>> {
+        private final Comparator<T> asc;
+        private final Comparator<T> desc;
+
+        /**
+         * 
+         * Constructor
+         *
+         */
+        protected BiComparator() {
+            this.asc = new ComparatorImpl<>();
+            this.desc = new ComparatorReverseImpl<>();
+        }
+
+        /**
+         * @return the asc
+         */
+        public Comparator<T> asc() {
+            return this.asc;
+        }
+
+        /**
+         * @return the desc
+         */
+        public Comparator<T> desc() {
+            return this.desc;
+        }
     }
 }

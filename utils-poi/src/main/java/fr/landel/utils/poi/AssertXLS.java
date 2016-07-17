@@ -12,7 +12,7 @@
  */
 package fr.landel.utils.poi;
 
-import static fr.landel.utils.asserts.AssertUtils.check;
+import static fr.landel.utils.asserts.Assertor.that;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -113,8 +113,8 @@ public final class AssertXLS {
                 Row rowExpected = sheetExpected.getRow(r);
                 Row row = sheet.getRow(r);
                 if (rowExpected != null || row != null) {
-                    check(rowExpected).isNotNull("Row expected");
-                    check(row).isNotNull("Row " + r);
+                    that(rowExpected).isNotNull().toThrow("Row expected");
+                    that(row).isNotNull().toThrow("Row " + r);
 
                     this.checkRow(rowExpected, row, r);
                 }
@@ -186,7 +186,7 @@ public final class AssertXLS {
     }
 
     private void checkRow(final Row rowExpected, final Row row, final int rowIndex) {
-        check(rowExpected.getPhysicalNumberOfCells()).isEqual(row.getPhysicalNumberOfCells());
+        that(rowExpected.getPhysicalNumberOfCells()).isEqual(row.getPhysicalNumberOfCells());
         this.checkStyle(rowExpected.getRowStyle(), row.getRowStyle(), rowIndex, -1);
 
         for (int c = 0; c < row.getPhysicalNumberOfCells(); c++) {
@@ -297,7 +297,7 @@ public final class AssertXLS {
     }
 
     private void checkFonts() {
-        check(this.workbookExpected.getNumberOfFonts()).isEqual(this.workbook.getNumberOfFonts());
+        that(this.workbookExpected.getNumberOfFonts()).isEqual(this.workbook.getNumberOfFonts());
 
         for (short i = 0; i < this.workbookExpected.getNumberOfFonts(); i++) {
             HSSFFont fontExpected = this.workbookExpected.getFontAt(i);
@@ -318,7 +318,7 @@ public final class AssertXLS {
     }
 
     private void checkNames() {
-        check(this.workbookExpected.getNumberOfNames()).isEqual(this.workbook.getNumberOfNames());
+        that(this.workbookExpected.getNumberOfNames()).isEqual(this.workbook.getNumberOfNames());
 
         for (int i = 0; i < this.workbookExpected.getNumberOfNames(); i++) {
             HSSFName nameExpected = this.workbookExpected.getNameAt(i);
@@ -432,10 +432,10 @@ public final class AssertXLS {
     }
 
     private static <T> void isEqual(final T obj1, final T obj2, String message) {
-        check(obj1).isEqual(obj2, message);
+        that(obj1).isEqual(obj2).toThrow(message);
     }
 
     private static <T> void isNotNull(final T obj, String message) {
-        check(obj).isNotNull(message);
+        that(obj).isNotNull().toThrow(message);
     }
 }

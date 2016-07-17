@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.asserts;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -43,27 +44,25 @@ public class AssertDateTest {
         final Calendar calendar2 = DateUtils.getCalendar(date2);
 
         try {
-            AssertUtils.check((Date) null).isEqual((Date) null);
-            AssertUtils.check((Calendar) null).isEqual((Calendar) null);
+            Assertor.that((Date) null).isEqual((Date) null).toThrow();
+            Assertor.that((Calendar) null).isEqual((Calendar) null).toThrow();
 
-            AssertUtils.check(date1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
+            Assertor.that(date1).isEqual(date2).toThrow();
 
-            AssertUtils.check(calendar1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
-                    new IllegalArgumentException());
+            Assertor.that(calendar1).isEqual(calendar2).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         try {
-            AssertUtils.check(date1).isEqual(calendar2).isEqual(calendar2, "error not equal").isEqual(calendar2,
-                    new IllegalArgumentException());
+            Assertor.that(date1).isEqual(calendar2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(calendar1).isEqual(date2).isEqual(date2, "error not equal").isEqual(date2, new IllegalArgumentException());
+            Assertor.that(calendar1).isEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -78,22 +77,24 @@ public class AssertDateTest {
         final Date date1 = new Date(1464475553640L);
         final Date date2 = new Date(1464475553641L);
 
+        Assertor.that(date1).isAround(date2, Calendar.SECOND, 5).toThrow();
+
         try {
-            AssertUtils.check(date1).isEqual(date2);
+            Assertor.that(date1).isEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isEqual((Date) null);
+            Assertor.that(date1).isEqual((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isEqual(date2);
+            Assertor.that((Date) null).isEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -112,12 +113,11 @@ public class AssertDateTest {
             calendar1.set(2016, 05, 29, 5, 5, 6);
             calendar2.set(2016, 05, 29, 5, 5, 5);
 
-            AssertUtils.check(calendar1).isAround(calendar2, Calendar.SECOND, 5).isAround(calendar2, Calendar.SECOND, 5, "error")
-                    .isAround(calendar2, Calendar.SECOND, 5, new IllegalArgumentException());
+            Assertor.that(calendar1).isAround(calendar2, Calendar.SECOND, 5).toThrow();
 
             calendar1.set(2016, 05, 29, 5, 5, 1);
 
-            AssertUtils.check(calendar1).isAround(calendar2, Calendar.SECOND, 5);
+            Assertor.that(calendar1).isAround(calendar2, Calendar.SECOND, 5).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -136,7 +136,7 @@ public class AssertDateTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (after)
-            AssertUtils.check(c1).isAround(c2, Calendar.SECOND, 2);
+            Assertor.that(c1).isAround(c2, Calendar.SECOND, 2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -144,7 +144,7 @@ public class AssertDateTest {
 
         try {
             // Check date1 = null
-            AssertUtils.check((Calendar) null).isAround(c2, Calendar.SECOND, 2);
+            Assertor.that((Calendar) null).isAround(c2, Calendar.SECOND, 2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -152,7 +152,7 @@ public class AssertDateTest {
 
         try {
             // Check date2 = null
-            AssertUtils.check(c1).isAround((Calendar) null, Calendar.SECOND, 2);
+            Assertor.that(c1).isAround((Calendar) null, Calendar.SECOND, 2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -160,7 +160,7 @@ public class AssertDateTest {
 
         try {
             // Check calendar amount = zero
-            AssertUtils.check(c1).isAround(c2, Calendar.SECOND, 0);
+            Assertor.that(c1).isAround(c2, Calendar.SECOND, 0).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -168,7 +168,7 @@ public class AssertDateTest {
 
         try {
             // Check unsupported calendar field
-            AssertUtils.check(c1).isAround(c2, 20, 0);
+            Assertor.that(c1).isAround(c2, 20, 0).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -178,7 +178,7 @@ public class AssertDateTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (before)
-            AssertUtils.check(c1).isAround(c2, Calendar.SECOND, 2);
+            Assertor.that(c1).isAround(c2, Calendar.SECOND, 2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -197,16 +197,14 @@ public class AssertDateTest {
             c1.set(2016, 05, 29, 5, 5, 11);
             c2.set(2016, 05, 29, 5, 5, 5);
 
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5);
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5, "error");
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5, new IllegalArgumentException());
+            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 5).toThrow();
 
-            AssertUtils.check((Calendar) null).isNotAround(c2, Calendar.SECOND, 5);
-            AssertUtils.check(c1).isNotAround((Calendar) null, Calendar.SECOND, 5);
+            Assertor.that((Calendar) null).isNotAround(c2, Calendar.SECOND, 5).toThrow();
+            Assertor.that(c1).isNotAround((Calendar) null, Calendar.SECOND, 5).toThrow();
 
             c1.set(2016, 05, 29, 5, 5, 1);
 
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 3);
+            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 3).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -225,7 +223,7 @@ public class AssertDateTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (after)
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5);
+            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 5).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -233,7 +231,7 @@ public class AssertDateTest {
 
         try {
             // Check calendar amount = zero
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 0);
+            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 0).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -241,7 +239,7 @@ public class AssertDateTest {
 
         try {
             // Check unsupported calendar field
-            AssertUtils.check(c1).isNotAround(c2, 20, 0);
+            Assertor.that(c1).isNotAround(c2, 20, 0).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -251,7 +249,7 @@ public class AssertDateTest {
 
         try {
             // Check is date1 is not around the date2 by max 5s (before)
-            AssertUtils.check(c1).isNotAround(c2, Calendar.SECOND, 5);
+            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 5).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -267,10 +265,10 @@ public class AssertDateTest {
             final Date date1 = new Date(1464475553640L);
             final Date date2 = new Date(1464475553641L);
 
-            AssertUtils.check(date1).isNotEqual(date2);
-            AssertUtils.check((Date) null).isNotEqual(date2);
-            AssertUtils.check(date1).isNotEqual((Date) null).isNotEqual(date2, "error equal").isNotEqual(date2,
-                    new IllegalArgumentException());
+            Assertor.that(DateUtils.getCalendar(date1)).isNotEqual(DateUtils.getCalendar(date2)).toThrow();
+            Assertor.that(date1).isNotEqual(date2).toThrow();
+            Assertor.that((Date) null).isNotEqual(date2).toThrow();
+            Assertor.that(date1).isNotEqual((Date) null).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -285,14 +283,14 @@ public class AssertDateTest {
         Date date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.check(date1).isNotEqual(date2);
+            Assertor.that(date1).isNotEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isNotEqual((Date) null);
+            Assertor.that((Date) null).isNotEqual((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -308,7 +306,7 @@ public class AssertDateTest {
             Date date1 = new Date(1464475553641L);
             Date date2 = new Date(1464475553640L);
 
-            AssertUtils.check(date1).isAfter(date2).isAfter(date2, "error not equal").isAfter(date2, new IllegalArgumentException());
+            Assertor.that(date1).isAfter(date2).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -321,46 +319,44 @@ public class AssertDateTest {
     public void testIsAfterKO() {
         final Date date1 = new Date(1464475553640L);
         Date date2 = new Date(1464475553641L);
+        Calendar calendar1 = DateUtils.getCalendar(date1);
+        Calendar calendar2 = DateUtils.getCalendar(date2);
 
-        try {
-            AssertUtils.check(date1).isAfter(date2);
-            fail("Has to raise an exception");
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e);
-        }
+        assertFalse(Assertor.that(date1).isAfter(date2).getResult());
+        assertFalse(Assertor.that(calendar1).isAfter(calendar2).getResult());
 
         date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.check(date1).isAfter(date2);
+            Assertor.that(date1).isAfter(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isAfter(date2);
+            Assertor.that((Date) null).isAfter(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isAfter((Date) null);
+            Assertor.that((Date) null).isAfter((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isAfter((Date) null);
+            Assertor.that(date1).isAfter((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isAfter(date2, new IOException());
+            Assertor.that(date1).isAfter(date2).toThrow(new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);
@@ -376,13 +372,12 @@ public class AssertDateTest {
             Date date1 = new Date(1464475553641L);
             final Date date2 = new Date(1464475553640L);
 
-            AssertUtils.check(date1).isAfterOrEqual(date2).isAfterOrEqual(date2, "error not equal").isAfterOrEqual(date2,
-                    new IllegalArgumentException());
+            Assertor.that(date1).isAfterOrEqual(date2).toThrow();
+            Assertor.that(DateUtils.getCalendar(date1)).isAfterOrEqual(DateUtils.getCalendar(date2)).toThrow();
 
             date1 = new Date(1464475553640L);
 
-            AssertUtils.check(date1).isAfterOrEqual(date2).isAfterOrEqual(date2, "error not equal").isAfterOrEqual(date2,
-                    new IllegalArgumentException());
+            Assertor.that(date1).isAfterOrEqual(date2).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -396,36 +391,32 @@ public class AssertDateTest {
         Date date1 = new Date(1464475553640L);
         Date date2 = new Date(1464475553641L);
 
+        assertFalse(Assertor.that(date1).isAfterOrEqual(date2).getResult());
+        assertFalse(Assertor.that(DateUtils.getCalendar(date1)).isAfterOrEqual(DateUtils.getCalendar(date2)).getResult());
+
         try {
-            AssertUtils.check(date1).isAfterOrEqual(date2);
+            Assertor.that((Date) null).isAfterOrEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isAfterOrEqual(date2);
+            Assertor.that(date1).isAfterOrEqual((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isAfterOrEqual((Date) null);
+            Assertor.that((Date) null).isAfterOrEqual((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isAfterOrEqual((Date) null);
-            fail("Has to raise an exception");
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e);
-        }
-
-        try {
-            AssertUtils.check(date1).isAfterOrEqual(date2, new IOException());
+            Assertor.that(date1).isAfterOrEqual(date2).toThrow(new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);
@@ -441,7 +432,8 @@ public class AssertDateTest {
             final Date date1 = new Date(1464475553640L);
             final Date date2 = new Date(1464475553641L);
 
-            AssertUtils.check(date1).isBefore(date2).isBefore(date2, "error not equal").isBefore(date2, new IllegalArgumentException());
+            Assertor.that(date1).isBefore(date2).toThrow();
+            Assertor.that(DateUtils.getCalendar(date1)).isBefore(DateUtils.getCalendar(date2)).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -456,7 +448,7 @@ public class AssertDateTest {
         Date date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.check(date1).isBefore(date2);
+            Assertor.that(date1).isBefore(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -465,35 +457,35 @@ public class AssertDateTest {
         date2 = new Date(1464475553641L);
 
         try {
-            AssertUtils.check(date1).isBefore(date2);
+            Assertor.that(date1).isBefore(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isBefore(date2);
+            Assertor.that((Date) null).isBefore(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isBefore((Date) null);
+            Assertor.that(date1).isBefore((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isBefore((Date) null);
+            Assertor.that((Date) null).isBefore((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isBefore(date2, new IOException());
+            Assertor.that(date1).isBefore(date2).toThrow(new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);
@@ -509,15 +501,12 @@ public class AssertDateTest {
             Date date1 = new Date(1464475553640L);
             final Date date2 = new Date(1464475553641L);
 
-            AssertUtils.check(date1).isBeforeOrEqual(date2);
-            AssertUtils.check(date1).isBeforeOrEqual(date2, "error not equal");
-            AssertUtils.check(date1).isBeforeOrEqual(date2, new IllegalArgumentException());
+            Assertor.that(date1).isBeforeOrEqual(date2).toThrow();
+            Assertor.that(DateUtils.getCalendar(date1)).isBeforeOrEqual(DateUtils.getCalendar(date2)).toThrow();
 
             date1 = new Date(1464475553641L);
 
-            AssertUtils.check(date1).isBeforeOrEqual(date2);
-            AssertUtils.check(date1).isBeforeOrEqual(date2, "error not equal");
-            AssertUtils.check(date1).isBeforeOrEqual(date2, new IllegalArgumentException());
+            Assertor.that(date1).isBeforeOrEqual(date2).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -532,35 +521,35 @@ public class AssertDateTest {
         final Date date2 = new Date(1464475553640L);
 
         try {
-            AssertUtils.check(date1).isBeforeOrEqual(date2);
+            Assertor.that(date1).isBeforeOrEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isBeforeOrEqual(date2);
+            Assertor.that((Date) null).isBeforeOrEqual(date2).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isBeforeOrEqual((Date) null);
+            Assertor.that(date1).isBeforeOrEqual((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check((Date) null).isBeforeOrEqual((Date) null);
+            Assertor.that((Date) null).isBeforeOrEqual((Date) null).toThrow();
             fail("Has to raise an exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
 
         try {
-            AssertUtils.check(date1).isBeforeOrEqual(date2, new IOException());
+            Assertor.that(date1).isBeforeOrEqual(date2).toThrow(new IOException());
             fail("Has to raise an exception");
         } catch (IOException e) {
             assertNotNull(e);

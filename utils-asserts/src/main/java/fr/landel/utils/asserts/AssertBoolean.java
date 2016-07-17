@@ -32,72 +32,16 @@ public class AssertBoolean extends AssertObject<AssertBoolean, Boolean> {
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code true}.
+     * Assert a boolean expression.
      * 
      * <pre>
-     * AssertUtils.check(i &gt; 0).isFalse();
+     * Assertor.that(i &gt; 0).isTrue().toThrow(exceptionToThrowOnError);
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if expression is {@code false}
+     * @return the operator
      */
-    public AssertBoolean isFalse() {
-        return this.isFalse((CharSequence) null);
-    }
-
-    /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code true}.
-     * 
-     * <pre>
-     * AssertUtils.check(i &gt; 0).isFalse(&quot;The value must be greater than zero&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if expression is {@code false}
-     */
-    public AssertBoolean isFalse(final CharSequence message, final Object... arguments) {
-        isFalse(this.get(), null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code true}.
-     * 
-     * <pre>
-     * AssertUtils.check(i &gt; 0).isFalse(exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if expression is {@code false}
-     */
-    public <E extends Throwable> AssertBoolean isFalse(final E exception) throws E {
-        isFalse(this.get(), exception, null);
-
-        return this;
-    }
-
-    protected static <E extends Throwable> void isFalse(final Boolean expression, final E exception, final CharSequence message,
-            final Object... arguments) throws E {
-        if (expression == null || expression) {
-            manageExceptions("this expression must be false", exception, message, new Object[] {expression}, arguments);
-        }
+    public Operator<AssertBoolean, Boolean> isFalse() {
+        return this.combine(Boolean.FALSE.equals(this.get()), "this expression must be false");
     }
 
     /**
@@ -105,67 +49,12 @@ public class AssertBoolean extends AssertObject<AssertBoolean, Boolean> {
      * the test result is {@code false}.
      * 
      * <pre>
-     * AssertUtils.check(i &gt; 0).isTrue();
+     * Assertor.that(i &gt; 0).isTrue().toThrow(exceptionToThrowOnError);
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if expression is {@code false}
+     * @return the operator
      */
-    public AssertBoolean isTrue() {
-        return this.isTrue((CharSequence) null);
-    }
-
-    /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code false}.
-     * 
-     * <pre>
-     * AssertUtils.check(i &gt; 0).isTrue(&quot;The value must be greater than zero&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if expression is {@code false}
-     */
-    public AssertBoolean isTrue(final CharSequence message, final Object... arguments) {
-        isTrue(this.get(), null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
-     * the test result is {@code false}.
-     * 
-     * <pre>
-     * AssertUtils.check(i &gt; 0).isTrue(exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if expression is {@code false}
-     */
-    public <E extends Throwable> AssertBoolean isTrue(final E exception) throws E {
-        isTrue(this.get(), exception, null);
-
-        return this;
-    }
-
-    protected static <E extends Throwable> void isTrue(final Boolean expression, final E exception, final CharSequence message,
-            final Object... arguments) throws E {
-        if (expression == null || !expression) {
-            manageExceptions("this expression must be true", exception, message, new Object[] {expression}, arguments);
-        }
+    public Operator<AssertBoolean, Boolean> isTrue() {
+        return this.combine(Boolean.TRUE.equals(this.get()), "this expression must be true");
     }
 }

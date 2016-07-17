@@ -29,315 +29,285 @@ import fr.landel.utils.commons.CollectionUtils2;
  */
 public class AssertIterable<I extends Iterable<T>, T> extends AssertObject<AssertIterable<I, T>, I> {
 
-    protected AssertIterable(I object) {
+    /**
+     * 
+     * Constructor
+     *
+     * @param object
+     *            The object to check
+     */
+    protected AssertIterable(final I object) {
         super(object);
     }
 
-    public AssertIterable<I, T> hasSize(final int size) {
-        return this.hasSize(size, (String) null);
-    }
+    /**
+     * Asserts that an iterable has the expected size.
+     * 
+     * <pre>
+     * Assertor.that(iterable).hasSize(5).toThrow(&quot;Iterable must have the expected size&quot;);
+     * </pre>
+     * 
+     * @param size
+     *            the expected size
+     * @return the operator
+     */
+    public Operator<AssertIterable<I, T>, I> hasSize(final int size) {
+        final StringBuilder message = new StringBuilder();
+        boolean condition = this.isNull(message);
 
-    public AssertIterable<I, T> hasSize(final int size, final String message, final Object... arguments) {
-        hasSize(this.get(), size, null, message, arguments);
-
-        return this;
-    }
-
-    public <E extends Throwable> AssertIterable<I, T> hasSize(final int size, final E exception) throws E {
-        hasSize(this.get(), size, exception, null);
-
-        return this;
-    }
-
-    protected static <X, E extends Throwable> void hasSize(final Iterable<X> iterable, final int size, final E exception,
-            final String message, final Object... arguments) throws E {
-
-        AssertNumber.isGTE(size, 0, null, "The size parameter has to be greater than or equal to 0");
-
-        if (iterable == null) {
-            manageExceptions("the iterable is null", exception, message, new Object[] {iterable}, arguments);
-        } else if (Collection.class.isAssignableFrom(iterable.getClass()) && ((Collection<X>) iterable).size() != size) {
-            manageExceptions("the collection hasn't the expected size", exception, message, new Object[] {iterable}, arguments);
-        } else {
-            int count = 0;
-            final Iterator<X> iterator = iterable.iterator();
-            while (iterator.hasNext()) {
-                iterator.next();
-                count++;
-            }
-            if (count != size) {
-                manageExceptions("the iterable hasn't the expected size", exception, message, new Object[] {iterable}, arguments);
+        if (condition) {
+            if (size < 0) {
+                condition = false;
+                message.append("the size parameter has to be greater than or equal to 0");
+            } else if (Collection.class.isAssignableFrom(this.get().getClass())) {
+                if (((Collection<T>) this.get()).size() != size) {
+                    condition = false;
+                    message.append("the collection hasn't the expected size");
+                }
+            } else {
+                int count = 0;
+                final Iterator<T> iterator = this.get().iterator();
+                while (iterator.hasNext()) {
+                    iterator.next();
+                    count++;
+                }
+                if (count != size) {
+                    condition = false;
+                    message.append("the iterable hasn't the expected size");
+                }
             }
         }
+
+        return this.combine(condition, message, size);
     }
 
     /**
-     * Assert that a iterable has no elements and not {@code null}.
+     * Asserts that an iterable has not the expected size.
      * 
      * <pre>
-     * AssertUtils.isEmpty(iterable, &quot;Iterable must have no elements&quot;);
+     * Assertor.that(iterable).hasNotSize(5).toThrow(&quot;Iterable must not have the expected size&quot;);
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the iterable is {@code null} or has elements
+     * @param size
+     *            the expected size
+     * @return the operator
      */
-    public AssertIterable<I, T> isEmpty() {
-        return this.isEmpty((String) null);
-    }
+    public Operator<AssertIterable<I, T>, I> hasNotSize(final int size) {
+        final StringBuilder message = new StringBuilder();
+        boolean condition = this.isNull(message);
 
-    /**
-     * Assert that a iterable has no elements and not {@code null}.
-     * 
-     * <pre>
-     * AssertUtils.isEmpty(iterable, &quot;Iterable must have elements&quot;);
-     * </pre>
-     * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the iterable is {@code null} or has elements
-     */
-    public AssertIterable<I, T> isEmpty(final String message, final Object... arguments) {
-        isEmpty(this.get(), null, message, arguments);
-
-        return this;
-    }
-
-    /**
-     * Assert that a iterable has no elements and not {@code null}.
-     * 
-     * <pre>
-     * AssertUtils.isEmpty(iterable, exceptionToThrowOnError);
-     * </pre>
-     * 
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the iterable is {@code null} or has elements
-     */
-    public <E extends Throwable> AssertIterable<I, T> isEmpty(final E exception) throws E {
-        isEmpty(this.get(), exception, null);
-
-        return this;
-    }
-
-    private static <E extends Throwable> void isEmpty(final Iterable<?> iterable, final E exception, final String message,
-            final Object... arguments) throws E {
-        if (iterable == null || !IterableUtils.isEmpty(iterable)) {
-            manageExceptions("this iterable must be empty and not null", exception, message, new Object[] {iterable}, arguments);
+        if (condition) {
+            if (size < 0) {
+                condition = false;
+                message.append("the size parameter has to be greater than or equal to 0");
+            } else if (Collection.class.isAssignableFrom(this.get().getClass())) {
+                if (((Collection<T>) this.get()).size() == size) {
+                    condition = false;
+                    message.append("the collection hasn't the expected size");
+                }
+            } else {
+                int count = 0;
+                final Iterator<T> iterator = this.get().iterator();
+                while (iterator.hasNext()) {
+                    iterator.next();
+                    count++;
+                }
+                if (count == size) {
+                    condition = false;
+                    message.append("the iterable hasn't the expected size");
+                }
+            }
         }
+
+        return this.combine(condition, message, size);
     }
 
     /**
-     * Assert that an iterable has elements (not be {@code null} and have at
+     * Asserts that a iterable has no elements and not {@code null}.
+     * 
+     * <pre>
+     * Assertor.that(iterable).isEmpty().toThrow(&quot;Iterable must have no elements&quot;);
+     * </pre>
+     * 
+     * @return the operator
+     */
+    public Operator<AssertIterable<I, T>, I> isEmpty() {
+        return this.combine(IterableUtils.isEmpty(this.get()), "this iterable must be empty or null");
+    }
+
+    /**
+     * Asserts that an iterable has elements (not be {@code null} and have at
      * least one element).
      * 
      * <pre>
-     * AssertUtils.isNotEmpty(iterable, &quot;Iterable must have elements&quot;);
+     * Assertor.that(iterable).isNotEmpty().toThrow(&quot;Iterable must have elements&quot;);
      * </pre>
      * 
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the iterable is {@code null} or has no elements
+     * @return the operator
      */
-    public AssertIterable<I, T> isNotEmpty() {
-        return this.isNotEmpty((String) null);
+    public Operator<AssertIterable<I, T>, I> isNotEmpty() {
+        return this.combine(!IterableUtils.isEmpty(this.get()), "this iterable must be not empty");
     }
 
     /**
-     * Assert that an iterable has elements (not be {@code null} and have at
-     * least one element).
+     * Asserts that an iterable contains the object.
      * 
      * <pre>
-     * AssertUtils.isNotEmpty(iterable, &quot;Iterable must have elements&quot;);
+     * Assertor.that(iterable).contains(object).toThrow(&quot;Iterable must contain the element&quot;);
      * </pre>
      * 
-     * @param message
-     *            the exception message to use if the assertion fails (%p or
-     *            %1$p can be used to display parameter value, see explanation
-     *            in the class description)
-     * @param arguments
-     *            the message arguments (use with String.format)
-     * @return this
-     * @throws IllegalArgumentException
-     *             if the iterable is {@code null} or has no elements
+     * @param object
+     *            the object to find in the iterable
+     * @return the operator
      */
-    public AssertIterable<I, T> isNotEmpty(final String message, final Object... arguments) {
-        isNotEmpty(this.get(), null, message, arguments);
+    public Operator<AssertIterable<I, T>, I> contains(final T object) {
+        final StringBuilder message = new StringBuilder();
+        boolean condition = this.isNull(message);
 
-        return this;
+        if (object == null) {
+            condition = false;
+            message.append("the object to find must be not null");
+        } else if (condition) {
+            boolean found = false;
+
+            final Iterator<T> iterator = this.get().iterator();
+            while (iterator.hasNext() && !found) {
+                if (object.equals(iterator.next())) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                condition = false;
+                message.append("the iterable must contain the object '").append(AssertObject.getParam(this.getParamIndex() + 1))
+                        .append("'");
+            }
+        }
+
+        return this.combine(condition, message, object);
     }
 
     /**
-     * Assert that an iterable has elements (not be {@code null} and have at
-     * least one element).
+     * Asserts that an iterable contains the objects.
      * 
      * <pre>
-     * AssertUtils.isNotEmpty(iterable, exceptionToThrowOnError);
+     * Assertor.that(iterable).contains(objects).toThrow(&quot;Iterable must contain all the elements&quot;);
      * </pre>
      * 
-     * @param exception
-     *            the exception to throw on error
-     * @return this
-     * @param <E>
-     *            The type of exception
-     * @throws E
-     *             if the iterable is {@code null} or has no elements
+     * @param objects
+     *            the objects to find in the iterable
+     * @return the operator
      */
-    public <E extends Throwable> AssertIterable<I, T> isNotEmpty(final E exception) throws E {
-        isNotEmpty(this.get(), exception, null);
+    public Operator<AssertIterable<I, T>, I> contains(final Iterable<T> objects) {
+        final StringBuilder message = new StringBuilder();
+        boolean condition = this.isNull(message);
 
-        return this;
-    }
+        if (IterableUtils.isEmpty(objects)) {
+            condition = false;
+            message.append("the objects to find must be not null and not empty");
+        } else if (condition) {
+            final T[] array = CollectionUtils2.toArray(this.get());
 
-    private static <E extends Throwable> void isNotEmpty(final Iterable<?> iterable, final E exception, final String message,
-            final Object... arguments) throws E {
-        if (IterableUtils.isEmpty(iterable)) {
-            manageExceptions("this iterable must not be empty: it must contain at least 1 element", exception, message,
-                    new Object[] {iterable}, arguments);
-        }
-    }
+            if (array != null) {
+                for (T object : objects) {
+                    if (Arrays.binarySearch(array, object) < 0) {
+                        condition = false;
+                        break;
+                    }
+                }
+            } else {
+                condition = false;
+            }
 
-    public AssertIterable<I, T> contains(final T object) {
-        return this.contains(object, null);
-    }
-
-    public AssertIterable<I, T> contains(final T object, final String message, final Object... arguments) {
-        contains(this.get(), object, null, message, arguments);
-
-        return this;
-    }
-
-    public <E extends Throwable> AssertIterable<I, T> contains(final T object, final E exception) throws E {
-        contains(this.get(), object, exception, null);
-
-        return this;
-    }
-
-    private static <T, E extends Throwable> void contains(final Iterable<T> iterable, final T object, final E exception,
-            final String message, final Object... arguments) throws E {
-
-        isNotEmpty(iterable, null, null);
-        isNotNull(object, null, null);
-
-        boolean found = false;
-
-        Iterator<T> iterator = iterable.iterator();
-        while (iterator.hasNext() && !found) {
-            if (object.equals(iterator.next())) {
-                found = true;
+            if (!condition) {
+                message.append("the iterable must contain all objects");
             }
         }
 
-        if (!found) {
-            manageExceptions("The iterable must contain the object", exception, message, new Object[] {iterable, object}, arguments);
-        }
+        return this.combine(condition, message, objects);
     }
 
-    public AssertIterable<I, T> contains(final Iterable<T> objects) {
-        return this.contains(objects, (String) null);
-    }
+    /**
+     * Asserts that an iterable does not contain the object.
+     * 
+     * <pre>
+     * Assertor.that(iterable).doesNotContain(object).toThrow(&quot;Iterable must NOT contain the element&quot;);
+     * </pre>
+     * 
+     * @param object
+     *            the object to find in the iterable
+     * @return the operator
+     */
+    public Operator<AssertIterable<I, T>, I> doesNotContain(final T object) {
+        final StringBuilder message = new StringBuilder();
+        boolean condition = this.isNull(message);
 
-    public AssertIterable<I, T> contains(final Iterable<T> objects, final String message, final Object... arguments) {
-        contains(this.get(), objects, null, message, arguments);
+        if (object == null) {
+            condition = false;
+            message.append("the object to find must be not null");
+        } else if (condition) {
+            boolean found = false;
 
-        return this;
-    }
-
-    public <E extends Throwable> AssertIterable<I, T> contains(final Iterable<T> objects, final E exception) throws E {
-        contains(this.get(), objects, exception, null);
-
-        return this;
-    }
-
-    private static <T, E extends Throwable> void contains(final Iterable<T> iterable, final Iterable<T> objects, final E exception,
-            final String message, final Object... arguments) throws E {
-
-        isNotEmpty(iterable, null, null);
-        isNotEmpty(objects, null, null);
-
-        T[] array = CollectionUtils2.toArray(iterable);
-
-        for (T object : objects) {
-            if (Arrays.binarySearch(array, object) < 0) {
-                manageExceptions("The iterable must contain all objects", exception, message, new Object[] {array, objects}, arguments);
+            final Iterator<T> iterator = this.get().iterator();
+            while (iterator.hasNext() && !found) {
+                if (object.equals(iterator.next())) {
+                    found = true;
+                }
             }
-        }
-    }
 
-    public AssertIterable<I, T> doesNotContain(final T object) {
-        return this.doesNotContain(object, (String) null);
-    }
-
-    public AssertIterable<I, T> doesNotContain(final T object, final String message, final Object... arguments) {
-        doesNotContain(this.get(), object, null, message, arguments);
-
-        return this;
-    }
-
-    public <E extends Throwable> AssertIterable<I, T> doesNotContain(final T object, final E exception) throws E {
-        doesNotContain(this.get(), object, exception, null);
-
-        return this;
-    }
-
-    private static <T, E extends Throwable> void doesNotContain(final Iterable<T> iterable, final T object, final E exception,
-            final String message, final Object... arguments) throws E {
-
-        isNotEmpty(iterable, null, null);
-        isNotNull(object, null, null);
-
-        boolean found = false;
-
-        Iterator<T> iterator = iterable.iterator();
-        while (iterator.hasNext() && !found) {
-            if (object.equals(iterator.next())) {
-                found = true;
+            if (found) {
+                condition = false;
+                message.append("the iterable must not contain the object '").append(AssertObject.getParam(this.getParamIndex() + 1))
+                        .append("'");
             }
         }
 
-        if (found) {
-            manageExceptions("The iterable must not contain the object", exception, message, new Object[] {iterable, object}, arguments);
-        }
+        return this.combine(condition, message, object);
     }
 
-    public AssertIterable<I, T> doesNotContain(final Iterable<T> objects) {
-        return this.doesNotContain(objects, (String) null);
-    }
+    /**
+     * Asserts that an iterable does not contain any objects.
+     * 
+     * <pre>
+     * Assertor.that(iterable).doesNotContain(objects).toThrow(&quot;Iterable must NOT contain any elements&quot;);
+     * </pre>
+     * 
+     * @param objects
+     *            the objects to find in the iterable
+     * @return the operator
+     */
+    public Operator<AssertIterable<I, T>, I> doesNotContain(final Iterable<T> objects) {
+        final StringBuilder message = new StringBuilder();
+        boolean condition = this.isNull(message);
 
-    public AssertIterable<I, T> doesNotContain(final Iterable<T> objects, final String message, final Object... arguments) {
-        doesNotContain(this.get(), objects, null, message, arguments);
+        if (IterableUtils.isEmpty(objects)) {
+            condition = false;
+            message.append("the objects to find must be not null and not empty");
+        } else if (condition) {
+            T[] array = CollectionUtils2.toArray(this.get());
 
-        return this;
-    }
-
-    public <E extends Throwable> AssertIterable<I, T> doesNotContain(final Iterable<T> objects, final E exception) throws E {
-        doesNotContain(this.get(), objects, exception, null);
-
-        return this;
-    }
-
-    private static <T, E extends Throwable> void doesNotContain(final Iterable<T> iterable, final Iterable<T> objects, final E exception,
-            final String message, final Object... arguments) throws E {
-
-        isNotEmpty(iterable, null, null);
-        isNotEmpty(objects, null, null);
-
-        T[] array = CollectionUtils2.toArray(iterable);
-
-        for (T object : objects) {
-            if (Arrays.binarySearch(array, object) > -1) {
-                manageExceptions("The iterable must not contain any object", exception, message, new Object[] {array, objects}, arguments);
+            if (array != null) {
+                for (T object : objects) {
+                    if (Arrays.binarySearch(array, object) > -1) {
+                        condition = false;
+                        break;
+                    }
+                }
+            }
+            if (!condition) {
+                message.append("the iterable must not contain any object");
             }
         }
+
+        return this.combine(condition, message, objects);
+    }
+
+    private boolean isNull(final StringBuilder message) {
+        boolean condition = true;
+        if (this.get() == null) {
+            condition = false;
+            message.append("the iterable must be not null");
+        }
+        return condition;
     }
 }

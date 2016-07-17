@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 /**
  * Assertion utility class that assists in validating arguments.
  *
@@ -44,15 +42,20 @@ import org.apache.commons.lang3.ArrayUtils;
  * example:
  *
  * <pre>
- * AssertUtils.isNotNull(clazz, &quot;The class must not be null&quot;);
- * AssertUtils.isGT(i, 0, &quot;The value must be greater than zero&quot;);
- * AssertUtils.isTrue(bool, new MyException(&quot;The value must be true&quot;));
+ * Assertor.that(clazz).isNotNull().toThrow(&quot;The class must not be null&quot;);
+ * Assertor.that(clazz).isNotNull().and().isAssignable(superClazz)
+ * Assertor.that(i).isGT(0).toThrow(&quot;The value must be greater than zero&quot;);
+ * Assertor.that(bool).isTrue().toThrow(new MyException(&quot;The value must be true&quot;));
+ * 
+ * // The following code is equals to the next one 
+ * AssertCharSequence&lt;String&gt; assertor = Assertor.that("text");
+ * assertor.contains("__");
+ * assertor.contains("ext");
+ * assertTrue(assertor.getResult());
+ * 
+ * // The next one
+ * assertTrue(Assertor.that("text").contains("__").and().contains("ext").getResult());
  * </pre>
- *
- * <p>
- * Mainly for internal use within the framework; consider
- * <a href="http://commons.apache.org/proper/commons-lang/">Apache's Commons
- * Lang</a> for a more comprehensive suite of {@code String} utilities.
  * 
  * <p>
  * Optionally, the checked parameters can be displayed in exception messages by
@@ -60,9 +63,10 @@ import org.apache.commons.lang3.ArrayUtils;
  * </p>
  * 
  * <pre>
- * AssertUtils.isGT(10, 20, &quot;The number '%p' is not greater than number '%p'&quot;);
+ * Assertor.that(10).isGT(20).toThrow(&quot;The number '%p' is not greater than number '%p'&quot;);
  * // Exception: "The number '10' is not greater than number '20'"
- * AssertUtils.isGT(10, 20, &quot;'%2$p' &gt; '%1$p'&quot;);
+ * 
+ * Assertor.that(10).isGT(20).toThrow(&quot;'%2$p' &gt; '%1$p'&quot;);
  * // Exception: "'20' &gt; '10'"
  * </pre>
  *
@@ -72,15 +76,30 @@ import org.apache.commons.lang3.ArrayUtils;
  *      "http://docs.spring.io/spring/docs/2.0.x/api/org/springframework/util/Assert.html?is-external=true">
  *      org.springframework.util.Assert</a>
  *
- * @author Keith Donald
- * @author Juergen Hoeller
- * @author Colin Sampaleanu
- * @author Rob Harrop
- * @author Sam Brannen
- * @author Gilles Landel
- * @since 1.1.2
+ * @since 1 juil. 2016
+ * @author Gilles
  */
-public class AssertUtils {
+public class Assertor {
+
+    /**
+     * AND operator
+     */
+    protected static final int AND = 0;
+
+    /**
+     * OR operator
+     */
+    protected static final int OR = 1;
+
+    /**
+     * XOR operator
+     */
+    protected static final int XOR = 2;
+
+    /**
+     * The operator strings
+     */
+    protected static final String[] OPERATORS = {" AND ", " OR ", " XOR "};
 
     /**
      * Default assertion prefix
@@ -97,14 +116,14 @@ public class AssertUtils {
     /**
      * Hidden constructor
      */
-    private AssertUtils() {
+    private Assertor() {
     }
 
     /**
      * @return the locale
      */
     public static final Locale getLocale() {
-        return AssertUtils.locale;
+        return Assertor.locale;
     }
 
     /**
@@ -112,14 +131,14 @@ public class AssertUtils {
      *            the locale to set
      */
     public static final void setLocale(final Locale locale) {
-        AssertUtils.locale = locale;
+        Assertor.locale = locale;
     }
 
     /**
      * @return the assertionPrefix
      */
     public static String getAssertionPrefix() {
-        return AssertUtils.assertionPrefix;
+        return Assertor.assertionPrefix;
     }
 
     /**
@@ -127,51 +146,47 @@ public class AssertUtils {
      *            the assertionPrefix to set
      */
     public static void setAssertionPrefix(String assertionPrefix) {
-        AssertUtils.assertionPrefix = assertionPrefix;
+        Assertor.assertionPrefix = assertionPrefix;
     }
 
-    public static <N extends Number & Comparable<N>> AssertNumber<N> check(final N number) {
+    public static <N extends Number & Comparable<N>> AssertNumber<N> that(final N number) {
         return new AssertNumber<>(number);
     }
 
-    public static <K, V> AssertMap<K, V> check(final Map<K, V> map) {
+    public static <K, V> AssertMap<K, V> that(final Map<K, V> map) {
         return new AssertMap<>(map);
     }
 
-    public static <I extends Iterable<X>, X> AssertIterable<I, X> check(final I iterable) {
+    public static <I extends Iterable<T>, T> AssertIterable<I, T> that(final I iterable) {
         return new AssertIterable<>(iterable);
     }
 
-    public static <A> AssertArray<A> check(final A[] array) {
+    public static <A> AssertArray<A> that(final A[] array) {
         return new AssertArray<>(array);
     }
 
-    public static <S extends CharSequence> AssertCharSequence<S> check(final S text) {
+    public static <T extends CharSequence> AssertCharSequence<T> that(final T text) {
         return new AssertCharSequence<>(text);
     }
 
-    public static AssertDate check(final Date date) {
+    public static AssertDate that(final Date date) {
         return new AssertDate(date);
     }
 
-    public static AssertCalendar check(final Calendar calendar) {
+    public static AssertCalendar that(final Calendar calendar) {
         return new AssertCalendar(calendar);
     }
 
-    public static AssertBoolean check(final Boolean expression) {
+    public static AssertBoolean that(final Boolean expression) {
         return new AssertBoolean(expression);
     }
 
-    public static <X> AssertClass<X> check(final Class<X> clazz) {
+    public static <T> AssertClass<T> that(final Class<T> clazz) {
         return new AssertClass<>(clazz);
     }
 
-    public static <T extends AssertObject<T, O>, O> AssertObject<T, O> check(final O object) {
-        return new AssertObject<>(object);
-    }
-
-    public static <T extends AssertMultipleObject<T, Object>> AssertMultipleObject<T, Object> check(final Object object,
-            final Object... objects) {
-        return new AssertMultipleObject<>(ArrayUtils.add(new Object[] {object}, objects));
+    @SuppressWarnings("unchecked")
+    public static <A extends AssertObject<A, T>, T> A that(final T object) {
+        return (A) new AssertObject<>(object);
     }
 }

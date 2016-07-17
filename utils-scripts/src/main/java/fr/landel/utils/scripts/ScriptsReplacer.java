@@ -22,7 +22,8 @@ import java.util.Set;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.asserts.AssertUtils;
+import fr.landel.utils.asserts.AssertCharSequence;
+import fr.landel.utils.asserts.Assertor;
 
 /**
  * Scripts replacer (parse, execute and replace all scripts). Default
@@ -122,7 +123,7 @@ public class ScriptsReplacer {
     }
 
     private void checkInput(final StringBuilder sb) throws IllegalArgumentException {
-        AssertUtils.check(sb).isNotNull("Input cannot be null").isNotEmpty("Input cannot be empty");
+        Assertor.that(sb).isNotEmpty().toThrow("Input cannot be empty or null");
 
         int countBracketOpen = 0;
         int countBracketClose = 0;
@@ -147,28 +148,28 @@ public class ScriptsReplacer {
             countBracketOpen++;
         }
 
-        AssertUtils.check(countBracketOpen).isEqual(countBracketClose, "The count of %s doesn't match the count of %s, input: %s",
+        Assertor.that(countBracketOpen).isEqual(countBracketClose).toThrow("The count of %s doesn't match the count of %s, input: %s",
                 this.template.getExpressionOpen(), this.template.getExpressionClose(), sb);
     }
 
     private void checkReplacements(final Map<String, String> replacements) throws IllegalArgumentException {
         for (Entry<String, String> entry : replacements.entrySet()) {
-            AssertUtils.check(entry.getKey()).isNotNull("Replacement key cannot be null");
-            AssertUtils.check(entry.getValue()).isNotNull("Replacement value cannot be null");
+            Assertor.that(entry.getKey()).isNotNull().toThrow("Replacement key cannot be null");
+            Assertor.that(entry.getValue()).isNotNull().toThrow("Replacement value cannot be null");
 
             final String errorKey = "Replacement key cannot contains: ";
-            AssertUtils.check(entry.getKey())
-                    .doesNotContain(this.template.getExpressionOpen(), errorKey + this.template.getExpressionOpen())
-                    .doesNotContain(this.template.getExpressionClose(), errorKey + this.template.getExpressionClose())
-                    .doesNotContain(this.template.getOperatorThen(), errorKey + this.template.getOperatorThen())
-                    .doesNotContain(this.template.getOperatorElse(), errorKey + this.template.getOperatorElse());
+            AssertCharSequence<String> assertor = Assertor.that(entry.getKey());
+            assertor.doesNotContain(this.template.getExpressionOpen()).toThrow(errorKey + this.template.getExpressionOpen());
+            assertor.doesNotContain(this.template.getExpressionClose()).toThrow(errorKey + this.template.getExpressionClose());
+            assertor.doesNotContain(this.template.getOperatorThen()).toThrow(errorKey + this.template.getOperatorThen());
+            assertor.doesNotContain(this.template.getOperatorElse()).toThrow(errorKey + this.template.getOperatorElse());
 
             final String errorValue = "Replacement value cannot contains: ";
-            AssertUtils.check(entry.getValue())
-                    .doesNotContain(this.template.getExpressionOpen(), errorValue + this.template.getExpressionOpen())
-                    .doesNotContain(this.template.getExpressionClose(), errorValue + this.template.getExpressionClose())
-                    .doesNotContain(this.template.getOperatorThen(), errorValue + this.template.getOperatorThen())
-                    .doesNotContain(this.template.getOperatorElse(), errorValue + this.template.getOperatorElse());
+            assertor = Assertor.that(entry.getValue());
+            assertor.doesNotContain(this.template.getExpressionOpen()).toThrow(errorValue + this.template.getExpressionOpen());
+            assertor.doesNotContain(this.template.getExpressionClose()).toThrow(errorValue + this.template.getExpressionClose());
+            assertor.doesNotContain(this.template.getOperatorThen()).toThrow(errorValue + this.template.getOperatorThen());
+            assertor.doesNotContain(this.template.getOperatorElse()).toThrow(errorValue + this.template.getOperatorElse());
 
             if (this.template.getChecker() != null) {
                 this.template.getChecker().acceptThrows(entry.getValue());

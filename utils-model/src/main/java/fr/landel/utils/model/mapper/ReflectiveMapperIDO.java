@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import fr.landel.utils.asserts.AssertUtils;
+import fr.landel.utils.asserts.Assertor;
 import fr.landel.utils.mapper.DTOIdentifier;
 import fr.landel.utils.mapper.EnumMode;
 import fr.landel.utils.mapper.MapperException;
@@ -74,10 +74,10 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> D mapToDTO(final E entity,
             final String identifierKey) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
-        AssertUtils.check(identifierKey).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
-        AssertUtils.check(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue(ERROR_IDENTIFIER_UNKNOWN, METHOD_MAP_TO_DTO,
-                PARAM_IDENTIIER);
+        Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+        Assertor.that(identifierKey).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue().toThrow(ERROR_IDENTIFIER_UNKNOWN,
+                METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         final DTOIdentifier identifier = this.getDtoIdentifierManager().get(identifierKey);
 
@@ -105,8 +105,8 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> D mapToDTO(final E entity,
             final DTOIdentifier identifier) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
-        AssertUtils.check(identifier).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+        Assertor.that(identifier).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         return this.map(entity, null, identifier, identifier.deep(), EnumMode.LOAD);
     }
@@ -134,11 +134,11 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> D mapToDTO(final E entity,
             final D previousDTO, final String identifierKey) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
-        AssertUtils.check(previousDTO).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
-        AssertUtils.check(identifierKey).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
-        AssertUtils.check(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue(ERROR_IDENTIFIER_UNKNOWN, METHOD_MAP_TO_DTO,
-                PARAM_IDENTIIER);
+        Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+        Assertor.that(previousDTO).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
+        Assertor.that(identifierKey).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue().toThrow(ERROR_IDENTIFIER_UNKNOWN,
+                METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         final DTOIdentifier identifier = this.getDtoIdentifierManager().get(identifierKey);
 
@@ -168,9 +168,9 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> D mapToDTO(final E entity,
             final D previousDTO, final DTOIdentifier identifier) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
-        AssertUtils.check(previousDTO).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
-        AssertUtils.check(identifier).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+        Assertor.that(previousDTO).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
+        Assertor.that(identifier).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         return this.map(entity, previousDTO, identifier, identifier.deep(), EnumMode.LOAD);
     }
@@ -196,9 +196,9 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<D> mapToDTO(
             final List<E> entities, final String identifierKey) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(identifierKey).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
-        AssertUtils.check(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue(ERROR_IDENTIFIER_UNKNOWN, METHOD_MAP_TO_DTO,
-                PARAM_IDENTIIER);
+        Assertor.that(identifierKey).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue().toThrow(ERROR_IDENTIFIER_UNKNOWN,
+                METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         final DTOIdentifier identifier = this.getDtoIdentifierManager().get(identifierKey);
 
@@ -226,12 +226,12 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<D> mapToDTO(
             final List<E> entities, final DTOIdentifier identifier) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(entities).isNotEmpty(ERROR_PARAMETER_EMPTY, METHOD_MAP_TO_DTO, PARAM_ENTITIES);
-        AssertUtils.check(identifier).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(entities).isNotEmpty().toThrow(ERROR_PARAMETER_EMPTY, METHOD_MAP_TO_DTO, PARAM_ENTITIES);
+        Assertor.that(identifier).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         final List<D> dtos = new ArrayList<>();
         for (E entity : entities) {
-            AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+            Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
 
             dtos.add(this.map(entity, (D) null, identifier, identifier.deep(), EnumMode.LOAD));
         }
@@ -262,9 +262,9 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<D> mapToDTO(
             final List<E> entities, final List<D> previousDTOList, final String identifierKey)
             throws MapperException, IllegalArgumentException {
-        AssertUtils.check(identifierKey).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
-        AssertUtils.check(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue(ERROR_IDENTIFIER_UNKNOWN, METHOD_MAP_TO_DTO,
-                PARAM_IDENTIIER);
+        Assertor.that(identifierKey).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
+        Assertor.that(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue().toThrow(ERROR_IDENTIFIER_UNKNOWN,
+                METHOD_MAP_TO_DTO, PARAM_IDENTIIER);
 
         final DTOIdentifier identifier = this.getDtoIdentifierManager().get(identifierKey);
 
@@ -295,9 +295,9 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<D> mapToDTO(
             final List<E> entities, final List<D> previousDTOList, final DTOIdentifier identifier)
             throws MapperException, IllegalArgumentException {
-        AssertUtils.check(entities).isNotEmpty(ERROR_PARAMETER_EMPTY, METHOD_MAP_TO_DTO, PARAM_ENTITIES);
-        AssertUtils.check(previousDTOList).isNotEmpty(ERROR_PARAMETER_EMPTY, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO_LIST);
-        AssertUtils.check(entities).hasSize(previousDTOList.size(), ERROR_PARAMETERS_LENGTH, METHOD_MAP_TO_DTO, PARAM_ENTITIES,
+        Assertor.that(entities).isNotEmpty().toThrow(ERROR_PARAMETER_EMPTY, METHOD_MAP_TO_DTO, PARAM_ENTITIES);
+        Assertor.that(previousDTOList).isNotEmpty().toThrow(ERROR_PARAMETER_EMPTY, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO_LIST);
+        Assertor.that(entities).hasSize(previousDTOList.size()).toThrow(ERROR_PARAMETERS_LENGTH, METHOD_MAP_TO_DTO, PARAM_ENTITIES,
                 PARAM_PREVIOUS_DTO_LIST);
 
         final List<D> dtos = new ArrayList<>();
@@ -307,8 +307,8 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
             final E entity = itEntity.next();
             final D previousDTO = itDTO.next();
 
-            AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
-            AssertUtils.check(previousDTO).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
+            Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+            Assertor.that(previousDTO).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
 
             dtos.add(this.map(entity, previousDTO, identifier, identifier.deep(), EnumMode.LOAD));
         }
@@ -334,7 +334,7 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> E mapToEntity(final D dto)
             throws MapperException, IllegalArgumentException {
-        AssertUtils.check(dto).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
+        Assertor.that(dto).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
 
         return this.map(dto, null, null, DTOIdentifier.MAX_DEEP, EnumMode.SAVE);
     }
@@ -362,10 +362,10 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> E mapToEntity(final D dto,
             final E entity, final String identifierKey) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(dto).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
-        AssertUtils.check(identifierKey).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
-        AssertUtils.check(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue(ERROR_IDENTIFIER_UNKNOWN, METHOD_MAP_TO_ENTITY,
-                PARAM_IDENTIIER);
+        Assertor.that(dto).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
+        Assertor.that(identifierKey).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
+        Assertor.that(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue().toThrow(ERROR_IDENTIFIER_UNKNOWN,
+                METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
 
         final DTOIdentifier identifier = this.getDtoIdentifierManager().get(identifierKey);
 
@@ -395,8 +395,8 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> E mapToEntity(final D dto,
             final E entity, final DTOIdentifier identifier) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(dto).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
-        AssertUtils.check(identifier).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
+        Assertor.that(dto).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
+        Assertor.that(identifier).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
 
         return this.map(dto, entity, identifier, identifier.deep(), EnumMode.SAVE);
     }
@@ -420,12 +420,11 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<E> mapToEntity(
             final List<D> dtoList) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(dtoList).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST)
-                .isNotEmpty(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST);
+        Assertor.that(dtoList).isNotNull().and().isNotEmpty().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST);
 
         final List<E> entities = new ArrayList<>();
         for (D dto : dtoList) {
-            AssertUtils.check(dto).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
+            Assertor.that(dto).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO);
 
             entities.add(this.map(dto, (E) null, null, DTOIdentifier.MAX_DEEP, EnumMode.SAVE));
         }
@@ -455,9 +454,9 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
      */
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<E> mapToEntity(
             final List<D> dtoList, final List<E> entities, final String identifierKey) throws MapperException, IllegalArgumentException {
-        AssertUtils.check(identifierKey).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
-        AssertUtils.check(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue(ERROR_IDENTIFIER_UNKNOWN, METHOD_MAP_TO_ENTITY,
-                PARAM_IDENTIIER);
+        Assertor.that(identifierKey).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
+        Assertor.that(this.getDtoIdentifierManager().containsKey(identifierKey)).isTrue().toThrow(ERROR_IDENTIFIER_UNKNOWN,
+                METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
 
         final DTOIdentifier identifier = this.getDtoIdentifierManager().get(identifierKey);
 
@@ -488,10 +487,11 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
     public <E extends AbstractEntity<E, K>, D extends AbstractDTO<D, K>, K extends Serializable & Comparable<K>> List<E> mapToEntity(
             final List<D> dtoList, final List<E> entities, final DTOIdentifier identifier)
             throws MapperException, IllegalArgumentException {
-        AssertUtils.check(dtoList).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST);
-        AssertUtils.check(entities).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_ENTITIES);
-        AssertUtils.check(dtoList).hasSize(entities.size(), ERROR_PARAMETERS_LENGTH, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST, PARAM_ENTITIES);
-        AssertUtils.check(identifier).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
+        Assertor.that(dtoList).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST);
+        Assertor.that(entities).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_ENTITIES);
+        Assertor.that(dtoList).hasSize(entities.size()).toThrow(ERROR_PARAMETERS_LENGTH, METHOD_MAP_TO_ENTITY, PARAM_DTO_LIST,
+                PARAM_ENTITIES);
+        Assertor.that(identifier).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_ENTITY, PARAM_IDENTIIER);
 
         final List<E> entitiesOut = new ArrayList<>();
         final Iterator<E> itEntity = entities.iterator();
@@ -500,8 +500,8 @@ public class ReflectiveMapperIDO extends AbstractReflectiveMapper {
             final E entity = itEntity.next();
             final D dto = itDTO.next();
 
-            AssertUtils.check(entity).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
-            AssertUtils.check(dto).isNotNull(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
+            Assertor.that(entity).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_ENTITY);
+            Assertor.that(dto).isNotNull().toThrow(ERROR_PARAMETER_MISSING, METHOD_MAP_TO_DTO, PARAM_PREVIOUS_DTO);
 
             entitiesOut.add(this.map(dto, entity, identifier, identifier.deep(), EnumMode.SAVE));
         }
