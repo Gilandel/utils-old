@@ -73,6 +73,40 @@ public final class FileSystemUtils {
     }
 
     /**
+     * Create a directory and any intermediate directories.
+     * 
+     * @param directory
+     *            The directory to create
+     * @param true,
+     *            if already exists or successfully created
+     * @throws SecurityException
+     *             Exception thrown if problems occurs during coping
+     */
+    public static boolean createDirectory(final String directory) {
+        if (directory != null) {
+            return createDirectory(new File(directory));
+        }
+        return false;
+    }
+
+    /**
+     * Create a directory and any intermediate directories.
+     * 
+     * @param directory
+     *            The directory to create
+     * @param true,
+     *            if already exists or successfully created
+     * @throws SecurityException
+     *             Exception thrown if problems occurs during coping
+     */
+    public static boolean createDirectory(final File directory) {
+        if (directory != null) {
+            return directory.isDirectory() || directory.mkdirs();
+        }
+        return false;
+    }
+
+    /**
      * Move a file.
      * 
      * @param src
@@ -131,7 +165,7 @@ public final class FileSystemUtils {
             final File srcFile = new File(src);
             final File dstFile = new File(dest);
 
-            if (dstFile != null && (dstFile.getParentFile().isDirectory() || dstFile.getParentFile().mkdirs())) {
+            if (dstFile != null && FileSystemUtils.createDirectory(dstFile.getParentFile())) {
                 copyFile(srcFile, dstFile, removeSource);
             }
             return;
@@ -403,8 +437,8 @@ public final class FileSystemUtils {
      * @throws IOException
      *             Exception thrown if problems occurs during coping
      */
-    private static void copyDirectory(final String src, final String dest, final FileFilter fileFilter,
-            final FilenameFilter filenameFilter, final boolean removeSource) throws IOException {
+    private static void copyDirectory(final String src, final String dest, final FileFilter fileFilter, final FilenameFilter filenameFilter,
+            final boolean removeSource) throws IOException {
         if (src != null && dest != null) {
             final File srcFile = new File(src);
             final File destDir = new File(dest);
@@ -438,7 +472,7 @@ public final class FileSystemUtils {
         if (src != null && dest != null) {
             if (src.isDirectory()) {
                 // creation du repertoire si necessaire
-                if (dest.isDirectory() || dest.mkdirs()) {
+                if (FileSystemUtils.createDirectory(dest)) {
                     // creation de la liste des fichiers et repertoires
                     File[] filesToCopy;
                     if (fileFilter != null) {

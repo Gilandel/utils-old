@@ -99,6 +99,12 @@ public final class FileCRC32Utils {
     public static Long getCRC32(final File file, final FilenameFilter filter) throws IOException {
         CRC32.reset();
 
+        recurisiveCRC32(file, filter);
+
+        return CRC32.getValue();
+    }
+
+    private static void recurisiveCRC32(final File file, final FilenameFilter filter) throws IOException {
         if (file.isFile()) {
             getCRC32File(file);
         } else if (file.isDirectory()) {
@@ -110,15 +116,14 @@ public final class FileCRC32Utils {
             }
             if (files != null) {
                 for (File subFile : files) {
-                    getCRC32(subFile.getAbsolutePath(), filter);
+                    recurisiveCRC32(subFile.getAbsoluteFile(), filter);
                 }
             }
         }
-        return CRC32.getValue();
     }
 
     /**
-     * Get the CRC32 of a file.
+     * Get the CRC32 of a file (finally the stream is closed).
      * 
      * @param inputStream
      *            inputStream representing the file
@@ -132,20 +137,13 @@ public final class FileCRC32Utils {
 
         int bufferReadSize;
 
-        // Internal: The CRC object isn't reset
-        final BufferedInputStream bis = new BufferedInputStream(inputStream);
+        CloseableManager.addCloseable(inputStream.hashCode(), inputStream);
 
-        CloseableManager.addCloseable(bis.hashCode(), bis);
-
-        while ((bufferReadSize = bis.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
+        while ((bufferReadSize = inputStream.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
             CRC32.update(BUFFER, 0, bufferReadSize);
         }
 
-        CloseableManager.close(bis.hashCode());
-
-        if (inputStream.markSupported()) {
-            inputStream.reset();
-        }
+        CloseableManager.close(inputStream.hashCode());
 
         return CRC32.getValue();
     }

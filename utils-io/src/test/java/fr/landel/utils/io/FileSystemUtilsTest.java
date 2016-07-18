@@ -24,9 +24,6 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Test;
 
-import fr.landel.utils.io.FileCRC32Utils;
-import fr.landel.utils.io.FileSystemUtils;
-
 /**
  * Check utility class (files).
  *
@@ -43,6 +40,7 @@ public class FileSystemUtilsTest {
     private static final String CHECK_CRC32_TARGET_PATH = "target/io";
     private static final String CHECK_CRC32_FILE = CHECK_CRC32_PATH + "/checkCRC32.xml";
     private static final Long CHECK_CRC32_VALUE = 3_893_630_386L;
+    private static final Long CHECK_CRC32_DIR_VALUE = 580_225_974L;
 
     /**
      * Remove test directory
@@ -83,8 +81,19 @@ public class FileSystemUtilsTest {
     public void testGetCRC32() {
         try {
             assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_FILE));
+            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(new File(CHECK_CRC32_FILE)));
+            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(StreamUtils.createBufferedInputStream(CHECK_CRC32_FILE)));
 
             assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_PATH, XML_FILTER));
+            assertEquals(CHECK_CRC32_DIR_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_PATH));
+
+            final File emptyDir = new File("target/empty");
+            assertTrue(FileSystemUtils.createDirectory(emptyDir));
+            assertEquals(Long.valueOf(0L), FileCRC32Utils.getCRC32(emptyDir));
+
+            final File unknownDir = new File("target/unknown");
+
+            assertEquals(Long.valueOf(0L), FileCRC32Utils.getCRC32(unknownDir));
         } catch (IOException e) {
             fail(e.getMessage());
         }

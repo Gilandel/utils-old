@@ -51,17 +51,7 @@ public class FileUtilsTest {
     public void dispose() {
         File target = new File(CHECK_CRC32_TARGET_PATH);
 
-        if (target.isDirectory()) {
-            assertTrue(FileSystemUtils.deleteDirectory(target));
-        }
-    }
-
-    private void createTargetDirectory(final String path) {
-        File targetDirectory = new File(path);
-        if (targetDirectory.isDirectory()) {
-            assertTrue(FileSystemUtils.deleteDirectory(targetDirectory));
-        }
-        assertTrue(targetDirectory.mkdirs());
+        assertTrue(FileSystemUtils.deleteDirectory(target));
     }
 
     /**
@@ -122,7 +112,7 @@ public class FileUtilsTest {
         sb.append("\n");
         sb.append("cool!");
 
-        this.createTargetDirectory(CHECK_CRC32_TARGET_PATH);
+        FileSystemUtils.createDirectory(CHECK_CRC32_TARGET_PATH);
 
         final File outputFile = new File(CHECK_CRC32_TARGET_PATH, "output.txt");
 
@@ -150,7 +140,7 @@ public class FileUtilsTest {
     public void testWriteFileContentInputStreamString() {
         File referenceFile = new File(CHECK_CRC32_PATH, CHECK_CRC32_FILE);
 
-        this.createTargetDirectory(CHECK_CRC32_TARGET_PATH);
+        FileSystemUtils.createDirectory(CHECK_CRC32_TARGET_PATH);
 
         final String outputPath = CHECK_CRC32_TARGET_PATH + "/output.txt";
 
@@ -181,7 +171,7 @@ public class FileUtilsTest {
         sb.append("\n");
         sb.append("cool!");
 
-        this.createTargetDirectory(CHECK_CRC32_TARGET_PATH);
+        FileSystemUtils.createDirectory(CHECK_CRC32_TARGET_PATH);
 
         final String outputPath = CHECK_CRC32_TARGET_PATH + "/output.txt";
 
@@ -234,7 +224,7 @@ public class FileUtilsTest {
         File referenceFile = new File(CHECK_CRC32_PATH, CHECK_CRC32_FILE);
         File copiedFile = new File(CHECK_CRC32_TARGET_PATH, CHECK_CRC32_FILE);
 
-        this.createTargetDirectory(CHECK_CRC32_TARGET_PATH);
+        FileSystemUtils.createDirectory(CHECK_CRC32_TARGET_PATH);
 
         FileSystemUtils.copyFile(referenceFile, copiedFile);
 

@@ -205,7 +205,7 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during writing
      */
     public static void writeFileContent(final StringBuilder buffer, final File file, final Charset charset) throws IOException {
-        if (buffer != null && file != null && (file.getParentFile().isDirectory() || file.getParentFile().mkdirs())) {
+        if (buffer != null && file != null && FileSystemUtils.createDirectory(file.getParentFile())) {
 
             final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(file);
 

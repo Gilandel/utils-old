@@ -31,7 +31,7 @@ import fr.landel.utils.commons.DateUtils;
  * @author Gilles
  *
  */
-public class AssertDateTest {
+public class AssertDateAndCalendarTest {
 
     /**
      * Test method for {@link Expect#isEqual}.

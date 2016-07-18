@@ -27,13 +27,13 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Check assert
+ * Check assert matcher
  *
  * @since 10 dec. 2015
  * @author Gilles Landel
  *
  */
-public class AssertorMatcher {
+public class AssertMatcherTest {
 
     /**
      * Test method for {@link Expect#that(Object, Matcher)} .

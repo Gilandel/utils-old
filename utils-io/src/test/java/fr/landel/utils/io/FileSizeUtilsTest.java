@@ -22,9 +22,6 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Test;
 
-import fr.landel.utils.io.FileSizeUtils;
-import fr.landel.utils.io.FileSystemUtils;
-
 /**
  * Check utility class (files).
  *
@@ -82,16 +79,16 @@ public class FileSizeUtilsTest {
             assertTrue(FileSystemUtils.deleteDirectory(target));
         }
 
-        assertTrue(target.mkdirs());
-        assertTrue(target.isDirectory());
+        assertTrue(FileSystemUtils.createDirectory(target));
 
         FileSystemUtils.copyFile(CHECK_CRC32_FILE, target.getAbsolutePath());
         File target2 = new File(target, "sub");
-        assertTrue(target2.mkdirs());
-        assertTrue(target2.isDirectory());
+        assertTrue(FileSystemUtils.createDirectory(target2));
 
         FileSystemUtils.copyFile(CHECK_CRC32_FILE, target2.getAbsolutePath());
 
         assertEquals(CHECK_CRC32_SIZE * 2, FileSizeUtils.getSize(target));
+
+        assertEquals(0, FileSizeUtils.getSize((String) null));
     }
 }

@@ -20,12 +20,9 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 
 import org.junit.Test;
-
-import fr.landel.utils.io.CloseableManager;
-import fr.landel.utils.io.EncodingUtils;
-import fr.landel.utils.io.StreamUtils;
 
 /**
  * Check utility class (streams).
@@ -120,12 +117,39 @@ public class StreamUtilsTest {
             File file = new File(CHECK_CRC32_FILE_INPUT);
 
             assertNotNull(StreamUtils.createInputStreamReader(file, EncodingUtils.ENCODING_UTF_8));
+            assertNotNull(StreamUtils.createInputStreamReader(file, null));
 
             assertTrue(CloseableManager.isCloseable(file));
 
             CloseableManager.close(file);
 
             assertFalse(CloseableManager.isCloseable(file));
+        } catch (FileNotFoundException e) {
+            fail(e.getMessage());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link StreamUtils#createInputStreamReader(java.net.URL, java.lang.String)}
+     * .
+     */
+    @Test
+    public void testCreateInputStreamReaderUrl() {
+        try {
+            File file = new File(CHECK_CRC32_FILE_INPUT);
+            URL url = file.toURI().toURL();
+
+            assertNotNull(StreamUtils.createInputStreamReader(url, EncodingUtils.ENCODING_UTF_8));
+            assertNotNull(StreamUtils.createInputStreamReader(url, null));
+
+            assertTrue(CloseableManager.isCloseable(url));
+
+            CloseableManager.close(url);
+
+            assertFalse(CloseableManager.isCloseable(url));
         } catch (FileNotFoundException e) {
             fail(e.getMessage());
         } catch (IOException e) {
@@ -314,10 +338,55 @@ public class StreamUtilsTest {
 
     /**
      * Test method for
+     * {@link StreamUtils#createDataInputStream(java.lang.String)} .
+     */
+    @Test
+    public void testCreateDataInputStream() {
+        try {
+            assertNotNull(StreamUtils.createDataInputStream(CHECK_CRC32_FILE_OUTPUT));
+            assertNotNull(StreamUtils.createDataInputStream(new File(CHECK_CRC32_FILE_OUTPUT)));
+            assertNotNull(StreamUtils.createDataInputStream(new File(CHECK_CRC32_FILE_OUTPUT).toURI().toURL()));
+
+            assertTrue(CloseableManager.isCloseable(CHECK_CRC32_FILE_OUTPUT));
+
+            CloseableManager.close(CHECK_CRC32_FILE_OUTPUT);
+
+            assertFalse(CloseableManager.isCloseable(CHECK_CRC32_FILE_OUTPUT));
+        } catch (FileNotFoundException e) {
+            fail(e.getMessage());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Test method for
      * {@link StreamUtils#createBufferedOutputStream(java.lang.String)} .
      */
     @Test
-    public void testCreateBuffuredOutputStreamString() {
+    public void testCreateDataOutputStream() {
+        try {
+            assertNotNull(StreamUtils.createDataOutputStream(CHECK_CRC32_FILE_OUTPUT));
+            assertNotNull(StreamUtils.createDataOutputStream(new File(CHECK_CRC32_FILE_OUTPUT)));
+
+            assertTrue(CloseableManager.isCloseable(CHECK_CRC32_FILE_OUTPUT));
+
+            CloseableManager.close(CHECK_CRC32_FILE_OUTPUT);
+
+            assertFalse(CloseableManager.isCloseable(CHECK_CRC32_FILE_OUTPUT));
+        } catch (FileNotFoundException e) {
+            fail(e.getMessage());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link StreamUtils#createBufferedOutputStream(java.lang.String)} .
+     */
+    @Test
+    public void testCreateBufferedOutputStreamString() {
         try {
             assertNotNull(StreamUtils.createBufferedOutputStream(CHECK_CRC32_FILE_OUTPUT));
 
@@ -339,7 +408,7 @@ public class StreamUtilsTest {
      * .
      */
     @Test
-    public void testCreateBuffuredOutputStreamStringBoolean() {
+    public void testCreateBufferedOutputStreamStringBoolean() {
         try {
             assertNotNull(StreamUtils.createBufferedOutputStream(CHECK_CRC32_FILE_OUTPUT, true));
 
@@ -360,7 +429,7 @@ public class StreamUtilsTest {
      * {@link StreamUtils#createBufferedOutputStream(java.io.File)} .
      */
     @Test
-    public void testCreateBuffuredOutputStreamFile() {
+    public void testCreateBufferedOutputStreamFile() {
         try {
             File file = new File(CHECK_CRC32_FILE_OUTPUT);
 
@@ -383,7 +452,7 @@ public class StreamUtilsTest {
      * {@link StreamUtils#createBufferedOutputStream(java.io.File, boolean)} .
      */
     @Test
-    public void testCreateBuffuredOutputStreamFileBoolean() {
+    public void testCreateBufferedOutputStreamFileBoolean() {
         try {
             File file = new File(CHECK_CRC32_FILE_OUTPUT);
 

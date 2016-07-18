@@ -111,7 +111,7 @@
 
 		<maven.scm.svn.version>2.1.1</maven.scm.svn.version>
 		<assembly.plugin.version>2.6</assembly.plugin.version>
-		<buildhelper.plugin.version>1.10</buildhelper.plugin.version>
+		<buildhelper.plugin.version>1.11</buildhelper.plugin.version>
 
 		<failsafe.plugin.version>2.19.1</failsafe.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>

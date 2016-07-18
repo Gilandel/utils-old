@@ -18,10 +18,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,29 +36,15 @@ import org.slf4j.LoggerFactory;
  */
 public final class CloseableManager {
 
-    private static final Map<Integer, List<Closeable>> CLOSEABLES_INTEGER = new HashMap<>();
-    private static final Map<File, List<Closeable>> CLOSEABLES_FILE = new HashMap<>();
-    private static final Map<Class<?>, List<Closeable>> CLOSEABLES_CLASS = new HashMap<>();
-    private static final Map<String, List<Closeable>> CLOSEABLES_URL = new HashMap<>();
+    private static final ConcurrentMap<Integer, List<Closeable>> CLOSEABLES = new ConcurrentHashMap<>();
 
     /**
-     * Error close : hascode
-     */
-    private static final String ERROR_CLOSEABLE_HASHCODE_NOT_CLOSEABLE = "closeable attached to the hashcode '%s' can't be closed";
-    /**
-     * Error close : file
-     */
-    private static final String ERROR_CLOSEABLE_FILE_NOT_CLOSEABLE = "closeable attached to the file '%s' can't be closed";
-    /**
-     * Error close : class
-     */
-    private static final String ERROR_CLOSEABLE_CLASS_NOT_CLOSEABLE = "closeable attached to the class '%s' can't be closed";
-    /**
-     * Error close: URL
-     */
-    private static final String ERROR_CLOSEABLE_URL_NOT_CLOSEABLE = "closeable attached to the url '%s' can't be closed";
-    /**
      * Error close
+     */
+    private static final String ERROR_CLOSEABLE = "closeable can't be closed...";
+
+    /**
+     * Error not closeable
      */
     private static final String ERROR_CLOSEABLE_NOT_CLOSEABLE = "closeable can't be closed";
 
@@ -76,7 +63,7 @@ public final class CloseableManager {
      * @param logger
      *            The logger
      */
-    public static synchronized void defineLogger(final Logger logger) {
+    public static void defineLogger(final Logger logger) {
         CloseableManager.logger = logger;
     }
 
@@ -87,9 +74,9 @@ public final class CloseableManager {
      *            The associated class
      * @return true, if found
      */
-    public static synchronized boolean isCloseable(final Class<?> clazz) {
+    public static boolean isCloseable(final Class<?> clazz) {
         if (clazz != null) {
-            return CLOSEABLES_CLASS.containsKey(clazz);
+            return CLOSEABLES.containsKey(clazz.hashCode());
         }
         return false;
     }
@@ -101,9 +88,9 @@ public final class CloseableManager {
      *            The associated hashcode
      * @return true, if found
      */
-    public static synchronized boolean isCloseable(final Integer hashcode) {
+    public static boolean isCloseable(final Integer hashcode) {
         if (hashcode != null) {
-            return CLOSEABLES_INTEGER.containsKey(hashcode);
+            return CLOSEABLES.containsKey(hashcode);
         }
         return false;
     }
@@ -115,9 +102,9 @@ public final class CloseableManager {
      *            The associated filename
      * @return true, if found
      */
-    public static synchronized boolean isCloseable(final String fileName) {
+    public static boolean isCloseable(final String fileName) {
         if (fileName != null) {
-            return CLOSEABLES_FILE.containsKey(new File(fileName));
+            return isCloseable(new File(fileName));
         }
         return false;
     }
@@ -129,9 +116,23 @@ public final class CloseableManager {
      *            The associated file
      * @return true, if found
      */
-    public static synchronized boolean isCloseable(final File file) {
+    public static boolean isCloseable(final File file) {
         if (file != null) {
-            return CLOSEABLES_FILE.containsKey(file);
+            return CLOSEABLES.containsKey(file.getAbsolutePath().hashCode());
+        }
+        return false;
+    }
+
+    /**
+     * Check if a closeable is already created.
+     * 
+     * @param file
+     *            The associated file
+     * @return true, if found
+     */
+    public static boolean isCloseable(final URL url) {
+        if (url != null) {
+            return CLOSEABLES.containsKey(url.hashCode());
         }
         return false;
     }
@@ -143,11 +144,15 @@ public final class CloseableManager {
      *            The path to associated file to the closeable
      * @param closeable
      *            The closeable to be added
+     * @param <C>
+     *            The closeable type
+     * @return the input closeable parameter
      */
-    public static synchronized void addCloseable(final String fileName, final Closeable closeable) {
+    public static <C extends Closeable> C addCloseable(final String fileName, final C closeable) {
         if (fileName != null && closeable != null) {
-            addCloseable(new File(fileName), closeable);
+            return addCloseable(new File(fileName), closeable);
         }
+        return null;
     }
 
     /**
@@ -157,14 +162,19 @@ public final class CloseableManager {
      *            The hashcode associated to the closeable
      * @param closeable
      *            The closeable to be added
+     * @param <C>
+     *            The closeable type
+     * @return the input closeable parameter
      */
-    public static synchronized void addCloseable(final Integer hashcode, final Closeable closeable) {
+    public static <C extends Closeable> C addCloseable(final Integer hashcode, final C closeable) {
         if (hashcode != null && closeable != null) {
-            if (!CLOSEABLES_INTEGER.containsKey(hashcode)) {
-                CLOSEABLES_INTEGER.put(hashcode, new ArrayList<Closeable>());
+            if (!CLOSEABLES.containsKey(hashcode)) {
+                CLOSEABLES.put(hashcode, new ArrayList<Closeable>());
             }
-            CLOSEABLES_INTEGER.get(hashcode).add(closeable);
+            CLOSEABLES.get(hashcode).add(closeable);
+            return closeable;
         }
+        return null;
     }
 
     /**
@@ -174,14 +184,15 @@ public final class CloseableManager {
      *            The associated file to the closeable
      * @param closeable
      *            The closeable to be added
+     * @param <C>
+     *            The closeable type
+     * @return the input closeable parameter
      */
-    public static synchronized void addCloseable(final File file, final Closeable closeable) {
-        if (file != null && closeable != null) {
-            if (!CLOSEABLES_FILE.containsKey(file)) {
-                CLOSEABLES_FILE.put(file, new ArrayList<Closeable>());
-            }
-            CLOSEABLES_FILE.get(file).add(closeable);
+    public static <C extends Closeable> C addCloseable(final File file, final C closeable) {
+        if (file != null) {
+            return addCloseable(file.getAbsolutePath().hashCode(), closeable);
         }
+        return null;
     }
 
     /**
@@ -191,15 +202,15 @@ public final class CloseableManager {
      *            The associated url to the closeable
      * @param closeable
      *            The closeable to be added
+     * @param <C>
+     *            The closeable type
+     * @return the input closeable parameter
      */
-    public static synchronized void addCloseable(final URL url, final Closeable closeable) {
-        if (url != null && closeable != null) {
-            String path = url.getPath();
-            if (!CLOSEABLES_URL.containsKey(path)) {
-                CLOSEABLES_URL.put(path, new ArrayList<Closeable>());
-            }
-            CLOSEABLES_URL.get(path).add(closeable);
+    public static <C extends Closeable> C addCloseable(final URL url, final C closeable) {
+        if (url != null) {
+            return addCloseable(url.hashCode(), closeable);
         }
+        return null;
     }
 
     /**
@@ -209,14 +220,15 @@ public final class CloseableManager {
      *            The class associated to the closeable
      * @param closeable
      *            The closeable to be added
+     * @param <C>
+     *            The closeable type
+     * @return the input closeable parameter
      */
-    public static synchronized void addCloseable(final Class<?> clazz, final Closeable closeable) {
-        if (clazz != null && closeable != null) {
-            if (!CLOSEABLES_CLASS.containsKey(clazz)) {
-                CLOSEABLES_CLASS.put(clazz, new ArrayList<Closeable>());
-            }
-            CLOSEABLES_CLASS.get(clazz).add(closeable);
+    public static <C extends Closeable> C addCloseable(final Class<?> clazz, final C closeable) {
+        if (clazz != null) {
+            return addCloseable(clazz.hashCode(), closeable);
         }
+        return null;
     }
 
     /**
@@ -226,92 +238,28 @@ public final class CloseableManager {
      *            The list to be reversed
      * @return The reverse list
      */
-    private static synchronized List<Closeable> reverseList(final List<Closeable> closeables) {
+    private static List<Closeable> reverseList(final List<Closeable> closeables) {
         final List<Closeable> reverseCloseables = new ArrayList<Closeable>(closeables);
         Collections.reverse(reverseCloseables);
         return reverseCloseables;
     }
 
     /**
-     * Close all managed closeables associated with hashcodes
-     */
-    public static synchronized void closeAllHashcode() {
-        for (Entry<Integer, List<Closeable>> entry : CLOSEABLES_INTEGER.entrySet()) {
-            final List<Closeable> reversedCloseables = reverseList(entry.getValue());
-            for (Closeable closeable : reversedCloseables) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_HASHCODE_NOT_CLOSEABLE, entry.getKey()), e);
-                }
-            }
-            entry.getValue().clear();
-        }
-        CLOSEABLES_INTEGER.clear();
-    }
-
-    /**
-     * Close all managed closeables associated with files
-     */
-    public static synchronized void closeAllFiles() {
-        for (Entry<File, List<Closeable>> entry : CLOSEABLES_FILE.entrySet()) {
-            final List<Closeable> reversedCloseables = reverseList(entry.getValue());
-            for (Closeable closeable : reversedCloseables) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_FILE_NOT_CLOSEABLE, entry.getKey().getAbsolutePath()), e);
-                }
-            }
-            entry.getValue().clear();
-        }
-        CLOSEABLES_FILE.clear();
-    }
-
-    /**
-     * Close all managed closeables associated with classes
-     */
-    public static synchronized void closeAllClasses() {
-        for (Entry<Class<?>, List<Closeable>> entry : CLOSEABLES_CLASS.entrySet()) {
-            final List<Closeable> reversedCloseables = reverseList(entry.getValue());
-            for (Closeable closeable : reversedCloseables) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_CLASS_NOT_CLOSEABLE, entry.getKey().getName()), e);
-                }
-            }
-            entry.getValue().clear();
-        }
-        CLOSEABLES_CLASS.clear();
-    }
-
-    /**
-     * Close all managed closeables associated with urls
-     */
-    public static synchronized void closeAllURLs() {
-        for (Entry<String, List<Closeable>> entry : CLOSEABLES_URL.entrySet()) {
-            final List<Closeable> reversedCloseables = reverseList(entry.getValue());
-            for (Closeable closeable : reversedCloseables) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_URL_NOT_CLOSEABLE, entry.getKey()), e);
-                }
-            }
-            entry.getValue().clear();
-        }
-        CLOSEABLES_URL.clear();
-    }
-
-    /**
      * Close all managed closeables
      */
     public static synchronized void closeAll() {
-        closeAllHashcode();
-        closeAllFiles();
-        closeAllClasses();
-        closeAllURLs();
+        for (Entry<Integer, List<Closeable>> entry : CLOSEABLES.entrySet()) {
+            final List<Closeable> reversedCloseables = reverseList(entry.getValue());
+            for (Closeable closeable : reversedCloseables) {
+                try {
+                    closeable.close();
+                } catch (IOException e) {
+                    logger.error(String.format(ERROR_CLOSEABLE, entry.getKey()), e);
+                }
+            }
+            entry.getValue().clear();
+        }
+        CLOSEABLES.clear();
     }
 
     /**
@@ -320,7 +268,7 @@ public final class CloseableManager {
      * @param fileName
      *            The path of the associated file to the closeable
      */
-    public static synchronized void close(final String fileName) {
+    public static void close(final String fileName) {
         if (fileName != null) {
             close(new File(fileName));
         }
@@ -332,18 +280,9 @@ public final class CloseableManager {
      * @param file
      *            The associated file to the closeable
      */
-    public static synchronized void close(final File file) {
-        if (file != null && CLOSEABLES_FILE.containsKey(file)) {
-            final List<Closeable> reversedCloseables = reverseList(CLOSEABLES_FILE.get(file));
-            for (Closeable closeable : reversedCloseables) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_FILE_NOT_CLOSEABLE, file.getAbsolutePath()), e);
-                }
-            }
-            CLOSEABLES_FILE.get(file).clear();
-            CLOSEABLES_FILE.remove(file);
+    public static void close(final File file) {
+        if (file != null) {
+            close(file.getAbsolutePath().hashCode());
         }
     }
 
@@ -354,17 +293,17 @@ public final class CloseableManager {
      *            The hashcode associated to the closeable
      */
     public static synchronized void close(final Integer hashcode) {
-        if (hashcode != null && CLOSEABLES_INTEGER.containsKey(hashcode)) {
-            final List<Closeable> reversedCloseables = reverseList(CLOSEABLES_INTEGER.get(hashcode));
+        if (hashcode != null && CLOSEABLES.containsKey(hashcode)) {
+            final List<Closeable> reversedCloseables = reverseList(CLOSEABLES.get(hashcode));
             for (Closeable closeable : reversedCloseables) {
                 try {
                     closeable.close();
                 } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_HASHCODE_NOT_CLOSEABLE, hashcode), e);
+                    logger.error(String.format(ERROR_CLOSEABLE, hashcode), e);
                 }
             }
-            CLOSEABLES_INTEGER.get(hashcode).clear();
-            CLOSEABLES_INTEGER.remove(hashcode);
+            CLOSEABLES.get(hashcode).clear();
+            CLOSEABLES.remove(hashcode);
         }
     }
 
@@ -374,18 +313,9 @@ public final class CloseableManager {
      * @param clazz
      *            The class associated to the closeable
      */
-    public static synchronized void close(final Class<?> clazz) {
-        if (clazz != null && CLOSEABLES_CLASS.containsKey(clazz)) {
-            final List<Closeable> reversedCloseables = reverseList(CLOSEABLES_CLASS.get(clazz));
-            for (Closeable closeable : reversedCloseables) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    logger.error(String.format(ERROR_CLOSEABLE_CLASS_NOT_CLOSEABLE, clazz.getName()), e);
-                }
-            }
-            CLOSEABLES_CLASS.get(clazz).clear();
-            CLOSEABLES_CLASS.remove(clazz);
+    public static void close(final Class<?> clazz) {
+        if (clazz != null) {
+            close(clazz.hashCode());
         }
     }
 
@@ -395,21 +325,9 @@ public final class CloseableManager {
      * @param url
      *            The url associated to the closeable
      */
-    public static synchronized void close(final URL url) {
+    public static void close(final URL url) {
         if (url != null) {
-            String path = url.getPath();
-            if (CLOSEABLES_URL.containsKey(path)) {
-                final List<Closeable> reversedCloseables = reverseList(CLOSEABLES_URL.get(path));
-                for (Closeable closeable : reversedCloseables) {
-                    try {
-                        closeable.close();
-                    } catch (IOException e) {
-                        logger.error(String.format(ERROR_CLOSEABLE_URL_NOT_CLOSEABLE, path), e);
-                    }
-                }
-                CLOSEABLES_URL.get(path).clear();
-                CLOSEABLES_URL.remove(path);
-            }
+            close(url.hashCode());
         }
     }
 
@@ -419,12 +337,17 @@ public final class CloseableManager {
      * @param closeable
      *            The closeable to close
      */
-    public static synchronized void close(final Closeable closeable) {
+    public static void close(final Closeable closeable) {
         if (closeable != null) {
             try {
-                final File linkedFile = getFile(closeable);
-                if (linkedFile != null) {
-                    close(linkedFile);
+                if (CLOSEABLES.containsValue(closeable)) {
+                    final Optional<Integer> hashcode = CLOSEABLES.entrySet().stream().filter((e) -> closeable.equals(e.getValue()))
+                            .map((e) -> e.getKey()).findFirst();
+                    if (hashcode.isPresent()) {
+                        close(hashcode.get());
+                    } else {
+                        closeable.close();
+                    }
                 } else {
                     closeable.close();
                 }
@@ -432,25 +355,5 @@ public final class CloseableManager {
                 logger.error(ERROR_CLOSEABLE_NOT_CLOSEABLE, e);
             }
         }
-    }
-
-    /**
-     * Get the linked file to the closeable
-     * 
-     * @param closeable
-     *            The closeable to search
-     * @return The linked file
-     */
-    private static synchronized File getFile(final Closeable closeable) {
-        if (closeable != null) {
-            for (Entry<File, List<Closeable>> entry : CLOSEABLES_FILE.entrySet()) {
-                for (Closeable linkedCloseable : entry.getValue()) {
-                    if (closeable.equals(linkedCloseable)) {
-                        return entry.getKey();
-                    }
-                }
-            }
-        }
-        return null;
     }
 }

@@ -15,6 +15,8 @@ package fr.landel.utils.io;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import fr.landel.utils.asserts.Assertor;
 
@@ -40,12 +43,16 @@ public final class StreamUtils {
     /**
      * Default encoding
      */
-    private static final String DEFAULT_ENCODING = EncodingUtils.ENCODING_UTF_8;
+    private static final Charset DEFAULT_CHARSET = EncodingUtils.CHARSET_UTF_8;
 
     /**
      * Error : file null
      */
     private static final String ERROR_FILE_PARAM_NULL = "The file parameter is null";
+    /**
+     * Error : url null
+     */
+    private static final String ERROR_URL_PARAM_NULL = "The url parameter is null";
     /**
      * Error : filename null
      */
@@ -137,7 +144,7 @@ public final class StreamUtils {
         if (encoding != null) {
             isr = new InputStreamReader(createBufferedInputStream(file), encoding);
         } else {
-            isr = new InputStreamReader(createBufferedInputStream(file), DEFAULT_ENCODING);
+            isr = new InputStreamReader(createBufferedInputStream(file), DEFAULT_CHARSET);
         }
 
         CloseableManager.addCloseable(file, isr);
@@ -161,11 +168,55 @@ public final class StreamUtils {
         if (encoding != null) {
             isr = new InputStreamReader(createBufferedInputStream(url), encoding);
         } else {
-            isr = new InputStreamReader(createBufferedInputStream(url), DEFAULT_ENCODING);
+            isr = new InputStreamReader(createBufferedInputStream(url), DEFAULT_CHARSET);
         }
 
         CloseableManager.addCloseable(url, isr);
         return isr;
+    }
+
+    /**
+     * Create an buffered data input stream from the specified file
+     * 
+     * @param file
+     *            The input file
+     * @return The data input stream
+     * @throws FileNotFoundException
+     *             Error thrown if wasn't found
+     */
+    public static synchronized DataInputStream createDataInputStream(final String fileName)
+            throws FileNotFoundException, UnsupportedEncodingException {
+        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
+        return createDataInputStream(new File(fileName));
+    }
+
+    /**
+     * Create an buffered data input stream from the specified file
+     * 
+     * @param file
+     *            The input file
+     * @return The data input stream
+     * @throws FileNotFoundException
+     *             Error thrown if wasn't found
+     */
+    public static synchronized DataInputStream createDataInputStream(final File file)
+            throws FileNotFoundException, UnsupportedEncodingException {
+        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL));
+        return CloseableManager.addCloseable(file, new DataInputStream(createBufferedInputStream(file)));
+    }
+
+    /**
+     * Create an buffered data input stream from the specified url
+     * 
+     * @param url
+     *            The input URL
+     * @return The data input stream
+     * @throws IOException
+     *             Error thrown on creating stream
+     */
+    public static synchronized DataInputStream createDataInputStream(final URL url) throws IOException {
+        Assertor.that(url).isNotNull().toThrow(new FileNotFoundException(ERROR_URL_PARAM_NULL));
+        return CloseableManager.addCloseable(url, new DataInputStream(createBufferedInputStream(url)));
     }
 
     /**
@@ -175,7 +226,7 @@ public final class StreamUtils {
      *            The input file name
      * @return The buffered input stream
      * @throws FileNotFoundException
-     *             Error thrown if file wasn't found
+     *             Error thrown on creating stream
      */
     public static synchronized BufferedInputStream createBufferedInputStream(final String fileName) throws FileNotFoundException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
@@ -213,7 +264,7 @@ public final class StreamUtils {
      *             Thrown if file wasn't found or in case of opening URL stream
      */
     public static synchronized BufferedInputStream createBufferedInputStream(final URL url) throws IOException {
-        Assertor.that(url).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
+        Assertor.that(url).isNotNull().toThrow(new FileNotFoundException(ERROR_URL_PARAM_NULL));
 
         final InputStream is = url.openStream();
         CloseableManager.addCloseable(url, is);
@@ -230,13 +281,13 @@ public final class StreamUtils {
      * @param fileName
      *            The output path
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final String fileName)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         return createBufferedWriter(fileName, null, false);
     }
 
@@ -248,13 +299,13 @@ public final class StreamUtils {
      * @param encoding
      *            The encoding, if null: UTF-8 is used
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final String fileName, final String encoding)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         return createBufferedWriter(fileName, encoding, false);
     }
 
@@ -267,13 +318,13 @@ public final class StreamUtils {
      *            if true, then bytes will be written to the end of the file
      *            rather than the beginning
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final String fileName, final boolean append)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         return createBufferedWriter(fileName, null, append);
     }
 
@@ -283,13 +334,12 @@ public final class StreamUtils {
      * @param file
      *            The output file
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
-    public static synchronized OutputStreamWriter createBufferedWriter(final File file)
-            throws FileNotFoundException, UnsupportedEncodingException {
+    public static synchronized OutputStreamWriter createBufferedWriter(final File file) throws IOException, UnsupportedEncodingException {
         return createBufferedWriter(file, null, false);
     }
 
@@ -301,13 +351,13 @@ public final class StreamUtils {
      * @param encoding
      *            The encoding, if null: UTF-8 is used
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final File file, final String encoding)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         return createBufferedWriter(file, encoding, false);
     }
 
@@ -320,13 +370,13 @@ public final class StreamUtils {
      *            if true, then bytes will be written to the end of the file
      *            rather than the beginning
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final File file, final boolean append)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         return createBufferedWriter(file, null, append);
     }
 
@@ -341,13 +391,13 @@ public final class StreamUtils {
      *            if true, then bytes will be written to the end of the file
      *            rather than the beginning
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final String fileName, final String encoding, final boolean append)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         return createBufferedWriter(new File(fileName), encoding, append);
     }
@@ -363,20 +413,20 @@ public final class StreamUtils {
      *            if true, then bytes will be written to the end of the file
      *            rather than the beginning
      * @return The output stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final File file, final String encoding, final boolean append)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
 
         final OutputStreamWriter osw;
 
         if (encoding != null) {
             osw = new OutputStreamWriter(createBufferedOutputStream(file, append), encoding);
         } else {
-            osw = new OutputStreamWriter(createBufferedOutputStream(file, append), DEFAULT_ENCODING);
+            osw = new OutputStreamWriter(createBufferedOutputStream(file, append), DEFAULT_CHARSET);
         }
 
         CloseableManager.addCloseable(file, osw);
@@ -390,13 +440,10 @@ public final class StreamUtils {
      * @param fileName
      *            The output file name
      * @return The buffered output stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
-     * @throws UnsupportedEncodingException
-     *             Error thrown on encoding problem
      */
-    public static synchronized BufferedOutputStream createBufferedOutputStream(final String fileName)
-            throws FileNotFoundException, UnsupportedEncodingException {
+    public static synchronized BufferedOutputStream createBufferedOutputStream(final String fileName) throws IOException {
         return createBufferedOutputStream(fileName, false);
     }
 
@@ -409,13 +456,11 @@ public final class StreamUtils {
      *            if true, then bytes will be written to the end of the file
      *            rather than the beginning
      * @return The buffered output stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
-     * @throws UnsupportedEncodingException
-     *             Error thrown on encoding problem
      */
     public static synchronized BufferedOutputStream createBufferedOutputStream(final String fileName, final boolean append)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         return createBufferedOutputStream(new File(fileName), append);
     }
@@ -426,13 +471,10 @@ public final class StreamUtils {
      * @param file
      *            The output file
      * @return The buffered output stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
-     * @throws UnsupportedEncodingException
-     *             Error thrown on encoding problem
      */
-    public static synchronized BufferedOutputStream createBufferedOutputStream(final File file)
-            throws FileNotFoundException, UnsupportedEncodingException {
+    public static synchronized BufferedOutputStream createBufferedOutputStream(final File file) throws IOException {
         return createBufferedOutputStream(file, false);
     }
 
@@ -445,13 +487,10 @@ public final class StreamUtils {
      *            if true, then bytes will be written to the end of the file
      *            rather than the beginning
      * @return The buffered output stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
-     * @throws UnsupportedEncodingException
-     *             Error thrown on encoding problem
      */
-    public static synchronized BufferedOutputStream createBufferedOutputStream(final File file, final boolean append)
-            throws FileNotFoundException, UnsupportedEncodingException {
+    public static synchronized BufferedOutputStream createBufferedOutputStream(final File file, final boolean append) throws IOException {
         Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL));
 
         final FileOutputStream fos = new FileOutputStream(file, append);
@@ -461,5 +500,75 @@ public final class StreamUtils {
         CloseableManager.addCloseable(file, bos);
 
         return bos;
+    }
+
+    /**
+     * Create a buffered data output stream from the specified path
+     * 
+     * @param fileName
+     *            The output file name
+     * @return The buffered output stream
+     * @throws IOException
+     *             Error thrown if wasn't found
+     */
+    public static synchronized DataOutputStream createDataOutputStream(final String fileName) throws IOException {
+        return createDataOutputStream(fileName, false);
+    }
+
+    /**
+     * Create a data buffered output stream from the specified path
+     * 
+     * @param fileName
+     *            The output file name
+     * @param append
+     *            if true, then bytes will be written to the end of the file
+     *            rather than the beginning
+     * @return The buffered output stream
+     * @throws IOException
+     *             Error thrown if wasn't found
+     */
+    public static synchronized DataOutputStream createDataOutputStream(final String fileName, final boolean append) throws IOException {
+        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
+        return createDataOutputStream(new File(fileName), append);
+    }
+
+    /**
+     * Create a data buffered output stream from the specified file
+     * 
+     * @param file
+     *            The output file
+     * @return The buffered output stream
+     * @throws IOException
+     *             Error thrown if wasn't found
+     */
+    public static synchronized DataOutputStream createDataOutputStream(final File file) throws IOException {
+        return createDataOutputStream(file, false);
+    }
+
+    /**
+     * Create a data buffered output stream from the specified file
+     * 
+     * @param file
+     *            The output file
+     * @param append
+     *            if true, then bytes will be written to the end of the file
+     *            rather than the beginning
+     * @return The buffered output stream
+     * @throws IOException
+     *             Error thrown if wasn't found
+     */
+    public static synchronized DataOutputStream createDataOutputStream(final File file, final boolean append) throws IOException {
+        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL));
+
+        final FileOutputStream fos = new FileOutputStream(file, append);
+        CloseableManager.addCloseable(file, fos);
+
+        final BufferedOutputStream bos = new BufferedOutputStream(fos);
+        CloseableManager.addCloseable(file, bos);
+
+        final DataOutputStream dos = new DataOutputStream(bos);
+        CloseableManager.addCloseable(file, dos);
+
+        return dos;
     }
 }
