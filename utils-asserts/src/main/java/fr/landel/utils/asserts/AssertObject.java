@@ -194,8 +194,10 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
         case Assertor.OR:
             this.valid |= condition;
             break;
-        default: // XOR
+        case Assertor.XOR:
             this.valid = (this.valid && !condition) || (!this.valid && condition);
+            break;
+        default:
         }
 
         if (!this.valid) {
