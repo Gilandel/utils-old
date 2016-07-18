@@ -77,8 +77,7 @@ public final class FileSystemUtils {
      * 
      * @param directory
      *            The directory to create
-     * @param true,
-     *            if already exists or successfully created
+     * @return true, if already exists or successfully created
      * @throws SecurityException
      *             Exception thrown if problems occurs during coping
      */
@@ -94,8 +93,7 @@ public final class FileSystemUtils {
      * 
      * @param directory
      *            The directory to create
-     * @param true,
-     *            if already exists or successfully created
+     * @return true, if already exists or successfully created
      * @throws SecurityException
      *             Exception thrown if problems occurs during coping
      */

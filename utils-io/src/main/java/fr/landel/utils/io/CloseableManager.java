@@ -126,8 +126,8 @@ public final class CloseableManager {
     /**
      * Check if a closeable is already created.
      * 
-     * @param file
-     *            The associated file
+     * @param url
+     *            The associated url
      * @return true, if found
      */
     public static boolean isCloseable(final URL url) {

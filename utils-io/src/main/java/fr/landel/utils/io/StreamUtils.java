@@ -73,13 +73,13 @@ public final class StreamUtils {
      * @param encoding
      *            The encoding, if null: UTF-8 is used
      * @return The buffered reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized BufferedReader createBufferedReader(final String fileName, final String encoding)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         return createBufferedReader(new File(fileName), encoding);
     }
@@ -92,13 +92,13 @@ public final class StreamUtils {
      * @param encoding
      *            The encoding, if null: UTF-8 is used
      * @return The buffered reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized BufferedReader createBufferedReader(final File file, final String encoding)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         final BufferedReader br = new BufferedReader(createInputStreamReader(file, encoding));
         CloseableManager.addCloseable(file, br);
@@ -113,13 +113,13 @@ public final class StreamUtils {
      * @param encoding
      *            The encoding, if null: UTF-8 is used
      * @return The input stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized InputStreamReader createInputStreamReader(final String fileName, final String encoding)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         return createInputStreamReader(new File(fileName), encoding);
     }
@@ -132,13 +132,13 @@ public final class StreamUtils {
      * @param encoding
      *            The encoding, if null: UTF-8 is used
      * @return The input stream reader
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      * @throws UnsupportedEncodingException
      *             Error thrown if encoding doesn't match
      */
     public static synchronized InputStreamReader createInputStreamReader(final File file, final String encoding)
-            throws FileNotFoundException, UnsupportedEncodingException {
+            throws IOException, UnsupportedEncodingException {
         final InputStreamReader isr;
 
         if (encoding != null) {
@@ -178,14 +178,13 @@ public final class StreamUtils {
     /**
      * Create an buffered data input stream from the specified file
      * 
-     * @param file
-     *            The input file
+     * @param fileName
+     *            The input file name
      * @return The data input stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      */
-    public static synchronized DataInputStream createDataInputStream(final String fileName)
-            throws FileNotFoundException, UnsupportedEncodingException {
+    public static synchronized DataInputStream createDataInputStream(final String fileName) throws IOException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         return createDataInputStream(new File(fileName));
     }
@@ -196,11 +195,10 @@ public final class StreamUtils {
      * @param file
      *            The input file
      * @return The data input stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if wasn't found
      */
-    public static synchronized DataInputStream createDataInputStream(final File file)
-            throws FileNotFoundException, UnsupportedEncodingException {
+    public static synchronized DataInputStream createDataInputStream(final File file) throws IOException {
         Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL));
         return CloseableManager.addCloseable(file, new DataInputStream(createBufferedInputStream(file)));
     }
@@ -228,7 +226,7 @@ public final class StreamUtils {
      * @throws FileNotFoundException
      *             Error thrown on creating stream
      */
-    public static synchronized BufferedInputStream createBufferedInputStream(final String fileName) throws FileNotFoundException {
+    public static synchronized BufferedInputStream createBufferedInputStream(final String fileName) throws IOException {
         Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
         return createBufferedInputStream(new File(fileName));
     }
@@ -239,10 +237,10 @@ public final class StreamUtils {
      * @param file
      *            The input file
      * @return The buffered input stream
-     * @throws FileNotFoundException
+     * @throws IOException
      *             Error thrown if file wasn't found
      */
-    public static synchronized BufferedInputStream createBufferedInputStream(final File file) throws FileNotFoundException {
+    public static synchronized BufferedInputStream createBufferedInputStream(final File file) throws IOException {
         Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL));
 
         final FileInputStream fis = new FileInputStream(file);

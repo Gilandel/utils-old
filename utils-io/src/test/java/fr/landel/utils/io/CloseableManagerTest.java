@@ -24,9 +24,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import fr.landel.utils.io.CloseableManager;
-import fr.landel.utils.io.StreamUtils;
-
 /**
  * Check utility class (streams).
  *
@@ -73,7 +70,7 @@ public class CloseableManagerTest {
             CloseableManager.close(CHECK_CRC32_FILE_INPUT);
 
             assertFalse(CloseableManager.isCloseable(CHECK_CRC32_FILE_INPUT));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             fail(e.getMessage());
         }
     }
@@ -93,7 +90,7 @@ public class CloseableManagerTest {
             CloseableManager.close(file);
 
             assertFalse(CloseableManager.isCloseable(file));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             fail(e.getMessage());
         }
     }
@@ -158,7 +155,7 @@ public class CloseableManagerTest {
             CloseableManager.closeAll();
 
             assertFalse(CloseableManager.isCloseable(CHECK_CRC32_FILE_INPUT));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             fail(e.getMessage());
         }
     }
