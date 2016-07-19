@@ -94,7 +94,9 @@ public class AssertObjectTest {
         assertor = Assertor.that("");
         assertor.setCondition(-1);
         assertTrue(assertor.combine(false, "").getResult());
-        assertEquals(-1, assertor.getCondition());
+        assertEquals(0, assertor.getCondition()); // clear
+        assertor.setValid(false);
+        assertFalse(assertor.combine(false, "").getResult());
     }
 
     /**
