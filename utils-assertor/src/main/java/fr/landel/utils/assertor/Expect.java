@@ -105,11 +105,38 @@ public final class Expect {
             if (exception != null) {
                 throw exception;
             } else if (exceptionDontMatch) {
-                throw new RuntimeException("The expected exception never comes up");
+                throw new ExpectException("The expected exception never comes up");
             } else {
-                throw new RuntimeException(
+                throw new ExpectException(
                         "The exception message isn't as expected.\nExpected: " + expectedMessage + "\nMessage: " + e.getMessage());
             }
+        }
+    }
+
+    /**
+     * 
+     * Expect exception
+     *
+     * @since 19 juil. 2016
+     * @author Gilles
+     *
+     */
+    public static class ExpectException extends RuntimeException {
+
+        /**
+         * serialVersionUID
+         */
+        private static final long serialVersionUID = 3829486658567119898L;
+
+        /**
+         * Constructs a new expect exception with the specified detail message.
+         *
+         * @param message
+         *            the detail message. The detail message is saved for later
+         *            retrieval by the {@link #getMessage()} method.
+         */
+        public ExpectException(final String message) {
+            super(message);
         }
     }
 }
