@@ -117,13 +117,13 @@ public interface ScriptsTemplate {
 
     /**
      * Throwable consumer to check variable value in JSON scripts (like
-     * ElasticSearch queries). If the value contains brackets, braces, or single
-     * quote an {@link IllegalArgumentException} is thrown.
+     * ElasticSearch queries). If the value contains braces an
+     * {@link IllegalArgumentException} is thrown.
      */
     ConsumerThrowable<String, IllegalArgumentException> CHECKER_JSON = (v) -> {
         // Avoid some JSON injections but not all!, parameters has to be
         // checked before
-        Assertor.that(v).contains(EXPRESSION_OPEN).and().contains(EXPRESSION_CLOSE).toThrow("Replacement value hasn't to contain brackets");
+        Assertor.that(v).contains(EXPRESSION_OPEN).or().contains(EXPRESSION_CLOSE).toThrow("Replacement value hasn't to contain braces");
     };
 
     /**
