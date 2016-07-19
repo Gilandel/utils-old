@@ -12,7 +12,7 @@
  */
 package fr.landel.utils.scripts;
 
-import fr.landel.utils.asserts.Assertor;
+import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.commons.stream.ConsumerThrowable;
 

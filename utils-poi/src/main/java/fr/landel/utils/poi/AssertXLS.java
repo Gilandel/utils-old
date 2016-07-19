@@ -12,7 +12,7 @@
  */
 package fr.landel.utils.poi;
 
-import static fr.landel.utils.asserts.Assertor.that;
+import static fr.landel.utils.assertor.Assertor.that;
 
 import java.io.File;
 import java.io.FileInputStream;

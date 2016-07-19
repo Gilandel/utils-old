@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import fr.landel.utils.asserts.Assertor;
+import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.mapper.DTOIdentifier;
 import fr.landel.utils.mapper.EnumMode;
 import fr.landel.utils.mapper.MapperException;

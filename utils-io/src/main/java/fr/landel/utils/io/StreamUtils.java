@@ -29,7 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import fr.landel.utils.asserts.Assertor;
+import fr.landel.utils.assertor.Assertor;
 
 /**
  * Utility class to manage streams.

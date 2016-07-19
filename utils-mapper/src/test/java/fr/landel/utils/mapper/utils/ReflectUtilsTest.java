@@ -44,8 +44,8 @@ import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.landel.utils.asserts.Assertor;
-import fr.landel.utils.asserts.Expect;
+import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.Expect;
 import fr.landel.utils.commons.CastGenerics;
 import fr.landel.utils.mapper.MapperException;
 

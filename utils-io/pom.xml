@@ -49,7 +49,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
-			<artifactId>utils-asserts</artifactId>
+			<artifactId>utils-assertor</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

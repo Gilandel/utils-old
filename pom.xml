@@ -58,7 +58,7 @@
 
 	<modules>
 		<module>utils-commons</module>
-		<module>utils-asserts</module>
+		<module>utils-assertor</module>
 		<module>utils-io</module>
 		<module>utils-scripts</module>
 		<module>utils-mapper</module>

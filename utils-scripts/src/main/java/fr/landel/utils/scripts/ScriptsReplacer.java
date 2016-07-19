@@ -22,8 +22,8 @@ import java.util.Set;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.asserts.AssertCharSequence;
-import fr.landel.utils.asserts.Assertor;
+import fr.landel.utils.assertor.AssertCharSequence;
+import fr.landel.utils.assertor.Assertor;
 
 /**
  * Scripts replacer (parse, execute and replace all scripts). Default
