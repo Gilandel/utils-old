@@ -24,10 +24,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import fr.landel.utils.assertor.AssertCharSequence;
-import fr.landel.utils.assertor.AssertObject;
-import fr.landel.utils.assertor.Assertor;
-
 /**
  * Check assertor
  *
@@ -82,6 +78,9 @@ public class AssertObjectTest {
     @Test
     public void testCombine() {
         AssertCharSequence<String> assertor = Assertor.that("text");
+
+        // intermediate condition (no call of getResult or toThrow), so no reset
+        // and this condition is used in the next one
         assertor.contains("__");
         assertFalse(assertor.contains("ext").getResult());
         assertTrue(assertor.contains("__").or().contains("ext").getResult());
@@ -89,6 +88,13 @@ public class AssertObjectTest {
 
         assertFalse(assertor.contains("__").or().contains("ext").and("toto").contains("to").and().contains("r").getResult());
         assertTrue(assertor.contains("__").xor().contains("ext").and("toti").contains("to").and().contains("i").getResult());
+        assertFalse(assertor.contains("ext").xor().contains("ext").and("toti").contains("to").and().contains("i").getResult());
+        assertFalse(assertor.contains("__").xor().contains("__").and("toti").contains("to").and().contains("i").getResult());
+
+        assertor = Assertor.that("");
+        assertor.setCondition(-1);
+        assertTrue(assertor.combine(false, "").getResult());
+        assertEquals(-1, assertor.getCondition());
     }
 
     /**
@@ -118,7 +124,7 @@ public class AssertObjectTest {
     @Test
     public void testIsNullOKObject() {
         try {
-            Assertor.that((Object) null).isNull();
+            Assertor.that((Object) null).isNull().toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -178,10 +184,10 @@ public class AssertObjectTest {
     @Test
     public void testIsNotEqualOKObjectObject() {
         try {
-            Assertor.that("texte9").isNotEqual("texte10").and().isNotEqual(5);
-            Assertor.that(5).isNotEqual("texte10");
-            Assertor.that("texte9").isNotEqual(null);
-            Assertor.that((String) null).isNotEqual("texte10");
+            Assertor.that("texte9").isNotEqual("texte10").and().isNotEqual(5).toThrow();
+            Assertor.that(5).isNotEqual("texte10").toThrow();
+            Assertor.that("texte9").isNotEqual(null).toThrow();
+            Assertor.that((String) null).isNotEqual("texte10").toThrow();
 
             StringBuilder sb1 = new StringBuilder("texte9");
             StringBuilder sb2 = new StringBuilder("texte10");
@@ -427,6 +433,22 @@ public class AssertObjectTest {
     @Test(expected = IllegalArgumentException.class)
     public void testGetMessageNullObject() {
         Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$p' is not equal to '%1$p', %s", (Object[]) null);
+    }
+
+    /**
+     * Test method for {@link AssertObject#not} .
+     */
+    @Test
+    public void testNot() {
+        assertTrue(Assertor.that("text").not().isNull().getResult());
+        assertTrue(Assertor.that("text").not().isNull().and().isNotNull().getResult());
+        assertTrue(Assertor.that("text").not().not().isNotNull().getResult());
+        assertFalse(Assertor.that("text").not().isNotNull().getResult());
+
+        Expect.exception(() -> {
+            Assertor.that("").not().combine(Assertor.that(""));
+            fail();
+        }, IllegalArgumentException.class, "'Not' cannot be followed by a condition");
     }
 
     /**

@@ -44,6 +44,7 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
     private boolean valid = true;
     private StringBuilder message;
     private AssertObject<?, ?> previousAssertor;
+    private boolean not;
 
     /**
      * 
@@ -73,6 +74,7 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
         this.message = new StringBuilder();
         this.valid = true;
         this.condition = Assertor.AND;
+        this.not = false;
 
         if (this.previousAssertor != null) {
             this.previousAssertor.clear();
@@ -111,7 +113,7 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
     /**
      * @return the valid
      */
-    public boolean isValid() {
+    protected boolean isValid() {
         return this.valid;
     }
 
@@ -119,14 +121,14 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
      * @param valid
      *            the valid to set
      */
-    public void setValid(final boolean valid) {
+    protected void setValid(final boolean valid) {
         this.valid = valid;
     }
 
     /**
      * @return the operator
      */
-    public Operator<A, T> getOperator() {
+    protected Operator<A, T> getOperator() {
         return this.operator;
     }
 
@@ -166,10 +168,17 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
      * @return The operator
      */
     protected Operator<A, T> combine(final A assertor) {
+        if (this.not) {
+            throw new IllegalArgumentException("'Not' cannot be followed by a condition");
+        }
+        // reset the valid state
         this.valid = assertor.isValid();
+        // set the previous for clearing
         this.previousAssertor = assertor;
         final Operator<A, T> operator = this.combine(assertor.isValid(), assertor.getMessage());
+        // override parameters to keep order
         this.parameters = ArrayUtils.addAll(assertor.getParameters(), this.parameters);
+        // prepare variables (for easy access)
         this.paramIndex = this.parameters.length;
         this.param = AssertObject.getParam(this.paramIndex);
         return operator;
@@ -187,15 +196,24 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
      * @return The operator
      */
     protected Operator<A, T> combine(final boolean condition, final CharSequence message, final Object... parameters) {
+        final boolean c;
+
+        if (this.not) {
+            c = !condition;
+            this.not = false;
+        } else {
+            c = condition;
+        }
+
         switch (this.condition) {
         case Assertor.AND:
-            this.valid &= condition;
+            this.valid &= c;
             break;
         case Assertor.OR:
-            this.valid |= condition;
+            this.valid |= c;
             break;
         case Assertor.XOR:
-            this.valid = (this.valid && !condition) || (!this.valid && condition);
+            this.valid = (this.valid && !c) || (!this.valid && c);
             break;
         default:
         }
@@ -210,6 +228,23 @@ public class AssertObject<A extends AssertObject<A, T>, T> {
         this.parameters = ArrayUtils.addAll(this.parameters, parameters);
 
         return this.getOperator();
+    }
+
+    /**
+     * Apply a not on the next condition.
+     * 
+     * <pre>
+     * Assertor.that(object).not().isNull().toThrow();
+     * // Same expression
+     * Assertor.that(object).isNotNull().toThrow();
+     * </pre>
+     * 
+     * @return This
+     */
+    @SuppressWarnings("unchecked")
+    public A not() {
+        this.not = !this.not;
+        return (A) this;
     }
 
     /**

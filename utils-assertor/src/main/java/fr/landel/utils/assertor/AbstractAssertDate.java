@@ -179,7 +179,7 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
      *            the second date
      * @return the operator
      */
-    protected Operator<A, T> isEqual(final T date2) {
+    public Operator<A, T> isEqual(final T date2) {
         return this.isAround(date2, -1, -1);
     }
 
@@ -190,7 +190,7 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
      *            the second date
      * @return the operator
      */
-    protected Operator<A, T> isNotEqual(final T date2) {
+    public Operator<A, T> isNotEqual(final T date2) {
         return this.isNotAround(date2, -1, -1);
     }
 

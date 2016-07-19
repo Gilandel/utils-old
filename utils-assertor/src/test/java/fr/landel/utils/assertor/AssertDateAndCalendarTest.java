@@ -22,8 +22,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import fr.landel.utils.assertor.Assertor;
-import fr.landel.utils.assertor.Expect;
 import fr.landel.utils.commons.DateUtils;
 
 /**
