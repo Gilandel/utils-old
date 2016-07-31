@@ -94,7 +94,7 @@ public class AssertXLSTest {
 
             fail("The files must have differences");
         } catch (IllegalArgumentException e) {
-            assertEquals("[Assertion failed] Style fill foreground color [3, 4]", e.getMessage());
+            assertEquals("Style fill foreground color [3, 4]", e.getMessage());
         }
     }
 }

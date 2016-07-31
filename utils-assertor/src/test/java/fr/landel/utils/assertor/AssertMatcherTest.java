@@ -26,16 +26,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import fr.landel.utils.assertor.AssertArray;
-import fr.landel.utils.assertor.AssertCharSequence;
-import fr.landel.utils.assertor.AssertClass;
-import fr.landel.utils.assertor.AssertDate;
-import fr.landel.utils.assertor.AssertIterable;
-import fr.landel.utils.assertor.AssertMap;
-import fr.landel.utils.assertor.AssertNumber;
-import fr.landel.utils.assertor.AssertObject;
-import fr.landel.utils.assertor.Assertor;
-import fr.landel.utils.assertor.Expect;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check assert matcher
@@ -44,7 +35,7 @@ import fr.landel.utils.assertor.Expect;
  * @author Gilles Landel
  *
  */
-public class AssertMatcherTest {
+public class AssertMatcherTest extends AbstractTest {
 
     /**
      * Test method for {@link Expect#that(Object, Matcher)} .

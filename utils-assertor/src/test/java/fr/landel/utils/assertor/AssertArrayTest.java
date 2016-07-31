@@ -16,13 +16,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import org.junit.Test;
 
-import fr.landel.utils.assertor.AssertArray;
-import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check {@link AssertArray}
@@ -31,30 +27,30 @@ import fr.landel.utils.assertor.Assertor;
  * @author Gilles Landel
  *
  */
-public class AssertArrayTest {
+public class AssertArrayTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertArray#hasSize()} .
+     * Test method for {@link AssertArray#hasSize} .
      */
     @Test
     public void testHasSize() {
         String[] array = new String[] {null, "2"};
-        assertTrue(Assertor.that(array).hasSize(2).getResult());
-        assertFalse(Assertor.that(array).hasSize(1).getResult());
-        assertFalse(Assertor.that((String[]) null).hasSize(1).getResult());
-        assertFalse(Assertor.that(array).hasSize(-1).getResult());
+        assertTrue(Assertor.that(array).hasLength(2).isOK());
+        assertFalse(Assertor.that(array).hasLength(1).isOK());
+        assertFalse(Assertor.that((String[]) null).hasLength(1).isOK());
+        assertFalse(Assertor.that(array).hasLength(-1).isOK());
     }
 
     /**
-     * Test method for {@link AssertArray#hasNotSize()} .
+     * Test method for {@link AssertArray#hasNotSize} .
      */
     @Test
     public void testHasNotSize() {
         String[] array = new String[] {null, "2"};
-        assertTrue(Assertor.that(array).hasNotSize(1).getResult());
-        assertFalse(Assertor.that(array).hasNotSize(2).getResult());
-        assertFalse(Assertor.that((String[]) null).hasNotSize(1).getResult());
-        assertFalse(Assertor.that(array).hasNotSize(-1).getResult());
+        assertTrue(Assertor.that(array).not().hasLength(1).isOK());
+        assertFalse(Assertor.that(array).not().hasLength(2).isOK());
+        assertFalse(Assertor.that((String[]) null).not().hasLength(1).isOK());
+        assertFalse(Assertor.that(array).not().hasLength(-1).isOK());
     }
 
     /**
@@ -62,122 +58,99 @@ public class AssertArrayTest {
      */
     @Test
     public void testIsEmpty() {
-        assertFalse(Assertor.that(new String[] {null, "2"}).isEmpty().getResult());
-        assertTrue(Assertor.that(new String[] {}).isEmpty().getResult());
-        assertTrue(Assertor.that((String[]) null).isEmpty().getResult());
+        assertFalse(Assertor.that(new String[] {null, "2"}).isEmpty().isOK());
+        assertTrue(Assertor.that(new String[] {}).isEmpty().isOK());
+        assertTrue(Assertor.that((String[]) null).isEmpty().isOK());
     }
 
     /**
-     * Test method for {@link AssertArray#containsNull()} .
+     * Test method for {@link AssertArray#isNotEmpty} .
      */
     @Test
-    public void testContainsNullOKsObjectArrayString() {
+    public void testIsNotEmpty() {
+        try {
+            Assertor.that(new String[] {""}).isNotEmpty().toThrow("empty array");
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
+
+        Expect.exception(() -> {
+            Assertor.that(new Object[0]).isNotEmpty().toThrow("empty array");
+            fail();
+        }, IllegalArgumentException.class, "empty array");
+    }
+
+    /**
+     * Test method for {@link AssertArray#containsNull} .
+     */
+    @Test
+    public void testContainsNull() {
         try {
             String[] array = new String[] {null, "2"};
-            Assertor.that(array).containsNull().toThrow();
+            Assertor.that(array).contains(null).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
+
+        Expect.exception(() -> {
+            Assertor.that((Object[]) null).contains(null).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the array cannot be null", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(new String[] {"1", "3"}).contains(null).toThrow("array hasn't null element");
+            fail();
+        }, IllegalArgumentException.class, "array hasn't null element");
     }
 
     /**
-     * Test method for {@link AssertArray#containsNull()} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testContainsNullKOObjectArrayString() {
-        String[] array = new String[] {"1", "3"};
-        Assertor.that(array).containsNull().toThrow();
-    }
-
-    /**
-     * Test method for {@link AssertArray#doesNotContainNull()} .
+     * Test method for {@link AssertArray#doesNotContainNull} .
      */
     @Test
-    public void testDoesNotContainNullOKObjectArray() {
+    public void testDoesNotContainNull() {
         try {
             String[] array = new String[] {"1", "2"};
-            Assertor.that(array).doesNotContainNull().toThrow("array has null element");
+            Assertor.that(array).not().contains(null).toThrow("array has null element");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
+
+        Expect.exception(() -> {
+            Assertor.that((Object[]) null).not().contains(null).toThrow("array has null element");
+            fail();
+        }, IllegalArgumentException.class, "array has null element");
+
+        Expect.exception(() -> {
+            Assertor.that(new String[] {"", null}).not().contains(null).toThrow("array has null element");
+            fail();
+        }, IllegalArgumentException.class, "array has null element");
     }
 
     /**
-     * Test method for {@link AssertArray#doesNotContainNull()} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testDoesNotContainNullKOObjectArray() {
-        String[] array = new String[] {"", null};
-        Assertor.that(array).doesNotContainNull().toThrow("array has null element");
-    }
-
-    /**
-     * Test method for {@link AssertArray#contains()} .
+     * Test method for {@link AssertArray#contains} .
      */
     @Test
     public void testContains() {
-        assertTrue(Assertor.that(new String[] {null, "2"}).contains("2").getResult());
-        assertFalse(Assertor.that(new String[] {}).contains((String) null).getResult());
-        assertFalse(Assertor.that((String[]) null).contains("").getResult());
+        assertTrue(Assertor.that(new String[] {null, "2"}).contains("2").isOK());
+        assertFalse(Assertor.that(new String[] {}).contains((String) null).isOK());
+        assertFalse(Assertor.that((String[]) null).contains("").isOK());
 
-        assertTrue(Assertor.that(new String[] {null, "2", "3"}).contains(new String[] {null, "3"}).getResult());
-        assertTrue(Assertor.that(new String[] {}).contains((String[]) null).getResult());
-        assertTrue(Assertor.that((String[]) null).contains(new String[] {null, "3"}).getResult());
+        assertTrue(Assertor.that(new String[] {null, "2", "3"}).containsAll(new String[] {null, "3"}).isOK());
+        assertFalse(Assertor.that(new String[] {}).containsAll((String[]) null).isOK());
+        assertFalse(Assertor.that((String[]) null).containsAll(new String[] {null, "3"}).isOK());
     }
 
     /**
-     * Test method for {@link AssertArray#doesNotContain()} .
+     * Test method for {@link AssertArray#contains} .
      */
     @Test
     public void testDoesNotContain() {
-        assertFalse(Assertor.that(new String[] {null, "2"}).doesNotContain("2").getResult());
-        assertTrue(Assertor.that(new String[] {}).doesNotContain((String) null).getResult());
-        assertTrue(Assertor.that((String[]) null).doesNotContain("").getResult());
+        assertFalse(Assertor.that(new String[] {null, "2"}).not().contains("2").isOK());
+        assertTrue(Assertor.that(new String[] {}).not().contains((String) null).isOK());
+        assertFalse(Assertor.that((String[]) null).not().contains("").isOK());
 
-        assertFalse(Assertor.that(new String[] {null, "2", "3"}).doesNotContain(new String[] {null, "3"}).getResult());
-        assertFalse(Assertor.that(new String[] {}).doesNotContain((String[]) null).getResult());
-        assertFalse(Assertor.that((String[]) null).doesNotContain(new String[] {null, "3"}).getResult());
-    }
-
-    /**
-     * Test method for
-     * {@link AssertArray#isNotEmpty(Object[], String, Object...)} .
-     */
-    @Test
-    public void testIsNotEmptyOKObjectArrayString() {
-        try {
-            Assertor.that(Arrays.asList("").toArray()).isNotEmpty().toThrow("empty array");
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
-    }
-
-    /**
-     * Test method for
-     * {@link AssertArray#isNotEmpty(Object[], String, Object...)} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsNotEmptyKOObjectArrayString() {
-        Assertor.that(Collections.emptyList().toArray()).isNotEmpty().toThrow("empty array");
-    }
-
-    /**
-     * Test method for {@link AssertArray#isNotEmpty(java.lang.Object[])} .
-     */
-    @Test
-    public void testIsNotEmptyOKObjectArray() {
-        try {
-            Assertor.that(Arrays.asList("").toArray()).isNotEmpty().toThrow();
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
-    }
-
-    /**
-     * Test method for {@link AssertArray#isNotEmpty(java.lang.Object[])} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsNotEmptyKOObjectArray() {
-        Assertor.that(Collections.emptyList().toArray()).isNotEmpty().toThrow();
+        assertFalse(Assertor.that(new String[] {null, "2", "3"}).not().containsAll(new String[] {null, "3"}).isOK());
+        assertFalse(Assertor.that(new String[] {}).not().containsAll((String[]) null).isOK());
+        assertFalse(Assertor.that((String[]) null).not().containsAll(new String[] {null, "3"}).isOK());
     }
 }

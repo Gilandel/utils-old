@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -24,9 +25,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import fr.landel.utils.assertor.AssertMap;
-import fr.landel.utils.assertor.Assertor;
-import fr.landel.utils.assertor.Expect;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check {@link AssertMap}
@@ -35,7 +34,7 @@ import fr.landel.utils.assertor.Expect;
  * @author Gilles
  *
  */
-public class AssertMapTest {
+public class AssertMapTest extends AbstractTest {
 
     private final String ERROR = "error expected";
 
@@ -65,7 +64,7 @@ public class AssertMapTest {
         Expect.exception(() -> {
             assertMap.isEmpty().toThrow("map is not empty");
             fail(ERROR);
-        }, IllegalArgumentException.class, "[Assertion failed] map is not empty");
+        }, IllegalArgumentException.class, "map is not empty");
 
         Expect.exception(() -> {
             assertMap.isEmpty().toThrow(new IOException());
@@ -102,14 +101,14 @@ public class AssertMapTest {
         Expect.exception(() -> {
             assertMap.isNotEmpty().toThrow("map is empty");
             fail(ERROR);
-        }, IllegalArgumentException.class, "[Assertion failed] map is empty");
+        }, IllegalArgumentException.class, "map is empty");
 
         Expect.exception(() -> {
             assertMap.isNotEmpty().toThrow(new IOException());
             fail(ERROR);
         }, IOException.class);
 
-        assertFalse(Assertor.that((Map<String, Integer>) null).isNotEmpty().getResult());
+        assertFalse(Assertor.that((Map<String, Integer>) null).isNotEmpty().isOK());
     }
 
     /**
@@ -135,37 +134,51 @@ public class AssertMapTest {
         final List<String> keys = Arrays.asList(key1);
 
         assertMap.contains(key1).toThrow();
-        assertMap.contains(key1).toThrow("map doesn't contain the element %2$p");
+        assertMap.contains(key1).toThrow("map doesn't contain the element %2$s*");
         assertMap.contains(key1).toThrow(new IOException());
         assertMap.contains(key1, val1).toThrow();
-        assertMap.contains(key1, val1).toThrow("map doesn't contain the element %3$p");
+        assertMap.contains(key1, val1).toThrow("map doesn't contain the element %3$s*");
         assertMap.contains(key1, val1).toThrow(new IOException());
         assertMap.contains(key2, null).toThrow();
-        assertMap.contains(keys).toThrow();
-        assertMap.contains(keys).toThrow("map doesn't contain the element %2$p");
-        assertMap.contains(keys).toThrow(new IOException());
-        assertMap.contains(map).toThrow();
-        assertMap.contains(map).toThrow("map doesn't contain the element %2$p");
-        assertMap.contains(map).toThrow(new IOException());
+
+        assertMap.containsAll(keys).toThrow();
+        assertMap.containsAll(keys).toThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAll(keys).toThrow(new IOException());
+        assertMap.containsAll(map).toThrow();
+        assertMap.containsAll(map).toThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAll(map).toThrow(new IOException());
+
+        assertMap.containsAny(keys).toThrow();
+        assertMap.containsAny(keys).toThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAny(keys).toThrow(new IOException());
+        assertMap.containsAny(map).toThrow();
+        assertMap.containsAny(map).toThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAny(map).toThrow(new IOException());
 
         Map<String, Integer> map1 = new HashMap<>();
         map1.put("element3", 2);
 
-        assertFalse(Assertor.that(map).contains(key1, (Integer) null).getResult());
-        assertTrue(Assertor.that(map).contains(key2, (Integer) null).getResult());
-        assertFalse(Assertor.that(map).contains(key2, 1).getResult());
-        assertFalse(Assertor.that(map).contains(Arrays.asList("element3")).getResult());
-        assertFalse(Assertor.that(map).contains(map1).getResult());
+        assertFalse(Assertor.that(map).contains(key1, (Integer) null).isOK());
+        assertTrue(Assertor.that(map).contains(key2, (Integer) null).isOK());
+        assertFalse(Assertor.that(map).contains(key2, 1).isOK());
+        assertFalse(Assertor.that(map).containsAll(Arrays.asList("element3")).isOK());
+        assertFalse(Assertor.that(map).containsAll(map1).isOK());
+        assertFalse(Assertor.that(map).containsAny(Arrays.asList("element3")).isOK());
+        assertFalse(Assertor.that(map).containsAny(map1).isOK());
 
-        assertFalse(Assertor.that(map).contains((String) null).getResult());
-        assertFalse(Assertor.that(map).contains((String) null, (Integer) null).getResult());
-        assertFalse(Assertor.that(map).contains((List<String>) null).getResult());
-        assertFalse(Assertor.that(map).contains((Map<String, Integer>) null).getResult());
+        assertFalse(Assertor.that(map).contains((String) null).isOK());
+        assertFalse(Assertor.that(map).contains((String) null, (Integer) null).isOK());
+        assertFalse(Assertor.that(map).containsAll((List<String>) null).isOK());
+        assertFalse(Assertor.that(map).containsAll((Map<String, Integer>) null).isOK());
+        assertFalse(Assertor.that(map).containsAny((List<String>) null).isOK());
+        assertFalse(Assertor.that(map).containsAny((Map<String, Integer>) null).isOK());
 
-        assertFalse(Assertor.that((Map<String, Integer>) null).contains(key1).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).contains(key1, val1).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).contains(keys).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).contains(map).getResult());
+        assertFalse(Assertor.that((Map<String, Integer>) null).contains(key1).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).contains(key1, val1).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).containsAll(keys).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).containsAll(map).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).containsAny(keys).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).containsAny(map).isOK());
     }
 
     /**
@@ -193,38 +206,47 @@ public class AssertMapTest {
 
         assertMap.isNotNull().and().contains(key1).toThrow();
 
-        assertMap.doesNotContain(key2).toThrow();
-        assertMap.doesNotContain(key2).toThrow("map contains the element %2$p");
-        assertMap.doesNotContain(key2).toThrow(new IOException());
-        assertMap.doesNotContain(key2, val2).toThrow();
-        assertMap.doesNotContain(key2, val2).toThrow("map contains the element %3$p");
-        assertMap.doesNotContain(key2, val2).toThrow(new IOException());
-        assertMap.doesNotContain(keys).toThrow();
-        assertMap.doesNotContain(keys).toThrow("map doesn't contain the element %2$p");
-        assertMap.doesNotContain(keys).toThrow(new IOException());
-        assertMap.doesNotContain(map1).toThrow();
-        assertMap.doesNotContain(map1).toThrow("map doesn't contain the element %2$p");
-        assertMap.doesNotContain(map1).toThrow(new IOException());
+        assertMap.not().contains(key2).toThrow();
+        assertMap.not().contains(key2).toThrow("map contains the element %2$s*");
+        assertMap.not().contains(key2).toThrow(new IOException());
+        assertMap.not().contains(key2, val2).toThrow();
+        assertMap.not().contains(key2, val2).toThrow("map contains the element %3$s*");
+        assertMap.not().contains(key2, val2).toThrow(new IOException());
 
-        assertFalse(Assertor.that(map).doesNotContain(key1).getResult());
-        assertFalse(Assertor.that(map).doesNotContain(key1, val1).getResult());
-        assertFalse(Assertor.that(map).doesNotContain(map.keySet()).getResult());
-        assertFalse(Assertor.that(map).doesNotContain(map).getResult());
+        assertMap.not().containsAll(keys).toThrow();
+        assertMap.not().containsAll(keys).toThrow("map doesn't contain the element %2$s*");
+        assertMap.not().containsAll(keys).toThrow(new IOException());
+        assertMap.not().containsAll(map1).toThrow();
+        assertMap.not().containsAll(map1).toThrow("map doesn't contain the element %2$s*");
+        assertMap.not().containsAll(map1).toThrow(new IOException());
 
-        assertTrue(Assertor.that(map).doesNotContain(key1, (Integer) null).getResult());
-        assertTrue(Assertor.that(map).doesNotContain(Arrays.asList("element3")).getResult());
-        assertTrue(Assertor.that(map).doesNotContain(map1).getResult());
+        assertMap.not().containsAny(keys).toThrow();
+        assertMap.not().containsAny(keys).toThrow("map doesn't contain the element %2$s*");
+        assertMap.not().containsAny(keys).toThrow(new IOException());
+        assertMap.not().containsAny(map1).toThrow();
+        assertMap.not().containsAny(map1).toThrow("map doesn't contain the element %2$s*");
+        assertMap.not().containsAny(map1).toThrow(new IOException());
 
-        assertTrue(Assertor.that(map).doesNotContain((String) null).getResult());
-        assertTrue(Assertor.that(map).doesNotContain(key1, 3).getResult());
-        assertTrue(Assertor.that(map).doesNotContain((String) null, (Integer) null).getResult());
-        assertFalse(Assertor.that(map).doesNotContain((List<String>) null).getResult());
-        assertFalse(Assertor.that(map).doesNotContain((Map<String, Integer>) null).getResult());
+        assertEquals("NOT (the map '{element1=1}' should contain the key 'element1')", Assertor.that(map).not().contains(key1).getErrors());
+        assertFalse(Assertor.that(map).not().contains(key1).isOK());
+        assertFalse(Assertor.that(map).not().contains(key1, val1).isOK());
+        assertFalse(Assertor.that(map).not().containsAll(map.keySet()).isOK());
+        assertFalse(Assertor.that(map).not().containsAll(map).isOK());
 
-        assertFalse(Assertor.that((Map<String, Integer>) null).doesNotContain(key1).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).doesNotContain(key1, val1).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).doesNotContain(keys).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).doesNotContain(map1).getResult());
+        assertTrue(Assertor.that(map).not().contains(key1, (Integer) null).isOK());
+        assertTrue(Assertor.that(map).not().containsAll(Arrays.asList("element3")).isOK());
+        assertTrue(Assertor.that(map).not().containsAll(map1).isOK());
+
+        assertTrue(Assertor.that(map).not().contains((String) null).isOK());
+        assertTrue(Assertor.that(map).not().contains(key1, 3).isOK());
+        assertTrue(Assertor.that(map).not().contains((String) null, (Integer) null).isOK());
+        assertFalse(Assertor.that(map).not().containsAll((List<String>) null).isOK());
+        assertFalse(Assertor.that(map).not().containsAll((Map<String, Integer>) null).isOK());
+
+        assertFalse(Assertor.that((Map<String, Integer>) null).not().contains(key1).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).not().contains(key1, val1).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).not().containsAll(keys).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).not().containsAll(map1).isOK());
     }
 
     /**
@@ -282,12 +304,12 @@ public class AssertMapTest {
         final Map<String, Integer> map = new HashMap<>();
         map.put(key1, val1);
 
-        assertTrue(Assertor.that(map).hasSize(1).getResult());
-        assertFalse(Assertor.that(map).hasSize(0).getResult());
-        assertFalse(Assertor.that(map).hasSize(2).getResult());
+        assertTrue(Assertor.that(map).hasSize(1).isOK());
+        assertFalse(Assertor.that(map).hasSize(0).isOK());
+        assertFalse(Assertor.that(map).hasSize(2).isOK());
 
-        assertFalse(Assertor.that(map).hasSize(-1).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).hasSize(1).getResult());
+        assertFalse(Assertor.that(map).hasSize(-1).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).hasSize(1).isOK());
     }
 
     /**
@@ -301,11 +323,35 @@ public class AssertMapTest {
         final Map<String, Integer> map = new HashMap<>();
         map.put(key1, val1);
 
-        assertFalse(Assertor.that(map).hasNotSize(1).getResult());
-        assertTrue(Assertor.that(map).hasNotSize(0).getResult());
-        assertTrue(Assertor.that(map).hasNotSize(2).getResult());
+        assertFalse(Assertor.that(map).not().hasSize(1).isOK());
+        assertTrue(Assertor.that(map).not().hasSize(0).isOK());
+        assertTrue(Assertor.that(map).not().hasSize(2).isOK());
 
-        assertFalse(Assertor.that(map).hasNotSize(-1).getResult());
-        assertFalse(Assertor.that((Map<String, Integer>) null).hasNotSize(1).getResult());
+        assertFalse(Assertor.that(map).not().hasSize(-1).isOK());
+        assertFalse(Assertor.that((Map<String, Integer>) null).not().hasSize(1).isOK());
+    }
+
+    /**
+     * Test method for {@link AssertMap#hasNotSize}.
+     */
+    @Test
+    public void test() {
+        final String key1 = "element1";
+        final String key2 = "element2";
+        final String key3 = "element3";
+        final Integer val1 = 1;
+        final Integer val2 = 2;
+        final Integer val3 = 3;
+
+        final Map<String, Integer> map = new HashMap<>();
+        map.put(key1, val1);
+        map.put(key2, val2);
+
+        final Map<String, Integer> map2 = new HashMap<>();
+        map2.put(key1, val1);
+        map2.put(key3, val3);
+
+        final Map<String, Integer> map3 = new HashMap<>();
+        map3.put(key3, val3);
     }
 }

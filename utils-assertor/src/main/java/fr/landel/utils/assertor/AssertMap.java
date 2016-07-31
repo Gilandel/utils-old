@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -39,7 +40,7 @@ public class AssertMap<K, V> extends AssertObject<AssertMap<K, V>, Map<K, V>> {
      *            The map to check
      */
     protected AssertMap(final Map<K, V> map) {
-        super(map);
+        super(map, TYPE.MAP);
     }
 
     /**
@@ -55,49 +56,52 @@ public class AssertMap<K, V> extends AssertObject<AssertMap<K, V>, Map<K, V>> {
      * @return the operator
      */
     public Operator<AssertMap<K, V>, Map<K, V>> hasSize(final int size) {
-        boolean condition = true;
-        final StringBuilder message = new StringBuilder();
-
-        if (size < 0) {
-            condition = false;
-            message.append("the size parameter has to be greater than or equal to 0");
-        } else if (this.get() == null) {
-            condition = false;
-            message.append("the map cannot be null");
-        } else if (this.get().size() != size) {
-            condition = false;
-            message.append("the map hasn't the expected size");
-        }
-        return this.combine(condition, message, size);
+        return this.hasSize(size, this.msg(MSG.MAP.SIZE, this.getParam(), this.getNextParam(1, TYPE.NUMBER_INTEGER)));
     }
 
     /**
-     * Asserts that a Map has not the size; that is, it must not be {@code null}
-     * and must have the expected size.
+     * Asserts that a Map has the size; that is, it must not be {@code null} and
+     * must have the expected size.
      * 
      * <pre>
-     * Assertor.that(map).hasNotSize(5).toThrow();
+     * Assertor.that(map).hasSize(5).toThrow();
      * </pre>
      * 
      * @param size
      *            The expected size
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
      * @return the operator
      */
-    public Operator<AssertMap<K, V>, Map<K, V>> hasNotSize(final int size) {
-        boolean condition = true;
-        final StringBuilder message = new StringBuilder();
+    public Operator<AssertMap<K, V>, Map<K, V>> hasSize(final int size, final CharSequence message, final Object... arguments) {
+        return this.hasSize(size, null, message, arguments);
+    }
 
-        if (size < 0) {
-            condition = false;
-            message.append("the size parameter has to be greater than or equal to 0");
-        } else if (this.get() == null) {
-            condition = false;
-            message.append("the map cannot be null");
-        } else if (this.get().size() == size) {
-            condition = false;
-            message.append("the map hasn't the expected size");
-        }
-        return this.combine(condition, message, size);
+    /**
+     * Asserts that a Map has the size; that is, it must not be {@code null} and
+     * must have the expected size.
+     * 
+     * <pre>
+     * Assertor.that(map).hasSize(5).toThrow();
+     * </pre>
+     * 
+     * @param size
+     *            The expected size
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> hasSize(final int size, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(size >= 0 && this.get() != null, () -> this.get().size() == size, () -> this.msg(MSG.MAP.SIZE, true), message,
+                arguments, locale, size);
     }
 
     /**
@@ -111,7 +115,46 @@ public class AssertMap<K, V> extends AssertObject<AssertMap<K, V>, Map<K, V>> {
      * @return the operator
      */
     public Operator<AssertMap<K, V>, Map<K, V>> isEmpty() {
-        return this.combine(MapUtils.isEmpty(this.get()), "the map must be empty or null");
+        return this.isEmpty(this.msg(MSG.MAP.EMPTY, this.getParam()));
+    }
+
+    /**
+     * Asserts that a Map has entries; that is, it must not be {@code null} and
+     * must have no entry.
+     * 
+     * <pre>
+     * Assertor.that(map).isEmpty().toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> isEmpty(final CharSequence message, final Object... arguments) {
+        return this.isEmpty(null, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map has entries; that is, it must not be {@code null} and
+     * must have no entry.
+     * 
+     * <pre>
+     * Assertor.that(map).isEmpty().toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> MapUtils.isEmpty(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -125,7 +168,46 @@ public class AssertMap<K, V> extends AssertObject<AssertMap<K, V>, Map<K, V>> {
      * @return the operator
      */
     public Operator<AssertMap<K, V>, Map<K, V>> isNotEmpty() {
-        return this.combine(this.get() != null && !MapUtils.isEmpty(this.get()), "the map must be not empty and not null");
+        return this.isNotEmpty(this.msg(MSG.MAP.EMPTY + MSG.NOT, this.getParam()));
+    }
+
+    /**
+     * Asserts that a Map has entries; that is, it must not be {@code null} and
+     * must have at least one entry.
+     * 
+     * <pre>
+     * Assertor.that(map).isNotEmpty().toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> isNotEmpty(final CharSequence message, final Object... arguments) {
+        return this.isNotEmpty(null, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map has entries; that is, it must not be {@code null} and
+     * must have at least one entry.
+     * 
+     * <pre>
+     * Assertor.that(map).isNotEmpty().toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> MapUtils.isNotEmpty(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -140,15 +222,50 @@ public class AssertMap<K, V> extends AssertObject<AssertMap<K, V>, Map<K, V>> {
      * @return the operator
      */
     public Operator<AssertMap<K, V>, Map<K, V>> contains(final K key) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
+        return this.contains(key, this.msg(MSG.MAP.CONTAINS_KEY, this.getParam(), this.getNextParam(1, TYPE.UNKNOWN)));
+    }
 
-        if (condition && !this.get().containsKey(key)) {
-            condition = false;
-            message.append("the map must contain the key");
-        }
+    /**
+     * Asserts that a Map contains the specified entry.
+     * 
+     * <pre>
+     * Assertor.that(map).contains(key).toThrow();
+     * </pre>
+     * 
+     * @param key
+     *            the map key to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> contains(final K key, final CharSequence message, final Object... arguments) {
+        return this.contains(key, (Locale) null, message, arguments);
+    }
 
-        return this.combine(condition, message, key);
+    /**
+     * Asserts that a Map contains the specified entry.
+     * 
+     * <pre>
+     * Assertor.that(map).contains(key).toThrow();
+     * </pre>
+     * 
+     * @param key
+     *            the map key to find
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> contains(final K key, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(MapUtils.isNotEmpty(this.get()), () -> this.get().containsKey(key), () -> this.msg(MSG.MAP.CONTAINS_KEY, true),
+                message, arguments, locale, key);
     }
 
     /**
@@ -165,207 +282,372 @@ public class AssertMap<K, V> extends AssertObject<AssertMap<K, V>, Map<K, V>> {
      * @return the operator
      */
     public Operator<AssertMap<K, V>, Map<K, V>> contains(final K key, final V value) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition && !this.containsValue(key, value)) {
-            condition = false;
-            message.append("the map must contain the key and the value");
-        }
-
-        return this.combine(condition, message, key, value);
+        return this.contains(key, value,
+                this.msg(MSG.MAP.CONTAINS_PAIR, this.getParam(), this.getNextParam(1, TYPE.UNKNOWN), this.getNextParam(2, TYPE.UNKNOWN)));
     }
 
     /**
-     * Asserts that a Map contains all keys.
+     * Asserts that a Map contains the specified entry and the values match.
      * 
      * <pre>
-     * Assertor.that(map).contains(keys).toThrow();
-     * </pre>
-     * 
-     * @param keys
-     *            the map keys to find
-     * @return the operator
-     */
-    public Operator<AssertMap<K, V>, Map<K, V>> contains(final Iterable<K> keys) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition) {
-            if (IterableUtils.isEmpty(keys)) {
-                condition = false;
-                message.append("the iterable must be not empty or not null");
-            } else {
-                for (K key : keys) {
-                    if (!this.get().containsKey(key)) {
-                        condition = false;
-                        message.append("the map must contain all keys");
-                        break;
-                    }
-                }
-            }
-        }
-
-        return this.combine(condition, message, keys);
-
-    }
-
-    /**
-     * Asserts that a Map contains all specified map entries.
-     * 
-     * <pre>
-     * Assertor.that(map).contains(map2).toThrow();
-     * </pre>
-     * 
-     * @param objects
-     *            the map objects to find
-     * @return the operator
-     */
-    public Operator<AssertMap<K, V>, Map<K, V>> contains(final Map<K, V> objects) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition) {
-            if (MapUtils.isEmpty(objects)) {
-                condition = false;
-                message.append("the iterable must be not empty or not null");
-            } else {
-                for (Entry<K, V> entry : objects.entrySet()) {
-                    if (!this.containsValue(entry.getKey(), entry.getValue())) {
-                        condition = false;
-                        message.append("the map must contain all the keys and the values");
-                        break;
-                    }
-                }
-            }
-        }
-
-        return this.combine(condition, message, objects);
-    }
-
-    /**
-     * Asserts that a Map doesn't contain the specified entry.
-     * 
-     * <pre>
-     * Assertor.that(map).doesNotContain(key).toThrow();
-     * </pre>
-     * 
-     * @param key
-     *            the map key to find
-     * @return the operator
-     */
-    public Operator<AssertMap<K, V>, Map<K, V>> doesNotContain(final K key) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition && this.get().containsKey(key)) {
-            condition = false;
-            message.append("the map must not contain the key");
-        }
-
-        return this.combine(condition, message, key);
-    }
-
-    /**
-     * Asserts that a Map contains the specified key/value pair.
-     * 
-     * <pre>
-     * Assertor.that(map).doesNotContain(key, value).toThrow();
+     * Assertor.that(map).contains(key, value).toThrow();
      * </pre>
      * 
      * @param key
      *            the map key to find
      * @param value
      *            The map value to check
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
      * @return the operator
      */
-    public Operator<AssertMap<K, V>, Map<K, V>> doesNotContain(final K key, final V value) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition && this.containsValue(key, value)) {
-            condition = false;
-            message.append("the map must not contain the key/value pair");
-        }
-
-        return this.combine(condition, message, key, value);
+    public Operator<AssertMap<K, V>, Map<K, V>> contains(final K key, final V value, final CharSequence message,
+            final Object... arguments) {
+        return this.contains(key, value, null, message, arguments);
     }
 
     /**
-     * Asserts that a Map doesn't contain any keys.
+     * Asserts that a Map contains the specified entry and the values match.
      * 
      * <pre>
-     * Assertor.that(map).doesNotContain(keys).toThrow();
+     * Assertor.that(map).contains(key, value).toThrow();
+     * </pre>
+     * 
+     * @param key
+     *            the map key to find
+     * @param value
+     *            The map value to check
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> contains(final K key, final V value, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(MapUtils.isNotEmpty(this.get()), () -> this.containsValue(key, value),
+                () -> this.msg(MSG.MAP.CONTAINS_PAIR, true), message, arguments, locale, key, value);
+    }
+
+    /**
+     * Asserts that a Map contains all keys.
+     * 
+     * <pre>
+     * Assertor.that(map).containsAll(keys).toThrow();
      * </pre>
      * 
      * @param keys
-     *            the map keys to find
+     *            the map keys to find (required, not {@code null} and not
+     *            empty)
      * @return the operator
      */
-    public Operator<AssertMap<K, V>, Map<K, V>> doesNotContain(final Iterable<K> keys) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition) {
-            if (IterableUtils.isEmpty(keys)) {
-                condition = false;
-                message.append("the iterable must be not empty or not null");
-            } else {
-                for (K key : keys) {
-                    if (this.get().containsKey(key)) {
-                        condition = false;
-                        message.append("the map must not contain any keys");
-                        break;
-                    }
-                }
-            }
-        }
-
-        return this.combine(condition, message, keys);
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAll(final Iterable<K> keys) {
+        return this.containsAll(keys, this.msg(MSG.MAP.CONTAINS_KEYS_ALL, this.getParam(), this.getNextParam(1, TYPE.ITERABLE)));
     }
 
     /**
-     * Asserts that a Map doesn't contain any specified map entries.
+     * Asserts that a Map contains all keys.
      * 
      * <pre>
-     * Assertor.that(map).doesNotContain(map2).toThrow();
+     * Assertor.that(map).containsAll(keys).toThrow();
+     * </pre>
+     * 
+     * @param keys
+     *            the map keys to find (required, not {@code null} and not
+     *            empty)
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAll(final Iterable<K> keys, final CharSequence message, final Object... arguments) {
+        return this.containsAll(keys, null, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map contains all keys.
+     * 
+     * <pre>
+     * Assertor.that(map).containsAll(keys).toThrow();
+     * </pre>
+     * 
+     * @param keys
+     *            the map keys to find (required, not {@code null} and not
+     *            empty)
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAll(final Iterable<K> keys, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.contains(keys, true, locale, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map contains ny keys.
+     * 
+     * <pre>
+     * Assertor.that(map).containsAny(keys).toThrow();
+     * </pre>
+     * 
+     * @param keys
+     *            the map keys to find (required, not {@code null} and not
+     *            empty)
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAny(final Iterable<K> keys) {
+        return this.containsAny(keys, this.msg(MSG.MAP.CONTAINS_KEYS_ALL, this.getParam(), this.getNextParam(1, TYPE.ITERABLE)));
+    }
+
+    /**
+     * Asserts that a Map contains any keys.
+     * 
+     * <pre>
+     * Assertor.that(map).containsAny(keys).toThrow();
+     * </pre>
+     * 
+     * @param keys
+     *            the map keys to find (required, not {@code null} and not
+     *            empty)
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAny(final Iterable<K> keys, final CharSequence message, final Object... arguments) {
+        return this.containsAny(keys, null, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map contains any keys.
+     * 
+     * <pre>
+     * Assertor.that(map).containsAny(keys).toThrow();
+     * </pre>
+     * 
+     * @param keys
+     *            the map keys to find (required, not {@code null} and not
+     *            empty)
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAny(final Iterable<K> keys, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.contains(keys, false, locale, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map contains all specified map entries.
+     * 
+     * <pre>
+     * // if 'map' contains all elements from 'map2'
+     * Assertor.that(map).containsAll(map2).toThrow();
+     * 
+     * // not: if 'map' contains a number of elements from 'map2' lower than the
+     * // size of 'map2'
+     * Assertor.that(map).not().containsAll(map2).toThrow();
      * </pre>
      * 
      * @param objects
-     *            the map objects to find
+     *            the map objects to find (required, not {@code null} and not
+     *            empty)
      * @return the operator
      */
-    public Operator<AssertMap<K, V>, Map<K, V>> doesNotContain(final Map<K, V> objects) {
-        final StringBuilder message = new StringBuilder();
-        boolean condition = this.isEmpty(message);
-
-        if (condition) {
-            if (MapUtils.isEmpty(objects)) {
-                condition = false;
-                message.append("the iterable must be not empty or not null");
-            } else {
-                for (Entry<K, V> entry : objects.entrySet()) {
-                    if (this.containsValue(entry.getKey(), entry.getValue())) {
-                        condition = false;
-                        message.append("the map must not contain any key/value pair");
-                        break;
-                    }
-                }
-            }
-        }
-
-        return this.combine(condition, message, objects);
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAll(final Map<K, V> objects) {
+        return this.containsAll(objects, this.msg(MSG.MAP.CONTAINS_MAP_ALL));
     }
 
-    private boolean isEmpty(final StringBuilder message) {
-        boolean condition = true;
+    /**
+     * Asserts that a Map contains all specified map entries.
+     * 
+     * <pre>
+     * // if 'map' contains all elements from 'map2'
+     * Assertor.that(map).containsAll(map2).toThrow();
+     * 
+     * // not: if 'map' contains a number of elements from 'map2' lower than the
+     * // size of 'map2'
+     * Assertor.that(map).not().containsAll(map2).toThrow();
+     * </pre>
+     * 
+     * @param objects
+     *            the map objects to find (required, not {@code null} and not
+     *            empty)
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAll(final Map<K, V> objects, final CharSequence message,
+            final Object... arguments) {
+        return this.containsAll(objects, null, message, arguments);
+    }
 
-        if (MapUtils.isEmpty(this.get())) {
-            condition = false;
-            message.append("the map must be not empty or not null");
-        }
+    /**
+     * Asserts that a Map contains all specified map entries.
+     * 
+     * <pre>
+     * // if 'map' contains all elements from 'map2'
+     * Assertor.that(map).containsAll(map2).toThrow();
+     * 
+     * // reverse, if 'map' contains a number of elements from 'map2' lower than
+     * // the size of 'map2'
+     * Assertor.that(map).not().containsAll(map2).toThrow();
+     * </pre>
+     * 
+     * @param objects
+     *            the map objects to find (required, not {@code null} and not
+     *            empty)
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAll(final Map<K, V> objects, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.contains(objects, true, locale, message, arguments);
+    }
 
-        return condition;
+    /**
+     * Asserts that a Map contains any specified map entry but not all.
+     * 
+     * <pre>
+     * // if 'map' contains at least one element from 'map2'
+     * Assertor.that(map).containsAny(map2).toThrow();
+     * 
+     * // reverse, if 'map' contains no element from 'map2'
+     * Assertor.that(map).not().containsAny(map2).toThrow();
+     * </pre>
+     * 
+     * @param objects
+     *            the map objects to find (required, not {@code null} and not
+     *            empty)
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAny(final Map<K, V> objects) {
+        return this.containsAny(objects, this.msg(MSG.MAP.CONTAINS_MAP_ANY));
+    }
+
+    /**
+     * Asserts that a Map contains any specified map entry but not all.
+     * 
+     * <pre>
+     * // if 'map' contains at least one element from 'map2'
+     * Assertor.that(map).containsAny(map2, "No matching role found").toThrow();
+     * 
+     * // reverse, if 'map' contains no element from 'map2'
+     * Assertor.that(map).not().containsAny(map2, "Some articles are already in your cart").toThrow();
+     * </pre>
+     * 
+     * @param objects
+     *            the map objects to find (required, not {@code null} and not
+     *            empty)
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAny(final Map<K, V> objects, final CharSequence message,
+            final Object... arguments) {
+        return this.containsAny(objects, null, message, arguments);
+    }
+
+    /**
+     * Asserts that a Map contains any specified map entry but not all.
+     * 
+     * <pre>
+     * // if 'map' contains at least one element from 'map2'
+     * Assertor.that(map).containsAny(map2, Locale.US, "No matching role found (%.2fms)", 2.326).toThrow();
+     * // on error, message -&gt; No matching role found (2.33ms)
+     * 
+     * // reverse, if 'map' contains no element from 'map2'
+     * Assertor.that(map).not().containsAny(map2, Locale.US, "Some articles are already in your cart (%.2fms)", 2.326).toThrow();
+     * </pre>
+     * 
+     * @param objects
+     *            the map objects to find (required, not {@code null} and not
+     *            empty)
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertMap<K, V>, Map<K, V>> containsAny(final Map<K, V> objects, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.contains(objects, false, locale, message, arguments);
+    }
+
+    private Operator<AssertMap<K, V>, Map<K, V>> contains(final Iterable<K> keys, final boolean all, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return this.combine(MapUtils.isNotEmpty(this.get()) && !IterableUtils.isEmpty(keys), () -> {
+            int found = 0;
+            for (K key : keys) {
+                if (this.get().containsKey(key)) {
+                    found++;
+                }
+            }
+            if (all ^ this.isNot()) {
+                return found == IterableUtils.size(keys);
+            } else {
+                return found > 0;
+            }
+        }, () -> {
+            if (all) {
+                return this.msg(MSG.MAP.CONTAINS_KEYS_ALL, true);
+            } else {
+                return this.msg(MSG.MAP.CONTAINS_KEYS_ANY, true);
+            }
+        }, message, arguments, locale, keys);
+    }
+
+    private Operator<AssertMap<K, V>, Map<K, V>> contains(final Map<K, V> objects, final boolean all, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return this.combine(MapUtils.isNotEmpty(this.get()) && MapUtils.isNotEmpty(objects), () -> {
+            int found = 0;
+            for (Entry<K, V> entry : objects.entrySet()) {
+                if (this.containsValue(entry.getKey(), entry.getValue())) {
+                    found++;
+                }
+            }
+            if (all ^ this.isNot()) {
+                return found == objects.size();
+            } else {
+                return found > 0;
+            }
+        }, () -> {
+            if (all) {
+                return this.msg(MSG.MAP.CONTAINS_MAP_ALL, true);
+            } else {
+                return this.msg(MSG.MAP.CONTAINS_MAP_ANY, true);
+            }
+        }, message, arguments, locale, objects);
     }
 
     private boolean containsValue(final K key, final V value) {

@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import fr.landel.utils.commons.StringUtils;
@@ -33,65 +34,73 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      *            The object to check
      */
     protected AssertCharSequence(final S object) {
-        super(object);
+        super(object, TYPE.CHAR_SEQUENCE);
     }
 
     /**
-     * Asserts that the given String has the specified length. The
-     * {@code String} cannot not be {@code null}.
+     * Asserts that the given String has the specified length. The input cannot
+     * not be {@code null} and the length cannot be lower than 0 (returns
+     * false).
      * 
      * <pre>
      * Assertor.that(name).hasLength(5).toThrow();
      * </pre>
      * 
+     * @param length
+     *            The length (cannot be lower than 0)
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> hasLength(final int length) {
-        boolean condition = true;
-        final StringBuilder message = new StringBuilder();
-
-        if (length < 0) {
-            condition = false;
-            message.append("the length parameter cannot be lower than 0");
-        } else if (this.get() == null) {
-            condition = false;
-            message.append("the checked string is null");
-        } else if (this.get().length() != length) {
-            condition = false;
-            message.append("this String argument '").append(this.getParam()).append("' don't have the specified length '").append(length)
-                    .append("'");
-        }
-
-        return this.combine(condition, message, length);
+        return this.hasLength(length, this.msg(MSG.CSQ.LENGTH, this.getParam(), this.getNextParam(1, TYPE.NUMBER_INTEGER)));
     }
 
     /**
-     * Asserts that the given String has not the specified length. The
-     * {@code String} cannot not be {@code null}.
+     * Asserts that the given String has the specified length. The input cannot
+     * not be {@code null} and the length cannot be lower than 0 (returns
+     * false).
      * 
      * <pre>
-     * Assertor.that(name).hasNotLength(5).toThrow();
+     * Assertor.that(name).hasLength(5, "Name has not the expected length").toThrow();
      * </pre>
      * 
+     * @param length
+     *            The length (cannot be lower than 0)
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
      * @return the operator
      */
-    public Operator<AssertCharSequence<S>, S> hasNotLength(final int length) {
-        boolean condition = true;
-        final StringBuilder message = new StringBuilder();
+    public Operator<AssertCharSequence<S>, S> hasLength(final int length, final CharSequence message, final Object... arguments) {
+        return this.hasLength(length, null, message, arguments);
+    }
 
-        if (length < 0) {
-            condition = false;
-            message.append("the length parameter cannot be lower than 0");
-        } else if (this.get() == null) {
-            condition = false;
-            message.append("the checked string is null");
-        } else if (this.get().length() == length) {
-            condition = false;
-            message.append("this String argument '").append(this.getParam()).append("' have the specified length '").append(length)
-                    .append("'");
-        }
-
-        return this.combine(condition, message, length);
+    /**
+     * Asserts that the given String has the specified length. The input cannot
+     * not be {@code null} and the length cannot be lower than 0 (returns
+     * false).
+     * 
+     * <pre>
+     * Assertor.that(name).hasLength(5, Locale.US, "The field '%s' has not the expected length %1$s*", "name").toThrow();
+     * // on mismatch, the exception message =&gt; The field 'name' has not the
+     * // expected length 5
+     * </pre>
+     * 
+     * @param length
+     *            The length (cannot be lower than 0)
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> hasLength(final int length, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(length >= 0 && this.get() != null, () -> this.get().length() == length, () -> this.msg(MSG.CSQ.LENGTH, true),
+                message, arguments, locale, length);
     }
 
     /**
@@ -105,8 +114,48 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> isNotEmpty() {
-        return this.combine(StringUtils.isNotEmpty(this.get()), new StringBuilder("this String argument '").append(this.getParam())
-                .append("' must have length; it must not be null or empty"));
+        return this.isNotEmpty(this.msg(MSG.CSQ.EMPTY + MSG.NOT));
+    }
+
+    /**
+     * Asserts that the given {@code String} is not empty; that is, it must not
+     * be {@code null} and not the empty {@code String}.
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEmpty("Name cannot be filled").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isNotEmpty(final CharSequence message, final Object... arguments) {
+        return this.isNotEmpty(null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given {@code String} is not empty; that is, it must not
+     * be {@code null} and not the empty {@code String}.
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEmpty(Locale.US, "Param '%1$s*' cannot be filled (%.2fms)", "name", 1.563).toThrow();
+     * // Message of exception if name is not empty and not null:
+     * // =&gt; "Param 'name' cannot be filled (1.56ms)"
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> StringUtils.isNotEmpty(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -119,8 +168,46 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> isEmpty() {
-        return this.combine(StringUtils.isEmpty(this.get()),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must be null or empty"));
+        return this.isEmpty(this.msg(MSG.CSQ.EMPTY, this.getParam()));
+    }
+
+    /**
+     * Asserts that the given {@code String} is {@code null} or empty.
+     * 
+     * <pre>
+     * Assertor.that(name).isEmpty("Name must not be empty").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isEmpty(final CharSequence message, final Object... arguments) {
+        return this.isEmpty(null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given {@code String} is {@code null} or empty.
+     * 
+     * <pre>
+     * Assertor.that(name).isEmpty(Locale.US, "Param '%1$s*' must not be empty (%.2fms)", "name", 25.236f).toThrow();
+     * // Message of exception if name is null or empty:
+     * // =&gt; "Param 'name' must not be empty (25.24ms)"
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> StringUtils.isEmpty(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -135,8 +222,48 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> isNotBlank() {
-        return this.combine(StringUtils.isNotBlank(this.get()), new StringBuilder("this String argument '").append(this.getParam())
-                .append("' must have text; it must not be null, empty, or blank"));
+        return this.isNotBlank(this.msg(MSG.CSQ.BLANK + MSG.NOT));
+    }
+
+    /**
+     * Asserts that the given {@code String} has valid text content; that is, it
+     * must not be {@code null} and must contain at least one non-whitespace
+     * character.
+     * 
+     * <pre>
+     * Assertor.that(name).isNotBlank("Cannot be blank").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isNotBlank(final CharSequence message, final Object... arguments) {
+        return this.isNotBlank(null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given {@code String} has valid text content; that is, it
+     * must not be {@code null} and must contain at least one non-whitespace
+     * character.
+     * 
+     * <pre>
+     * Assertor.that(name).isNotBlank().toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isNotBlank(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> StringUtils.isNotBlank(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -150,8 +277,46 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> isBlank() {
-        return this.combine(StringUtils.isBlank(this.get()),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must be null, empty or blank"));
+        return this.isBlank(this.msg(MSG.CSQ.BLANK, this.getParam()));
+    }
+
+    /**
+     * Asserts that the given {@code String} is {@code null}, empty or has blank
+     * text content.
+     * 
+     * <pre>
+     * Assertor.that(name).isBlank().toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isBlank(final CharSequence message, final Object... arguments) {
+        return this.isBlank(null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given {@code String} is {@code null}, empty or has blank
+     * text content.
+     * 
+     * <pre>
+     * Assertor.that(name).isBlank().toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> isBlank(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> StringUtils.isBlank(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -166,28 +331,51 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> contains(final CharSequence substring) {
-        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring) && containsCharSequence(this.get(), substring),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must contain the substring '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                substring);
+        return this.contains(substring, this.msg(MSG.CSQ.CONTAINS, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
     }
 
     /**
-     * Asserts that the given text does not contain the given substring.
+     * Asserts that the given text contains the given substring.
      * 
      * <pre>
-     * Assertor.that(fullName).doesNotContain(name).toThrow(exceptionToThrowOnError);
+     * Assertor.that(fullName).contains(name).toThrow();
      * </pre>
      * 
      * @param substring
      *            the substring to find within the text
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
      * @return the operator
      */
-    public Operator<AssertCharSequence<S>, S> doesNotContain(final CharSequence substring) {
-        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring) && !containsCharSequence(this.get(), substring),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must not contain the substring '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                substring);
+    public Operator<AssertCharSequence<S>, S> contains(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.contains(substring, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text contains the given substring.
+     * 
+     * <pre>
+     * Assertor.that(fullName).contains(name).toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> contains(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring), () -> containsCharSequence(this.get(), substring),
+                () -> this.msg(MSG.CSQ.CONTAINS, true), message, arguments, locale, substring);
     }
 
     /**
@@ -202,10 +390,51 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> startsWith(final CharSequence substring) {
-        return this.combine(StringUtils.isNotEmpty(substring) && StringUtils.startsWith(this.get(), substring),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must start with the substring '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                substring);
+        return this.startsWith(substring, this.msg(MSG.CSQ.STARTS, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
+    }
+
+    /**
+     * Asserts that the given text starts with the given substring.
+     * 
+     * <pre>
+     * Assertor.that(fullName).startsWith(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> startsWith(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.startsWith(substring, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text starts with the given substring.
+     * 
+     * <pre>
+     * Assertor.that(fullName).startsWith(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> startsWith(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring), () -> StringUtils.startsWith(this.get(), substring),
+                () -> this.msg(MSG.CSQ.STARTS, true), message, arguments, locale, substring);
     }
 
     /**
@@ -221,10 +450,54 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> startsWithIgnoreCase(final CharSequence substring) {
-        return this.combine(StringUtils.isNotEmpty(substring) && StringUtils.startsWithIgnoreCase(this.get(), substring),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must start with the substring '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                substring);
+        return this.startsWithIgnoreCase(substring, this.msg(MSG.CSQ.STARTS, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
+    }
+
+    /**
+     * Asserts that the given text starts with the given substring (insensitive
+     * case).
+     * 
+     * <pre>
+     * Assertor.that(fullName).startsWithIgnoreCase(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> startsWithIgnoreCase(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.startsWithIgnoreCase(substring, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text starts with the given substring (insensitive
+     * case).
+     * 
+     * <pre>
+     * Assertor.that(fullName).startsWithIgnoreCase(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> startsWithIgnoreCase(final CharSequence substring, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring),
+                () -> StringUtils.startsWithIgnoreCase(this.get(), substring), () -> this.msg(MSG.CSQ.STARTS, true), message, arguments,
+                locale, substring);
     }
 
     /**
@@ -239,10 +512,51 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> endsWith(final CharSequence substring) {
-        return this.combine(StringUtils.isNotEmpty(substring) && StringUtils.endsWith(this.get(), substring),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must end with the substring '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                substring);
+        return this.endsWith(substring, this.msg(MSG.CSQ.ENDS, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
+    }
+
+    /**
+     * Asserts that the given text ends with the given substring.
+     * 
+     * <pre>
+     * Assertor.that(fullName).endsWith(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> endsWith(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.endsWith(substring, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text ends with the given substring.
+     * 
+     * <pre>
+     * Assertor.that(fullName).endsWith(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> endsWith(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring), () -> StringUtils.endsWith(this.get(), substring),
+                () -> this.msg(MSG.CSQ.ENDS, true), message, arguments, locale, substring);
     }
 
     /**
@@ -258,9 +572,53 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> endsWithIgnoreCase(final CharSequence substring) {
-        return this.combine(StringUtils.isNotEmpty(substring) && StringUtils.endsWithIgnoreCase(this.get(), substring),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must end with the substring '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
+        return this.endsWithIgnoreCase(substring, this.msg(MSG.CSQ.ENDS, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
+    }
+
+    /**
+     * Asserts that the given text ends with the given substring (insensitive
+     * case).
+     * 
+     * <pre>
+     * Assertor.that(fullName).endsWithIgnoreCase(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> endsWithIgnoreCase(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.endsWithIgnoreCase(substring, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text ends with the given substring (insensitive
+     * case).
+     * 
+     * <pre>
+     * Assertor.that(fullName).endsWithIgnoreCase(name).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param substring
+     *            the substring to find within the text
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> endsWithIgnoreCase(final CharSequence substring, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return this.combine(this.get() != null && StringUtils.isNotEmpty(substring),
+                () -> StringUtils.endsWithIgnoreCase(this.get(), substring), () -> this.msg(MSG.CSQ.ENDS, true), message, arguments, locale,
                 substring);
     }
 
@@ -276,10 +634,50 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> matches(final Pattern pattern) {
-        return this.combine(this.get() != null && pattern != null && pattern.matcher(this.get()).matches(),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must match the pattern '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                pattern);
+        return this.matches(pattern, this.msg(MSG.CSQ.MATCHES, this.getParam(), this.getNextParam(1, TYPE.UNKNOWN)));
+    }
+
+    /**
+     * Asserts that the given text matches the pattern.
+     * 
+     * <pre>
+     * Assertor.that(fullName).matches(pattern).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param pattern
+     *            the pattern
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> matches(final Pattern pattern, final CharSequence message, final Object... arguments) {
+        return this.matches(pattern, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text matches the pattern.
+     * 
+     * <pre>
+     * Assertor.that(fullName).matches(pattern).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param pattern
+     *            the pattern
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> matches(final Pattern pattern, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && pattern != null, () -> pattern.matcher(this.get()).matches(),
+                () -> this.msg(MSG.CSQ.MATCHES, true), message, arguments, locale, pattern);
     }
 
     /**
@@ -294,10 +692,50 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> matches(final CharSequence regex) {
-        return this.combine(this.get() != null && regex != null && Pattern.matches(regex.toString(), this.get()),
-                new StringBuilder("this String argument '").append(this.getParam()).append("' must match the regular expression '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                regex);
+        return this.matches(regex, this.msg(MSG.CSQ.MATCHES, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
+    }
+
+    /**
+     * Asserts that the given text matches the regular expression.
+     * 
+     * <pre>
+     * Assertor.that(fullName).matches(regex).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param regex
+     *            the regular expression
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> matches(final CharSequence regex, final CharSequence message, final Object... arguments) {
+        return this.matches(regex, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the given text matches the regular expression.
+     * 
+     * <pre>
+     * Assertor.that(fullName).matches(regex).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param regex
+     *            the regular expression
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> matches(final CharSequence regex, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && regex != null, () -> Pattern.matches(regex.toString(), this.get()),
+                () -> this.msg(MSG.CSQ.MATCHES, true), message, arguments, locale, regex);
     }
 
     /**
@@ -312,11 +750,50 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> find(final Pattern pattern) {
-        return this.combine(this.get() != null && pattern != null && pattern.matcher(this.get()).find(),
-                new StringBuilder("this String argument '").append(this.getParam())
-                        .append("' must contain the next occurrence of the pattern '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                pattern);
+        return this.find(pattern, this.msg(MSG.CSQ.FIND, this.getParam(), this.getNextParam(1, TYPE.UNKNOWN)));
+    }
+
+    /**
+     * Asserts that the pattern can be found in the give text.
+     * 
+     * <pre>
+     * Assertor.that(fullName).find(pattern).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param pattern
+     *            the pattern
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> find(final Pattern pattern, final CharSequence message, final Object... arguments) {
+        return this.find(pattern, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the pattern can be found in the give text.
+     * 
+     * <pre>
+     * Assertor.that(fullName).find(pattern).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param pattern
+     *            the pattern
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> find(final Pattern pattern, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && pattern != null, () -> pattern.matcher(this.get()).find(),
+                () -> this.msg(MSG.CSQ.FIND, true), message, arguments, locale, pattern);
     }
 
     /**
@@ -331,11 +808,50 @@ public class AssertCharSequence<S extends CharSequence> extends AssertObject<Ass
      * @return the operator
      */
     public Operator<AssertCharSequence<S>, S> find(final CharSequence regex) {
-        return this.combine(this.get() != null && regex != null && Pattern.compile(regex.toString()).matcher(this.get()).find(),
-                new StringBuilder("this String argument '").append(this.getParam())
-                        .append("' must contain the next occurrence of the regular expression '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                regex);
+        return this.find(regex, this.msg(MSG.CSQ.FIND, this.getParam(), this.getNextParam(1, TYPE.CHAR_SEQUENCE)));
+    }
+
+    /**
+     * Asserts that the regular expression can be found in the give text.
+     * 
+     * <pre>
+     * Assertor.that(fullName).find(regex).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param regex
+     *            the regular expression
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> find(final CharSequence regex, final CharSequence message, final Object... arguments) {
+        return this.find(regex, null, message, arguments);
+    }
+
+    /**
+     * Asserts that the regular expression can be found in the give text.
+     * 
+     * <pre>
+     * Assertor.that(fullName).find(regex).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param regex
+     *            the regular expression
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertCharSequence<S>, S> find(final CharSequence regex, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(this.get() != null && regex != null, () -> Pattern.compile(regex.toString()).matcher(this.get()).find(),
+                () -> this.msg(MSG.CSQ.FIND, true), message, arguments, locale, regex);
     }
 
     /**

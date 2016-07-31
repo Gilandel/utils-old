@@ -12,14 +12,14 @@
  */
 package fr.landel.utils.assertor;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Test;
 
-import fr.landel.utils.assertor.AssertClass;
-import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check assert class
@@ -28,65 +28,34 @@ import fr.landel.utils.assertor.Assertor;
  * @author Gilles
  *
  */
-public class AssertClassTest {
+public class AssertClassTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
+     * Test method for {@link AssertClass#isAssignableFrom} .
      * 
      * @throws IOException
      *             On errors
      */
     @Test
-    public void testisAssignableFromOKClassOfQClassOfQ() throws IOException {
-        try {
-            Assertor.that(IOException.class).isAssignableFrom(Exception.class).toThrow(new IOException());
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
-    }
+    public void testIsAssignableFrom() throws IOException {
+        assertTrue(Assertor.that(IOException.class).isAssignableFrom(Exception.class).isOK());
+        assertTrue(Assertor.that(IOException.class).isAssignableFrom(Exception.class, "test").isOK());
+        assertTrue(Assertor.that(IOException.class).isAssignableFrom(Exception.class, Locale.US, "test %2d", 12).isOK());
 
-    /**
-     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testisAssignableFromKOClassOfQClassOfQ() {
-        Assertor.that(Exception.class).isAssignableFrom(IOException.class).toThrow();
-    }
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).isAssignableFrom(IOException.class).toThrow();
+        }, IllegalArgumentException.class);
 
-    /**
-     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
-     */
-    @Test
-    public void testisAssignableFromOKClassOfQClassOfQString() {
-        try {
-            Assertor.that(IOException.class).isAssignableFrom(Exception.class).toThrow("msg");
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
-    }
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).isAssignableFrom(IOException.class).toThrow("msg");
+        }, IllegalArgumentException.class, "msg");
 
-    /**
-     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testisAssignableFromKOClassOfQClassOfQString() {
-        Assertor.that(Exception.class).isAssignableFrom(IOException.class).toThrow("msg");
-    }
+        Expect.exception(() -> {
+            Assertor.that((Object) null).isAssignableFrom(Exception.class).toThrow("msg");
+        }, IllegalArgumentException.class, "msg");
 
-    /**
-     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testisAssignableFromKOTypeNull() {
-        Assertor.that((Object) null).isAssignableFrom(Exception.class).toThrow("msg");
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).isAssignableFrom(null).toThrow("msg");
+        }, IllegalArgumentException.class, "msg");
     }
-
-    /**
-     * Test method for {@link AssertClass#isAssignableFrom(Class)} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testisAssignableFromKOSuperTypeNull() {
-        Assertor.that((Object) null).isAssignableFrom(IOException.class).toThrow("msg");
-    }
-
 }

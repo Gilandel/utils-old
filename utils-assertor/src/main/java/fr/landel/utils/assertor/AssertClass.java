@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.assertor;
 
+import java.util.Locale;
+
 /**
  * Assertion utility class that assists in validating arguments for numbers.
  *
@@ -31,7 +33,7 @@ public class AssertClass<T> extends AssertObject<AssertClass<T>, Class<T>> {
      *            The class to check
      */
     protected AssertClass(final Class<T> clazz) {
-        super(clazz);
+        super(clazz, TYPE.CLASS);
     }
 
     /**
@@ -46,23 +48,50 @@ public class AssertClass<T> extends AssertObject<AssertClass<T>, Class<T>> {
      * @return the operator
      */
     public Operator<AssertClass<T>, Class<T>> isAssignableFrom(final Class<?> superType) {
-        return this.combine(
-                isAssignable(superType, this.get()), new StringBuilder("the class '").append(this.getParam())
-                        .append("' is not assignable from '").append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                superType);
+        return this.isAssignableFrom(superType, this.msg(MSG.CLASS.ASSIGNABLE, this.getParam(), this.getNextParam(1, TYPE.CLASS)));
     }
 
     /**
-     * Check if the super type is assignable from the type
+     * Assert that {@code superType.isAssignableFrom(subType)} is {@code true}.
+     * 
+     * <pre>
+     * Assertor.that(myClass).isAssignableFrom(Number.class).toThrow(exceptionToThrowOnError);
+     * </pre>
      * 
      * @param superType
-     *            The super type
-     * @param type
-     *            The assignable type
-     * @return true, if the superType is the same or a super type of type
-     *         parameter
+     *            the type to check against
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
      */
-    protected static boolean isAssignable(final Class<?> superType, final Class<?> type) {
-        return superType != null && type != null && superType.isAssignableFrom(type);
+    public Operator<AssertClass<T>, Class<T>> isAssignableFrom(final Class<?> superType, final CharSequence message,
+            final Object... arguments) {
+        return this.isAssignableFrom(superType, null, message, arguments);
+    }
+
+    /**
+     * Assert that {@code superType.isAssignableFrom(subType)} is {@code true}.
+     * 
+     * <pre>
+     * Assertor.that(myClass).isAssignableFrom(Number.class).toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param superType
+     *            the type to check against
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertClass<T>, Class<T>> isAssignableFrom(final Class<?> superType, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return this.combine(superType != null && this.get() != null, () -> superType.isAssignableFrom(this.get()),
+                () -> this.msg(MSG.CLASS.ASSIGNABLE, true), message, arguments, locale, superType);
     }
 }

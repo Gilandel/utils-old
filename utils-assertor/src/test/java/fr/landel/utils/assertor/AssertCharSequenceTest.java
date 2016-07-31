@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
+import fr.landel.utils.assertor.expect.Expect;
+
 /**
  * Check assert
  *
@@ -27,28 +29,28 @@ import org.junit.Test;
  * @author Gilles Landel
  *
  */
-public class AssertCharSequenceTest {
+public class AssertCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for {@link AssertCharSequence#hasLength(int)} .
      */
     @Test
     public void testHasLength() {
-        assertTrue(Assertor.that("text").hasLength(4).getResult());
-        assertFalse(Assertor.that("text").hasLength(3).getResult());
-        assertFalse(Assertor.that("text").hasLength(-1).getResult());
-        assertFalse(Assertor.that((String) null).hasLength(1).getResult());
+        assertTrue(Assertor.that("text").hasLength(4).isOK());
+        assertFalse(Assertor.that("text").hasLength(3).isOK());
+        assertFalse(Assertor.that("text").hasLength(-1).isOK());
+        assertFalse(Assertor.that((String) null).hasLength(1).isOK());
     }
 
     /**
-     * Test method for {@link AssertCharSequence#hasNotLength(int)} .
+     * Test method for {@link AssertCharSequence#hasLength(int)} .
      */
     @Test
     public void testHasNotLength() {
-        assertFalse(Assertor.that("text").hasNotLength(4).getResult());
-        assertTrue(Assertor.that("text").hasNotLength(3).getResult());
-        assertFalse(Assertor.that("text").hasNotLength(-1).getResult());
-        assertFalse(Assertor.that((String) null).hasNotLength(1).getResult());
+        assertFalse(Assertor.that("text").not().hasLength(4).isOK());
+        assertTrue(Assertor.that("text").not().hasLength(3).isOK());
+        assertFalse(Assertor.that("text").not().hasLength(-1).isOK());
+        assertFalse(Assertor.that((String) null).not().hasLength(1).isOK());
     }
 
     /**
@@ -240,13 +242,12 @@ public class AssertCharSequenceTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#doesNotContain(String, String, String, Object...)}
-     * .
+     * {@link AssertCharSequence#contains(String, String, String, Object...)} .
      */
     @Test
     public void testDoesNotContainOKStringStringString() {
         try {
-            Assertor.that("titi part en vacances").doesNotContain("toto").toThrow("not found");
+            Assertor.that("titi part en vacances").not().contains("toto").toThrow("not found");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -254,36 +255,34 @@ public class AssertCharSequenceTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#doesNotContain(String, String, String, Object...)}
-     * .
+     * {@link AssertCharSequence#contains(String, String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringStringString() {
-        Assertor.that("titi part en vacances").doesNotContain("titi").toThrow("not found");
+        Assertor.that("titi part en vacances").not().contains("titi").toThrow("not found");
     }
 
     /**
      * Test method for
-     * {@link AssertCharSequence#doesNotContain(java.lang.String, java.lang.String)}
-     * .
+     * {@link AssertCharSequence#not().contains(java.lang.String,
+     * java.lang.String)} .
      */
     @Test
     public void testDoesNotContain() {
-        assertTrue(Assertor.that("totos").doesNotContain("toto part en vacances").getResult());
-        assertTrue(Assertor.that("toto").doesNotContain("totu").getResult());
-        assertFalse(Assertor.that("toto part en vacances").doesNotContain("toto").getResult());
-        assertFalse(Assertor.that((String) null).doesNotContain("toto part en vacances").getResult());
-        assertFalse(Assertor.that("toto").doesNotContain(null).getResult());
+        assertTrue(Assertor.that("totos").not().contains("toto part en vacances").isOK());
+        assertTrue(Assertor.that("toto").not().contains("totu").isOK());
+        assertFalse(Assertor.that("toto part en vacances").not().contains("toto").isOK());
+        assertFalse(Assertor.that((String) null).not().contains("toto part en vacances").isOK());
+        assertFalse(Assertor.that("toto").not().contains(null).isOK());
     }
 
     /**
      * Test method for
-     * {@link AssertCharSequence#doesNotContain(java.lang.String, java.lang.String)}
-     * .
+     * {@link AssertCharSequence#contains(java.lang.String, java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringString() {
-        Assertor.that("tata part en vacances").doesNotContain("tata").toThrow();
+        Assertor.that("tata part en vacances").not().contains("tata").toThrow();
     }
 
     /**
@@ -292,11 +291,26 @@ public class AssertCharSequenceTest {
      */
     @Test
     public void testContains() {
-        assertTrue(Assertor.that("toto part en vacances").contains("toto").getResult());
-        assertTrue(Assertor.that("toto").contains("toto").getResult());
-        assertFalse(Assertor.that("toto").contains("toto part en vacances").getResult());
-        assertFalse(Assertor.that((String) null).contains("toto part en vacances").getResult());
-        assertFalse(Assertor.that("toto").contains(null).getResult());
+        assertTrue(Assertor.that("toto part en vacances").contains("toto").isOK());
+        assertTrue(Assertor.that("toto").contains("toto").isOK());
+        assertFalse(Assertor.that("toto").contains("toto part en vacances").isOK());
+        assertFalse(Assertor.that((String) null).contains("toto part en vacances").isOK());
+        assertFalse(Assertor.that("toto").contains(null).isOK());
+
+        Expect.exception(() -> {
+            Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").toThrow();
+        }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'");
+
+        Expect.exception(() -> {
+            Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").and("text").isBlank().or().contains("text")
+                    .toThrow();
+        }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'");
+
+        Expect.exception(() -> {
+            Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").and("text").isBlank().or().not()
+                    .contains("text").toThrow();
+        }, IllegalArgumentException.class, "(the char sequence 'toto part en vacances' should contain 'voyage') AND "
+                + "(the char sequence 'text' should be null, empty or blank OR NOT (the char sequence 'text' should contain 'text'))");
     }
 
     /**
@@ -336,23 +350,23 @@ public class AssertCharSequenceTest {
      */
     @Test
     public void testStartsWith() {
-        assertTrue(Assertor.that("TexT").startsWith("Tex").getResult());
-        assertFalse(Assertor.that("TexT").startsWith("tex").getResult());
-        assertFalse(Assertor.that("TexT").startsWith("ext").getResult());
-        assertFalse(Assertor.that("TexT").startsWith("").getResult());
-        assertFalse(Assertor.that("").startsWith("").getResult());
-        assertFalse(Assertor.that("TexT").startsWith("Texte").getResult());
-        assertFalse(Assertor.that((String) null).startsWith("Tex").getResult());
-        assertFalse(Assertor.that("TexT").startsWith(null).getResult());
+        assertTrue(Assertor.that("TexT").startsWith("Tex").isOK());
+        assertFalse(Assertor.that("TexT").startsWith("tex").isOK());
+        assertFalse(Assertor.that("TexT").startsWith("ext").isOK());
+        assertFalse(Assertor.that("TexT").startsWith("").isOK());
+        assertFalse(Assertor.that("").startsWith("").isOK());
+        assertFalse(Assertor.that("TexT").startsWith("Texte").isOK());
+        assertFalse(Assertor.that((String) null).startsWith("Tex").isOK());
+        assertFalse(Assertor.that("TexT").startsWith(null).isOK());
 
-        assertTrue(Assertor.that("TexT").startsWithIgnoreCase("tex").getResult());
-        assertTrue(Assertor.that("TexT").startsWithIgnoreCase("tex").getResult());
-        assertFalse(Assertor.that("TexT").startsWithIgnoreCase("ext").getResult());
-        assertFalse(Assertor.that("TexT").startsWithIgnoreCase("").getResult());
-        assertFalse(Assertor.that("").startsWithIgnoreCase("").getResult());
-        assertFalse(Assertor.that("TexT").startsWithIgnoreCase("texte").getResult());
-        assertFalse(Assertor.that((String) null).startsWithIgnoreCase("tex").getResult());
-        assertFalse(Assertor.that("TexT").startsWithIgnoreCase(null).getResult());
+        assertTrue(Assertor.that("TexT").startsWithIgnoreCase("tex").isOK());
+        assertTrue(Assertor.that("TexT").startsWithIgnoreCase("tex").isOK());
+        assertFalse(Assertor.that("TexT").startsWithIgnoreCase("ext").isOK());
+        assertFalse(Assertor.that("TexT").startsWithIgnoreCase("").isOK());
+        assertFalse(Assertor.that("").startsWithIgnoreCase("").isOK());
+        assertFalse(Assertor.that("TexT").startsWithIgnoreCase("texte").isOK());
+        assertFalse(Assertor.that((String) null).startsWithIgnoreCase("tex").isOK());
+        assertFalse(Assertor.that("TexT").startsWithIgnoreCase(null).isOK());
     }
 
     /**
@@ -361,23 +375,23 @@ public class AssertCharSequenceTest {
      */
     @Test
     public void testEndsWith() {
-        assertTrue(Assertor.that("TexT").endsWith("exT").getResult());
-        assertFalse(Assertor.that("TexT").endsWith("ext").getResult());
-        assertFalse(Assertor.that("TexT").endsWith("tex").getResult());
-        assertFalse(Assertor.that("TexT").endsWith("").getResult());
-        assertFalse(Assertor.that("").endsWith("").getResult());
-        assertFalse(Assertor.that("TexT").endsWith("eTexT").getResult());
-        assertFalse(Assertor.that((String) null).endsWith("exT").getResult());
-        assertFalse(Assertor.that("TexT").endsWith(null).getResult());
+        assertTrue(Assertor.that("TexT").endsWith("exT").isOK());
+        assertFalse(Assertor.that("TexT").endsWith("ext").isOK());
+        assertFalse(Assertor.that("TexT").endsWith("tex").isOK());
+        assertFalse(Assertor.that("TexT").endsWith("").isOK());
+        assertFalse(Assertor.that("").endsWith("").isOK());
+        assertFalse(Assertor.that("TexT").endsWith("eTexT").isOK());
+        assertFalse(Assertor.that((String) null).endsWith("exT").isOK());
+        assertFalse(Assertor.that("TexT").endsWith(null).isOK());
 
-        assertTrue(Assertor.that("TexT").endsWithIgnoreCase("exT").getResult());
-        assertTrue(Assertor.that("TexT").endsWithIgnoreCase("ext").getResult());
-        assertFalse(Assertor.that("TexT").endsWithIgnoreCase("tex").getResult());
-        assertFalse(Assertor.that("TexT").endsWithIgnoreCase("").getResult());
-        assertFalse(Assertor.that("").endsWithIgnoreCase("").getResult());
-        assertFalse(Assertor.that("TexT").endsWithIgnoreCase("eTexT").getResult());
-        assertFalse(Assertor.that((String) null).endsWithIgnoreCase("exT").getResult());
-        assertFalse(Assertor.that("TexT").endsWithIgnoreCase(null).getResult());
+        assertTrue(Assertor.that("TexT").endsWithIgnoreCase("exT").isOK());
+        assertTrue(Assertor.that("TexT").endsWithIgnoreCase("ext").isOK());
+        assertFalse(Assertor.that("TexT").endsWithIgnoreCase("tex").isOK());
+        assertFalse(Assertor.that("TexT").endsWithIgnoreCase("").isOK());
+        assertFalse(Assertor.that("").endsWithIgnoreCase("").isOK());
+        assertFalse(Assertor.that("TexT").endsWithIgnoreCase("eTexT").isOK());
+        assertFalse(Assertor.that((String) null).endsWithIgnoreCase("exT").isOK());
+        assertFalse(Assertor.that("TexT").endsWithIgnoreCase(null).isOK());
     }
 
     /**
@@ -388,15 +402,15 @@ public class AssertCharSequenceTest {
         final String regex = "[xeT]{4}";
         final Pattern pattern = Pattern.compile(regex);
 
-        assertTrue(Assertor.that("TexT").matches(pattern).getResult());
-        assertFalse(Assertor.that("Text").matches(pattern).getResult());
-        assertFalse(Assertor.that((String) null).matches(pattern).getResult());
-        assertFalse(Assertor.that("Text").matches((Pattern) null).getResult());
+        assertTrue(Assertor.that("TexT").matches(pattern).isOK());
+        assertFalse(Assertor.that("Text").matches(pattern).isOK());
+        assertFalse(Assertor.that((String) null).matches(pattern).isOK());
+        assertFalse(Assertor.that("Text").matches((Pattern) null).isOK());
 
-        assertTrue(Assertor.that("TexT").matches(regex).getResult());
-        assertFalse(Assertor.that("Text").matches(regex).getResult());
-        assertFalse(Assertor.that((String) null).matches(regex).getResult());
-        assertFalse(Assertor.that("Text").matches((String) null).getResult());
+        assertTrue(Assertor.that("TexT").matches(regex).isOK());
+        assertFalse(Assertor.that("Text").matches(regex).isOK());
+        assertFalse(Assertor.that((String) null).matches(regex).isOK());
+        assertFalse(Assertor.that("Text").matches((String) null).isOK());
     }
 
     /**
@@ -407,17 +421,17 @@ public class AssertCharSequenceTest {
         final String regex = "[xeT]{3}";
         final Pattern pattern = Pattern.compile(regex);
 
-        assertTrue(Assertor.that("TexT").find(pattern).getResult());
-        assertTrue(Assertor.that("Text").find(pattern).getResult());
-        assertFalse(Assertor.that("Tetxt").find(pattern).getResult());
-        assertFalse(Assertor.that((String) null).find(pattern).getResult());
-        assertFalse(Assertor.that("Text").find((Pattern) null).getResult());
+        assertTrue(Assertor.that("TexT").find(pattern).isOK());
+        assertTrue(Assertor.that("Text").find(pattern).isOK());
+        assertFalse(Assertor.that("Tetxt").find(pattern).isOK());
+        assertFalse(Assertor.that((String) null).find(pattern).isOK());
+        assertFalse(Assertor.that("Text").find((Pattern) null).isOK());
 
-        assertTrue(Assertor.that("TexT").find(regex).getResult());
-        assertTrue(Assertor.that("Text").find(regex).getResult());
-        assertFalse(Assertor.that("Tetxt").find(regex).getResult());
-        assertFalse(Assertor.that((String) null).find(regex).getResult());
-        assertFalse(Assertor.that("Text").find((String) null).getResult());
-        assertFalse(Assertor.that((String) null).find((String) null).getResult());
+        assertTrue(Assertor.that("TexT").find(regex).isOK());
+        assertTrue(Assertor.that("Text").find(regex).isOK());
+        assertFalse(Assertor.that("Tetxt").find(regex).isOK());
+        assertFalse(Assertor.that((String) null).find(regex).isOK());
+        assertFalse(Assertor.that("Text").find((String) null).isOK());
+        assertFalse(Assertor.that((String) null).find((String) null).isOK());
     }
 }

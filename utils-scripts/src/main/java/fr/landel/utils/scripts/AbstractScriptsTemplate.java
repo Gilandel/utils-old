@@ -12,7 +12,7 @@
  */
 package fr.landel.utils.scripts;
 
-import fr.landel.utils.commons.stream.ConsumerThrowable;
+import fr.landel.utils.commons.function.ConsumerThrowable;
 
 /**
  * Scripts template

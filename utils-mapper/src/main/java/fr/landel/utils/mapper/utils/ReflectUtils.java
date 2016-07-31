@@ -38,7 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.commons.exception.AbstractException;
-import fr.landel.utils.commons.stream.FunctionThrowable;
+import fr.landel.utils.commons.function.FunctionThrowable;
 import fr.landel.utils.mapper.MapperException;
 import fr.landel.utils.mapper.mappable.Mappable;
 import fr.landel.utils.mapper.mappable.MappableProperty;
@@ -593,7 +593,7 @@ public class ReflectUtils {
 
         Assertor.that(clazz).isNotNull().toThrow("The class is null");
         Assertor.that(name).isNotBlank().toThrow("The name is null or blank");
-        Assertor.that(parameterTypes).isNotNull().and().doesNotContainNull()
+        Assertor.that(parameterTypes).isNotNull().and().not().contains(null)
                 .toThrow("The parameter types array is null and at least one parameter type is null");
 
         Method method;

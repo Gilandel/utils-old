@@ -14,10 +14,11 @@ package fr.landel.utils.assertor;
 
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
-import fr.landel.utils.assertor.AssertBoolean;
-import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check assert boolean
@@ -26,86 +27,63 @@ import fr.landel.utils.assertor.Assertor;
  * @author Gilles
  *
  */
-public class AssertBooleanTest {
+public class AssertBooleanTest extends AbstractTest {
 
     /**
      * Test method for {@link AssertBoolean#isFalse()} .
      */
     @Test
-    public void testIsFalseOKBooleanString() {
+    public void testIsFalse() {
         try {
             Assertor.that(false).isFalse().toThrow("not false");
+            Assertor.that(false).isFalse().and(true).not().isFalse().toThrow("not false");
             Assertor.that(false).isFalse().toThrow(new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
-    }
 
-    /**
-     * Test method for {@link AssertBoolean#isFalse()} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsFalseKOBooleanString() {
-        Assertor.that(true).isFalse().toThrow("not false");
-    }
+        Expect.exception(() -> {
+            Assertor.that(true).isFalse().toThrow("not false");
+            fail();
+        }, IllegalArgumentException.class, "not false");
 
-    /**
-     * Test method for {@link AssertBoolean#isFalse()} .
-     */
-    @Test
-    public void testIsFalseOKBoolean() {
-        try {
-            Assertor.that(false).isFalse();
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
-    }
+        Expect.exception(() -> {
+            Assertor.that(true).isFalse("%s, '%s*'", "not false").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "not false, 'true'");
 
-    /**
-     * Test method for {@link AssertBoolean#isFalse()} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsFalseKOBoolean() {
-        Assertor.that(true).isFalse().toThrow();
+        Expect.exception(() -> {
+            Assertor.that(true).isFalse().toThrow(new IOException("not false"));
+            fail();
+        }, IOException.class, "not false");
     }
 
     /**
      * Test method for {@link AssertBoolean#isTrue()} .
      */
     @Test
-    public void testIsTrueOKBooleanString() {
+    public void testIsTrue() {
         try {
-            Assertor.that(true).isTrue().and().isTrue().toThrow("not true");
+            Assertor.that(true).isTrue().toThrow();
+            Assertor.that(true).isTrue().and(false).not().isTrue().toThrow("not true");
+            Assertor.that(true).isTrue().toThrow(new IllegalArgumentException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
-    }
 
-    /**
-     * Test method for {@link AssertBoolean#isTrue()} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsTrueKOBooleanString() {
-        Assertor.that(false).isTrue().toThrow("not true");
-    }
+        Expect.exception(() -> {
+            Assertor.that(false).isTrue().toThrow("not true");
+            fail();
+        }, IllegalArgumentException.class, "not true", JUNIT_ERROR);
 
-    /**
-     * Test method for {@link AssertBoolean#isTrue()} .
-     */
-    @Test
-    public void testIsTrueOKBoolean() {
-        try {
-            Assertor.that(true).isTrue();
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
-    }
+        Expect.exception(() -> {
+            Assertor.that(false).isTrue("%s, '%s*'", "not true").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "not true, 'false'", JUNIT_ERROR);
 
-    /**
-     * Test method for {@link AssertBoolean#isTrue()} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsTrueKOBoolean() {
-        Assertor.that(false).isTrue().toThrow();
+        Expect.exception(() -> {
+            Assertor.that(false).isTrue().toThrow(new IOException("not true"));
+            fail();
+        }, IOException.class, "not true", JUNIT_ERROR);
     }
 }

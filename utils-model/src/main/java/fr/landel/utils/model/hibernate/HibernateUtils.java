@@ -18,7 +18,7 @@ import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.landel.utils.commons.stream.FunctionThrowable;
+import fr.landel.utils.commons.function.FunctionThrowable;
 import fr.landel.utils.model.exception.ModelException;
 
 /**

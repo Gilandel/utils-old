@@ -13,7 +13,7 @@
 package fr.landel.utils.mapper.core;
 
 import fr.landel.utils.commons.exception.AbstractException;
-import fr.landel.utils.commons.stream.FunctionThrowable;
+import fr.landel.utils.commons.function.FunctionThrowable;
 import fr.landel.utils.mapper.DTOIdentifier;
 import fr.landel.utils.mapper.EnumMode;
 import fr.landel.utils.mapper.MapperException;

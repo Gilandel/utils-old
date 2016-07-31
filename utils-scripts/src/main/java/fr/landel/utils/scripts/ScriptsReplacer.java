@@ -159,17 +159,17 @@ public class ScriptsReplacer {
 
             final String errorKey = "Replacement key cannot contains: ";
             AssertCharSequence<String> assertor = Assertor.that(entry.getKey());
-            assertor.doesNotContain(this.template.getExpressionOpen()).toThrow(errorKey + this.template.getExpressionOpen());
-            assertor.doesNotContain(this.template.getExpressionClose()).toThrow(errorKey + this.template.getExpressionClose());
-            assertor.doesNotContain(this.template.getOperatorThen()).toThrow(errorKey + this.template.getOperatorThen());
-            assertor.doesNotContain(this.template.getOperatorElse()).toThrow(errorKey + this.template.getOperatorElse());
+            assertor.not().contains(this.template.getExpressionOpen()).toThrow(errorKey + this.template.getExpressionOpen());
+            assertor.not().contains(this.template.getExpressionClose()).toThrow(errorKey + this.template.getExpressionClose());
+            assertor.not().contains(this.template.getOperatorThen()).toThrow(errorKey + this.template.getOperatorThen());
+            assertor.not().contains(this.template.getOperatorElse()).toThrow(errorKey + this.template.getOperatorElse());
 
             final String errorValue = "Replacement value cannot contains: ";
             assertor = Assertor.that(entry.getValue());
-            assertor.doesNotContain(this.template.getExpressionOpen()).toThrow(errorValue + this.template.getExpressionOpen());
-            assertor.doesNotContain(this.template.getExpressionClose()).toThrow(errorValue + this.template.getExpressionClose());
-            assertor.doesNotContain(this.template.getOperatorThen()).toThrow(errorValue + this.template.getOperatorThen());
-            assertor.doesNotContain(this.template.getOperatorElse()).toThrow(errorValue + this.template.getOperatorElse());
+            assertor.not().contains(this.template.getExpressionOpen()).toThrow(errorValue + this.template.getExpressionOpen());
+            assertor.not().contains(this.template.getExpressionClose()).toThrow(errorValue + this.template.getExpressionClose());
+            assertor.not().contains(this.template.getOperatorThen()).toThrow(errorValue + this.template.getOperatorThen());
+            assertor.not().contains(this.template.getOperatorElse()).toThrow(errorValue + this.template.getOperatorElse());
 
             if (this.template.getChecker() != null) {
                 this.template.getChecker().acceptThrows(entry.getValue());

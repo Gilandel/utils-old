@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.assertor;
 
+import java.util.Locale;
+
 /**
  * Assertion utility class that assists in validating arguments for booleans.
  *
@@ -28,7 +30,7 @@ public class AssertBoolean extends AssertObject<AssertBoolean, Boolean> {
      *            The condition to check
      */
     protected AssertBoolean(final Boolean condition) {
-        super(condition);
+        super(condition, TYPE.BOOLEAN);
     }
 
     /**
@@ -41,7 +43,44 @@ public class AssertBoolean extends AssertObject<AssertBoolean, Boolean> {
      * @return the operator
      */
     public Operator<AssertBoolean, Boolean> isFalse() {
-        return this.combine(Boolean.FALSE.equals(this.get()), "this expression must be false");
+        return this.isFalse(this.msg(MSG.BOOLEAN.FALSE));
+    }
+
+    /**
+     * Assert a boolean expression.
+     * 
+     * <pre>
+     * Assertor.that(i &gt; 0).isTrue().toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertBoolean, Boolean> isFalse(final CharSequence message, final Object... arguments) {
+        return this.isFalse(null, message, arguments);
+    }
+
+    /**
+     * Assert a boolean expression.
+     * 
+     * <pre>
+     * Assertor.that(i &gt; 0).isTrue().toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertBoolean, Boolean> isFalse(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> Boolean.FALSE.equals(this.get()), null, message, arguments, locale);
     }
 
     /**
@@ -55,6 +94,45 @@ public class AssertBoolean extends AssertObject<AssertBoolean, Boolean> {
      * @return the operator
      */
     public Operator<AssertBoolean, Boolean> isTrue() {
-        return this.combine(Boolean.TRUE.equals(this.get()), "this expression must be true");
+        return this.isTrue(this.msg(MSG.BOOLEAN.TRUE));
+    }
+
+    /**
+     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
+     * the test result is {@code false}.
+     * 
+     * <pre>
+     * Assertor.that(i &gt; 0).isTrue().toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertBoolean, Boolean> isTrue(final CharSequence message, final Object... arguments) {
+        return this.isTrue(null, message, arguments);
+    }
+
+    /**
+     * Assert a boolean expression, throwing {@code IllegalArgumentException} if
+     * the test result is {@code false}.
+     * 
+     * <pre>
+     * Assertor.that(i &gt; 0).isTrue().toThrow(exceptionToThrowOnError);
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<AssertBoolean, Boolean> isTrue(final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(true, () -> Boolean.TRUE.equals(this.get()), null, message, arguments, locale);
     }
 }

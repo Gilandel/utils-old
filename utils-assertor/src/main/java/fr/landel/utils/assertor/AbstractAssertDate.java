@@ -12,10 +12,11 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import fr.landel.utils.commons.Comparators;
 import fr.landel.utils.commons.DateUtils;
@@ -34,29 +35,6 @@ import fr.landel.utils.commons.DateUtils;
 public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T extends Comparable<T>> extends AssertObject<A, T> {
 
     /**
-     * Supported {@link Calendar} field
-     * 
-     * @see Calendar#ERA
-     * @see Calendar#YEAR
-     * @see Calendar#MONTH
-     * @see Calendar#WEEK_OF_YEAR
-     * @see Calendar#WEEK_OF_MONTH
-     * @see Calendar#DATE
-     * @see Calendar#DAY_OF_MONTH
-     * @see Calendar#DAY_OF_YEAR
-     * @see Calendar#DAY_OF_WEEK
-     * @see Calendar#DAY_OF_WEEK_IN_MONTH
-     * @see Calendar#HOUR
-     * @see Calendar#HOUR_OF_DAY
-     * @see Calendar#MINUTE
-     * @see Calendar#SECOND
-     * @see Calendar#MILLISECOND
-     */
-    public static final List<Integer> SUPPORTED_FIELDS = Arrays.asList(Calendar.ERA, Calendar.YEAR, Calendar.MONTH, Calendar.WEEK_OF_YEAR,
-            Calendar.WEEK_OF_MONTH, Calendar.DATE, Calendar.DAY_OF_MONTH, Calendar.DAY_OF_YEAR, Calendar.DAY_OF_WEEK,
-            Calendar.DAY_OF_WEEK_IN_MONTH, Calendar.HOUR, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND);
-
-    /**
      * 
      * Constructor
      *
@@ -64,21 +42,21 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
      *            the date or calendar input object
      */
     protected AbstractAssertDate(final T object) {
-        super(object);
+        super(object, TYPE.DATE);
     }
 
-    private static <T> boolean isAround(final T date1, final T date2, final int calendarField, final int calendarAmount,
-            final int compare) {
+    private static <T> boolean isAround(final T date1, final T date, final int calendarField, final int calendarAmount, final int compare) {
 
         Calendar calendar1;
         Calendar calendar2;
+        final Class<?> clazz = date1.getClass();
 
-        if (Date.class.isAssignableFrom(date1.getClass())) {
+        if (Date.class.isAssignableFrom(clazz)) {
             calendar1 = DateUtils.getCalendar((Date) date1);
-            calendar2 = DateUtils.getCalendar((Date) date2);
-        } else if (Calendar.class.isAssignableFrom(date1.getClass())) {
+            calendar2 = DateUtils.getCalendar((Date) date);
+        } else if (Calendar.class.isAssignableFrom(clazz)) {
             calendar1 = (Calendar) ((Calendar) date1).clone();
-            calendar2 = (Calendar) ((Calendar) date2).clone();
+            calendar2 = (Calendar) ((Calendar) date).clone();
         } else {
             return false;
         }
@@ -96,157 +74,380 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
     /**
      * Check if the first date is around the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @param calendarField
      *            the calendar field
      * @param calendarAmount
      *            the calendar amount
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
      * @return the operator
      */
-    protected Operator<A, T> isAround(final T date2, final int calendarField, final int calendarAmount) {
+    protected Operator<A, T> isAround(final T date, final int calendarField, final int calendarAmount, final Locale locale,
+            final CharSequence message, final Object... arguments) {
 
-        final int compare = Comparators.compare(this.get(), date2);
+        final boolean calendarFieldOk = calendarField == -1 || (CALENDAR_FIELDS.containsKey(calendarField) && calendarAmount != 0);
+        boolean prerequisites = true;
 
-        boolean condition = true;
-        final StringBuilder message = new StringBuilder();
-
-        if (compare != 0) {
-            if (this.get() != null && date2 != null && calendarField != -1) {
-                if (!SUPPORTED_FIELDS.contains(calendarField)) {
-                    condition = false;
-                    message.append("calendarField isn't correct see Calendar fields' list");
-                } else if (calendarAmount == 0) {
-                    condition = false;
-                    message.append("calendarAmount cannot be equal to 0");
-                } else if (!isAround(this.get(), date2, calendarField, calendarAmount, compare)) {
-                    condition = false;
-                    message.append("date '").append(this.getParam()).append("' is not around date '")
-                            .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'");
-                }
+        Object[] parameters = new Object[] {date};
+        if (calendarField != -1) {
+            if (CALENDAR_FIELDS.containsKey(calendarField)) {
+                parameters = ArrayUtils.add(parameters, new Object[] {CALENDAR_FIELDS.get(calendarField), calendarAmount});
             } else {
-                condition = false;
-                message.append("date '").append(this.getParam()).append("' is not equal to date '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'");
+                parameters = ArrayUtils.add(parameters, new Object[] {calendarField, calendarAmount});
             }
+            prerequisites = this.get() != null && date != null;
         }
-        return this.combine(condition, message, date2, calendarField, calendarAmount);
+
+        return this.combine(prerequisites && calendarFieldOk, () -> {
+            boolean result = false;
+            if (this.get() == date) {
+                result = true;
+            } else {
+                final int compare = Comparators.compare(this.get(), date);
+                if (compare == 0) {
+                    result = true;
+                } else if (calendarField != -1) {
+                    result = AbstractAssertDate.isAround(this.get(), date, calendarField, calendarAmount, compare);
+                }
+            }
+            return result;
+        }, () -> {
+            if (calendarField == -1) {
+                return this.msg(MSG.DATE.EQUALS, true);
+            } else {
+                return this.msg(MSG.DATE.AROUND, true);
+            }
+        }, message, arguments, locale, parameters);
     }
 
     /**
      * Check if the first date is NOT around the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @param calendarField
      *            the calendar field
      * @param calendarAmount
      *            the calendar amount
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
      * @return the operator
      */
-    protected Operator<A, T> isNotAround(final T date2, final int calendarField, final int calendarAmount) {
+    protected Operator<A, T> isNotAround(final T date, final int calendarField, final int calendarAmount, final Locale locale,
+            final CharSequence message, final Object... arguments) {
 
-        final int compare = Comparators.compare(this.get(), date2);
+        final boolean calendarFieldOk = calendarField == -1 || (CALENDAR_FIELDS.containsKey(calendarField) && calendarAmount != 0);
+        boolean prerequisites = true;
 
-        boolean condition = true;
-        final StringBuilder message = new StringBuilder();
-
-        if (compare != 0 && this.get() != null && date2 != null && calendarField != -1) {
-            if (!SUPPORTED_FIELDS.contains(calendarField)) {
-                condition = false;
-                message.append("calendarField isn't correct see Calendar fields' list");
-            } else if (calendarAmount == 0) {
-                condition = false;
-                message.append("calendarAmount cannot be equal to 0");
-            } else if (AbstractAssertDate.isAround(this.get(), date2, calendarField, calendarAmount, compare)) {
-                condition = false;
-                message.append("date '").append(this.getParam()).append("' is around date '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'");
+        Object[] parameters = new Object[] {date};
+        if (calendarField != -1) {
+            if (CALENDAR_FIELDS.containsKey(calendarField)) {
+                parameters = ArrayUtils.add(parameters, new Object[] {CALENDAR_FIELDS.get(calendarField), calendarAmount});
+            } else {
+                parameters = ArrayUtils.add(parameters, new Object[] {calendarField, calendarAmount});
             }
-        } else if (compare == 0) {
-            condition = false;
-            message.append("date '").append(this.getParam()).append("' is equal to date '")
-                    .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'");
+            prerequisites = this.get() != null && date != null;
         }
 
-        return this.combine(condition, message, date2, calendarField, calendarAmount);
+        return this.combine(prerequisites && calendarFieldOk, () -> {
+            boolean result = true;
+            if (this.get() == date) {
+                result = false;
+            } else {
+                final int compare = Comparators.compare(this.get(), date);
+                if (compare == 0) {
+                    result = false;
+                } else if (calendarField != -1) {
+                    result = !AbstractAssertDate.isAround(this.get(), date, calendarField, calendarAmount, compare);
+                }
+            }
+            return result;
+        }, () -> {
+            if (calendarField == -1) {
+                return this.msg(MSG.DATE.EQUALS + MSG.NOT, true);
+            } else {
+                return this.msg(MSG.DATE.AROUND + MSG.NOT, true);
+            }
+        }, message, arguments, locale, parameters);
     }
 
     /**
      * Check if the first date is equal to the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @return the operator
      */
-    public Operator<A, T> isEqual(final T date2) {
-        return this.isAround(date2, -1, -1);
+    public Operator<A, T> isEqual(final T date) {
+        return this.isEqual(date, this.msg(MSG.DATE.EQUALS, this.getParam(), this.getNextParam(1, TYPE.DATE)));
+    }
+
+    /**
+     * Check if the first date is equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<A, T> isEqual(final T date, final CharSequence message, final Object... arguments) {
+        return this.isEqual(date, null, message, arguments);
+    }
+
+    /**
+     * Check if the first date is equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<A, T> isEqual(final T date, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.isAround(date, -1, -1, locale, message, arguments);
     }
 
     /**
      * Check if the first date is NOT equal to the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @return the operator
      */
-    public Operator<A, T> isNotEqual(final T date2) {
-        return this.isNotAround(date2, -1, -1);
+    public Operator<A, T> isNotEqual(final T date) {
+        return this.isNotEqual(date, this.msg(MSG.DATE.EQUALS + MSG.NOT, this.getParam(), this.getNextParam(1, TYPE.DATE)));
+    }
+
+    /**
+     * Check if the first date is NOT equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<A, T> isNotEqual(final T date, final CharSequence message, final Object... arguments) {
+        return this.isNotEqual(date, null, message, arguments);
+    }
+
+    /**
+     * Check if the first date is NOT equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    public Operator<A, T> isNotEqual(final T date, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.isNotAround(date, -1, -1, locale, message, arguments);
     }
 
     /**
      * Check if the first date is after the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @return the operator
      */
-    protected Operator<A, T> isAfter(final T date2) {
-        return this.combine(this.get() != null && date2 != null && Comparators.compare(this.get(), date2) > 0,
-                new StringBuilder("date '").append(this.getParam()).append("' is not after date '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                date2);
+    protected Operator<A, T> isAfter(final T date) {
+        return this.isAfter(date, this.msg(MSG.DATE.AFTER, this.getParam(), this.getNextParam(1, TYPE.DATE)));
+    }
+
+    /**
+     * Check if the first date is after the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isAfter(final T date, final CharSequence message, final Object... arguments) {
+        return this.isAfter(date, null, message, arguments);
+    }
+
+    /**
+     * Check if the first date is after the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isAfter(final T date, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(this.get() != null && date != null, () -> Comparators.compare(this.get(), date) > 0,
+                () -> this.msg(MSG.DATE.AFTER), message, arguments, locale, date);
     }
 
     /**
      * Check if the first date is after or equal to the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @return the operator
      */
-    protected Operator<A, T> isAfterOrEqual(final T date2) {
-        return this.combine(this.get() != null && date2 != null && Comparators.compare(this.get(), date2) >= 0,
-                new StringBuilder("date '").append(this.getParam()).append("' is not after or equal to date '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                date2);
+    protected Operator<A, T> isAfterOrEquals(final T date) {
+        return this.isAfterOrEquals(date, this.msg(MSG.DATE.AFTER_OR_EQUALS, this.getParam(), this.getNextParam(1, TYPE.DATE)));
+    }
+
+    /**
+     * Check if the first date is after or equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isAfterOrEquals(final T date, final CharSequence message, final Object... arguments) {
+        return this.isAfterOrEquals(date, null, message, arguments);
+    }
+
+    /**
+     * Check if the first date is after or equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isAfterOrEquals(final T date, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(this.get() != null && date != null, () -> Comparators.compare(this.get(), date) >= 0,
+                () -> this.msg(MSG.DATE.AFTER_OR_EQUALS), message, arguments, locale, date);
     }
 
     /**
      * Check if the first date is before the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @return the operator
      */
-    protected Operator<A, T> isBefore(final T date2) {
-        return this.combine(this.get() != null && date2 != null && Comparators.compare(this.get(), date2) < 0,
-                new StringBuilder("date '").append(this.getParam()).append("' is not before date '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                date2);
+    protected Operator<A, T> isBefore(final T date) {
+        return this.isBefore(date, this.msg(MSG.DATE.BEFORE, this.getParam(), this.getNextParam(1, TYPE.DATE)));
+    }
+
+    /**
+     * Check if the first date is before the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isBefore(final T date, final CharSequence message, final Object... arguments) {
+        return this.isBefore(date, null, message, arguments);
+    }
+
+    /**
+     * Check if the first date is before the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isBefore(final T date, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(this.get() != null && date != null, () -> Comparators.compare(this.get(), date) < 0,
+                () -> this.msg(MSG.DATE.BEFORE), message, arguments, locale, date);
     }
 
     /**
      * Check if the first date is before or equal to the second one.
      * 
-     * @param date2
+     * @param date
      *            the second date
      * @return the operator
      */
-    protected Operator<A, T> isBeforeOrEqual(final T date2) {
-        return this.combine(this.get() != null && date2 != null && Comparators.compare(this.get(), date2) <= 0,
-                new StringBuilder("date '").append(this.getParam()).append("' is not before or equal to date '")
-                        .append(AssertObject.getParam(this.getParamIndex() + 1)).append("'"),
-                date2);
+    protected Operator<A, T> isBeforeOrEquals(final T date) {
+        return this.isBeforeOrEquals(date, this.msg(MSG.DATE.BEFORE_OR_EQUALS, this.getParam(), this.getNextParam(1, TYPE.DATE)));
+    }
+
+    /**
+     * Check if the first date is before or equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isBeforeOrEquals(final T date, final CharSequence message, final Object... arguments) {
+        return this.isBeforeOrEquals(date, null, message, arguments);
+    }
+
+    /**
+     * Check if the first date is before or equal to the second one.
+     * 
+     * @param date
+     *            the second date
+     * @param locale
+     *            The locale of the message (only applied for this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return the operator
+     */
+    protected Operator<A, T> isBeforeOrEquals(final T date, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.combine(this.get() != null && date != null, () -> Comparators.compare(this.get(), date) <= 0,
+                () -> this.msg(MSG.DATE.BEFORE_OR_EQUALS, true), message, arguments, locale, date);
     }
 }

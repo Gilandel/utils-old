@@ -18,11 +18,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Test;
+
+import fr.landel.utils.assertor.Constants.TYPE;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check assertor
@@ -31,7 +40,7 @@ import org.junit.Test;
  * @author Gilles Landel
  *
  */
-public class AssertObjectTest {
+public class AssertObjectTest extends AbstractTest {
 
     /**
      * Test method for {@link AssertObject#getLocale()}
@@ -40,9 +49,19 @@ public class AssertObjectTest {
     @Test
     public void testLocale() {
         try {
+            Assertor.setLocale(Locale.US);
             assertEquals(Locale.US, Assertor.getLocale());
+            assertEquals("Test 3.14", Assertor.that(1).isNotEqual(1, "Test %.2f", Math.PI).getErrors());
+            assertEquals("Test 3,14", Assertor.that(1).isNotEqual(1, Locale.FRANCE, "Test %.2f", Math.PI).getErrors());
+
             Assertor.setLocale(Locale.FRANCE);
             assertEquals(Locale.FRANCE, Assertor.getLocale());
+            assertEquals("Test 3,14", Assertor.that(1).isNotEqual(1, "Test %.2f", Math.PI).getErrors());
+            assertEquals("Test 3.14", Assertor.that(1).isNotEqual(1, Locale.US, "Test %.2f", Math.PI).getErrors());
+
+            // Reset
+            Assertor.setLocale(Locale.getDefault());
+            assertEquals(Locale.getDefault(), Assertor.getLocale());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -55,10 +74,32 @@ public class AssertObjectTest {
     @Test
     public void testAssertionPrefix() {
         try {
-            assertEquals("[Assertion failed] ", Assertor.getAssertionPrefix());
-            Assertor.setAssertionPrefix("");
             assertEquals("", Assertor.getAssertionPrefix());
-            Assertor.setAssertionPrefix("[Assertion failed] ");
+            Assertor.setAssertionPrefix("[");
+            assertEquals("[", Assertor.getAssertionPrefix());
+            assertEquals("[Test", Assertor.that(1).isNotEqual(1, "Test").getErrors());
+
+            Assertor.setAssertionPrefix("");
+            assertEquals("Test", Assertor.that(1).isNotEqual(1, "Test").getErrors());
+        } catch (IllegalArgumentException e) {
+            fail("The test isn't correct");
+        }
+    }
+
+    /**
+     * Test method for {@link AssertObject#getAssertionSuffix()}
+     * {@link AssertObject#setAssertionSuffix(String)}.
+     */
+    @Test
+    public void testAssertionSuffix() {
+        try {
+            assertEquals("", Assertor.getAssertionSuffix());
+            Assertor.setAssertionSuffix("]");
+            assertEquals("]", Assertor.getAssertionSuffix());
+            assertEquals("Test]", Assertor.that(1).isNotEqual(1, "Test").getErrors());
+
+            Assertor.setAssertionSuffix("");
+            assertEquals("Test", Assertor.that(1).isNotEqual(1, "Test").getErrors());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -73,30 +114,96 @@ public class AssertObjectTest {
     }
 
     /**
-     * Test method for {@link AssertObject#combine()} .
+     * Test method for {@link AssertObject#combine()}.
      */
     @Test
     public void testCombine() {
         AssertCharSequence<String> assertor = Assertor.that("text");
 
-        // intermediate condition (no call of getResult or toThrow), so no reset
+        // intermediate condition (no call of isOK or toThrow), so no reset
         // and this condition is used in the next one
         assertor.contains("__");
-        assertFalse(assertor.contains("ext").getResult());
-        assertTrue(assertor.contains("__").or().contains("ext").getResult());
-        assertTrue(assertor.contains("__").xor().contains("ext").getResult());
+        assertFalse(assertor.contains("ext").isOK());
+        assertTrue(assertor.contains("__").or().contains("ext").isOK());
+        assertTrue(assertor.contains("__").xor().contains("ext").isOK());
 
-        assertFalse(assertor.contains("__").or().contains("ext").and("toto").contains("to").and().contains("r").getResult());
-        assertTrue(assertor.contains("__").xor().contains("ext").and("toti").contains("to").and().contains("i").getResult());
-        assertFalse(assertor.contains("ext").xor().contains("ext").and("toti").contains("to").and().contains("i").getResult());
-        assertFalse(assertor.contains("__").xor().contains("__").and("toti").contains("to").and().contains("i").getResult());
+        assertFalse(assertor.contains("__").or().contains("ext").and("toto").contains("to").and().contains("r").isOK());
+        assertTrue(assertor.contains("__").xor().contains("ext").and("toti").contains("to").and().contains("i").isOK());
+        assertFalse(assertor.contains("ext").xor().contains("ext").and("toti").contains("to").and().contains("i").isOK());
+        assertFalse(assertor.contains("__").xor().contains("__").and("toti").contains("to").and().contains("i").isOK());
 
         assertor = Assertor.that("");
         assertor.setCondition(-1);
-        assertTrue(assertor.combine(false, "").getResult());
-        assertEquals(0, assertor.getCondition()); // clear
-        assertor.setValid(false);
-        assertFalse(assertor.combine(false, "").getResult());
+        assertTrue(assertor.combine(true, () -> false, null, "").isOK());
+        assertEquals(0, assertor.getCondition()); // cleared
+        assertFalse(assertor.combine(true, () -> false, null, "").isOK());
+
+        // basic tests (XOR / NOT) + prerequisites == true
+        assertTrue(assertor.combine(true, null, null, "").isOK());
+        assertTrue(assertor.combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(true, () -> false, null, "").isOK());
+
+        assertFalse(assertor.not().combine(true, null, null, "").isOK());
+        assertFalse(assertor.not().combine(true, () -> true, null, "").isOK());
+        assertTrue(assertor.not().combine(true, () -> false, null, "").isOK());
+
+        // prerequisites == false
+        assertFalse(assertor.combine(false, null, null, "").isOK());
+        assertFalse(assertor.not().combine(false, null, null, "").isOK());
+        assertFalse(assertor.not().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.not().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.not().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.not().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, () -> false, null, "").isOK());
+
+        // previous prerequisites == false
+        assertFalse(assertor.combine(false, null, null, "").and().combine(true, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().combine(true, () -> false, null, "").isOK());
+
+        assertFalse(assertor.combine(false, null, null, "").or().combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").xor().combine(true, () -> true, null, "").isOK());
+
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(true, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(true, () -> false, null, "").isOK());
+
+        assertFalse(assertor.combine(false, null, null, "").and().combine(false, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(false, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().not().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and().combine(false, () -> false, null, "").isOK());
+
+        // previous assertor with prerequisites == false
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(true, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(true, () -> false, null, "").isOK());
+
+        assertFalse(assertor.combine(false, null, null, "").or("").combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").xor("").combine(true, () -> true, null, "").isOK());
+
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(true, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(true, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(true, () -> false, null, "").isOK());
+
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(false, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(false, null, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").not().combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(false, () -> true, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(false, () -> false, null, "").isOK());
+        assertFalse(assertor.combine(false, null, null, "").and("").combine(false, () -> false, null, "").isOK());
     }
 
     /**
@@ -271,6 +378,8 @@ public class AssertObjectTest {
             StringBuilder sb1 = new StringBuilder("texte4");
             StringBuilder sb2 = new StringBuilder("texte4");
             Assertor.that(sb1).isEqual(sb2).toThrow(new IOException());
+
+            Assertor.that(Color.BLACK).isEqual(new Color(0)).toThrow(new IOException());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -367,22 +476,21 @@ public class AssertObjectTest {
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
-    }
 
-    /**
-     * Test method for {@link AssertObject#isInstanceOf(Class) )} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsInstanceOfKOClassOfQObjectString() {
-        Assertor.that(new Exception()).isInstanceOf(IOException.class).toThrow("not instance of");
-    }
+        Expect.exception(() -> {
+            Assertor.that(new Exception()).isInstanceOf(IOException.class).toThrow("not instance of");
+            fail();
+        }, IllegalArgumentException.class, "not instance of");
 
-    /**
-     * Test method for {@link AssertObject#isInstanceOf(Class) )} .
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsInstanceOfKONull() {
-        Assertor.that((Object) null).isInstanceOf(IOException.class).toThrow("not instance of");
+        Expect.exception(() -> {
+            Assertor.that((Object) null).isInstanceOf(IOException.class).toThrow("not instance of");
+            fail();
+        }, IllegalArgumentException.class, "not instance of");
+
+        Expect.exception(() -> {
+            Assertor.that(new Exception()).isInstanceOf(null).toThrow("not instance of");
+            fail();
+        }, IllegalArgumentException.class, "not instance of");
     }
 
     /**
@@ -394,26 +502,49 @@ public class AssertObjectTest {
     public void testGetMessage() {
         // TEST GET MESSAGE
 
+        Expect.exception(() -> {
+            Assertor.that("texte11").not().isEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
+            fail();
+        }, IllegalArgumentException.class, "texte 'texte11' is not equal to 'texte11', args");
+
+        Expect.exception(() -> {
+            Assertor.that("texte11").isEqual(true).toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
+            fail();
+        }, IllegalArgumentException.class, "texte 'true' is not equal to 'texte11', args");
+
         try {
-            Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$p' is not equal to '%1$p', %s", "args");
+            Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals("[Assertion failed] texte 'texte11' is not equal to 'texte11', args", e.getMessage());
+            assertEquals("texte 'texte11' is not equal to 'texte11', args", e.getMessage());
         }
 
         try {
-            Assertor.that("texte11").isEqual("texte12").toThrow("texte '%2$p' is not equal to '%1$p' or '%p' != '%p'%p...%0$p%3$p");
+            Assertor.that("texte11").isEqual("texte12").toThrow("texte '%2$s*' is not equal to '%1$s*' or '%s*' != '%s*'...");
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals("[Assertion failed] texte 'texte12' is not equal to 'texte11' or 'texte11' != 'texte12'...", e.getMessage());
+            assertEquals("texte 'texte12' is not equal to 'texte11' or 'texte11' != 'texte12'...", e.getMessage());
         }
 
-        try {
+        Expect.exception(() -> {
             Assertor.that("texte11").isBlank().or().isNotEqual("texte11").toThrow();
+            fail("Expect an exception");
+        }, IllegalArgumentException.class,
+                "the char sequence 'texte11' should be null, empty or blank OR the object 'texte11' should be NOT equal to 'texte11'");
+
+        try {
+            Assertor.that("texte11").isNotBlank().and().isNotEqual("texte11").toThrow();
+            fail("Expect an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("the object 'texte11' should be NOT equal to 'texte11'", e.getMessage());
+        }
+
+        try {
+            Assertor.that("texte11").isBlank().or().not().isEqual("texte11").toThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals(
-                    "[Assertion failed] this String argument 'texte11' must be null, empty or blank OR Object 'texte11' is equal to Object 'texte11'.",
+                    "the char sequence 'texte11' should be null, empty or blank OR NOT (the object 'texte11' should be equal to 'texte11')",
                     e.getMessage());
         }
 
@@ -422,9 +553,24 @@ public class AssertObjectTest {
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals(
-                    "[Assertion failed] this String argument 'texte11' must be null, empty or blank OR Object 'texte12' is not equal to Object 'texte13'.",
+                    "(the char sequence 'texte11' should be null, empty or blank) OR (the object 'texte12' should be equal to 'texte12')",
                     e.getMessage());
         }
+
+        Expect.exception(() -> {
+            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
+            fail("Expect an exception");
+        }, IllegalArgumentException.class,
+                "(the char sequence 'texte11' should be null, empty or blank) OR (NOT (the char sequence 'texte12' should start with 'text') OR the char sequence 'texte12' should be null, empty or blank)",
+                JUNIT_ERROR);
+
+        // prerequisites == false
+        Expect.exception(() -> {
+            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
+            fail("Expect an exception");
+        }, IllegalArgumentException.class,
+                "(the char sequence 'texte11' should be null, empty or blank) OR (NOT (the char sequence 'texte12' should start with 'text') OR the char sequence 'texte12' should be null, empty or blank)",
+                JUNIT_ERROR);
     }
 
     /**
@@ -434,7 +580,7 @@ public class AssertObjectTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testGetMessageNullObject() {
-        Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$p' is not equal to '%1$p', %s", (Object[]) null);
+        Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", (Object[]) null);
     }
 
     /**
@@ -442,31 +588,105 @@ public class AssertObjectTest {
      */
     @Test
     public void testNot() {
-        assertTrue(Assertor.that("text").not().isNull().getResult());
-        assertTrue(Assertor.that("text").not().isNull().and().isNotNull().getResult());
-        assertTrue(Assertor.that("text").not().not().isNotNull().getResult());
-        assertFalse(Assertor.that("text").not().isNotNull().getResult());
+        assertTrue(Assertor.that("text").not().isNull().isOK());
+        assertTrue(Assertor.that("text").not().isNull().and().isNotNull().isOK());
+        assertTrue(Assertor.that("text").not().not().isNotNull().isOK());
+        assertFalse(Assertor.that("text").not().isNotNull().isOK());
 
         Expect.exception(() -> {
-            Assertor.that("").not().combine(Assertor.that(""));
+            Assertor.that("").not().combine(Constants.AND, Assertor.that(""));
             fail();
         }, IllegalArgumentException.class, "'Not' cannot be followed by a condition");
     }
 
     /**
-     * Test method for {@link AssertObject#validate} .
+     * Test method for {@link AssertObject#validates} .
      */
     @Test
-    public void testValidate() {
-        assertTrue(Assertor.that((Object) 0).validate((Object obj) -> {
+    public void testValidates() {
+        assertTrue(Assertor.that((Object) 0).validates((obj) -> {
             return obj != null;
-        }).getResult());
+        }).isOK());
 
-        assertFalse(Assertor.that("/var/log/dev.log").validate((String path) -> {
+        assertFalse(Assertor.that("/var/log/dev.log").validates((path) -> {
             if (!new File(path).exists()) {
                 throw new IOException();
             }
             return true;
-        }).getResult());
+        }).isOK());
+
+        assertFalse(Assertor.that("/var/log/dev.log").validates(null).isOK());
+
+        assertTrue(Assertor.that((Object) null).validates((obj) -> {
+            return obj == null;
+        }, "Path is invalid").isOK());
+
+        assertTrue(Assertor.that((Object) 0).validates((obj) -> {
+            return obj != null;
+        }, "Path is invalid").isOK());
+
+        assertFalse(Assertor.that("/var/log/dev.log").validates((path) -> {
+            if (!new File(path).exists()) {
+                throw new IOException();
+            }
+            return true;
+        }, "Path '%1$s*' provide by '%s' is invalid", "John").isOK());
+
+        assertTrue(Assertor.that((Object) 0).validates((obj) -> {
+            return obj != null;
+        }, Locale.US, "Path is invalid").isOK());
+
+        assertEquals("Path '/var/log/dev.log' provided by 'John' is invalid in '10.27'ms",
+                Assertor.that("/var/log/dev.log").validates((path) -> {
+                    if (!new File(path).exists()) {
+                        throw new IOException();
+                    }
+                    return true;
+                }, Locale.US, "Path '%1$s*' provided by '%s' is invalid in '%.2f'ms", "John", 10.26589f).getErrors());
+
+        assertEquals("Path '/var/log/dev.log' provided by 'John' is invalid in '10,27'ms",
+                Assertor.that("/var/log/dev.log").validates((path) -> {
+                    if (!new File(path).exists()) {
+                        throw new IOException();
+                    }
+                    return true;
+                }, Locale.FRANCE, "Path '%1$s*' provided by '%s' is invalid in '%.2f'ms", "John", 10.26589f).getErrors());
+    }
+
+    /**
+     * Test method for {@link AssertObject#getType} .
+     */
+    @Test
+    public void testGetType() {
+        assertEquals(TYPE.BOOLEAN, AssertObject.getType(true));
+        assertEquals(TYPE.BOOLEAN, AssertObject.getType(Boolean.FALSE));
+
+        assertEquals(TYPE.NUMBER_INTEGER, AssertObject.getType((byte) 1));
+        assertEquals(TYPE.NUMBER_INTEGER, AssertObject.getType((short) 1));
+        assertEquals(TYPE.NUMBER_INTEGER, AssertObject.getType(1));
+        assertEquals(TYPE.NUMBER_INTEGER, AssertObject.getType(1L));
+        assertEquals(TYPE.NUMBER_INTEGER, AssertObject.getType(new BigInteger("12")));
+
+        assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(3.25f));
+        assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(3.25d));
+        assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(new BigDecimal(12.25d)));
+
+        assertEquals(TYPE.ARRAY, AssertObject.getType(new Object[0]));
+
+        assertEquals(TYPE.ITERABLE, AssertObject.getType(Collections.EMPTY_LIST));
+        assertEquals(TYPE.ITERABLE, AssertObject.getType(Collections.EMPTY_SET));
+
+        assertEquals(TYPE.MAP, AssertObject.getType(Collections.EMPTY_MAP));
+
+        assertEquals(TYPE.DATE, AssertObject.getType(new Date()));
+        assertEquals(TYPE.DATE, AssertObject.getType(Calendar.getInstance()));
+
+        assertEquals(TYPE.CHAR_SEQUENCE, AssertObject.getType(""));
+        assertEquals(TYPE.CHAR_SEQUENCE, AssertObject.getType(new StringBuilder()));
+
+        assertEquals(TYPE.CLASS, AssertObject.getType(new Date().getClass()));
+
+        assertEquals(TYPE.UNKNOWN, AssertObject.getType(Color.BLACK));
+        assertEquals(TYPE.UNKNOWN, AssertObject.getType(null));
     }
 }

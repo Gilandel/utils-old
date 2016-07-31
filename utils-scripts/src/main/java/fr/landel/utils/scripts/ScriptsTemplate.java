@@ -14,7 +14,7 @@ package fr.landel.utils.scripts;
 
 import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.commons.StringUtils;
-import fr.landel.utils.commons.stream.ConsumerThrowable;
+import fr.landel.utils.commons.function.ConsumerThrowable;
 
 public interface ScriptsTemplate {
 

@@ -45,7 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.landel.utils.assertor.Assertor;
-import fr.landel.utils.assertor.Expect;
+import fr.landel.utils.assertor.expect.Expect;
 import fr.landel.utils.commons.CastGenerics;
 import fr.landel.utils.mapper.MapperException;
 
@@ -532,7 +532,7 @@ public class ReflectUtilsTest {
 
         assertNotNull(classes);
 
-        Assertor.that(classes).contains(new Class<?>[] {Observable.class, Collection.class}).toThrow();
+        Assertor.that(classes).containsAll(new Class<?>[] {Observable.class, Collection.class}).toThrow();
     }
 
     /**

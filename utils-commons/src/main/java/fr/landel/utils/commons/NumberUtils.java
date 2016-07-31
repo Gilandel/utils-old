@@ -166,6 +166,14 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         return null;
     }
 
+    /**
+     * Check if the string contains an integer number ({@link Byte},
+     * {@link Short}, {@link Integer}, {@link Long} or {@link BigInteger})
+     * 
+     * @param string
+     *            the input String
+     * @return true, if integer number
+     */
     public static boolean isNumberInteger(final String string) {
         if (StringUtils.isEmpty(string)) {
             return false;
@@ -182,6 +190,52 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         return true;
     }
 
+    /**
+     * Check if the class is an integer number class ({@link Byte},
+     * {@link Short}, {@link Integer}, {@link Long} or {@link BigInteger})
+     * 
+     * @param clazz
+     *            the input class
+     * @return true, if integer number
+     */
+    public static boolean isNumberInteger(final Class<?> clazz) {
+        boolean result = false;
+        if (clazz != null) {
+            if (Integer.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (Long.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (Byte.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (Short.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (BigInteger.class.isAssignableFrom(clazz)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Check if the number is an integer number ({@link Byte}, {@link Short},
+     * {@link Integer}, {@link Long} or {@link BigInteger})
+     * 
+     * @param object
+     *            the input object
+     * @return true, if integer number
+     */
+    public static boolean isNumberInteger(final Object object) {
+        return isNumberInteger(ClassUtils.getClass(object));
+    }
+
+    /**
+     * Check if the string contains a decimal number ({@link Float},
+     * {@link Double}, {@link BigDecimal})
+     * 
+     * @param string
+     *            the input String
+     * @return true, if integer number
+     */
     public static boolean isNumberDecimal(final String string) {
         if (StringUtils.isEmpty(string)) {
             return false;
@@ -196,6 +250,40 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
             }
         }
         return true;
+    }
+
+    /**
+     * Check if the class is a decimal number class ({@link Float},
+     * {@link Double}, {@link BigDecimal})
+     * 
+     * @param clazz
+     *            the input class
+     * @return true, if integer number
+     */
+    public static boolean isNumberDecimal(final Class<?> clazz) {
+        boolean result = false;
+        if (clazz != null) {
+            if (Float.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (Double.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (BigDecimal.class.isAssignableFrom(clazz)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Check if the number is a decimal number ({@link Float}, {@link Double},
+     * {@link BigDecimal})
+     * 
+     * @param object
+     *            the input object
+     * @return true, if integer number
+     */
+    public static boolean isNumberDecimal(final Object object) {
+        return isNumberDecimal(ClassUtils.getClass(object));
     }
 
     /**

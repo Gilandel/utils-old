@@ -41,9 +41,7 @@ import org.junit.Test;
 public class ClassUtilsTest {
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#getSuperclasses(java.lang.Class)}
-     * .
+     * Test method for {@link ClassUtils#getSuperclasses(java.lang.Class)} .
      */
     @Test
     public void testGetSuperclasses() {
@@ -79,7 +77,7 @@ public class ClassUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#getCommonSuperclasses(java.lang.Class, java.lang.Class)}
+     * {@link ClassUtils#getCommonSuperclasses(java.lang.Class, java.lang.Class)}
      * .
      */
     @Test
@@ -100,8 +98,7 @@ public class ClassUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#isAnyNull(Object...)} .
+     * Test method for {@link ClassUtils#isAnyNull(Object...)} .
      */
     @Test
     public void testIsAnyNull() {
@@ -115,8 +112,7 @@ public class ClassUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#isAllNull(Object...)} .
+     * Test method for {@link ClassUtils#isAllNull(Object...)} .
      */
     @Test
     public void testIsAllNull() {
@@ -131,8 +127,7 @@ public class ClassUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#isNoneNull(Object...)} .
+     * Test method for {@link ClassUtils#isNoneNull(Object...)} .
      */
     @Test
     public void testIsNoneNull() {
@@ -145,5 +140,19 @@ public class ClassUtilsTest {
         assertTrue(ClassUtils.isNoneNull(ClassUtilsTest.class, ClassUtils.class));
         assertFalse(ClassUtils.isNoneNull(ClassUtilsTest.class, ClassUtils.class, null));
         assertFalse(ClassUtils.isNoneNull(null, null, null));
+    }
+
+    /**
+     * Test method for {@link ClassUtils#getName(Object)} .
+     */
+    @Test
+    public void testGetName() {
+        assertEquals("null", ClassUtils.getName(null));
+        assertEquals("java.lang.Integer", ClassUtils.getName(3));
+        assertEquals("java.lang.Integer", ClassUtils.getCanonicalName(3));
+        assertEquals("Integer", ClassUtils.getSimpleName(3));
+        assertEquals("[Ljava.lang.Integer;", ClassUtils.getName(new Integer[] {3}));
+        assertEquals("java.lang.Integer[]", ClassUtils.getTypeName(new Integer[] {3}));
+        assertEquals("java.lang", ClassUtils.getPackageName(3));
     }
 }

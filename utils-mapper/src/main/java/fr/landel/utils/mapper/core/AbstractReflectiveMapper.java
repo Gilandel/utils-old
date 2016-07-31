@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.landel.utils.commons.exception.AbstractException;
-import fr.landel.utils.commons.stream.FunctionThrowable;
+import fr.landel.utils.commons.function.FunctionThrowable;
 import fr.landel.utils.mapper.DTOIdentifier;
 import fr.landel.utils.mapper.EnumMode;
 import fr.landel.utils.mapper.MapperException;

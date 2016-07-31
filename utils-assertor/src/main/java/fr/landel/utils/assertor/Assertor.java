@@ -22,96 +22,106 @@ import java.util.Map;
  *
  * <p>
  * Useful for identifying programmer errors early and clearly at runtime.
+ * </p>
  *
  * <p>
  * For example, if the contract of a public method states it does not allow
  * {@code null} arguments, {@code Assert} can be used to validate that contract.
  * Doing this clearly indicates a contract violation when it occurs and protects
  * the class's invariants.
- *
+ * </p>
+ * 
  * <p>
  * Typically used to validate method arguments rather than configuration
  * properties, to check for cases that are usually programmer errors rather than
  * configuration errors. In contrast to configuration initialization code, there
  * is usually no point in falling back to defaults in such methods.
- *
+ * </p>
+ * 
  * <p>
  * This class is similar to JUnit's assertion library. If an argument value is
  * deemed invalid, an {@link IllegalArgumentException} is thrown (typically).
- * But the developer can also specified a specific exception since Java 8. For
- * example:
- *
- * <pre>
- * Assertor.that(clazz).isNotNull().toThrow(&quot;The class must not be null&quot;);
- * Assertor.that(clazz).isNotNull().and().isAssignable(superClazz)
- * Assertor.that(i).isGT(0).toThrow(&quot;The value must be greater than zero&quot;);
- * Assertor.that(bool).isTrue().toThrow(new MyException(&quot;The value must be true&quot;));
+ * But the developer can also specified a specific exception since generic
+ * throws.
+ * </p>
  * 
- * // The following code is equals to the next one 
+ * <p>
+ * No methods throw intermediate exception, so be aware with not() method, some
+ * functions check for {@code null} by example and the result will not as
+ * expected. More explanations here: {@link AbstractAssertObject#not()}.
+ * </p>
+ * 
+ * Example:
+ * 
+ * <pre>
+ * Assertor.that(clazz).isNotNull().toThrow("The class must not be null");
+ * Assertor.that(clazz).isNotNull("Cannot be null").and().isAssignableFrom(superClazz, "Has to be a super of MyClass").toThrow();
+ * Assertor.that(i).isGT(0).toThrow("The value must be greater than zero");
+ * Assertor.that(bool).isTrue().toThrow(new MyException("The value must be true"));
+ * 
+ * // The following code is equals to the next one
  * AssertCharSequence&lt;String&gt; assertor = Assertor.that("text");
  * assertor.contains("__");
  * assertor.contains("ext");
- * assertTrue(assertor.getResult());
+ * assertTrue(assertor.isOK());
  * 
  * // The next one
- * assertTrue(Assertor.that("text").contains("__").and().contains("ext").getResult());
+ * assertTrue(Assertor.that("text").contains("__").and().contains("ext").isOK());
  * </pre>
  * 
  * <p>
  * Optionally, the checked parameters can be displayed in exception messages by
- * using %p or %1$p
+ * using %s*, %1$s* or %1$.2f* (this is exactly the same syntax as
+ * {@link java.util.Formatter}, just add an asterisk/star at the end)
  * </p>
  * 
  * <pre>
- * Assertor.that(10).isGT(20).toThrow(&quot;The number '%p' is not greater than number '%p'&quot;);
+ * Assertor.that(10).isGT(20).toThrow("The number '%s*' is not greater than number '%s*'");
  * // Exception: "The number '10' is not greater than number '20'"
  * 
- * Assertor.that(10).isGT(20).toThrow(&quot;'%2$p' &gt; '%1$p'&quot;);
+ * Assertor.that(10).isGT(20).toThrow("'%2$s*' &gt; '%1$s*'");
  * // Exception: "'20' &gt; '10'"
+ * 
+ * Assertor.that(10).isGT(20).toThrow("%s '%2$s*' &gt; '%1$s*'", "test");
+ * // Exception: "test '20' &gt; '10'"
+ * </pre>
+ * 
+ * <p>
+ * Beside this, another function is provided to check expected exception result
+ * </p>
+ *
+ * Example:
+ * 
+ * <pre>
+ * Expect.exception(() -&gt; {
+ *     Assertor.that("").isNotEmpty().toThrow();
+ *     fail();
+ * }, IllegalArgumentException.class, "this parameter '' must have length; it must not be null or empty");
  * </pre>
  *
- * Based on:
- * 
  * @see <a href=
  *      "http://docs.spring.io/spring/docs/2.0.x/api/org/springframework/util/Assert.html?is-external=true">
- *      org.springframework.util.Assert</a>
+ *      Based on: org.springframework.util.Assert</a>
  *
  * @since 1 juil. 2016
  * @author Gilles
  */
-public class Assertor {
+public class Assertor extends Constants {
 
     /**
-     * AND operator
+     * Set to the default locale
      */
-    protected static final int AND = 0;
+    private static Locale locale = Locale.getDefault();
 
     /**
-     * OR operator
+     * Set to the default assertion prefix
      */
-    protected static final int OR = 1;
+    private static String assertionPrefix = ASSERTION_PREFIX;
 
     /**
-     * XOR operator
+     * Set to the default assertion suffix
      */
-    protected static final int XOR = 2;
-
-    /**
-     * The operator strings
-     */
-    protected static final String[] OPERATORS = {" AND ", " OR ", " XOR "};
-
-    /**
-     * Default assertion prefix
-     */
-    private static final String ASSERTION_FAILED = "[Assertion failed] ";
-
-    /**
-     * Default locale
-     */
-    private static Locale locale = Locale.US;
-
-    private static String assertionPrefix = ASSERTION_FAILED;
+    private static String assertionSuffix = ASSERTION_SUFFIX;
 
     /**
      * Hidden constructor
@@ -127,6 +137,9 @@ public class Assertor {
     }
 
     /**
+     * Define the default locale for the assertor. Be aware in
+     * multi-threading...
+     * 
      * @param locale
      *            the locale to set
      */
@@ -142,11 +155,26 @@ public class Assertor {
     }
 
     /**
+     * @return the assertionSuffix
+     */
+    public static String getAssertionSuffix() {
+        return Assertor.assertionSuffix;
+    }
+
+    /**
      * @param assertionPrefix
      *            the assertionPrefix to set
      */
-    public static void setAssertionPrefix(String assertionPrefix) {
+    public static void setAssertionPrefix(final String assertionPrefix) {
         Assertor.assertionPrefix = assertionPrefix;
+    }
+
+    /**
+     * @param assertionSuffix
+     *            the assertionSuffix to set
+     */
+    public static void setAssertionSuffix(final String assertionSuffix) {
+        Assertor.assertionSuffix = assertionSuffix;
     }
 
     public static <N extends Number & Comparable<N>> AssertNumber<N> that(final N number) {
@@ -187,6 +215,6 @@ public class Assertor {
 
     @SuppressWarnings("unchecked")
     public static <A extends AssertObject<A, T>, T> A that(final T object) {
-        return (A) new AssertObject<>(object);
+        return (A) new AssertObject<>(object, TYPE.UNKNOWN);
     }
 }
