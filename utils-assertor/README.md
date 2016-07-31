@@ -1,5 +1,79 @@
 # utils-assertor
 
+## Summary
+
+1. Summary
+2. Description
+  1. Structure
+  2. Reset explanations
+  3. Message (locale, arguments and parameters)
+3. Output details
+  1. toThrow
+  2. isOK
+  3. getErrors
+4. Available methods
+  1. NOT
+  2. For all (Object, Boolean...)
+    1. isNull
+    2. isNotNull
+    3. isEqual
+    4. isNotEqual
+    5. isInstance
+    6. isAssignableFrom
+    7. matches
+    8. validates
+  3. Boolean
+    1. isTrue
+    2. isFalse
+  4. Number
+    1. isGT
+    2. isGTE
+    3. isLT
+    4. isLTE
+  5. CharSequence
+    1. hasLength
+    2. isEmpty
+    3. isNotEmpty
+    4. isBlank
+    5. isNotBlank
+    6. contains
+    7. startsWith
+    8. startsWithIgnoreCase
+    9. endsWith
+    10. endsWithIgnoreCase
+    11. matches
+    12. find
+  6. Date & Calendar
+    1. isAroound
+    2. isNotAround
+    3. isAfter
+    4. isAfterOrEquals
+    5. isBefore
+    6. isBeforeOrEquals
+  7. Array
+    1. hasLength
+    2. isEmpty
+    3. isNotEmpty
+    4. contains
+    5. containsAll
+    6. containsAny
+  8. Iterable
+    1. hasSize
+    2. isEmpty
+    3. isNotEmpty
+    4. contains
+    5. containsAll
+    6. containsAny
+  9. Map
+    1. hasSize
+    2. isEmpty
+    3. isNotEmpty
+    4. contains
+    5. containsAll
+    6. containsAny
+  10. Class
+    1. isAssignableFrom
+
 ## Description
 
 This module allow to assert parameters.
