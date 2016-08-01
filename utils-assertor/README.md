@@ -24,7 +24,7 @@
     8. [validates](#validates)
   3. [Boolean](#boolean)
     1. [isTrue](#istrue)
-    2. (isFalse](#isfalse)
+    2. [isFalse](#isfalse)
   4. [Number](#number)
     1. [isGT](#isgt)
     2. [isGTE](#isgte)
