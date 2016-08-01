@@ -55,7 +55,6 @@ public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>,
     private Boolean previousValid;
     private boolean previousPrerequisitesError;
     private int previousCondition = AND;
-    private StringBuilder previousMessage;
 
     private boolean not;
     private boolean notPersonalized;
@@ -101,7 +100,6 @@ public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>,
             this.previousValid = null;
             this.previousPrerequisitesError = false;
             this.previousCondition = AND;
-            this.previousMessage = null;
         }
     }
 
@@ -221,15 +219,15 @@ public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>,
     protected StringBuilder getMessage() {
         final StringBuilder message;
         if (this.previousPrerequisitesError) {
-            message = this.previousMessage;
+            message = this.previousAssertor.getMessage();
         } else if (this.prerequisitesError) {
             message = this.message;
         } else if (Boolean.FALSE.equals(this.previousValid) && !check(this.previousValid, this.previousCondition, this.valid)) {
             if (!this.valid) {
-                message = new StringBuilder("(").append(this.previousMessage).append(")").append(OPERATORS[this.previousCondition])
-                        .append("(").append(this.message).append(")");
+                message = new StringBuilder("(").append(this.previousAssertor.getMessage()).append(")")
+                        .append(OPERATORS[this.previousCondition]).append("(").append(this.message).append(")");
             } else {
-                message = this.previousMessage;
+                message = this.previousAssertor.getMessage();
             }
         } else {
             message = this.message;
@@ -374,9 +372,8 @@ public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>,
         this.previousValid = assertor.isValid();
         this.previousPrerequisitesError = assertor.isPrerequisitesError();
         this.previousAssertor = assertor;
-        this.previousMessage = assertor.getMessage();
 
-        // if already in error (no combine has to proceed from this point)
+        // if already in error (no combination has to proceed from this point)
         this.prerequisitesError = this.previousPrerequisitesError;
 
         // override parameters to keep order

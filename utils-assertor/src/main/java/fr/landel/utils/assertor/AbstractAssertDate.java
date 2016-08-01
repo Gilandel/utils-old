@@ -57,7 +57,7 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
         } else if (Calendar.class.isAssignableFrom(clazz)) {
             calendar1 = (Calendar) ((Calendar) date1).clone();
             calendar2 = (Calendar) ((Calendar) date).clone();
-        } else {
+        } else { // Future support of LocalTime...
             return false;
         }
 
@@ -107,23 +107,16 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
 
         return this.combine(prerequisites && calendarFieldOk, () -> {
             boolean result = false;
-            if (this.get() == date) {
+            final int compare = Comparators.compare(this.get(), date);
+            if (compare == 0) {
                 result = true;
-            } else {
-                final int compare = Comparators.compare(this.get(), date);
-                if (compare == 0) {
-                    result = true;
-                } else if (calendarField != -1) {
-                    result = AbstractAssertDate.isAround(this.get(), date, calendarField, calendarAmount, compare);
-                }
+            } else if (calendarField != -1) {
+                result = AbstractAssertDate.isAround(this.get(), date, calendarField, calendarAmount, compare);
             }
             return result;
         }, () -> {
-            if (calendarField == -1) {
-                return this.msg(MSG.DATE.EQUALS, true);
-            } else {
-                return this.msg(MSG.DATE.AROUND, true);
-            }
+            // no prerequisite for equals (calendarField == -1) only for around
+            return this.msg(MSG.DATE.AROUND, true);
         }, message, arguments, locale, parameters);
     }
 
@@ -163,23 +156,16 @@ public abstract class AbstractAssertDate<A extends AbstractAssertDate<A, T>, T e
 
         return this.combine(prerequisites && calendarFieldOk, () -> {
             boolean result = true;
-            if (this.get() == date) {
+            final int compare = Comparators.compare(this.get(), date);
+            if (compare == 0) {
                 result = false;
-            } else {
-                final int compare = Comparators.compare(this.get(), date);
-                if (compare == 0) {
-                    result = false;
-                } else if (calendarField != -1) {
-                    result = !AbstractAssertDate.isAround(this.get(), date, calendarField, calendarAmount, compare);
-                }
+            } else if (calendarField != -1) {
+                result = !AbstractAssertDate.isAround(this.get(), date, calendarField, calendarAmount, compare);
             }
             return result;
         }, () -> {
-            if (calendarField == -1) {
-                return this.msg(MSG.DATE.EQUALS + MSG.NOT, true);
-            } else {
-                return this.msg(MSG.DATE.AROUND + MSG.NOT, true);
-            }
+            // no prerequisite for equals (calendarField == -1) only for around
+            return this.msg(MSG.DATE.AROUND + MSG.NOT, true);
         }, message, arguments, locale, parameters);
     }
 

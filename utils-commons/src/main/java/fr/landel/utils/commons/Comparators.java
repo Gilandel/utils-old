@@ -151,12 +151,10 @@ public class Comparators {
      */
     public static <T extends Comparable<T>> int compare(final T o1, final T o2) {
         int result;
-        if (o1 == null) {
-            if (o2 == null) {
-                result = 0;
-            } else {
-                result = Integer.MIN_VALUE;
-            }
+        if (o1 == o2) {
+            result = 0;
+        } else if (o1 == null) {
+            result = Integer.MIN_VALUE;
         } else if (o2 == null) {
             result = Integer.MAX_VALUE;
         } else {
@@ -180,12 +178,10 @@ public class Comparators {
      */
     public static <T extends Comparable<T>> int compareReverse(final T o1, final T o2) {
         int result;
-        if (o1 == null) {
-            if (o2 == null) {
-                result = 0;
-            } else {
-                result = Integer.MAX_VALUE;
-            }
+        if (o1 == o2) {
+            result = 0;
+        } else if (o1 == null) {
+            result = Integer.MAX_VALUE;
         } else if (o2 == null) {
             result = Integer.MIN_VALUE;
         } else {

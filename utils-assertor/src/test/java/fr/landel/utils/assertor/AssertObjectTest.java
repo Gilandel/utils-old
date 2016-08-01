@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -131,6 +132,16 @@ public class AssertObjectTest extends AbstractTest {
         assertTrue(assertor.contains("__").xor().contains("ext").and("toti").contains("to").and().contains("i").isOK());
         assertFalse(assertor.contains("ext").xor().contains("ext").and("toti").contains("to").and().contains("i").isOK());
         assertFalse(assertor.contains("__").xor().contains("__").and("toti").contains("to").and().contains("i").isOK());
+
+        assertEquals("text1 text2",
+                Assertor.that(1).combine(true, () -> false, null, "%s %2$s*", new Object[] {"text1"}, Locale.FRANCE, "text2").getErrors());
+        assertEquals("text2", Assertor.that(1).combine(true, () -> false, null, "%2$s*", null, Locale.FRANCE, "text2").getErrors());
+        assertEquals("text1 text2",
+                Assertor.that(1).combine(true, () -> false, null, "%s %2$s*", new Object[] {"text1"}, null, "text2").getErrors());
+        assertEquals(Constants.DEFAULT_ASSERTION,
+                Assertor.that(1).combine(true, () -> false, null, null, new Object[] {"text1"}, null, "text2").getErrors());
+        assertEquals(Constants.DEFAULT_ASSERTION,
+                Assertor.that(1).combine(true, () -> false, null, null, new Object[] {"text1"}, Locale.FRANCE, "text2").getErrors());
 
         assertor = Assertor.that("");
         assertor.setCondition(-1);
@@ -494,6 +505,17 @@ public class AssertObjectTest extends AbstractTest {
     }
 
     /**
+     * Test method for {@link AssertObject#isAssignableFrom} .
+     */
+    @Test
+    public void testIsAssignableFrom() {
+        assertTrue(Assertor.that(Color.BLACK).isAssignableFrom(Color.class).isOK());
+        assertFalse(Assertor.that(Color.BLACK).isAssignableFrom(Point.class).isOK());
+        assertFalse(Assertor.that((Color) null).isAssignableFrom(Color.class).isOK());
+        assertFalse(Assertor.that(Color.BLACK).isAssignableFrom(null).isOK());
+    }
+
+    /**
      * Test method for
      * {@link AssertObject#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
      * .
@@ -571,6 +593,11 @@ public class AssertObjectTest extends AbstractTest {
         }, IllegalArgumentException.class,
                 "(the char sequence 'texte11' should be null, empty or blank) OR (NOT (the char sequence 'texte12' should start with 'text') OR the char sequence 'texte12' should be null, empty or blank)",
                 JUNIT_ERROR);
+
+        // previous assertion is invalid (prerequisites == false), only first
+        // prerequisite error set as message
+        assertEquals("the char sequence cannot be null and the searched substring cannot be null or empty",
+                Assertor.that("text1").contains(null).and("text2").isBlank().getErrors());
     }
 
     /**

@@ -412,9 +412,12 @@ public class AssertObject<A extends AssertObject<A, T>, T> extends AbstractAsser
      */
     public Operator<A, T> matches(final Matcher<? super T> matcher) {
         final Description description = new StringDescription();
-        description.appendText("Expected: ");
-        description.appendDescriptionOf(matcher).appendText("\n     but: ");
-        matcher.describeMismatch(this.get(), description);
+        if (matcher != null) {
+            description.appendText("\tExpected: ");
+            description.appendDescriptionOf(matcher).appendText("\n\t     but: ");
+            matcher.describeMismatch(this.get(), description);
+            description.appendText("\n");
+        }
 
         return this.matches(matcher, this.msg(MSG.OBJECT.MATCHES, this.getParam(), description.toString()));
     }

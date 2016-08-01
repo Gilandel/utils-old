@@ -76,6 +76,7 @@ public class AssertDateAndCalendarTest extends AbstractTest {
         final Date date2 = new Date(1464475553641L);
 
         Assertor.that(date1).isAround(date2, Calendar.SECOND, 5).toThrow();
+        Assertor.that(date1).isAround(date1, Calendar.SECOND, 5).toThrow();
 
         try {
             Assertor.that(date1).isEqual(date2).toThrow();
@@ -147,6 +148,14 @@ public class AssertDateAndCalendarTest extends AbstractTest {
         }
 
         try {
+            // Check date1 = null
+            Assertor.that((Calendar) null).isAround(c2, -1, -1).toThrow();
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
+
+        try {
             // Check date2 = null
             Assertor.that(c1).isAround((Calendar) null, Calendar.SECOND, 2).toThrow();
             fail();
@@ -192,15 +201,11 @@ public class AssertDateAndCalendarTest extends AbstractTest {
         c1.set(2016, 05, 29, 5, 5, 11);
         c2.set(2016, 05, 29, 5, 5, 5);
 
-        try {
-            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 5).toThrow();
+        assertTrue(Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 5).isOK());
 
-            c1.set(2016, 05, 29, 5, 5, 1);
+        c1.set(2016, 05, 29, 5, 5, 1);
 
-            Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 3).toThrow();
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
+        assertTrue(Assertor.that(c1).isNotAround(c2, Calendar.SECOND, 3).isOK());
 
         Expect.exception(() -> {
             Assertor.that((Calendar) null).isNotAround(c2, Calendar.SECOND, 5).toThrow();
@@ -211,6 +216,18 @@ public class AssertDateAndCalendarTest extends AbstractTest {
             Assertor.that(c1).isNotAround((Calendar) null, Calendar.SECOND, 5).toThrow();
             fail();
         }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(c1).isNotAround((Calendar) null, Calendar.SECOND, 5).toThrow();
+            fail();
+        }, IllegalArgumentException.class,
+                "neither dates cannot be null, calendar field has to be a supported value and calendar amount different to 0", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(c1.getTime()).isNotAround((Date) null, Calendar.SECOND, 5).toThrow();
+            fail();
+        }, IllegalArgumentException.class,
+                "neither dates cannot be null, calendar field has to be a supported value and calendar amount different to 0", JUNIT_ERROR);
     }
 
     /**

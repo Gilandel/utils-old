@@ -18,8 +18,6 @@ import static org.junit.Assert.fail;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.hamcrest.Matcher;
@@ -42,43 +40,57 @@ public class AssertMatcherTest extends AbstractTest {
      */
     @Test
     public void testThatOK() {
-        try {
-            final String red = "red";
-            final String green = "green";
-            final String blue = "blue";
-            final String alpha = "alpha";
+        final String red = "red";
+        final String green = "green";
+        final String blue = "blue";
+        final String alpha = "alpha";
 
-            final int max = 255;
+        final int max = 255;
 
-            final int nbColors = 4;
-            final List<Color> colors = new ArrayList<>(nbColors);
+        final int nbColors = 4;
+        final List<Color> colors = new ArrayList<>(nbColors);
 
-            colors.add(Color.BLACK);
-            colors.add(Color.WHITE);
-            colors.add(Color.BLUE);
-            colors.add(Color.CYAN);
+        colors.add(Color.BLACK);
+        colors.add(Color.WHITE);
+        colors.add(Color.BLUE);
+        colors.add(Color.CYAN);
 
-            Matcher<Color> matcherAlpha = Matchers.hasProperty(alpha, Matchers.is(max));
+        Matcher<Color> matcherAlpha = Matchers.hasProperty(alpha, Matchers.is(max));
 
-            Matcher<Color> matcherBlack = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)),
-                    Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(0)), matcherAlpha);
+        Matcher<Color> matcherBlack = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)), Matchers.hasProperty(red, Matchers.is(0)),
+                Matchers.hasProperty(blue, Matchers.is(0)), matcherAlpha);
 
-            Matcher<Color> matcherWhite = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
-                    Matchers.hasProperty(red, Matchers.is(max)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
+        Matcher<Color> matcherWhite = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
+                Matchers.hasProperty(red, Matchers.is(max)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
 
-            Matcher<Color> matcherBlue = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)),
-                    Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
+        Matcher<Color> matcherBlue = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(0)), Matchers.hasProperty(red, Matchers.is(0)),
+                Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
 
-            Matcher<Color> matcherCyan = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
-                    Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
+        Matcher<Color> matcherCyan = Matchers.allOf(Matchers.hasProperty(green, Matchers.is(max)),
+                Matchers.hasProperty(red, Matchers.is(0)), Matchers.hasProperty(blue, Matchers.is(max)), matcherAlpha);
 
-            List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
-                    matcherCyan);
+        List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
+                matcherCyan);
 
-            Assertor.that(colors).matches(Matchers.hasSize(nbColors)).and().matches(Matchers.contains(matcherList)).toThrow();
-        } catch (IllegalArgumentException e) {
-            fail("The test isn't correct");
-        }
+        assertTrue(Assertor.that(colors).matches(Matchers.hasSize(nbColors)).and().matches(Matchers.contains(matcherList)).isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(colors).matches(null).and().matches(Matchers.contains(matcherList)).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the matcher cannot be null", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((List<Color>) null).matches(Matchers.hasSize(nbColors)).and().matches(Matchers.contains(matcherList)).toThrow();
+            fail();
+        }, IllegalArgumentException.class,
+                "the object 'null' should match, errors:\n\tExpected: a collection with size <4>\n\t     but: was null\n"
+                        + " AND the object 'null' should match, errors:\n"
+                        + "\tExpected: iterable containing [(hasProperty(\"green\", is <0>) and hasProperty(\"red\", is <0>) and hasProperty(\"blue\", is <0>)"
+                        + " and hasProperty(\"alpha\", is <255>)), (hasProperty(\"green\", is <255>) and hasProperty(\"red\", is <255>) and hasProperty(\"blue\", is <255>)"
+                        + " and hasProperty(\"alpha\", is <255>)), (hasProperty(\"green\", is <0>) and hasProperty(\"red\", is <0>) and hasProperty(\"blue\", is <255>)"
+                        + " and hasProperty(\"alpha\", is <255>)), (hasProperty(\"green\", is <255>) and hasProperty(\"red\", is <0>) and hasProperty(\"blue\", is <255>) and hasProperty(\"alpha\", is <255>))]\n"
+                        + "\t     but: was null\n",
+                JUNIT_ERROR);
     }
 
     /**
@@ -94,19 +106,5 @@ public class AssertMatcherTest extends AbstractTest {
         colors.add(Color.CYAN);
 
         Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1)).toThrow();
-    }
-
-    /**
-     * Test method for {@link Assertor#check} .
-     */
-    public void testCheck() {
-        assertTrue(AssertIterable.class.isAssignableFrom(Assertor.that(new ArrayList<Color>()).getClass()));
-        assertTrue(AssertObject.class.isAssignableFrom(Assertor.that(Color.BLACK).getClass()));
-        assertTrue(AssertMap.class.isAssignableFrom(Assertor.that(new HashMap<String, Integer>()).getClass()));
-        assertTrue(AssertNumber.class.isAssignableFrom(Assertor.that(12).getClass()));
-        assertTrue(AssertCharSequence.class.isAssignableFrom(Assertor.that("test").getClass()));
-        assertTrue(AssertArray.class.isAssignableFrom(Assertor.that(new String[0]).getClass()));
-        assertTrue(AssertDate.class.isAssignableFrom(Assertor.that(new Date()).getClass()));
-        assertTrue(AssertClass.class.isAssignableFrom(Assertor.that(String.class).getClass()));
     }
 }

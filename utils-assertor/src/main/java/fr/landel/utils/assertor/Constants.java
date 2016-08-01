@@ -76,57 +76,57 @@ public class Constants {
      * @author Gilles
      *
      */
-    protected static class TYPE {
+    protected static interface TYPE {
 
         /**
          * Unknown type
          */
-        protected static final int UNKNOWN = 0;
+        int UNKNOWN = 0;
 
         /**
          * Boolean type
          */
-        protected static final int BOOLEAN = 1;
+        int BOOLEAN = 1;
 
         /**
          * Number, integer type
          */
-        protected static final int NUMBER_INTEGER = 2;
+        int NUMBER_INTEGER = 2;
 
         /**
          * Number, floating point type
          */
-        protected static final int NUMBER_DECIMAL = 3;
+        int NUMBER_DECIMAL = 3;
 
         /**
          * Date type
          */
-        protected static final int DATE = 4;
+        int DATE = 4;
 
         /**
          * String type
          */
-        protected static final int CHAR_SEQUENCE = 5;
+        int CHAR_SEQUENCE = 5;
 
         /**
          * Class type
          */
-        protected static final int CLASS = 6;
+        int CLASS = 6;
 
         /**
          * Iterable type
          */
-        protected static final int ITERABLE = 7;
+        int ITERABLE = 7;
 
         /**
          * Map type
          */
-        protected static final int MAP = 8;
+        int MAP = 8;
 
         /**
          * Array type
          */
-        protected static final int ARRAY = 9;
+        int ARRAY = 9;
     }
 
     // ---------- DEFAULT
@@ -168,17 +168,17 @@ public class Constants {
      * @author Gilles
      *
      */
-    protected static class MSG {
+    protected static interface MSG {
 
         /**
          * Suffix for properties of type NOT
          */
-        protected static final String NOT = ".not";
+        String NOT = ".not";
 
         /**
          * Suffix for properties of type prerequisites
          */
-        protected static final String PRE = ".pre";
+        String PRE = ".pre";
 
         /**
          * Object constants
@@ -187,13 +187,37 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class OBJECT {
-            protected static final String NULL = "object.null";
-            protected static final String EQUALS = "object.equals";
-            protected static final String INSTANCE = "object.instance";
-            protected static final String ASSIGNABLE = "object.assignable";
-            protected static final String MATCHES = "object.matches";
-            protected static final String VALIDATES = "object.validate";
+        static interface OBJECT {
+
+            /**
+             * Message key for object null
+             */
+            String NULL = "object.null";
+
+            /**
+             * Message key for object equals
+             */
+            String EQUALS = "object.equals";
+
+            /**
+             * Message key for object instance of
+             */
+            String INSTANCE = "object.instance";
+
+            /**
+             * Message key for object assignable from
+             */
+            String ASSIGNABLE = "object.assignable";
+
+            /**
+             * Message key for object matches the hamcrest matcher
+             */
+            String MATCHES = "object.matches";
+
+            /**
+             * Message key for object validates predicate
+             */
+            String VALIDATES = "object.validates";
         }
 
         /**
@@ -203,9 +227,17 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class BOOLEAN {
-            protected static final String TRUE = "boolean.true";
-            protected static final String FALSE = "boolean.false";
+        static interface BOOLEAN {
+
+            /**
+             * Message key for boolean is true
+             */
+            String TRUE = "boolean.true";
+
+            /**
+             * Message key for boolean is false
+             */
+            String FALSE = "boolean.false";
         }
 
         /**
@@ -215,8 +247,12 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class CLASS {
-            protected static final String ASSIGNABLE = "class.assignable";
+        static interface CLASS {
+
+            /**
+             * Message key for class assignable from
+             */
+            String ASSIGNABLE = "class.assignable";
         }
 
         /**
@@ -226,12 +262,32 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class NUMBER {
-            protected static final String EQUALS = "number.equals";
-            protected static final String GT = "number.gt";
-            protected static final String GTE = "number.gte";
-            protected static final String LT = "number.lt";
-            protected static final String LTE = "number.lte";
+        static interface NUMBER {
+
+            /**
+             * Message key for number equals
+             */
+            String EQUALS = "number.equals";
+
+            /**
+             * Message key for number greater than
+             */
+            String GT = "number.gt";
+
+            /**
+             * Message key for number greater than or equal to
+             */
+            String GTE = "number.gte";
+
+            /**
+             * Message key for number lower than
+             */
+            String LT = "number.lt";
+
+            /**
+             * Message key for number lower than or equal to
+             */
+            String LTE = "number.lte";
         }
 
         /**
@@ -241,15 +297,47 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class CSQ {
-            protected static final String LENGTH = "csq.length";
-            protected static final String EMPTY = "csq.empty";
-            protected static final String BLANK = "csq.blank";
-            protected static final String CONTAINS = "csq.contains";
-            protected static final String STARTS = "csq.starts";
-            protected static final String ENDS = "csq.ends";
-            protected static final String MATCHES = "csq.matches";
-            protected static final String FIND = "csq.find";
+        static interface CSQ {
+
+            /**
+             * Message key for char sequence length
+             */
+            String LENGTH = "csq.length";
+
+            /**
+             * Message key for empty char sequence
+             */
+            String EMPTY = "csq.empty";
+
+            /**
+             * Message key for char sequence blank
+             */
+            String BLANK = "csq.blank";
+
+            /**
+             * Message key for char sequence contains substring
+             */
+            String CONTAINS = "csq.contains";
+
+            /**
+             * Message key for char sequence starts with
+             */
+            String STARTS = "csq.starts";
+
+            /**
+             * Message key for char sequence ends with
+             */
+            String ENDS = "csq.ends";
+
+            /**
+             * Message key for char sequence matches
+             */
+            String MATCHES = "csq.matches";
+
+            /**
+             * Message key for char sequence find
+             */
+            String FIND = "csq.find";
         }
 
         /**
@@ -259,13 +347,37 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class DATE {
-            protected static final String EQUALS = "date.equals";
-            protected static final String AROUND = "date.around";
-            protected static final String AFTER = "date.after";
-            protected static final String AFTER_OR_EQUALS = "date.afterOrEquals";
-            protected static final String BEFORE = "date.before";
-            protected static final String BEFORE_OR_EQUALS = "date.beforeOrEquals";
+        static interface DATE {
+
+            /**
+             * Message key for date equals
+             */
+            String EQUALS = "date.equals";
+
+            /**
+             * Message key for date around
+             */
+            String AROUND = "date.around";
+
+            /**
+             * Message key for date after
+             */
+            String AFTER = "date.after";
+
+            /**
+             * Message key for date after or equals
+             */
+            String AFTER_OR_EQUALS = "date.afterOrEquals";
+
+            /**
+             * Message key for date before
+             */
+            String BEFORE = "date.before";
+
+            /**
+             * Message key for date before or equals
+             */
+            String BEFORE_OR_EQUALS = "date.beforeOrEquals";
         }
 
         /**
@@ -275,12 +387,32 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class ARRAY {
-            protected static final String LENGTH = "array.length";
-            protected static final String EMPTY = "array.empty";
-            protected static final String CONTAINS_OBJECT = "array.contains.object";
-            protected static final String CONTAINS_ALL = "array.contains.array.all";
-            protected static final String CONTAINS_ANY = "array.contains.array.any";
+        static interface ARRAY {
+
+            /**
+             * Message key for array length
+             */
+            String LENGTH = "array.length";
+
+            /**
+             * Message key for empty array
+             */
+            String EMPTY = "array.empty";
+
+            /**
+             * Message key for array contains object
+             */
+            String CONTAINS_OBJECT = "array.contains.object";
+
+            /**
+             * Message key for array contains all values
+             */
+            String CONTAINS_ALL = "array.contains.array.all";
+
+            /**
+             * Message key for array contains any values
+             */
+            String CONTAINS_ANY = "array.contains.array.any";
         }
 
         /**
@@ -290,12 +422,32 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class ITERABLE {
-            protected static final String SIZE = "iterable.size";
-            protected static final String EMPTY = "iterable.empty";
-            protected static final String CONTAINS_OBJECT = "iterable.contains.object";
-            protected static final String CONTAINS_ALL = "iterable.contains.iterable.all";
-            protected static final String CONTAINS_ANY = "iterable.contains.iterable.any";
+        static interface ITERABLE {
+
+            /**
+             * Message key for iterable size
+             */
+            String SIZE = "iterable.size";
+
+            /**
+             * Message key for empty iterable
+             */
+            String EMPTY = "iterable.empty";
+
+            /**
+             * Message key for iterable contains object
+             */
+            String CONTAINS_OBJECT = "iterable.contains.object";
+
+            /**
+             * Message key for iterable contains all values
+             */
+            String CONTAINS_ALL = "iterable.contains.iterable.all";
+
+            /**
+             * Message key for iterable contains any values
+             */
+            String CONTAINS_ANY = "iterable.contains.iterable.any";
         }
 
         /**
@@ -305,47 +457,47 @@ public class Constants {
          * @author Gilles
          *
          */
-        protected static class MAP {
+        static interface MAP {
 
             /**
              * Message key for map size
              */
-            protected static final String SIZE = "map.size";
+            String SIZE = "map.size";
 
             /**
              * Message key for empty map
              */
-            protected static final String EMPTY = "map.empty";
+            String EMPTY = "map.empty";
 
             /**
-             * Message key for contains key
+             * Message key for map contains key
              */
-            protected static final String CONTAINS_KEY = "map.contains.key";
+            String CONTAINS_KEY = "map.contains.key";
 
             /**
-             * Message key for contains key/value pair
+             * Message key for map contains key/value pair
              */
-            protected static final String CONTAINS_PAIR = "map.contains.pair";
+            String CONTAINS_PAIR = "map.contains.pair";
 
             /**
-             * Message key for contains all keys
+             * Message key for map contains all keys
              */
-            protected static final String CONTAINS_KEYS_ALL = "map.contains.keys.all";
+            String CONTAINS_KEYS_ALL = "map.contains.keys.all";
 
             /**
-             * Message key for contains any keys
+             * Message key for map contains any keys
              */
-            protected static final String CONTAINS_KEYS_ANY = "map.contains.keys.any";
+            String CONTAINS_KEYS_ANY = "map.contains.keys.any";
 
             /**
-             * Message key for contains all map entries
+             * Message key for map contains all map entries
              */
-            protected static final String CONTAINS_MAP_ALL = "map.contains.map.all";
+            String CONTAINS_MAP_ALL = "map.contains.map.all";
 
             /**
-             * Message key for contains any map entries
+             * Message key for map contains any map entries
              */
-            protected static final String CONTAINS_MAP_ANY = "map.contains.map.any";
+            String CONTAINS_MAP_ANY = "map.contains.map.any";
         }
     }
 

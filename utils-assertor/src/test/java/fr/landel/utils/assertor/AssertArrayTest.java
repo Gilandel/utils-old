@@ -136,8 +136,16 @@ public class AssertArrayTest extends AbstractTest {
         assertFalse(Assertor.that((String[]) null).contains("").isOK());
 
         assertTrue(Assertor.that(new String[] {null, "2", "3"}).containsAll(new String[] {null, "3"}).isOK());
+        assertFalse(Assertor.that(new String[] {null, "2", "3"}).containsAll(new String[] {null, "4"}).isOK());
+        assertFalse(Assertor.that(new String[] {null, "2", "3"}).containsAll(new String[] {"4"}).isOK());
         assertFalse(Assertor.that(new String[] {}).containsAll((String[]) null).isOK());
         assertFalse(Assertor.that((String[]) null).containsAll(new String[] {null, "3"}).isOK());
+
+        assertTrue(Assertor.that(new String[] {null, "2", "3"}).containsAny(new String[] {null, "3"}).isOK());
+        assertTrue(Assertor.that(new String[] {null, "2", "3"}).containsAny(new String[] {null, "4"}).isOK());
+        assertFalse(Assertor.that(new String[] {null, "2", "3"}).containsAny(new String[] {"4"}).isOK());
+        assertFalse(Assertor.that(new String[] {}).containsAny((String[]) null).isOK());
+        assertFalse(Assertor.that((String[]) null).containsAny(new String[] {null, "3"}).isOK());
     }
 
     /**
@@ -149,8 +157,16 @@ public class AssertArrayTest extends AbstractTest {
         assertTrue(Assertor.that(new String[] {}).not().contains((String) null).isOK());
         assertFalse(Assertor.that((String[]) null).not().contains("").isOK());
 
+        assertFalse(Assertor.that(new String[] {null, "2", "3"}).not().containsAll(new String[] {null, "4"}).isOK());
+        assertTrue(Assertor.that(new String[] {null, "2", "3"}).not().containsAll(new String[] {"4"}).isOK());
         assertFalse(Assertor.that(new String[] {null, "2", "3"}).not().containsAll(new String[] {null, "3"}).isOK());
         assertFalse(Assertor.that(new String[] {}).not().containsAll((String[]) null).isOK());
         assertFalse(Assertor.that((String[]) null).not().containsAll(new String[] {null, "3"}).isOK());
+
+        assertTrue(Assertor.that(new String[] {null, "2", "3"}).not().containsAny(new String[] {null, "4"}).isOK());
+        assertTrue(Assertor.that(new String[] {null, "2", "3"}).not().containsAny(new String[] {"4"}).isOK());
+        assertFalse(Assertor.that(new String[] {null, "2", "3"}).not().containsAny(new String[] {null, "3"}).isOK());
+        assertFalse(Assertor.that(new String[] {}).not().containsAny((String[]) null).isOK());
+        assertFalse(Assertor.that((String[]) null).not().containsAny(new String[] {null, "3"}).isOK());
     }
 }

@@ -93,7 +93,7 @@ For now it manage:
 - Iterable (Set, List...)
 - Map
 - Class
-- Object (the other objects)
+- Object (all other objects)
 
 ### Structure
 
@@ -297,6 +297,8 @@ With a parameter, 'xor' creates an sub assertor for the specified parameter.
 Assertor.that(object).isNull().xor().isInstance(MyClass.class).toThrow(); // is null xor is an instance of MyClass
 Assertor.that(12).iGT(12).xor("text").contains("ex").toThrow(); // 12 > 12 xor 'text' contains 'ex'
 ```
+
+## Message building
 
 ## Available methods
 
@@ -827,7 +829,7 @@ Expect.exception(() -> {
 
 
 // Obviously, you can save this in a static variable to share it.
-// This function is not provided by module to avoid a JUnit dependencies.
+// This function is not provided by module to avoid a JUnit dependency.
 // ComparisonFailure come from: org.junit.ComparisonFailure
 
 TriFunction<Boolean, String, String> junitError = (catched, expected, actual) -> {
