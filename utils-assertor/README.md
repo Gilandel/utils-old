@@ -2,77 +2,77 @@
 
 ## Summary
 
-1. Summary
-2. Description
-  1. Structure
-  2. Reset explanations
-  3. Message (locale, arguments and parameters)
-3. Output details
-  1. toThrow
-  2. isOK
-  3. getErrors
-4. Available methods
-  1. NOT
-  2. For all (Object, Boolean...)
-    1. isNull
-    2. isNotNull
-    3. isEqual
-    4. isNotEqual
-    5. isInstance
-    6. isAssignableFrom
-    7. matches
-    8. validates
-  3. Boolean
-    1. isTrue
-    2. isFalse
-  4. Number
-    1. isGT
-    2. isGTE
-    3. isLT
-    4. isLTE
-  5. CharSequence
-    1. hasLength
-    2. isEmpty
-    3. isNotEmpty
-    4. isBlank
-    5. isNotBlank
-    6. contains
-    7. startsWith
-    8. startsWithIgnoreCase
-    9. endsWith
-    10. endsWithIgnoreCase
-    11. matches
-    12. find
-  6. Date & Calendar
-    1. isAroound
-    2. isNotAround
-    3. isAfter
-    4. isAfterOrEquals
-    5. isBefore
-    6. isBeforeOrEquals
-  7. Array
-    1. hasLength
-    2. isEmpty
-    3. isNotEmpty
-    4. contains
-    5. containsAll
-    6. containsAny
-  8. Iterable
-    1. hasSize
-    2. isEmpty
-    3. isNotEmpty
-    4. contains
-    5. containsAll
-    6. containsAny
-  9. Map
-    1. hasSize
-    2. isEmpty
-    3. isNotEmpty
-    4. contains
-    5. containsAll
-    6. containsAny
-  10. Class
-    1. isAssignableFrom
+1. [Summary](#summary)
+2. [Description](#description)
+  1. [Structure](#structure)
+  2. [Reset explanations](#reset-explanations)
+  3. [Message (locale, arguments and parameters)](#message-locale-arguments-and-parameters)
+3. [Output details](#output-details)
+  1. [toThrow](#tothrow)
+  2. [isOK](#isok)
+  3. [getErrors](#geterrors)
+4. [Available methods](#available-methods)
+  1. [NOT](#not)
+  2. [For all (Object, Boolean...)](#for-all-object-boolean)
+    1. [isNull](#isnull)
+    2. [isNotNull](#isnotnull)
+    3. [isEqual](#isequal)
+    4. [isNotEqual](#isnotequal)
+    5. [isInstance](#isinstance)
+    6. [isAssignableFrom](#isassignablefrom)
+    7. [matches](#matches)
+    8. [validates](#validates)
+  3. [Boolean](#boolean)
+    1. [isTrue](#istrue)
+    2. (isFalse](#isfalse)
+  4. [Number](#number)
+    1. [isGT](#isgt)
+    2. [isGTE](#isgte)
+    3. [isLT](#islt)
+    4. [isLTE](#islte)
+  5. [CharSequence](#charsequence)
+    1. [hasLength](#haslength)
+    2. [isEmpty](#isempty)
+    3. [isNotEmpty](#isnotempty)
+    4. [isBlank](#isblank)
+    5. [isNotBlank](#isnotblank)
+    6. [contains](#contains)
+    7. [startsWith](#startswith)
+    8. [startsWithIgnoreCase](#startswithignorecase)
+    9. [endsWith](#endswith)
+    10. [endsWithIgnoreCase](#endswithignorecase)
+    11. [matches](#matches-1)
+    12. [find](#find)
+  6. [Date & Calendar](#date-calendar)
+    1. [isAround](#isaround)
+    2. [isNotAround](#isnotaround)
+    3. [isAfter](#isafter)
+    4. [isAfterOrEquals](#isafterorequals)
+    5. [isBefore](#isbefore)
+    6. [isBeforeOrEquals](#isbeforeorequals)
+  7. [Array](#array)
+    1. [hasLength](#haslength-1)
+    2. [isEmpty](#isempty-1)
+    3. [isNotEmpty](#isnotempty-1)
+    4. [contains](#contains-1)
+    5. [containsAll](#containsall)
+    6. [containsAny](#containsany)
+  8. [Iterable](#iterable)
+    1. [hasSize](#hassize)
+    2. [isEmpty](#isempty-2)
+    3. [isNotEmpty](#isnotempty-2)
+    4. [contains](#contains-2)
+    5. [containsAll](#containsall-1)
+    6. [containsAny](#containsany-1)
+  9. [Map](#map)
+    1. [hasSize](#hassize-1)
+    2. [isEmpty](#isempty-3)
+    3. [isNotEmpty](#isnotempty-3)
+    4. [contains](#contains-3)
+    5. [containsAll](#containsall-2)
+    6. [containsAny](#containsany-2)
+  10. [Class](#class)
+    1. [isAssignableFrom](#isassignablefrom-1)
 
 ## Description
 
@@ -449,7 +449,7 @@ Assertor.that(false).isFalse("Bad status").toThrow();
 #### find
 
 ### Date & Calendar
-#### isAroound
+#### isAround
 #### isNotAround
 #### isAfter
 #### isAfterOrEquals

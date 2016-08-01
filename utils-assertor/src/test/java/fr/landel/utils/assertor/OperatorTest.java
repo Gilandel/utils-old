@@ -250,9 +250,10 @@ public class OperatorTest extends AbstractTest {
         assertEquals("test 265.452", Assertor.that(new BigDecimal(265.45155)).isNull(Locale.US, "test %1$,.3f*").getErrors());
         assertEquals("test 2 654 125,452", Assertor.that(new BigDecimal(2654125.45155)).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
         assertEquals("test 2,654,125.452", Assertor.that(new BigDecimal(2654125.45155)).isNull(Locale.US, "test %1$,.3f*").getErrors());
-        assertEquals("test 25 juillet 2016",
-                Assertor.that(new Date(1469397600000L)).isNull(Locale.FRANCE, "test %1$te* %1$tB* %1$tY*").getErrors());
-        assertEquals("test July 25, 2016",
-                Assertor.that(new Date(1469397600000L)).isNull(Locale.US, "test %1$tB* %1$te*, %1$tY*").getErrors());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2016, 6, 25);
+        assertEquals("test 25 juillet 2016", Assertor.that(calendar).isNull(Locale.FRANCE, "test %1$te* %1$tB* %1$tY*").getErrors());
+        assertEquals("test July 25, 2016", Assertor.that(calendar).isNull(Locale.US, "test %1$tB* %1$te*, %1$tY*").getErrors());
     }
 }
