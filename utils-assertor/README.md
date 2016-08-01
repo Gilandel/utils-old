@@ -11,9 +11,13 @@
   1. [toThrow](#tothrow)
   2. [isOK](#isok)
   3. [getErrors](#geterrors)
-4. [Available methods](#available-methods)
+4. [Operators](#operators)
   1. [NOT](#not)
-  2. [For all (Object, Boolean...)](#for-all-object-boolean)
+  2. [AND](#and)
+  3. [OR](#or)
+  4. [XOR](#xor)
+5. [Available methods](#available-methods)
+  1. [For all (Object, Boolean...)](#for-all-object-boolean)
     1. [isNull](#isnull)
     2. [isNotNull](#isnotnull)
     3. [isEqual](#isequal)
@@ -22,15 +26,15 @@
     6. [isAssignableFrom](#isassignablefrom)
     7. [matches](#matches)
     8. [validates](#validates)
-  3. [Boolean](#boolean)
+  2. [Boolean](#boolean)
     1. [isTrue](#istrue)
     2. [isFalse](#isfalse)
-  4. [Number](#number)
+  3. [Number](#number)
     1. [isGT](#isgt)
     2. [isGTE](#isgte)
     3. [isLT](#islt)
     4. [isLTE](#islte)
-  5. [CharSequence](#charsequence)
+  4. [CharSequence](#charsequence)
     1. [hasLength](#haslength)
     2. [isEmpty](#isempty)
     3. [isNotEmpty](#isnotempty)
@@ -43,36 +47,38 @@
     10. [endsWithIgnoreCase](#endswithignorecase)
     11. [matches](#matches-1)
     12. [find](#find)
-  6. [Date & Calendar](#date-calendar)
+  5. [Date & Calendar](#date-calendar)
     1. [isAround](#isaround)
     2. [isNotAround](#isnotaround)
     3. [isAfter](#isafter)
     4. [isAfterOrEquals](#isafterorequals)
     5. [isBefore](#isbefore)
     6. [isBeforeOrEquals](#isbeforeorequals)
-  7. [Array](#array)
+  6. [Array](#array)
     1. [hasLength](#haslength-1)
     2. [isEmpty](#isempty-1)
     3. [isNotEmpty](#isnotempty-1)
     4. [contains](#contains-1)
     5. [containsAll](#containsall)
     6. [containsAny](#containsany)
-  8. [Iterable](#iterable)
+  7. [Iterable](#iterable)
     1. [hasSize](#hassize)
     2. [isEmpty](#isempty-2)
     3. [isNotEmpty](#isnotempty-2)
     4. [contains](#contains-2)
     5. [containsAll](#containsall-1)
     6. [containsAny](#containsany-1)
-  9. [Map](#map)
+  8. [Map](#map)
     1. [hasSize](#hassize-1)
     2. [isEmpty](#isempty-3)
     3. [isNotEmpty](#isnotempty-3)
     4. [contains](#contains-3)
     5. [containsAll](#containsall-2)
     6. [containsAny](#containsany-2)
-  10. [Class](#class)
+  9. [Class](#class)
     1. [isAssignableFrom](#isassignablefrom-1)
+6. [Others](#others)
+  1. [Expect](#expect)
 
 ## Description
 
@@ -168,16 +174,16 @@ Throw an exception if the assertion is false. Two ways to personalize the except
 
 * Examples:
 ```java
-Assertor.that("").isNotBlank().toThrow() -> throw the default message 'the char sequence should be NOT null, NOT empty and NOT blank'
-Assertor.that("").isNotBlank("The first name is invalid").toThrow() -> throw the personalized message 'The first name is invalid'
+Assertor.that("").isNotBlank().toThrow(); // -> throw the default message 'the char sequence should be NOT null, NOT empty and NOT blank'
+Assertor.that("").isNotBlank("The first name is invalid").toThrow(); // -> throw the personalized message 'The first name is invalid'
 
-Assertor.that("").isNotBlank().toThrow("Invalid field") -> throw the personalized message 'Invalid field'
-Assertor.that("").isNotBlank("The first name is invalid").toThrow("Invalid field") -> throw the personalized message 'Invalid field'
+Assertor.that("").isNotBlank().toThrow("Invalid field"); // -> throw the personalized message 'Invalid field'
+Assertor.that("").isNotBlank("The first name is invalid").toThrow("Invalid field"); // -> throw the personalized message 'Invalid field'
 
-Assertor.that("").isNotBlank().toThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356) -> throw the personalized message 'Invalid field (2,36ms)'
-Assertor.that("").isNotBlank("The first name is invalid").toThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356) -> throw the personalized message 'Invalid field (2,36ms)'
+Assertor.that("").isNotBlank().toThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356); // -> throw the personalized message 'Invalid field (2,36ms)'
+Assertor.that("").isNotBlank("The first name is invalid").toThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356); // -> throw the personalized message 'Invalid field (2,36ms)'
 
-Assertor.that("").isNotBlank().toThrow(new IOException("Invalid data")); -> throw the personalized exception
+Assertor.that("").isNotBlank().toThrow(new IOException("Invalid data")); // -> throw the personalized exception
 Assertor.that("").isNotBlank(The first name is invalid").toThrow(new IOException("Invalid data")); -> throw the personalized exception
 ```
 
@@ -206,8 +212,8 @@ This method returns if the assertion is valid.
 
 * Examples:
 ```java
-	Assertor.that("").isNotBlank().isOK() -> return false
-	Assertor.that("").isBlank("The first name is invalid").isOK() -> return true
+	Assertor.that("").isNotBlank().isOK(); // -> return false
+	Assertor.that("").isBlank("The first name is invalid").isOK(); // -> return true
 ```
 
 At the call of 'isOK()', the assertion is cleared, to avoid this, the parameter 'reset' can be set to 'false' (default: true).
@@ -221,16 +227,16 @@ This method returns the assertion errors.
 
 * Examples:
 ```java
-	Assertor.that("").isNotBlank().getErrors() -> return "the char sequence should be NOT null, NOT empty and NOT blank"
-	Assertor.that("").isBlank("The first name is invalid").isOK() -> return ""
+	Assertor.that("").isNotBlank().getErrors(); // -> return "the char sequence should be NOT null, NOT empty and NOT blank"
+	Assertor.that("").isBlank("The first name is invalid").getErrors(); // -> return ""
 ```
 
 At the call of 'getErrors()', the assertion is cleared, to avoid this, the parameter 'reset' can be set to 'false' (default: true).
 
-## Available methods
+## Operators
 
 ### NOT
-The not function is here to negate the next method (can be applied on any method, prerequisites are checked any way).
+The 'not' function is here to negate the next method (can be applied on any method, prerequisites are checked any way).
 
 * Signatures:
 	- not()
@@ -243,6 +249,56 @@ Assertor.that(object).not().isNull().toThrow(); // become isNotNull
 Assertor.that(strings).not().contains("text").toThrow(); // become does not contain
 Assertor.that("text").not().hasLength(5, Locale.US, "The parameter '%s*' cannot be filled").toThrow(); // become has not length = 5
 ```
+
+### AND
+The 'and' function is here to combine the previous and the next methods with the operator 'and'.
+With a parameter, 'and' creates an sub assertor for the specified parameter.
+
+* Signatures:
+	- and()
+	- and(Object object)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that(object).isNull().and().isInstance(MyClass.class).toThrow(); // is null or is and instance of MyClass
+Assertor.that(12).iGT(12).and("text").contains("ex").toThrow(); // 12 > 12 and 'text' contains 'ex'
+```
+
+### OR
+The 'or' function is here to combine the previous and the next methods with the operator 'or'.
+With a parameter, 'or' creates an sub assertor for the specified parameter.
+
+* Signatures:
+	- or()
+	- or(Object object)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that(object).isNull().or().isInstance(MyClass.class).toThrow(); // is null or is an instance of MyClass
+Assertor.that(12).iGT(12).or("text").contains("ex").toThrow(); // 12 > 12 or 'text' contains 'ex'
+```
+
+### XOR
+The 'xor' function is here to combine the previous and the next methods with the operator 'xor'.
+With a parameter, 'xor' creates an sub assertor for the specified parameter.
+
+* Signatures:
+	- xor()
+	- xor(Object object)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that(object).isNull().xor().isInstance(MyClass.class).toThrow(); // is null xor is an instance of MyClass
+Assertor.that(12).iGT(12).xor("text").contains("ex").toThrow(); // 12 > 12 xor 'text' contains 'ex'
+```
+
+## Available methods
 
 ### For all (Object, Boolean...)
 
@@ -333,6 +389,12 @@ Assert that the object is an instance of the specified class.
 ```java
 Assertor.that(object).isInstance(class1).toThrow();
 Assertor.that(object).isInstance(class1, "Input is not an instance of the class '%2$s*'").toThrow();
+
+// prerequisite errors
+Assertor.that(null).isInstance(class1).toThrow(); // -> throw an exception
+Assertor.that(object).isInstance(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isInstance(class1).toThrow(); // -> throw an exception
+Assertor.that(object).not().isInstance(null).toThrow(); // -> throw an exception
 ```
 
 #### isAssignableFrom
@@ -351,6 +413,12 @@ Assert that the object is assignable from the specified class.
 ```java
 Assertor.that(object).isAssignableFrom(class1).toThrow();
 Assertor.that(object).isAssignableFrom(class1, "Input is not assignable from the class '%2$s*'").toThrow();
+
+// prerequisite errors
+Assertor.that(null).isAssignableFrom(class1).toThrow(); // -> throw an exception
+Assertor.that(object).isAssignableFrom(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isAssignableFrom(class1).toThrow(); // -> throw an exception
+Assertor.that(object).not().isAssignableFrom(null).toThrow(); // -> throw an exception
 ```
 
 #### matches
@@ -368,6 +436,10 @@ Assert that the object matches the hamcrest matcher.
 ```java
 Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1)).toThrow();
 Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1), "Not the good color numbers").toThrow();
+
+// prerequisite errors
+Assertor.that(colors).matches(null).toThrow(); // -> throw an exception
+Assertor.that(colors).not().matches(null).toThrow(); // -> throw an exception
 ```
 
 #### validates
@@ -392,6 +464,10 @@ Assertor.that(object).validates((Object obj) -> {
 Assertor.that("/var/log/dev.log").validates((path) -> {
     return Paths.get(path).endsWith("dev.log");
 }, Locale.US, "Path is invalid").isOK();
+
+// prerequisite errors
+Assertor.that(object).validates(null).toThrow(); // -> throw an exception
+Assertor.that(object).not().validates(null).toThrow(); // -> throw an exception
 ```
 
 ### Boolean
@@ -408,8 +484,9 @@ Assert that the boolean is true.
 
 * Examples:
 ```java
-Assertor.that(bool).isTrue().toThrow();
-Assertor.that(false).isTrue("Bad status").toThrow();
+Assertor.that(bool).isTrue().toThrow(); // -> throw an exception, if bool == true
+Assertor.that(false).isTrue("Bad status").toThrow(); // -> OK
+Assertor.that(true).not().isTrue("Bad status").toThrow(); // -> OK
 ```
 
 #### isFalse
@@ -424,23 +501,240 @@ Assert that the boolean is false.
 
 * Examples:
 ```java
-Assertor.that(bool).isFalse().toThrow();
-Assertor.that(false).isFalse("Bad status").toThrow();
+Assertor.that(bool).isFalse().toThrow(); // -> throw an exception, if bool == true
+Assertor.that(false).isFalse("Bad status").toThrow(); // -> OK
+Assertor.that(true).not().isFalse("Bad status").toThrow(); // -> OK
 ```
 
 ### Number
 #### isGT
+Assert that number is greater than specified number.
+
+* Signatures:
+	- isGT(Number number)
+	- isGT(Number number, CharSequence message, Object[] arguments)
+	- isGT(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isGT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isGT(10, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isGT(12).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isGT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isGT(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isGT(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isGT(null).toThrow(); // -> throw an exception
+```
+
 #### isGTE
+Assert that number is greater than or equal to specified number.
+
+* Signatures:
+	- isGTE(Number number)
+	- isGTE(Number number, CharSequence message, Object[] arguments)
+	- isGTE(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isGTE(13).toThrow(); // -> throw an exception
+Assertor.that(12).isGTE(12).toThrow(); // -> OK
+Assertor.that(12).isGTE(10, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isGTE(13).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isGTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).isGTE(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isGTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isGTE(null).toThrow(); // -> throw an exception
+```
+
 #### isLT
+Assert that number is lower than specified number.
+
+* Signatures:
+	- isLT(Number number)
+	- isLT(Number number, CharSequence message, Object[] arguments)
+	- isLT(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isLT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isLT(13, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isLT(12).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isLT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isLT(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isLT(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isLT(null).toThrow(); // -> throw an exception
+```
+
 #### isLTE
+Assert that number is lower than or equal to specified number.
+
+* Signatures:
+	- isLTE(Number number)
+	- isLTE(Number number, CharSequence message, Object[] arguments)
+	- isLTE(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isLTE(11).toThrow(); // -> throw an exception
+Assertor.that(12).isLTE(12).toThrow(); // -> OK
+Assertor.that(12).isLTE(13, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isLTE(11).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isLTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).isLTE(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isLTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isLTE(null).toThrow(); // -> throw an exception
+```
 
 ### CharSequence
 #### hasLength
+Assert that char sequence has the specified length.
+
+* Signatures:
+	- hasLength(int length)
+	- hasLength(int length, CharSequence message, Object[] arguments)
+	- hasLength(int length, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- length >= 0
+
+* Examples:
+```java
+Assertor.that("text").hasLength(3).toThrow(); // -> throw an exception
+Assertor.that("text").hasLength(4, "Bad status").toThrow(); // -> OK
+Assertor.that("text").not().hasLength(3).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).hasLength(4, "Bad status").toThrow(); // -> throw an exception
+Assertor.that("text").hasLength(-1, "Bad status").toThrow(); // -> throw an exception
+Assertor.that(null).not().hasLength(4, "Bad status").toThrow(); // -> throw an exception
+Assertor.that("text").not().hasLength(-1, "Bad status").toThrow(); // -> throw an exception
+```
+
 #### isEmpty
+Assert that char sequence is empty or null.
+
+* Signatures:
+	- isEmpty()
+	- isEmpty(CharSequence message, Object[] arguments)
+	- isEmpty(Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that("text").isEmpty().toThrow(); // -> throw an exception
+Assertor.that((CharSequence) null).isEmpty("Param '%1$s*' not empty").toThrow(); // -> OK
+Assertor.that("").isEmpty("Param '%1$s*' not empty").toThrow(); // -> OK
+Assertor.that("text").not().isEmpty("Param '%1$s*' not empty").toThrow(); // -> OK
+```
+
 #### isNotEmpty
+Assert that char sequence is NOT empty and NOT null.
+
+* Signatures:
+	- isNotEmpty()
+	- isNotEmpty(CharSequence message, Object[] arguments)
+	- isNotEmpty(Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that((CharSequence) null).isNotEmpty().toThrow(); // -> throw an exception
+Assertor.that("").isNotEmpty().toThrow(); // -> throw an exception
+Assertor.that("text").isNotEmpty("Param '%1$s*' empty or null").toThrow(); // -> OK
+
+```
+
 #### isBlank
+Assert that char sequence is blank or empty or null.
+
+* Signatures:
+	- isBlank()
+	- isBlank(CharSequence message, Object[] arguments)
+	- isBlank(Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that("text").isBlank().toThrow(); // -> throw an exception
+Assertor.that(null).isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("").isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("   ").isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("text").not().isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
+```
+
 #### isNotBlank
+Assert that char sequence is NOT blank and NOT empty and NOT null.
+
+* Signatures:
+	- isNotBlank()
+	- isNotBlank(CharSequence message, Object[] arguments)
+	- isNotBlank(Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: None
+
+* Examples:
+```java
+Assertor.that("text").isNotBlank().toThrow(); // -> OK
+Assertor.that("text").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("text").isNotBlank().toThrow(); // -> OK
+Assertor.that(null).isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("   ").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### contains
+Assert that char sequence contains the substring.
+
+* Signatures:
+	- contains(CharSequence substring)
+	- contains(CharSequence substring, CharSequence message, Object[] arguments)
+	- contains(CharSequence substring, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- substring NOT null and NOT empty
+
+* Examples:
+```java
+Assertor.that("text").contains("t").toThrow(); // -> OK
+Assertor.that("text").contains("ex", "Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("text").contains("text").toThrow(); // -> OK
+Assertor.that("text").contains("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().contains("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### startsWith
 #### startsWithIgnoreCase
 #### endsWith
@@ -482,3 +776,88 @@ Assertor.that(false).isFalse("Bad status").toThrow();
 
 ### Class
 #### isAssignableFrom
+
+## Others
+### Expect
+Validate a thrown exception and its message.
+
+* Signatures:
+	- exception(AssertConsumer<Throwable> consumer, Class<? extends Throwable> expectedException)
+	- exception(AssertConsumer<Throwable> consumer, Class<? extends Throwable> expectedException, String expectedMessage)
+	- exception(AssertConsumer<Throwable> consumer, Class<? extends Throwable> expectedException, final TriFunction<Boolean, String, String, E> exceptionFunction)
+	- exception(AssertConsumer<Throwable> consumer, Class<? extends Throwable> expectedException, String expectedMessage, final TriFunction<Boolean, String, String, E> exceptionFunction)
+
+* Parameters:
+	- consumer: The consumer or where the code to checked can be placed
+	- expectedException: The class of expected exception
+	- expectedMessage: The expected exception message
+	- exceptionFunction: The exception builder, only called on mismatch. Has 3 parameters:
+		- first: true, if the expected exception matches
+		- second: the expected message
+		- third: the actual message
+
+* Prerequisites:
+	- consumer NOT null
+	- expectedException NOT null
+
+* Examples:
+```java
+Expect.exception(() -> {
+    // throw new IllegalArgumentException("parameter cannot be null");
+    getMyType(null);
+}, IllegalArgumentException.class); // -> OK
+
+Expect.exception(() -> {
+    // throw new IOException("parameter cannot be null");
+    getMyType(null);
+}, IllegalArgumentException.class); // -> throw an ExpectException
+
+
+
+Expect.exception(() -> {
+     // throw new IllegalArgumentException("parameter cannot be null");
+     getMyType(null);
+ }, IllegalArgumentException.class, "parameter cannot be null"); // -> OK
+ 
+ Expect.exception(() -> {
+     // throw new IllegalArgumentException("type cannot be null");
+     getMyType(null);
+ }, IllegalArgumentException.class, "parameter cannot be null");  // -> throw an ExpectException
+
+
+
+// Obviously, you can save this in a static variable to share it.
+// This function is not provided by module to avoid a JUnit dependencies.
+// ComparisonFailure come from: org.junit.ComparisonFailure
+
+TriFunction<Boolean, String, String> junitError = (catched, expected, actual) -> {
+    if (catched) {
+        return new ComparisonFailure("The exception message don't match.", expected, actual);
+    } else {
+        return new AssertionError("The expected exception never came up");
+    }
+};
+
+
+
+Expect.exception(() -> {
+    // throw new IllegalArgumentException("parameter cannot be null");
+    getMyType(null);
+}, IllegalArgumentException.class, junitError); // -> OK
+
+Expect.exception(() -> {
+    // throw new IOException("parameter cannot be null");
+    getMyType(null);
+}, IllegalArgumentException.class, junitError); // -> throw an AssertionError
+
+
+Expect.exception(() -> {
+     // throw new IllegalArgumentException("parameter cannot be null");
+     getMyType(null);
+ }, IllegalArgumentException.class, "parameter cannot be null", junitError); // -> OK
+ 
+ Expect.exception(() -> {
+     // throw new IllegalArgumentException("type cannot be null");
+     getMyType(null);
+ }, IllegalArgumentException.class, "parameter cannot be null", junitError);  // -> throw a ComparisonFailure
+```

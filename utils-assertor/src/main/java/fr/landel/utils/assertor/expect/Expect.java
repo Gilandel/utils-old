@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.assertor.expect;
 
+import java.util.Objects;
+
 import fr.landel.utils.commons.function.AssertConsumer;
 import fr.landel.utils.commons.function.TriFunction;
 
@@ -36,9 +38,9 @@ public final class Expect {
      * </pre>
      * 
      * @param consumer
-     *            The consumer
+     *            The consumer (required, not null)
      * @param expectedException
-     *            The expected exception type
+     *            The expected exception type (required, not null)
      * @param <T>
      *            The generic expected exception type
      */
@@ -58,9 +60,9 @@ public final class Expect {
      * </pre>
      * 
      * @param consumer
-     *            The consumer
+     *            The consumer (required, not null)
      * @param expectedException
-     *            The expected exception type
+     *            The expected exception type (required, not null)
      * @param expectedMessage
      *            The expected exception message
      * @param <T>
@@ -94,9 +96,9 @@ public final class Expect {
      * </pre>
      * 
      * @param consumer
-     *            The consumer
+     *            The consumer (required, not null)
      * @param expectedException
-     *            The expected exception type
+     *            The expected exception type (required, not null)
      * @param exceptionFunction
      *            The exception function (three parameters are injected: (first:
      *            if it's the expected exception), (second: the expected
@@ -138,9 +140,9 @@ public final class Expect {
      * </pre>
      * 
      * @param consumer
-     *            The consumer
+     *            The consumer (required, not null)
      * @param expectedException
-     *            The expected exception type
+     *            The expected exception type (required, not null)
      * @param expectedMessage
      *            The expected exception message
      * @param exceptionFunction
@@ -159,6 +161,9 @@ public final class Expect {
     public static <T extends Throwable, E extends Throwable> void exception(final AssertConsumer<Throwable> consumer,
             final Class<T> expectedException, final String expectedMessage, final TriFunction<Boolean, String, String, E> exceptionFunction)
             throws E {
+        Objects.requireNonNull(consumer, "Consumer cannot be null");
+        Objects.requireNonNull(expectedException, "Expected exception cannot be null");
+
         Throwable e = null;
         try {
             consumer.assertException();

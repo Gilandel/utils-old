@@ -278,7 +278,6 @@ public class Constants {
         protected static class ARRAY {
             protected static final String LENGTH = "array.length";
             protected static final String EMPTY = "array.empty";
-            protected static final String CONTAINS_NULL = "array.contains.null";
             protected static final String CONTAINS_OBJECT = "array.contains.object";
             protected static final String CONTAINS_ALL = "array.contains.array.all";
             protected static final String CONTAINS_ANY = "array.contains.array.any";
