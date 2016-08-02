@@ -330,28 +330,4 @@ public class AssertMapTest extends AbstractTest {
         assertFalse(Assertor.that(map).not().hasSize(-1).isOK());
         assertFalse(Assertor.that((Map<String, Integer>) null).not().hasSize(1).isOK());
     }
-
-    /**
-     * Test method for {@link AssertMap#hasNotSize}.
-     */
-    @Test
-    public void test() {
-        final String key1 = "element1";
-        final String key2 = "element2";
-        final String key3 = "element3";
-        final Integer val1 = 1;
-        final Integer val2 = 2;
-        final Integer val3 = 3;
-
-        final Map<String, Integer> map = new HashMap<>();
-        map.put(key1, val1);
-        map.put(key2, val2);
-
-        final Map<String, Integer> map2 = new HashMap<>();
-        map2.put(key1, val1);
-        map2.put(key3, val3);
-
-        final Map<String, Integer> map3 = new HashMap<>();
-        map3.put(key3, val3);
-    }
 }

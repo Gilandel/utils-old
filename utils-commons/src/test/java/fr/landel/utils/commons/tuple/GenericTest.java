@@ -126,7 +126,8 @@ public class GenericTest {
         assertTrue(Generic.of(2, 3, null, "abc").equals(Generic.of(2, 3, null, "abc")));
         assertFalse(Generic.of(2, 3, "abd").equals(Generic.of(2, 3, "abc")));
         assertFalse(Generic.of(2, 3).equals(Generic.of(2, 4)));
-        assertFalse(Generic.of(2, 3).equals(null));
+        Object t = null;
+        assertFalse(Generic.of(2, 3).equals(t));
         assertFalse(Generic.of(2, 3).equals(Generic.of(2, 3, 5)));
 
         assertTrue(Generic.of().equals(Generic.of()));

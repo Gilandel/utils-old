@@ -18,8 +18,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.FunctionThrowable;
+import fr.landel.utils.commons.exception.FunctionException;
 
 /**
  * Check {@link BiFunctionThrowable}
@@ -61,14 +60,14 @@ public class BiFunctionThrowableTest {
     public void testApply() {
         try {
             assertEquals(4, FN1.apply("v1", "v2").intValue());
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             fail("Function failed");
         }
 
         try {
             FN1.apply(null, "v2");
             fail("Function has to fail");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             assertNotNull(e);
             assertEquals("java.lang.IllegalArgumentException: " + ERROR1, e.getMessage());
         }

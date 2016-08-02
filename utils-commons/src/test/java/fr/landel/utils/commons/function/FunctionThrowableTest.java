@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.function.FunctionThrowable;
+import fr.landel.utils.commons.exception.FunctionException;
 
 /**
  * Check {@link FunctionThrowable}
@@ -56,14 +56,14 @@ public class FunctionThrowableTest {
     public void testApply() {
         try {
             assertEquals(1, FN1.apply("v1").intValue());
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             fail("Function failed");
         }
 
         try {
             FN1.apply(null);
             fail("Function has to fail");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             assertNotNull(e);
             assertEquals("java.lang.IllegalArgumentException: " + ERROR1, e.getMessage());
         }

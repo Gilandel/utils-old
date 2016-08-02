@@ -51,11 +51,15 @@ public class AssertClassTest extends AbstractTest {
         }, IllegalArgumentException.class, "msg");
 
         Expect.exception(() -> {
-            Assertor.that((Object) null).isAssignableFrom(Exception.class).toThrow("msg");
+            Assertor.that(Exception.class).isAssignableFrom(null).toThrow("msg");
         }, IllegalArgumentException.class, "msg");
 
         Expect.exception(() -> {
-            Assertor.that(Exception.class).isAssignableFrom(null).toThrow("msg");
+            Assertor.that((Class<?>) null).isAssignableFrom(null).toThrow("msg");
+        }, IllegalArgumentException.class, "msg");
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).isAssignableFrom(Exception.class).toThrow("msg");
         }, IllegalArgumentException.class, "msg");
     }
 }

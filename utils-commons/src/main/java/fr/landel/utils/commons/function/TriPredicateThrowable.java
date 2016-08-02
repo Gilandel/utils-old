@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable predicate (boolean-valued function) of three
  * arguments. This is the three-arity/exception specialization of
@@ -55,7 +57,7 @@ public interface TriPredicateThrowable<T, U, V, E extends Throwable> extends Tri
         try {
             return testThrows(t, u, v);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

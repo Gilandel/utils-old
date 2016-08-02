@@ -14,6 +14,8 @@ package fr.landel.utils.commons.function;
 
 import java.util.function.Supplier;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable supplier of results.
  *
@@ -42,7 +44,7 @@ public interface SupplierThrowable<T, E extends Throwable> extends Supplier<T> {
      * Performs this operation on the given argument.
      *
      * @return the output argument
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -50,7 +52,7 @@ public interface SupplierThrowable<T, E extends Throwable> extends Supplier<T> {
         try {
             return getThrows();
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

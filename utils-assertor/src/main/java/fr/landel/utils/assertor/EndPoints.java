@@ -96,8 +96,6 @@ public class EndPoints<A extends AbstractAssertObject<A, T>, T> extends Constant
      * Throws an {@code IllegalArgumentException} on assertions mismatch. Set
      * the exception with the specified message (override all other messages).
      * 
-     * @param reset
-     *            if true, the current assertor is cleared
      * @param message
      *            The message to throw on mismatch
      * @param arguments

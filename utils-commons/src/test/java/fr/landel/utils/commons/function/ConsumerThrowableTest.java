@@ -18,8 +18,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.function.ConsumerThrowable;
-import fr.landel.utils.commons.function.FunctionThrowable;
+import fr.landel.utils.commons.exception.FunctionException;
 
 /**
  * Check {@link FunctionThrowable}
@@ -44,14 +43,14 @@ public class ConsumerThrowableTest {
     public void testAccept() {
         try {
             C.accept("v1");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             fail("Consumer failed");
         }
 
         try {
             C.accept(null);
             fail("Consumer has to fail");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             assertNotNull(e);
             assertEquals("java.lang.IllegalArgumentException: " + ERROR, e.getMessage());
         }

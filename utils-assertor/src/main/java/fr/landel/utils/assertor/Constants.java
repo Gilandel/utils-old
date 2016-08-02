@@ -67,7 +67,91 @@ public class Constants {
      */
     protected static final String NOT = "NOT (";
 
-    // ---------- TYPES
+    // ---------- DEFAULT
+
+    /**
+     * Default assertion
+     */
+    protected static final String DEFAULT_ASSERTION = "Assertion failed";
+
+    /**
+     * Default assertion prefix
+     */
+    protected static final String ASSERTION_PREFIX = "";
+
+    /**
+     * Default assertion suffix
+     */
+    protected static final String ASSERTION_SUFFIX = "";
+
+    // ---------- PROPERTIES / MESSAGES
+
+    /**
+     * Messages properties
+     */
+    protected static final Properties PROPS;
+    static {
+        PROPS = new Properties();
+        try (InputStream is = Assertor.class.getClassLoader().getResourceAsStream("assertor_messages.properties");) {
+            PROPS.load(is);
+        } catch (IOException e) {
+            LOGGER.error("Cannot load the assertor configuration file");
+        }
+    }
+
+    // ---------- OTHERS
+
+    protected static final Map<Integer, String> CALENDAR_FIELDS;
+    static {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(Calendar.ERA, "ERA");
+        map.put(Calendar.YEAR, "YEAR");
+        map.put(Calendar.MONTH, "MONTH");
+        map.put(Calendar.WEEK_OF_YEAR, "WEEK_OF_YEAR");
+        map.put(Calendar.WEEK_OF_MONTH, "WEEK_OF_MONTH");
+        map.put(Calendar.DATE, "DATE");
+        map.put(Calendar.DAY_OF_MONTH, "DAY_OF_MONTH");
+        map.put(Calendar.DAY_OF_YEAR, "DAY_OF_YEAR");
+        map.put(Calendar.DAY_OF_WEEK, "DAY_OF_WEEK");
+        map.put(Calendar.DAY_OF_WEEK_IN_MONTH, "DAY_OF_WEEK_IN_MONTH");
+        map.put(Calendar.AM_PM, "AM_PM");
+        map.put(Calendar.HOUR, "HOUR");
+        map.put(Calendar.HOUR_OF_DAY, "HOUR_OF_DAY");
+        map.put(Calendar.MINUTE, "MINUTE");
+        map.put(Calendar.SECOND, "SECOND");
+        map.put(Calendar.MILLISECOND, "MILLISECOND");
+        CALENDAR_FIELDS = Collections.unmodifiableMap(map);
+    }
+
+    // ---------- PRIVATE
+
+    /**
+     * Returns the property associated to the key with replaced arguments or the
+     * default string if not found {@link Constants#DEFAULT_ASSERTION}.
+     * 
+     * @param key
+     *            The property key
+     * @param arguments
+     *            The arguments to replace
+     * @return The property
+     */
+    protected static CharSequence getProperty(final CharSequence key, final CharSequence... arguments) {
+        String property = PROPS.getProperty(String.valueOf(key));
+        if (property != null) {
+            if (ArrayUtils.isNotEmpty(arguments)) {
+                for (int i = 0; i < arguments.length; i++) {
+                    property = property.replace(new StringBuilder(EnumChar.BRACE_OPEN.toString()).append(i).append(EnumChar.BRACE_CLOSE),
+                            arguments[i]);
+                }
+            }
+
+            return property;
+        } else {
+            return DEFAULT_ASSERTION;
+        }
+    }
+
+    // ---------- SUB PROPERTIES
 
     /**
      * Type constants
@@ -127,38 +211,6 @@ public class Constants {
          * Array type
          */
         int ARRAY = 9;
-    }
-
-    // ---------- DEFAULT
-
-    /**
-     * Default assertion
-     */
-    protected static final String DEFAULT_ASSERTION = "Assertion failed";
-
-    /**
-     * Default assertion prefix
-     */
-    protected static final String ASSERTION_PREFIX = "";
-
-    /**
-     * Default assertion suffix
-     */
-    protected static final String ASSERTION_SUFFIX = "";
-
-    // ---------- PROPERTIES / MESSAGES
-
-    /**
-     * Messages properties
-     */
-    protected static final Properties PROPS;
-    static {
-        PROPS = new Properties();
-        try (InputStream is = Assertor.class.getClassLoader().getResourceAsStream("assertor_messages.properties");) {
-            PROPS.load(is);
-        } catch (IOException e) {
-            LOGGER.error("Cannot load the assertor configuration file");
-        }
     }
 
     /**
@@ -498,58 +550,6 @@ public class Constants {
              * Message key for map contains any map entries
              */
             String CONTAINS_MAP_ANY = "map.contains.map.any";
-        }
-    }
-
-    // ---------- OTHERS
-
-    protected static final Map<Integer, String> CALENDAR_FIELDS;
-    static {
-        Map<Integer, String> map = new HashMap<>();
-        map.put(Calendar.ERA, "ERA");
-        map.put(Calendar.YEAR, "YEAR");
-        map.put(Calendar.MONTH, "MONTH");
-        map.put(Calendar.WEEK_OF_YEAR, "WEEK_OF_YEAR");
-        map.put(Calendar.WEEK_OF_MONTH, "WEEK_OF_MONTH");
-        map.put(Calendar.DATE, "DATE");
-        map.put(Calendar.DAY_OF_MONTH, "DAY_OF_MONTH");
-        map.put(Calendar.DAY_OF_YEAR, "DAY_OF_YEAR");
-        map.put(Calendar.DAY_OF_WEEK, "DAY_OF_WEEK");
-        map.put(Calendar.DAY_OF_WEEK_IN_MONTH, "DAY_OF_WEEK_IN_MONTH");
-        map.put(Calendar.AM_PM, "AM_PM");
-        map.put(Calendar.HOUR, "HOUR");
-        map.put(Calendar.HOUR_OF_DAY, "HOUR_OF_DAY");
-        map.put(Calendar.MINUTE, "MINUTE");
-        map.put(Calendar.SECOND, "SECOND");
-        map.put(Calendar.MILLISECOND, "MILLISECOND");
-        CALENDAR_FIELDS = Collections.unmodifiableMap(map);
-    }
-
-    // ---------- PRIVATE
-
-    /**
-     * Returns the property associated to the key with replaced arguments or the
-     * default string if not found {@link Constants#DEFAULT_ASSERTION}.
-     * 
-     * @param key
-     *            The property key
-     * @param arguments
-     *            The arguments to replace
-     * @return The property
-     */
-    protected static CharSequence getProperty(final CharSequence key, final CharSequence... arguments) {
-        String property = PROPS.getProperty(String.valueOf(key));
-        if (property != null) {
-            if (ArrayUtils.isNotEmpty(arguments)) {
-                for (int i = 0; i < arguments.length; i++) {
-                    property = property.replace(new StringBuilder(EnumChar.BRACE_OPEN.toString()).append(i).append(EnumChar.BRACE_CLOSE),
-                            arguments[i]);
-                }
-            }
-
-            return property;
-        } else {
-            return DEFAULT_ASSERTION;
         }
     }
 }

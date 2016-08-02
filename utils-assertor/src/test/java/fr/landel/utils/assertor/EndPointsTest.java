@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-assertor
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertEquals;
@@ -5,6 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -13,6 +26,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import fr.landel.utils.assertor.expect.Expect;
+import fr.landel.utils.assertor.expect.ExpectException;
 
 /**
  * Test end points class
@@ -125,7 +139,7 @@ public class EndPointsTest {
     /**
      * Test method for {@link Operator#toThrow()}.
      */
-    @Test(expected = RuntimeException.class)
+    @Test(expected = ExpectException.class)
     public void testToThrowException() {
         Expect.exception(() -> {
             Assertor.that("text").isNotEmpty().toThrow();
@@ -137,14 +151,18 @@ public class EndPointsTest {
      */
     @Test
     public void testGetErrors() {
-        assertEquals("test 265,452", Assertor.that(new BigDecimal(265.45155)).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
-        assertEquals("test 265.452", Assertor.that(new BigDecimal(265.45155)).isNull(Locale.US, "test %1$,.3f*").getErrors());
-        assertEquals("test 2 654 125,452", Assertor.that(new BigDecimal(2654125.45155)).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
-        assertEquals("test 2,654,125.452", Assertor.that(new BigDecimal(2654125.45155)).isNull(Locale.US, "test %1$,.3f*").getErrors());
+        assertEquals("test 265,452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
+        assertEquals("test 265.452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors());
+        assertEquals("test 2 654 125,452",
+                Assertor.that(new BigDecimal("2654125.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
+        assertEquals("test 2,654,125.452", Assertor.that(new BigDecimal("2654125.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors());
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2016, 6, 25);
         assertEquals("test 25 juillet 2016", Assertor.that(calendar).isNull(Locale.FRANCE, "test %1$te* %1$tB* %1$tY*").getErrors());
         assertEquals("test July 25, 2016", Assertor.that(calendar).isNull(Locale.US, "test %1$tB* %1$te*, %1$tY*").getErrors());
+
+        Color i = Color.BLACK;
+        Color j = new Color(0);
     }
 }

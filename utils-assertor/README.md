@@ -298,8 +298,6 @@ Assertor.that(object).isNull().xor().isInstance(MyClass.class).toThrow(); // is 
 Assertor.that(12).iGT(12).xor("text").contains("ex").toThrow(); // 12 > 12 xor 'text' contains 'ex'
 ```
 
-## Message building
-
 ## Available methods
 
 ### For all (Object, Boolean...)

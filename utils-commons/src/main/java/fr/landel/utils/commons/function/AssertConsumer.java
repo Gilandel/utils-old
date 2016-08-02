@@ -1,6 +1,6 @@
 /*
  * #%L
- * utils-assertor
+ * utils-commons
  * %%
  * Copyright (C) 2016 Gilandel
  * %%

@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.function.BiConsumerThrowable;
+import fr.landel.utils.commons.exception.FunctionException;
 
 /**
  * Check {@link BiConsumerThrowable}
@@ -44,14 +44,14 @@ public class BiConsumerThrowableTest {
     public void testAccept() {
         try {
             C.accept("v1", "v2");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             fail("Consumer failed");
         }
 
         try {
             C.accept("v1", null);
             fail("Consumer has to fail");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             assertNotNull(e);
             assertEquals("java.lang.IllegalArgumentException: " + ERROR, e.getMessage());
         }

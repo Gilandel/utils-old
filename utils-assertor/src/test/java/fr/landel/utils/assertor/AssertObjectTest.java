@@ -513,6 +513,11 @@ public class AssertObjectTest extends AbstractTest {
         assertFalse(Assertor.that(Color.BLACK).isAssignableFrom(Point.class).isOK());
         assertFalse(Assertor.that((Color) null).isAssignableFrom(Color.class).isOK());
         assertFalse(Assertor.that(Color.BLACK).isAssignableFrom(null).isOK());
+
+        Expect.exception(() -> {
+            Assertor.that((Object) null).isAssignableFrom(Exception.class).toThrow("msg");
+        }, IllegalArgumentException.class, "msg");
+
     }
 
     /**
@@ -696,7 +701,7 @@ public class AssertObjectTest extends AbstractTest {
 
         assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(3.25f));
         assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(3.25d));
-        assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(new BigDecimal(12.25d)));
+        assertEquals(TYPE.NUMBER_DECIMAL, AssertObject.getType(new BigDecimal("12.25")));
 
         assertEquals(TYPE.ARRAY, AssertObject.getType(new Object[0]));
 

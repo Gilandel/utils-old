@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable predicate (boolean-valued function) of one argument.
  *
@@ -40,7 +42,7 @@ public interface PredicateThrowable<T, E extends Throwable> extends Predicate<T>
         try {
             return testThrows(t);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

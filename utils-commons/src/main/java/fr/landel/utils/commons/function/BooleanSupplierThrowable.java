@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable supplier of {@code boolean}-valued results. This is
  * the {@code boolean}-producing primitive/exception specialization of
@@ -43,7 +45,7 @@ public interface BooleanSupplierThrowable<E extends Throwable> extends BooleanSu
      * Performs this operation on the given argument.
      *
      * @return the output argument
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -51,7 +53,7 @@ public interface BooleanSupplierThrowable<E extends Throwable> extends BooleanSu
         try {
             return getAsBooleanThrows();
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

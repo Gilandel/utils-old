@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Function;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a function that accepts three arguments, produces a result and
  * handles generic exception. This is the three-arity/exception specialization
@@ -52,7 +54,7 @@ public interface TriFunctionThrowable<T, U, V, R, E extends Throwable> extends T
      * @param v
      *            the third argument
      * @return The output result
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -60,7 +62,7 @@ public interface TriFunctionThrowable<T, U, V, R, E extends Throwable> extends T
         try {
             return applyThrows(t, u, v);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

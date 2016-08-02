@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.function.SupplierThrowable;
+import fr.landel.utils.commons.exception.FunctionException;
 
 /**
  * Check {@link SupplierThrowable}
@@ -47,14 +47,14 @@ public class SupplierThrowableTest {
 
         try {
             assertEquals("", s1.get());
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             fail("Supplier failed");
         }
 
         try {
             s2.get();
             fail("Supplier has to fail");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             assertNotNull(e);
             assertEquals("java.lang.IllegalArgumentException: " + error, e.getMessage());
         }

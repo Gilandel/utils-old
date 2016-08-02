@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable operation that accepts three input arguments and
  * returns no result. This is the three-arity/exception specialization of
@@ -49,7 +51,7 @@ public interface TriConsumerThrowable<T, U, V, E extends Throwable> extends TriC
      *            the second argument
      * @param v
      *            the third argument
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -57,7 +59,7 @@ public interface TriConsumerThrowable<T, U, V, E extends Throwable> extends TriC
         try {
             acceptThrows(t, u, v);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Function;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable function that accepts a single argument, produces a
  * result and handles generic exception. This is the unarity/exception
@@ -44,7 +46,7 @@ public interface FunctionThrowable<T, R, E extends Throwable> extends Function<T
      * @param t
      *            the input argument
      * @return The output result
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -52,7 +54,7 @@ public interface FunctionThrowable<T, R, E extends Throwable> extends Function<T
         try {
             return applyThrows(t);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

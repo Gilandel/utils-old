@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Function;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable function that accepts four arguments and produces a
  * result. This is the four-arity/exception specialization of {@link Function}.
@@ -55,7 +57,7 @@ public interface QuadFunctionThrowable<T, U, V, W, R, E extends Throwable> exten
      * @param w
      *            the fourth function argument
      * @return The output result
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -63,7 +65,7 @@ public interface QuadFunctionThrowable<T, U, V, W, R, E extends Throwable> exten
         try {
             return applyThrows(t, u, v, w);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

@@ -15,6 +15,8 @@ package fr.landel.utils.commons.function;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable operation that accepts a single input argument and
  * returns no result. Unlike most other functional interfaces, {@code Consumer}
@@ -40,7 +42,7 @@ public interface ConsumerThrowable<T, E extends Throwable> extends Consumer<T> {
      *
      * @param t
      *            the input argument
-     * @throws RuntimeException
+     * @throws FunctionException
      *             On error exception
      */
     @Override
@@ -48,7 +50,7 @@ public interface ConsumerThrowable<T, E extends Throwable> extends Consumer<T> {
         try {
             acceptThrows(t);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 

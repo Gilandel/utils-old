@@ -20,7 +20,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.function.PredicateThrowable;
+import fr.landel.utils.commons.exception.FunctionException;
 
 /**
  * Check {@link PredicateThrowable}
@@ -56,14 +56,14 @@ public class PredicateThrowableTest {
     public void testTest() {
         try {
             assertTrue(P1.test("v12"));
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             fail("Predicate failed");
         }
 
         try {
             P1.test(null);
             fail("Predicate has to fail");
-        } catch (RuntimeException e) {
+        } catch (FunctionException e) {
             assertNotNull(e);
             assertEquals("java.lang.IllegalArgumentException: " + ERROR1, e.getMessage());
         }

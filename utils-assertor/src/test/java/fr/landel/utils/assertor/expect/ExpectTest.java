@@ -46,7 +46,7 @@ public class ExpectTest extends AbstractTest {
                 throw new IllegalArgumentException();
             }, IOException.class);
             fail();
-        } catch (RuntimeException e) {
+        } catch (ExpectException e) {
             assertNotNull(e);
         }
     }
@@ -65,7 +65,7 @@ public class ExpectTest extends AbstractTest {
                 throw new IllegalArgumentException("message");
             }, IllegalArgumentException.class, "message2");
             fail();
-        } catch (RuntimeException e) {
+        } catch (ExpectException e) {
             assertNotNull(e);
         }
     }

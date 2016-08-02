@@ -16,6 +16,8 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import fr.landel.utils.commons.exception.FunctionException;
+
 /**
  * Represents a throwable predicate (boolean-valued function) of two arguments.
  * This is the two-arity/exception specialization of {@link Predicate}.
@@ -45,7 +47,7 @@ public interface BiPredicateThrowable<T, U, E extends Throwable> extends BiPredi
         try {
             return testThrows(t, u);
         } catch (final Throwable e) {
-            throw new RuntimeException(e);
+            throw new FunctionException(e);
         }
     }
 
