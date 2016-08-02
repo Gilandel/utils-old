@@ -392,6 +392,8 @@
 						<formats>
 							<format>xml</format>
 						</formats>
+						<aggregate>true</aggregate>
+						<outputDirectory>${project.build.directory}/cobertura</outputDirectory>
 					</configuration>
 				</plugin>
 				<plugin>

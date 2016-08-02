@@ -17,7 +17,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -161,8 +160,5 @@ public class EndPointsTest {
         calendar.set(2016, 6, 25);
         assertEquals("test 25 juillet 2016", Assertor.that(calendar).isNull(Locale.FRANCE, "test %1$te* %1$tB* %1$tY*").getErrors());
         assertEquals("test July 25, 2016", Assertor.that(calendar).isNull(Locale.US, "test %1$tB* %1$te*, %1$tY*").getErrors());
-
-        Color i = Color.BLACK;
-        Color j = new Color(0);
     }
 }

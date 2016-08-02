@@ -3,6 +3,7 @@ language: java
 jdk:
   - oraclejdk8
 
+# to get the latest version of java 8
 addons:
   apt:
     packages:
@@ -10,6 +11,8 @@ addons:
   
 before_install:
   - pip install --user codecov
+  - curl http://www.jpm4j.org/install/script | sudo sh
+  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
   - "chmod u+x distribution/*.sh"
   - distribution/prepare.sh
 
@@ -17,6 +20,7 @@ script: mvn clean compile test cobertura:cobertura
 
 after_success:
   - codecov
+  - codacy-coverage-reporter -l Java -r target/cobertura/coverage.xml
   - distribution/deploy.sh
 
 before_cache:
