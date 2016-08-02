@@ -38,11 +38,10 @@ public class FileSystemUtilsTest {
 
     private static final String CHECK_CRC32_PATH = "src/test/resources/io";
     private static final String CHECK_CRC32_TARGET_PATH = "target/io";
-    private static final String CHECK_CRC32B_TARGET_PATH = "target/io2";
     private static final String CHECK_CRC32_FILE = CHECK_CRC32_PATH + "/checkCRC32.xml";
-    private static final String CHECK_ANOTHER_FILE = CHECK_CRC32_PATH + "/another.txt";
     private static final Long CHECK_CRC32_VALUE = 3_893_630_386L;
-    private static final Long CHECK_CRC32_DIR_VALUE = 580_225_974L;
+    private static final Long CHECK_CRC32_DIR_UNIX_VALUE = 3_440_695_467L;
+    private static final Long CHECK_CRC32_DIR_WIN_VALUE = 580_225_974L;
 
     /**
      * Remove test directory
@@ -88,11 +87,8 @@ public class FileSystemUtilsTest {
 
             assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_PATH, XML_FILTER));
 
-            final File ioDir = new File(CHECK_CRC32B_TARGET_PATH);
-            assertTrue(FileSystemUtils.createDirectory(ioDir));
-            FileSystemUtils.copyFile(CHECK_ANOTHER_FILE, CHECK_CRC32B_TARGET_PATH + "/another.txt");
-            FileSystemUtils.copyFile(CHECK_CRC32_FILE, CHECK_CRC32B_TARGET_PATH + "/checkCRC32.xml");
-            assertEquals(CHECK_CRC32_DIR_VALUE, FileCRC32Utils.getCRC32(ioDir));
+            final long crc = FileCRC32Utils.getCRC32(CHECK_CRC32_PATH);
+            assertTrue(crc == CHECK_CRC32_DIR_WIN_VALUE || crc == CHECK_CRC32_DIR_UNIX_VALUE);
 
             final File emptyDir = new File("target/empty");
             assertTrue(FileSystemUtils.createDirectory(emptyDir));
