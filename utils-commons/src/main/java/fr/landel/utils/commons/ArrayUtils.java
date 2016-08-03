@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.commons;
 
+import java.util.Objects;
+
 /**
  * Operations on arrays, primitive arrays (like {@code int[]}) and primitive
  * wrapper arrays (like {@code Integer[]}).
@@ -45,9 +47,9 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * entries.
      * 
      * @param arrayToSearch
-     *            where to search array
+     *            where to search array (required, not null)
      * @param arraySearched
-     *            what to search array
+     *            what to search array (required, not null)
      * @param <T>
      *            The type of element in array to search
      * @param <U>
@@ -55,6 +57,9 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * @return true, if all elements were found
      */
     public static <T, U> boolean containsAll(final T[] arrayToSearch, final U[] arraySearched) {
+        Objects.requireNonNull(arrayToSearch, "Array to search cannot be null");
+        Objects.requireNonNull(arraySearched, "Searched array cannot be null");
+
         return has(arrayToSearch, arraySearched, true);
     }
 
@@ -63,9 +68,9 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * entries.
      * 
      * @param arrayToSearch
-     *            where to search array
+     *            where to search array (required, not null)
      * @param arraySearched
-     *            what to search array
+     *            what to search array (required, not null)
      * @param <T>
      *            The type of element in array to search
      * @param <U>
@@ -73,6 +78,9 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * @return true, if at least one element was found
      */
     public static <T, U> boolean containsAny(final T[] arrayToSearch, final U[] arraySearched) {
+        Objects.requireNonNull(arrayToSearch, "Array to search cannot be null");
+        Objects.requireNonNull(arraySearched, "Searched array cannot be null");
+
         return has(arrayToSearch, arraySearched, false);
     }
 
@@ -104,7 +112,7 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
             }
         }
         if (all) {
-            return found == array1.length;
+            return found == array2.length;
         } else {
             return found > 0;
         }
