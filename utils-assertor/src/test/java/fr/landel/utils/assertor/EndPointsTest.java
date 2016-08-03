@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.function.BiFunction;
 
 import org.junit.Test;
 
@@ -34,7 +35,12 @@ import fr.landel.utils.assertor.expect.ExpectException;
  * @author Gilles
  *
  */
-public class EndPointsTest {
+public class EndPointsTest extends AbstractTest {
+
+    private static final BiFunction<CharSequence, Object[], IOException> EXCEPTION_BUILDER = (CharSequence errors,
+            Object[] parameters) -> new IOException(
+                    AssertorHelper.getMessage(Assertor.DEFAULT_ASSERTION, null, errors.toString(), parameters, null));
+
     /**
      * Test method for {@link Operator#toThrow()}.
      */
@@ -69,6 +75,13 @@ public class EndPointsTest {
             Assertor.that("text").isEmpty("unused message").toThrow("test");
             fail();
         }, IllegalArgumentException.class, "test");
+
+        Assertor.that("text").isNotEmpty().toThrow(AssertorConstants.DEFAULT_EXCEPTION_BUILDER);
+
+        Expect.exception(() -> {
+            Assertor.that("text").isEmpty().toThrow(EXCEPTION_BUILDER);
+            fail();
+        }, IOException.class, "the char sequence 'text' should be null or empty", JUNIT_ERROR);
     }
 
     /**
@@ -82,7 +95,7 @@ public class EndPointsTest {
         assertFalse(op.isOK(false));
         assertEquals("error", op.getErrors(false));
         assertFalse(op.isOK());
-        assertEquals(Constants.DEFAULT_ASSERTION, op.getErrors(false));
+        assertEquals(AssertorConstants.DEFAULT_ASSERTION, op.getErrors(false));
         assertTrue(op.isOK());
 
         // clear first operator then second one
@@ -133,6 +146,13 @@ public class EndPointsTest {
         }, IllegalArgumentException.class);
 
         op4.toThrow();
+
+        Assertor.that("text").isNotEmpty().toThrow(true, AssertorConstants.DEFAULT_EXCEPTION_BUILDER);
+
+        Expect.exception(() -> {
+            Assertor.that("text").isEmpty().toThrow(true, EXCEPTION_BUILDER);
+            fail();
+        }, IOException.class, "the char sequence 'text' should be null or empty", JUNIT_ERROR);
     }
 
     /**

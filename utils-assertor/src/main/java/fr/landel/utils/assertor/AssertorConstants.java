@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ import fr.landel.utils.commons.EnumChar;
  * @author Gilles
  *
  */
-public class Constants {
+public class AssertorConstants {
 
     /**
      * The logger
@@ -84,6 +85,13 @@ public class Constants {
      */
     protected static final String ASSERTION_SUFFIX = "";
 
+    /**
+     * Default exception builder
+     */
+    protected static final BiFunction<CharSequence, Object[], IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (CharSequence errors,
+            Object[] parameters) -> new IllegalArgumentException(
+                    AssertorHelper.getMessage(Assertor.DEFAULT_ASSERTION, null, errors.toString(), parameters, null));
+
     // ---------- PROPERTIES / MESSAGES
 
     /**
@@ -127,7 +135,7 @@ public class Constants {
 
     /**
      * Returns the property associated to the key with replaced arguments or the
-     * default string if not found {@link Constants#DEFAULT_ASSERTION}.
+     * default string if not found {@link AssertorConstants#DEFAULT_ASSERTION}.
      * 
      * @param key
      *            The property key

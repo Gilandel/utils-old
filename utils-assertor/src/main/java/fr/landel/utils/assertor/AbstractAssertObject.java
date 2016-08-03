@@ -37,7 +37,7 @@ import fr.landel.utils.commons.function.BooleanSupplierThrowable;
  * @param <T>
  *            The object type
  */
-public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>, T> extends Constants {
+public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>, T> extends AssertorConstants {
 
     private final T object;
     private final int type;
@@ -413,7 +413,7 @@ public abstract class AbstractAssertObject<A extends AbstractAssertObject<A, T>,
         if (message != null && (locale != null || ArrayUtils.isNotEmpty(arguments))) {
             this.parameters = ArrayUtils.addAll(this.parameters, parameters);
             return this.combine(prerequisite, supplier, preMessage,
-                    EndPoints.getMessage(DEFAULT_ASSERTION, locale, message, this.parameters, arguments));
+                    AssertorHelper.getMessage(DEFAULT_ASSERTION, locale, message, this.parameters, arguments));
         } else {
             return this.combine(prerequisite, supplier, preMessage, message, parameters);
         }

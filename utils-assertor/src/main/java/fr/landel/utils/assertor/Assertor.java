@@ -106,7 +106,7 @@ import java.util.Map;
  * @since 1 juil. 2016
  * @author Gilles
  */
-public class Assertor extends Constants {
+public class Assertor extends AssertorConstants {
 
     /**
      * Set to the default locale

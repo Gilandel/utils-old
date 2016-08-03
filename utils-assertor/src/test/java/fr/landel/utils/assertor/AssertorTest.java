@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author Gilles
  *
  */
-public class AssertorTest {
+public class AssertorTest extends AbstractTest {
 
     /**
      * Test method for {@link fr.landel.utils.assertor.Assertor#that}.

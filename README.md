@@ -1,36 +1,3 @@
-# TODO
-ecrire d'autres TU
-ecrire mapper + include converter or supplier/consumer
-
-gestion des list/list/DTO
-
-gestion simple
-mapper.map(object, class)
-mapper.map(object, class, mode)
-mapper.map(object, class, mode, deep)
-gestion des converters par champ (function)
-gestion des transformers par champ (function)
-gestion multi niveau / multi type (DTO, IDO)
-gestion du mapping par champ de nom différent
-gestion de la mise en cache du mapping (reflection java) via scan
-gestion de l'annotation et des types transient
-
-dans le cas de collection non trie, exploiter le stream parallelise
-
-nouvelles proprietes du mappable (@MappableProperty(name, constructor, comparator, mode, deep, converter, targetClass)
-possibilite de typer les collections (@MappableProperty(constructor=TreeSet.class, comparator=Comparator) private Set<DTO> test;
-
-support transverse Hibernate via Consumer ou  Function
-support avec et sans spring
-
-mettre a dispo des converters de date/String en utilisant les standards J8
-
-mise en place de JMH
-
-scripts loader multi config (replacer/loader) config commune geree par le loader
-public static getValues()
-
-
 # utils
 Utility classes
 
@@ -39,9 +6,11 @@ Utility classes
 [![Dependency Status](https://www.versioneye.com/user/projects/571407adfcd19a00415b1a84/badge.svg?style=flat)](https://www.versioneye.com/user/projects/571407adfcd19a00415b1a84)
 [![codecov.io](https://codecov.io/github/Gilandel/utils/coverage.svg?branch=develop)](https://codecov.io/gh/Gilandel/utils/branch/develop)
 
+[![codecov.io tree](https://codecov.io/gh/Gilandel/utils/branch/develop/graphs/tree.svg)](https://codecov.io/gh/Gilandel/utils/branch/develop)
+[![codecov.io sunburst](https://codecov.io/gh/Gilandel/utils/branch/develop/graphs/sunburst.svg)](https://codecov.io/gh/Gilandel/utils/branch/develop)
+
 # utils-commons
 ##Commons:
-- Assert utils: Improved version of Assert provided by the Spring Team,
 - Cast generics: To cast map / list / object (avoid the use of @SuppressWarnings
 - Class utils: To get super classes or to get common super classes
 - Collection utils: Add missing transform methods (in complement of CollectionUtils provided by Apache Team)
@@ -51,6 +20,18 @@ Utility classes
 - Hex utils: To convert hexadecimal in bytes
 - Number utils: Extend NumberUtils from Apache project, add methods to check number equality
 - String utils: Extend NumberUtils from Apache project, add methods to get default string if empty or null
+
+##Assetor:
+An improved version of Assert provided by the Spring Team.
+
+Examples:
+```java
+Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(); // -&gt; if conditions are false, an IllegalArgumentException is thrown
+Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(new MyException("invalid")); // -&gt; if conditions are false, a MyException is thrown
+Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow((errors, parameters) -&gt; new MyException("invalid")); // -&gt; if conditions are false, a MyException is thrown
+```
+
+[Link to the summary](./utils-assertor#summary)
 
 ##IO:
 - Closeable manager: A manager for closeable, to open X closeable and to close them (written before Java7 autocloseable)
@@ -73,3 +54,7 @@ To add easily MDC in your application in multi-threaded context
 
 # utils-aop
 - AbstractAspect: Base to include AOP (logging and profiling) in an application
+
+# TODO
+
+add JMH

@@ -298,7 +298,7 @@ public class AssertObject<A extends AssertObject<A, T>, T> extends AbstractAsser
      * @see Class#isInstance
      */
     public Operator<A, T> isInstanceOf(final Class<?> type) {
-        return this.isInstanceOf(type, this.msg(MSG.OBJECT.INSTANCE, this.getParam(), this.getNextParam(1, Constants.TYPE.CLASS)));
+        return this.isInstanceOf(type, this.msg(MSG.OBJECT.INSTANCE, this.getParam(), this.getNextParam(1, AssertorConstants.TYPE.CLASS)));
     }
 
     /**
@@ -357,7 +357,7 @@ public class AssertObject<A extends AssertObject<A, T>, T> extends AbstractAsser
      * @return the operator
      */
     public Operator<A, T> isAssignableFrom(final Class<?> type) {
-        return this.isAssignableFrom(type, this.msg(MSG.OBJECT.ASSIGNABLE, this.getParam(), this.getNextParam(1, Constants.TYPE.UNKNOWN)));
+        return this.isAssignableFrom(type, this.msg(MSG.OBJECT.ASSIGNABLE, this.getParam(), this.getNextParam(1, AssertorConstants.TYPE.UNKNOWN)));
     }
 
     /**
