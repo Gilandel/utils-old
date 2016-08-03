@@ -651,8 +651,17 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isNumberDecimal("2f"));
         assertFalse(NumberUtils.isNumberDecimal("2l"));
 
+    }
+
+    /**
+     * Test method for
+     * {@link fr.landel.utils.commons.NumberUtils#isNumberDecimal} .
+     */
+    @Test
+    public void testIsNumberDecimal2() {
+
         // not type supported + lenient
-        p = Pattern.compile("[+-]?(\\d+|(\\d+)?\\.\\d+)?");
+        Pattern p = Pattern.compile("[+-]?(\\d+|(\\d+)?\\.\\d+)?");
 
         assertTrue(p.matcher("25").matches());
         assertTrue(p.matcher("+25").matches());
