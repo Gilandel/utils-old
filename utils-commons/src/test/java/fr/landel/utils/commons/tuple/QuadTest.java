@@ -71,7 +71,8 @@ public class QuadTest {
         assertFalse(quad.equals(Quad.of(null, second, null, 2)));
         assertFalse(quad.equals(Quad.of(null, null, third, 2)));
         assertFalse(quad.equals(Quad.of(null, null, null, null)));
-        assertFalse(quad.equals(null));
+        Quad<String, String, String, Integer> quadNull = null;
+        assertFalse(quad.equals(quadNull));
     }
 
     /**

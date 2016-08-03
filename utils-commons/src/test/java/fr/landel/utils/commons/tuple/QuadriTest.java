@@ -71,7 +71,8 @@ public class QuadriTest {
         assertFalse(quad.equals(Quadri.of(null, second, null, fourth)));
         assertFalse(quad.equals(Quadri.of(null, null, third, fourth)));
         assertFalse(quad.equals(Quadri.of(null, null, null, null)));
-        assertFalse(quad.equals(null));
+        Quadri<String> quadNull = null;
+        assertFalse(quad.equals(quadNull));
     }
 
     /**

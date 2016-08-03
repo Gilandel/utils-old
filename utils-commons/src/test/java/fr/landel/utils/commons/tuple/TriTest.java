@@ -67,7 +67,8 @@ public class TriTest {
         assertFalse(tri.equals(Tri.of(null, second, null)));
         assertFalse(tri.equals(Tri.of(null, null, third)));
         assertFalse(tri.equals(Tri.of(null, null, null)));
-        assertFalse(tri.equals(null));
+        Tri<String> triNull = null;
+        assertFalse(tri.equals(triNull));
     }
 
     /**

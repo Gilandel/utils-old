@@ -15,6 +15,7 @@ package fr.landel.utils.commons;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -441,6 +442,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         short nb2 = 0;
 
         byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+        byte[] types = new byte[] {'D', 'F', 'd', 'f'};
 
         for (int i = start; i < bytes.length; i++) {
             if (Character.isDigit(bytes[i])) {
@@ -455,13 +457,15 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
                 } else {
                     dot = 1;
                 }
-            } else if (typeSupported && i == bytes.length - 1) {
-                typed = 'd' == bytes[i] ? (byte) 1 : (byte) 0;
-                typed = typed == 1 || 'D' == bytes[i] ? (byte) 1 : 0;
-                typed = typed == 1 || 'f' == bytes[i] ? (byte) 1 : 0;
-                typed = typed == 1 || 'F' == bytes[i] ? (byte) 1 : 0;
+            } else if (typeSupported && i == bytes.length - 1 && Arrays.binarySearch(types, bytes[i]) > -1) {
+                typed = (byte) 1;
             }
         }
+        return compareLength(start, nb1, dot, nb2, typed, bytes, lenient);
+    }
+
+    private static boolean compareLength(final int start, final short nb1, final byte dot, final short nb2, final byte typed,
+            final byte[] bytes, final boolean lenient) {
         if (nb1 > 0) {
             if (dot == 1 && nb2 > 0) {
                 return start + nb1 + dot + nb2 + typed == bytes.length;

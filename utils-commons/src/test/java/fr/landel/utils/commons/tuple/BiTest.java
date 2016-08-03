@@ -62,7 +62,8 @@ public class BiTest {
         assertFalse(bi.equals(Bi.of(key, null)));
         assertFalse(bi.equals(Bi.of(null, value)));
         assertFalse(bi.equals(Bi.of(null, null)));
-        assertFalse(bi.equals(null));
+        Bi<String> biNull = null;
+        assertFalse(bi.equals(biNull));
     }
 
     /**
