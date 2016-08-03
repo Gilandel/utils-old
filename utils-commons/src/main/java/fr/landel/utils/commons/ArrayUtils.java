@@ -31,12 +31,12 @@ package fr.landel.utils.commons;
  * @author Gilles
  *
  */
-public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
+public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
     /**
      * {@inheritDoc}
      */
-    public ArrayUtils() {
+    private ArrayUtils() {
         super();
     }
 
