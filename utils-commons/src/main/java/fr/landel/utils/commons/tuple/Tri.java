@@ -143,7 +143,7 @@ public abstract class Tri<T> implements Comparable<Tri<T>>, Serializable {
      */
     @Override
     public String toString() {
-        return new StringBuilder().append('(').append(this.getLeft()).append(',').append(this.getMiddle()).append(',')
+        return new StringBuilder().append('(').append(this.getLeft()).append(", ").append(this.getMiddle()).append(", ")
                 .append(this.getRight()).append(')').toString();
     }
 

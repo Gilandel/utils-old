@@ -155,4 +155,19 @@ public class ClassUtilsTest {
         assertEquals("java.lang.Integer[]", ClassUtils.getTypeName(new Integer[] {3}));
         assertEquals("java.lang", ClassUtils.getPackageName(3));
     }
+
+    /**
+     * Test method for {@link ClassUtils#isAssignableFrom(Class, Object)} .
+     */
+    @Test
+    public void testIsAssignableFrom() {
+        assertTrue(ClassUtils.isAssignableFrom(String.class, ""));
+        assertTrue(ClassUtils.isAssignableFrom(CharSequence.class, ""));
+        assertFalse(ClassUtils.isAssignableFrom(String.class, 12));
+        assertFalse(ClassUtils.isAssignableFrom(String.class, null));
+
+        assertFalse(ClassUtils.isAssignableFrom(null, ""));
+        assertFalse(ClassUtils.isAssignableFrom(null, 12));
+        assertFalse(ClassUtils.isAssignableFrom(null, null));
+    }
 }

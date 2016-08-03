@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -529,5 +530,82 @@ public class CollectionUtils2Test {
 
         value = CollectionUtils2.getOrPut(map, "key", "value2");
         assertEquals("value", value);
+    }
+
+    /**
+     * Test method for {@link CollectionUtils2#getClasses}.
+     */
+    @Test
+    public void testGetClasses() {
+        Set<Object> set = new HashSet<>();
+
+        set.add("text");
+        set.add(2);
+        set.add(6);
+        set.add(true);
+
+        Set<Class<Object>> classes = CollectionUtils2.getClasses(set);
+        List<Class<?>> expectedClasses = Arrays.asList(Integer.class, Boolean.class, String.class);
+
+        for (Class<?> clazz : expectedClasses) {
+            assertTrue(classes.contains(clazz));
+        }
+
+        Set<Number> set2 = new HashSet<>();
+
+        set2.add(56.55f);
+        set2.add(2);
+        set2.add(6.0d);
+        set2.add((byte) 12);
+
+        Set<Class<Number>> classes2 = CollectionUtils2.getClasses(set2);
+        expectedClasses = Arrays.asList(Integer.class, Float.class, Double.class, Byte.class);
+
+        for (Class<?> clazz : expectedClasses) {
+            assertTrue(classes2.contains(clazz));
+        }
+
+        set = new HashSet<>();
+
+        set.add(56.55f);
+        set.add(null);
+
+        classes = CollectionUtils2.getClasses(set);
+        expectedClasses = Arrays.asList(Float.class);
+
+        for (Class<?> clazz : expectedClasses) {
+            assertTrue(classes.contains(clazz));
+        }
+
+        assertEquals(0, CollectionUtils2.getClasses(new HashSet<>()).size());
+        assertEquals(0, CollectionUtils2.getClasses(null).size());
+    }
+
+    /**
+     * Test method for {@link CollectionUtils2#containsClasses}.
+     */
+    @Test
+    public void testContainsClasses() {
+        Set<Object> set = new HashSet<>();
+
+        set.add("text");
+        set.add(2);
+        set.add(6);
+        set.add(true);
+
+        assertTrue(CollectionUtils2.containsClasses(set, Integer.class, Boolean.class, String.class));
+
+        Set<Number> set2 = new HashSet<>();
+
+        set2.add(56.55f);
+        set2.add(2);
+        set2.add(6.0d);
+        set2.add((byte) 12);
+
+        assertTrue(CollectionUtils2.containsClasses(set2, Integer.class, Float.class, Double.class, Byte.class, null));
+        assertFalse(CollectionUtils2.containsClasses(set2, Integer.class, Short.class));
+        assertTrue(CollectionUtils2.containsClasses(set2, (Class<?>) null));
+        assertFalse(CollectionUtils2.containsClasses(set2, (Class<?>[]) null));
+        assertFalse(CollectionUtils2.containsClasses(null, Integer.class, Float.class, Double.class, Byte.class, null));
     }
 }

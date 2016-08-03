@@ -21,28 +21,29 @@ import java.io.IOException;
 import org.junit.Test;
 
 /**
- * Check abstract exception
+ * Check abstract runtime exception
  *
  * @since 23 avr. 2016
  * @author Gilles
  *
  */
-public class AbstractExceptionTest extends AbstractException {
+public class AbstractRuntimeExceptionTest extends AbstractRuntimeException {
 
     /**
      * serialVersionUID
      */
-    private static final long serialVersionUID = -6301742295214990685L;
+    private static final long serialVersionUID = -6301742225214990685L;
 
     /**
-     * Test method for {@link AbstractException#AbstractException()} .
+     * Test method for
+     * {@link AbstractRuntimeException#AbstractRuntimeException()} .
      *
-     * @throws AbstractException
+     * @throws AbstractRuntimeException
      *             The expected exception
      */
-    @Test(expected = AbstractException.class)
-    public void testAbstractException() throws AbstractException {
-        AbstractException exception = new AbstractException() {
+    @Test(expected = AbstractRuntimeException.class)
+    public void testAbstractRuntimeException() throws AbstractRuntimeException {
+        AbstractRuntimeException exception = new AbstractRuntimeException() {
 
             /**
              * serialVersionUID
@@ -50,18 +51,19 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        assertTrue(Exception.class.isAssignableFrom(AbstractException.class));
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
 
         throw exception;
     }
 
     /**
      * Test method for
-     * {@link AbstractException#AbstractException(java.lang.String)} .
+     * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.String)}
+     * .
      */
     @Test
-    public void testAbstractExceptionString() {
-        AbstractException exception = new AbstractException("test") {
+    public void testAbstractRuntimeExceptionString() {
+        AbstractRuntimeException exception = new AbstractRuntimeException("test") {
 
             /**
              * serialVersionUID
@@ -69,22 +71,23 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        assertTrue(Exception.class.isAssignableFrom(AbstractException.class));
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
 
         try {
             throw exception;
-        } catch (AbstractException e) {
+        } catch (AbstractRuntimeException e) {
             assertEquals("test", e.getMessage());
         }
     }
 
     /**
      * Test method for
-     * {@link AbstractException#AbstractException(java.lang.Throwable)} .
+     * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.Throwable)}
+     * .
      */
     @Test
-    public void testAbstractExceptionThrowable() {
-        AbstractException exception = new AbstractException(new IOException()) {
+    public void testAbstractRuntimeExceptionThrowable() {
+        AbstractRuntimeException exception = new AbstractRuntimeException(new IOException()) {
 
             /**
              * serialVersionUID
@@ -92,11 +95,11 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        assertTrue(Exception.class.isAssignableFrom(AbstractException.class));
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
 
         try {
             throw exception;
-        } catch (AbstractException e) {
+        } catch (AbstractRuntimeException e) {
             assertNotNull(e.getCause());
             assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
         }
@@ -104,12 +107,12 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link AbstractException#AbstractException(java.lang.Class, java.lang.Throwable)}
+     * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.Class, java.lang.Throwable)}
      * .
      */
     @Test
-    public void testAbstractExceptionClassOfQextendsAbstractExceptionThrowable() {
-        AbstractException exception = new AbstractException(AbstractExceptionTest.class, new IOException()) {
+    public void testAbstractRuntimeExceptionClassOfQextendsAbstractRuntimeExceptionThrowable() {
+        AbstractRuntimeException exception = new AbstractRuntimeException(AbstractRuntimeExceptionTest.class, new IOException()) {
 
             /**
              * serialVersionUID
@@ -117,25 +120,25 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        assertTrue(Exception.class.isAssignableFrom(AbstractException.class));
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
 
         try {
             throw exception;
-        } catch (AbstractException e) {
+        } catch (AbstractRuntimeException e) {
             assertNotNull(e.getCause());
-            assertEquals(AbstractExceptionTest.class.getSimpleName(), e.getMessage());
+            assertEquals(AbstractRuntimeExceptionTest.class.getSimpleName(), e.getMessage());
             assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
         }
     }
 
     /**
      * Test method for
-     * {@link AbstractException#AbstractException(java.lang.String, java.lang.Throwable)}
+     * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.String, java.lang.Throwable)}
      * .
      */
     @Test
-    public void testAbstractExceptionStringThrowable() {
-        AbstractException exception = new AbstractException("test", new IOException()) {
+    public void testAbstractRuntimeExceptionStringThrowable() {
+        AbstractRuntimeException exception = new AbstractRuntimeException("test", new IOException()) {
 
             /**
              * serialVersionUID
@@ -143,11 +146,11 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        assertTrue(Exception.class.isAssignableFrom(AbstractException.class));
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
 
         try {
             throw exception;
-        } catch (AbstractException e) {
+        } catch (AbstractRuntimeException e) {
             assertNotNull(e.getCause());
             assertEquals("test", e.getMessage());
             assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
@@ -156,12 +159,12 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link AbstractException#AbstractException(java.lang.String, java.lang.Throwable, boolean, boolean)}
+     * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.String, java.lang.Throwable, boolean, boolean)}
      * .
      */
     @Test
-    public void testAbstractExceptionStringThrowableBooleanBoolean() {
-        AbstractException exception1 = new AbstractException("test", new IOException(), false, true) {
+    public void testAbstractRuntimeExceptionStringThrowableBooleanBoolean() {
+        AbstractRuntimeException exception1 = new AbstractRuntimeException("test", new IOException(), false, true) {
 
             /**
              * serialVersionUID
@@ -169,7 +172,7 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        AbstractException exception2 = new AbstractException("test", new IOException(), true, false) {
+        AbstractRuntimeException exception2 = new AbstractRuntimeException("test", new IOException(), true, false) {
 
             /**
              * serialVersionUID
@@ -177,12 +180,12 @@ public class AbstractExceptionTest extends AbstractException {
             private static final long serialVersionUID = 1L;
         };
 
-        assertTrue(Exception.class.isAssignableFrom(AbstractException.class));
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
 
         try {
             exception1.addSuppressed(new IOException());
             throw exception1;
-        } catch (AbstractException e) {
+        } catch (AbstractRuntimeException e) {
             assertNotNull(e.getCause());
             assertEquals("test", e.getMessage());
             assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
@@ -195,7 +198,7 @@ public class AbstractExceptionTest extends AbstractException {
         try {
             exception2.addSuppressed(new IOException());
             throw exception2;
-        } catch (AbstractException e) {
+        } catch (AbstractRuntimeException e) {
             assertNotNull(e.getCause());
             assertEquals("test", e.getMessage());
             assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));

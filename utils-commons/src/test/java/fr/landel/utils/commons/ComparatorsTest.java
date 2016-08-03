@@ -236,4 +236,36 @@ public class ComparatorsTest {
         assertEquals("a1b", stringsSorted.get(1));
         assertEquals("a1e", stringsSorted.get(0));
     }
+
+    /**
+     * Check {@link Comparators#compare}
+     */
+    @Test
+    public void testCompare() {
+        Integer object = Integer.valueOf(12);
+        Integer object2 = Integer.valueOf(13);
+
+        assertEquals(0, Comparators.compare(object, object));
+        assertEquals(0, Comparators.compare(null, null));
+        assertEquals(Integer.MAX_VALUE, Comparators.compare(object, null));
+        assertEquals(Integer.MIN_VALUE, Comparators.compare(null, object));
+        assertEquals(-1, Comparators.compare(object, object2));
+        assertEquals(1, Comparators.compare(object2, object));
+    }
+
+    /**
+     * Check {@link Comparators#compareReverse}
+     */
+    @Test
+    public void testCompareReverse() {
+        Integer object = Integer.valueOf(12);
+        Integer object2 = Integer.valueOf(13);
+
+        assertEquals(0, Comparators.compareReverse(object, object));
+        assertEquals(0, Comparators.compareReverse(null, null));
+        assertEquals(Integer.MIN_VALUE, Comparators.compareReverse(object, null));
+        assertEquals(Integer.MAX_VALUE, Comparators.compareReverse(null, object));
+        assertEquals(1, Comparators.compareReverse(object, object2));
+        assertEquals(-1, Comparators.compareReverse(object2, object));
+    }
 }

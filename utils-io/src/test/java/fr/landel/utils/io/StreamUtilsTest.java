@@ -148,6 +148,7 @@ public class StreamUtilsTest {
             assertTrue(CloseableManager.isCloseable(url));
 
             CloseableManager.close(url);
+            CloseableManager.close((URL) null);
 
             assertFalse(CloseableManager.isCloseable(url));
         } catch (FileNotFoundException e) {

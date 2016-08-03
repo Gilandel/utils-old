@@ -14,13 +14,16 @@ package fr.landel.utils.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Test;
 
@@ -138,5 +141,51 @@ public class FileSystemUtilsTest {
         } catch (IOException e) {
             fail(e.getMessage());
         }
+    }
+
+    /**
+     * Check {@link FileSystemUtils#getExtensionPart}
+     */
+    @Test
+    public void testGetExtensionPart() {
+        assertEquals("log", FileSystemUtils.getExtensionPart(new File("target/file.log")));
+        assertEquals("log", FileSystemUtils.getExtensionPart("target/sub\\file.log"));
+        assertEquals("", FileSystemUtils.getExtensionPart("target/"));
+        assertEquals("log", FileSystemUtils.getExtensionPart("file.log"));
+        assertEquals("", FileSystemUtils.getExtensionPart("file."));
+        assertEquals("", FileSystemUtils.getExtensionPart("file"));
+        assertNull(FileSystemUtils.getExtensionPart((File) null));
+        assertNull(FileSystemUtils.getExtensionPart((String) null));
+    }
+
+    /**
+     * Check {@link FileSystemUtils#getFileNamePart}
+     */
+    @Test
+    public void testGetFileNamePart() {
+        assertEquals("file", FileSystemUtils.getFileNamePart(new File("target/file.log")));
+        assertEquals("file", FileSystemUtils.getFileNamePart("target/sub\\file.log"));
+        assertEquals("", FileSystemUtils.getFileNamePart("target/"));
+        assertEquals("file", FileSystemUtils.getFileNamePart("file.log"));
+        assertEquals("file", FileSystemUtils.getFileNamePart("file."));
+        assertEquals("file", FileSystemUtils.getFileNamePart("file"));
+        assertNull(FileSystemUtils.getFileNamePart((File) null));
+        assertNull(FileSystemUtils.getFileNamePart((String) null));
+    }
+
+    /**
+     * Check {@link FileSystemUtils#createFile}
+     */
+    @Test
+    public void testCreateFile() {
+        File file = FileSystemUtils.createFile("target", "classes", "fr", "landel", "utils", "io", "FileSystemUtils.class");
+
+        String expected = StringUtils.join(Arrays.asList("target", "classes", "fr", "landel", "utils", "io", "FileSystemUtils.class"),
+                File.separator);
+
+        assertEquals(expected, file.getPath());
+
+        assertNull(FileSystemUtils.createFile((File) null, "classes", "fr", "landel", "utils", "io", "FileSystemUtils.class"));
+        assertNull(FileSystemUtils.createFile("target"));
     }
 }

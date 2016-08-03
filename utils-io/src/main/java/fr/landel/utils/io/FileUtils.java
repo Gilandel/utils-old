@@ -20,9 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 import fr.landel.utils.assertor.Assertor;
 
@@ -46,7 +48,7 @@ public final class FileUtils {
     }
 
     /**
-     * Get the content of a file (charset used: US_ASCII).
+     * Get the content of a file (charset used: UTF-8).
      * 
      * @param path
      *            The path of the file
@@ -55,11 +57,11 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final String path) throws IOException {
-        return getFileContent(path, EncodingUtils.CHARSET_US_ASCII);
+        return getFileContent(path, EncodingUtils.CHARSET_UTF_8);
     }
 
     /**
-     * Get the content of a file (charset used: US_ASCII).
+     * Get the content of a file (charset used: UTF-8).
      * 
      * @param file
      *            The file
@@ -68,7 +70,7 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final File file) throws IOException {
-        return getFileContent(file, EncodingUtils.CHARSET_US_ASCII);
+        return getFileContent(file, EncodingUtils.CHARSET_UTF_8);
     }
 
     /**
@@ -116,7 +118,7 @@ public final class FileUtils {
     }
 
     /**
-     * Get the content of a input stream (charset used: US_ASCII).
+     * Get the content of a input stream (charset used: UTF-8).
      * 
      * @param inputStream
      *            The input stream
@@ -125,7 +127,7 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final InputStream inputStream) throws IOException {
-        return FileUtils.getFileContent(inputStream, EncodingUtils.CHARSET_US_ASCII);
+        return FileUtils.getFileContent(inputStream, EncodingUtils.CHARSET_UTF_8);
     }
 
     /**
@@ -209,7 +211,7 @@ public final class FileUtils {
 
             final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(file);
 
-            bos.write(buffer.toString().getBytes(charset));
+            bos.write(buffer.toString().getBytes(ObjectUtils.defaultIfNull(charset, StandardCharsets.UTF_8)));
 
             CloseableManager.close(file);
         }

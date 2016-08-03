@@ -91,7 +91,8 @@ public final class CollectionUtils2 {
     }
 
     /**
-     * List all classes in an iterable
+     * List all classes in an iterable ({@code null} values are excluded in the
+     * output set)
      * 
      * @param iterable
      *            The iterable to check
@@ -114,7 +115,8 @@ public final class CollectionUtils2 {
     }
 
     /**
-     * Check if the iterable contains specific types
+     * Check if the iterable contains specific types (all {@code null} values
+     * and classes are excluded)
      * 
      * @param iterable
      *            The iterable to check

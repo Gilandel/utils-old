@@ -34,10 +34,11 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,11 @@ import org.slf4j.LoggerFactory;
 public final class CastGenerics {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CastGenerics.class);
+
+    /**
+     * Simple cache to avoid reflect calls
+     */
+    private static ConcurrentMap<Class<?>, Constructor<?>[]> cacheConstructor = new ConcurrentHashMap<>();
 
     /**
      * Hidden constructor.
@@ -634,6 +640,23 @@ public final class CastGenerics {
     }
 
     /**
+     * Get constructors fo a class and put the result in cache, to increase
+     * speed for the next call.
+     * 
+     * @param instantiableClass
+     *            The class to instanciate
+     * @return The list of constructors
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> Constructor<T>[] getConstructors(final Class<T> instantiableClass) {
+        if (!cacheConstructor.containsKey(instantiableClass)) {
+            cacheConstructor.put(instantiableClass, instantiableClass.getDeclaredConstructors());
+        }
+
+        return (Constructor<T>[]) cacheConstructor.get(instantiableClass);
+    }
+
+    /**
      * Instantiate a typed constructor.
      * 
      * @param instantiableClass
@@ -651,12 +674,25 @@ public final class CastGenerics {
         T result = null;
 
         if (instantiableClass != null && classes != null) {
-            Constructor<T> typedConstructor;
+            Constructor<T> typedConstructor = null;
             try {
-                typedConstructor = instantiableClass.getDeclaredConstructor(classes.toArray(new Class<?>[classes.size()]));
+                Constructor<T>[] constructors = getConstructors(instantiableClass);
 
-                result = instantiate(true, typedConstructor, instantiableClass, objects);
-            } catch (NoSuchMethodException | SecurityException e) {
+                Class<?>[] signatureParams = classes.toArray(new Class<?>[classes.size()]);
+                for (Constructor<T> constructor : constructors) {
+                    if (ArrayUtils.containsAll(constructor.getParameterTypes(), signatureParams)) {
+                        typedConstructor = constructor;
+                        break;
+                    }
+                }
+
+                if (typedConstructor != null) {
+                    result = instantiate(true, typedConstructor, instantiableClass, objects);
+                } else {
+                    LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName()
+                            + ", constructor signature not found ");
+                }
+            } catch (SecurityException e) {
                 LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
             }
         }
@@ -683,7 +719,7 @@ public final class CastGenerics {
 
         if (instantiableClass != null && classes != null) {
             try {
-                Constructor<?>[] constructors = instantiableClass.getDeclaredConstructors();
+                Constructor<?>[] constructors = getConstructors(instantiableClass);
                 boolean mismatch = true;
 
                 for (Constructor<?> constructor : constructors) {

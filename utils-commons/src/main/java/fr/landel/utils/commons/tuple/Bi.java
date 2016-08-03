@@ -178,7 +178,7 @@ public abstract class Bi<T> implements Map.Entry<T, T>, Comparable<Bi<T>>, Seria
      */
     @Override
     public String toString() {
-        return new StringBuilder().append('(').append(getLeft()).append(',').append(getRight()).append(')').toString();
+        return new StringBuilder().append('(').append(getLeft()).append(", ").append(getRight()).append(')').toString();
     }
 
     /**

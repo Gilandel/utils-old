@@ -14,6 +14,7 @@ package fr.landel.utils.commons;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -168,13 +169,72 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
 
     /**
      * Check if the string contains an integer number ({@link Byte},
-     * {@link Short}, {@link Integer}, {@link Long} or {@link BigInteger})
+     * {@link Short}, {@link Integer}, {@link Long} or {@link BigInteger}). The
+     * following regular expression is applied {@code [+-]?\d+}
+     * 
+     * <p>
+     * Only format is checked, not if the {@code float} is an {@code int} is a
+     * {@code long} ({@link Integer#MAX_VALUE} or {@link Integer#MIN_VALUE})...
+     * </p>
+     * 
+     * <pre>
+     * NumberUtils.isNumberInteger("25"); // -&gt; true
+     * NumberUtils.isNumberInteger("+25"); // -&gt; true
+     * NumberUtils.isNumberInteger("-25"); // -&gt; true
+     * NumberUtils.isNumberInteger("+25l"); // -&gt; false
+     * NumberUtils.isNumberInteger("-25L"); // -&gt; false
+     * NumberUtils.isNumberInteger("25d"); // -&gt; false
+     * NumberUtils.isNumberInteger("25f"); // -&gt; false
+     * 
+     * NumberUtils.isNumberInteger(""); // -&gt; false
+     * NumberUtils.isNumberInteger("text"); // -&gt; false
+     * NumberUtils.isNumberInteger((String) null); // -&gt; false
+     * </pre>
+     * 
      * 
      * @param string
      *            the input String
      * @return true, if integer number
      */
     public static boolean isNumberInteger(final String string) {
+        return isNumberInteger(string, false);
+    }
+
+    /**
+     * Check if the string contains an integer number ({@link Byte},
+     * {@link Short}, {@link Integer}, {@link Long} or {@link BigInteger}). If
+     * typeSupported is true, the following regular expression is applied
+     * {@code [+-]?\d+[lL]?}, otherwise {@code [+-]?\d+}
+     * 
+     * <p>
+     * Only format is checked, not if the {@code float} is an {@code int} is a
+     * {@code long} ({@link Integer#MAX_VALUE} or {@link Integer#MIN_VALUE})...
+     * </p>
+     * 
+     * <pre>
+     * NumberUtils.isNumberInteger("25", false); // -&gt; true
+     * NumberUtils.isNumberInteger("+25", false); // -&gt; true
+     * NumberUtils.isNumberInteger("-25", false); // -&gt; true
+     * NumberUtils.isNumberInteger("+25l", false); // -&gt; false
+     * NumberUtils.isNumberInteger("-25L", false); // -&gt; false
+     * NumberUtils.isNumberInteger("+25l", true); // -&gt; true
+     * NumberUtils.isNumberInteger("-25L", true); // -&gt; true
+     * NumberUtils.isNumberInteger("25d", true); // -&gt; false
+     * NumberUtils.isNumberInteger("25f", true); // -&gt; false
+     * 
+     * NumberUtils.isNumberInteger("", true); // -&gt; false
+     * NumberUtils.isNumberInteger("text", true); // -&gt; false
+     * NumberUtils.isNumberInteger((String) null, true); // -&gt; false
+     * </pre>
+     * 
+     * 
+     * @param string
+     *            the input String
+     * @param typeSupported
+     *            if typed is supported (like: "10L")
+     * @return true, if integer number
+     */
+    public static boolean isNumberInteger(final String string, final boolean typeSupported) {
         if (StringUtils.isEmpty(string)) {
             return false;
         }
@@ -182,12 +242,20 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         if (string.startsWith("-") || string.startsWith("+")) {
             start = 1;
         }
-        for (int i = start; i < string.length(); i++) {
-            if (!Character.isDigit(string.charAt(i))) {
-                return false;
+        int length = string.length();
+        short nb = 0;
+        byte typed = 0;
+
+        byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+
+        for (int i = start; i < bytes.length; i++) {
+            if (Character.isDigit(bytes[i])) {
+                nb++;
+            } else if (typeSupported && i == length - 1) {
+                typed = bytes[i] == 'l' || bytes[i] == 'L' ? (byte) 1 : 0;
             }
         }
-        return true;
+        return start + nb + typed == bytes.length;
     }
 
     /**
@@ -230,13 +298,136 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
 
     /**
      * Check if the string contains a decimal number ({@link Float},
-     * {@link Double}, {@link BigDecimal})
+     * {@link Double}, {@link BigDecimal}). The following regular expression is
+     * applied {@code [+-]?(\\d+)?\\.\\d+}
+     * 
+     * <p>
+     * Only format is checked, not if the {@code float} is a {@code double}
+     * ({@link Float#MAX_VALUE} or {@link Float#MIN_VALUE}) or an {@code int} is
+     * a {@code long}...
+     * </p>
+     * 
+     * <pre>
+     * NumberUtils.isNumberDecimal("25.6"); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6"); // -&gt; true
+     * NumberUtils.isNumberDecimal("-25.6"); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6d"); // -&gt; false
+     * NumberUtils.isNumberDecimal("-25.6F"); // -&gt; false
+     * NumberUtils.isNumberDecimal("25d"); // -&gt; false
+     * NumberUtils.isNumberDecimal("25f"); // -&gt; false
+     * NumberUtils.isNumberDecimal(".25"); // -&gt; true
+     * NumberUtils.isNumberDecimal("25."); // -&gt; false
+     * NumberUtils.isNumberDecimal("25"); // -&gt; false
+     * 
+     * NumberUtils.isNumberDecimal(""); // -&gt; false
+     * NumberUtils.isNumberDecimal("text"); // -&gt; false
+     * NumberUtils.isNumberDecimal((String) null); // -&gt; false
+     * </pre>
      * 
      * @param string
      *            the input String
-     * @return true, if integer number
+     * @return true, if decimal number
      */
     public static boolean isNumberDecimal(final String string) {
+        return isNumberDecimal(string, false);
+    }
+
+    /**
+     * Check if the string contains a decimal number ({@link Float},
+     * {@link Double}, {@link BigDecimal}). if typeSupported is true, the
+     * following regular expression is applied
+     * {@code [+-]?(\\d+[dfDF]|(\\d+)?\\.\\d+[dfDF]?)}, otherwise
+     * {@code [+-]?(\\d+)?\\.\\d+}
+     * 
+     * <p>
+     * Only format is checked, not if the {@code float} is a {@code double}
+     * ({@link Float#MAX_VALUE} or {@link Float#MIN_VALUE}) or an {@code int} is
+     * a {@code long}...
+     * </p>
+     * 
+     * <pre>
+     * NumberUtils.isNumberDecimal("25.6"); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6"); // -&gt; true
+     * NumberUtils.isNumberDecimal("-25.6"); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6d"); // -&gt; false
+     * NumberUtils.isNumberDecimal("-25.6F"); // -&gt; false
+     * NumberUtils.isNumberDecimal("25d"); // -&gt; false
+     * NumberUtils.isNumberDecimal("25f"); // -&gt; false
+     * NumberUtils.isNumberDecimal(".25"); // -&gt; true
+     * NumberUtils.isNumberDecimal("25."); // -&gt; false
+     * NumberUtils.isNumberDecimal("25"); // -&gt; false
+     * 
+     * NumberUtils.isNumberDecimal(""); // -&gt; false
+     * NumberUtils.isNumberDecimal("text"); // -&gt; false
+     * NumberUtils.isNumberDecimal((String) null); // -&gt; false
+     * </pre>
+     * 
+     * @param string
+     *            the input String
+     * @param typeSupported
+     *            if typed is supported (like: "10.2f")
+     * @return true, if decimal number
+     */
+    public static boolean isNumberDecimal(final String string, final boolean typeSupported) {
+        return isNumberDecimal(string, typeSupported, false);
+    }
+
+    /**
+     * Check if the string contains a decimal number ({@link Float},
+     * {@link Double}, {@link BigDecimal}).
+     * 
+     * <p>
+     * Regular expression used by cases:
+     * </p>
+     * 
+     * <ul>
+     * <li>typeSupported is true and lenient is false:
+     * {@code [+-]?(\\d+[dfDF]|(\\d+)?\\.\\d+[dfDF]?)}</li>
+     * 
+     * <li>typeSupported is true and lenient is true:
+     * {@code [+-]?(\\d+|(\\d+)?\\.\\d+)[dfDF]?}</li>
+     * 
+     * <li>typeSupported is false and lenient is false:
+     * {@code [+-]?(\\d+)?\\.\\d+}</li>
+     * 
+     * <li>typeSupported is false and lenient is true:
+     * {@code [+-]?(\\d+|(\\d+)?\\.\\d+)?}</li>
+     * </ul>
+     * 
+     * <p>
+     * Only format is checked, not if the {@code float} is a {@code double}
+     * ({@link Float#MAX_VALUE} or {@link Float#MIN_VALUE}) or an {@code int} is
+     * a {@code long}...
+     * </p>
+     * 
+     * <pre>
+     * NumberUtils.isNumberDecimal("25.6", false, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6", false, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("-25.6", false, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6d", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("-25.6F", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("+25.6d", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("-25.6F", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal(".25d", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("25d", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("25f", true, false); // -&gt; true
+     * NumberUtils.isNumberDecimal("25", false, false); // -&gt; false
+     * NumberUtils.isNumberDecimal("25", false, true); // -&gt; true
+     * 
+     * NumberUtils.isNumberDecimal("", false, true); // -&gt; false
+     * NumberUtils.isNumberDecimal("text", false, true); // -&gt; false
+     * NumberUtils.isNumberDecimal((String) null, false, true); // -&gt; false
+     * </pre>
+     * 
+     * @param string
+     *            the input String
+     * @param typeSupported
+     *            if typed is supported (like: "10.2f")
+     * @param lenient
+     *            set to false if dot is required
+     * @return true, if decimal number
+     */
+    public static boolean isNumberDecimal(final String string, final boolean typeSupported, final boolean lenient) {
         if (StringUtils.isEmpty(string)) {
             return false;
         }
@@ -244,12 +435,43 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         if (string.startsWith("-") || string.startsWith("+")) {
             start = 1;
         }
-        for (int i = start; i < string.length(); i++) {
-            if (!Character.isDigit(string.charAt(i)) && '.' != string.charAt(i)) {
-                return false;
+        byte dot = 0;
+        byte typed = 0;
+        short nb1 = 0;
+        short nb2 = 0;
+
+        byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+
+        for (int i = start; i < bytes.length; i++) {
+            if (Character.isDigit(bytes[i])) {
+                if (dot == 1) {
+                    nb2++;
+                } else {
+                    nb1++;
+                }
+            } else if ('.' == bytes[i]) {
+                if (dot == 1) {
+                    return false; // multiple dots
+                } else {
+                    dot = 1;
+                }
+            } else if (typeSupported && i == bytes.length - 1) {
+                typed = 'd' == bytes[i] ? (byte) 1 : (byte) 0;
+                typed = typed == 1 || 'D' == bytes[i] ? (byte) 1 : 0;
+                typed = typed == 1 || 'f' == bytes[i] ? (byte) 1 : 0;
+                typed = typed == 1 || 'F' == bytes[i] ? (byte) 1 : 0;
             }
         }
-        return true;
+        if (nb1 > 0) {
+            if (dot == 1 && nb2 > 0) {
+                return start + nb1 + dot + nb2 + typed == bytes.length;
+            } else if (lenient || typed == 1) {
+                return start + nb1 + typed == bytes.length;
+            }
+        } else if (dot == 1 && nb2 > 0) {
+            return start + dot + nb2 + typed == bytes.length;
+        }
+        return false;
     }
 
     /**
@@ -496,7 +718,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      * @return The parsed result
      */
     public static Float parseFloat(final String string, final Float defaultValue) {
-        if (NumberUtils.isNumberDecimal(string)) {
+        if (NumberUtils.isNumberDecimal(string, true, true)) {
             return Float.parseFloat(string);
         }
         return defaultValue;
@@ -524,7 +746,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      * @return The parsed result
      */
     public static Double parseDouble(final String string, final Double defaultValue) {
-        if (NumberUtils.isNumberDecimal(string)) {
+        if (NumberUtils.isNumberDecimal(string, true, true)) {
             return Double.parseDouble(string);
         }
         return defaultValue;

@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -169,12 +170,12 @@ public class NumberUtilsTest {
         assertNull(NumberUtils.parseFloat("   SS "));
         assertNull(NumberUtils.parseFloat("  12 "));
 
-        assertEquals(expected, (float) NumberUtils.parseFloat("10"), delta);
-        assertEquals(-expected, (float) NumberUtils.parseFloat("-10"), delta);
+        assertEquals(expected, NumberUtils.parseFloat("10"), delta);
+        assertEquals(-expected, NumberUtils.parseFloat("-10"), delta);
         assertNull(NumberUtils.parseFloat("10L"));
-        assertEquals(expected, (float) NumberUtils.parseFloat("10.0"), delta);
-        assertNull(NumberUtils.parseFloat("10.0D"));
-        assertNull(NumberUtils.parseFloat("10.0F"));
+        assertEquals(expected, NumberUtils.parseFloat("10.0"), delta);
+        assertEquals(expected, NumberUtils.parseFloat("10.0D"), delta);
+        assertEquals(expected, NumberUtils.parseFloat("10.0F"), delta);
     }
 
     /**
@@ -263,12 +264,12 @@ public class NumberUtilsTest {
         assertNull(NumberUtils.parseDouble("   SS "));
         assertNull(NumberUtils.parseDouble("  12 "));
 
-        assertEquals(expected, (double) NumberUtils.parseDouble("10"), delta);
-        assertEquals(-expected, (double) NumberUtils.parseDouble("-10"), delta);
+        assertEquals(expected, NumberUtils.parseDouble("10"), delta);
+        assertEquals(-expected, NumberUtils.parseDouble("-10"), delta);
         assertNull(NumberUtils.parseDouble("10L"));
         assertEquals(expected, (double) NumberUtils.parseDouble("10.0"), delta);
-        assertNull(NumberUtils.parseDouble("10.0D"));
-        assertNull(NumberUtils.parseDouble("10.0F"));
+        assertEquals(expected, NumberUtils.parseDouble("10.0D"), delta);
+        assertEquals(expected, NumberUtils.parseDouble("10.0F"), delta);
     }
 
     /**
@@ -408,6 +409,7 @@ public class NumberUtilsTest {
         Number numDouble = 12.0d;
         Number numBigInteger = BigInteger.valueOf(12L);
         Number numBigDecimal = BigDecimal.valueOf(12.0d);
+        Number numNull = null;
 
         assertTrue(NumberUtils.isByte(numByte));
         assertFalse(NumberUtils.isShort(numByte));
@@ -480,5 +482,228 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numBigDecimal));
         assertFalse(NumberUtils.isBigInteger(numBigDecimal));
         assertTrue(NumberUtils.isBigDecimal(numBigDecimal));
+
+        assertFalse(NumberUtils.isByte(numNull));
+        assertFalse(NumberUtils.isShort(numNull));
+        assertFalse(NumberUtils.isInteger(numNull));
+        assertFalse(NumberUtils.isLong(numNull));
+        assertFalse(NumberUtils.isFloat(numNull));
+        assertFalse(NumberUtils.isDouble(numNull));
+        assertFalse(NumberUtils.isBigInteger(numNull));
+        assertFalse(NumberUtils.isBigDecimal(numNull));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.landel.utils.commons.NumberUtils#isNumberInteger} .
+     */
+    @Test
+    public void testIsNumberInteger() {
+
+        // type supported
+        Pattern p = Pattern.compile("[+-]?\\d+[lL]?");
+
+        assertTrue(p.matcher("25").matches());
+        assertTrue(p.matcher("+25").matches());
+        assertFalse(p.matcher("-25.25").matches());
+        assertFalse(p.matcher("-25.25d").matches());
+        assertFalse(p.matcher(".25").matches());
+        assertFalse(p.matcher(".25f").matches());
+        assertFalse(p.matcher("2f").matches());
+        assertTrue(p.matcher("2l").matches());
+        assertTrue(p.matcher("2L").matches());
+
+        assertTrue(NumberUtils.isNumberInteger("25", true));
+        assertTrue(NumberUtils.isNumberInteger("+25", true));
+        assertFalse(NumberUtils.isNumberInteger("-25.25", true));
+        assertFalse(NumberUtils.isNumberInteger("-25.25d", true));
+        assertFalse(NumberUtils.isNumberInteger(".25", true));
+        assertFalse(NumberUtils.isNumberInteger(".25f", true));
+        assertFalse(NumberUtils.isNumberInteger("2f", true));
+        assertTrue(NumberUtils.isNumberInteger("2l", true));
+        assertTrue(NumberUtils.isNumberInteger("2L", true));
+
+        // type not supported
+        p = Pattern.compile("[+-]?\\d+");
+
+        assertTrue(p.matcher("25").matches());
+        assertTrue(p.matcher("+25").matches());
+        assertFalse(p.matcher("-25.25").matches());
+        assertFalse(p.matcher("-25.25d").matches());
+        assertFalse(p.matcher(".25").matches());
+        assertFalse(p.matcher(".25f").matches());
+        assertFalse(p.matcher("2f").matches());
+        assertFalse(p.matcher("2l").matches());
+        assertFalse(p.matcher("2L").matches());
+
+        assertTrue(NumberUtils.isNumberInteger("25"));
+        assertTrue(NumberUtils.isNumberInteger("+25"));
+        assertFalse(NumberUtils.isNumberInteger("-25.25"));
+        assertFalse(NumberUtils.isNumberInteger("-25.25d"));
+        assertFalse(NumberUtils.isNumberInteger(".25"));
+        assertFalse(NumberUtils.isNumberInteger(".25f"));
+        assertFalse(NumberUtils.isNumberInteger("2f"));
+        assertFalse(NumberUtils.isNumberInteger("2l"));
+        assertFalse(NumberUtils.isNumberInteger("2L"));
+
+        // errors
+
+        assertFalse(NumberUtils.isNumberInteger("25."));
+        assertFalse(NumberUtils.isNumberInteger("25.."));
+        assertFalse(NumberUtils.isNumberInteger("."));
+        assertFalse(NumberUtils.isNumberInteger("text"));
+        assertFalse(NumberUtils.isNumberInteger((String) null));
+
+        // Class
+
+        assertTrue(NumberUtils.isNumberInteger(Byte.class));
+        assertTrue(NumberUtils.isNumberInteger(Short.class));
+        assertTrue(NumberUtils.isNumberInteger(Integer.class));
+        assertTrue(NumberUtils.isNumberInteger(Long.class));
+        assertFalse(NumberUtils.isNumberInteger(Float.class));
+        assertFalse(NumberUtils.isNumberInteger(Double.class));
+        assertTrue(NumberUtils.isNumberInteger(BigInteger.class));
+        assertFalse(NumberUtils.isNumberInteger(BigDecimal.class));
+        assertFalse(NumberUtils.isNumberInteger(String.class));
+        assertFalse(NumberUtils.isNumberInteger((Class<Number>) null));
+
+        // Object
+
+        assertTrue(NumberUtils.isNumberInteger((byte) 12));
+        assertTrue(NumberUtils.isNumberInteger((short) 12));
+        assertTrue(NumberUtils.isNumberInteger(12));
+        assertTrue(NumberUtils.isNumberInteger(12L));
+        assertFalse(NumberUtils.isNumberInteger(12F));
+        assertFalse(NumberUtils.isNumberInteger(12D));
+        assertTrue(NumberUtils.isNumberInteger(BigInteger.TEN));
+        assertFalse(NumberUtils.isNumberInteger(BigDecimal.TEN));
+        assertFalse(NumberUtils.isNumberInteger((Object) ""));
+        assertFalse(NumberUtils.isNumberInteger((Object) null));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.landel.utils.commons.NumberUtils#isNumberDecimal} .
+     */
+    @Test
+    public void testIsNumberDecimal() {
+
+        // type supported + not lenient
+        Pattern p = Pattern.compile("[+-]?(\\d+[dfDF]|(\\d+)?\\.\\d+[dfDF]?)");
+
+        assertFalse(p.matcher("25").matches());
+        assertFalse(p.matcher("+25").matches());
+        assertTrue(p.matcher("-25.25").matches());
+        assertTrue(p.matcher("-25.25d").matches());
+        assertTrue(p.matcher(".25").matches());
+        assertTrue(p.matcher(".25f").matches());
+        assertTrue(p.matcher("2f").matches());
+        assertFalse(p.matcher("2l").matches());
+
+        assertFalse(NumberUtils.isNumberDecimal("25", true));
+        assertFalse(NumberUtils.isNumberDecimal("+25", true));
+        assertTrue(NumberUtils.isNumberDecimal("-25.25", true));
+        assertTrue(NumberUtils.isNumberDecimal("-25.25d", true));
+        assertTrue(NumberUtils.isNumberDecimal(".25", true));
+        assertTrue(NumberUtils.isNumberDecimal(".25f", true));
+        assertTrue(NumberUtils.isNumberDecimal("2f", true));
+        assertFalse(NumberUtils.isNumberDecimal("2l", true));
+
+        // type supported + lenient
+        p = Pattern.compile("[+-]?(\\d+|(\\d+)?\\.\\d+)[dfDF]?");
+
+        assertTrue(p.matcher("25").matches());
+        assertTrue(p.matcher("+25").matches());
+        assertTrue(p.matcher("-25.25").matches());
+        assertTrue(p.matcher("-25.25d").matches());
+        assertTrue(p.matcher(".25").matches());
+        assertTrue(p.matcher(".25f").matches());
+        assertTrue(p.matcher("2f").matches());
+        assertFalse(p.matcher("2l").matches());
+
+        assertTrue(NumberUtils.isNumberDecimal("25", true, true));
+        assertTrue(NumberUtils.isNumberDecimal("+25", true, true));
+        assertTrue(NumberUtils.isNumberDecimal("-25.25", true, true));
+        assertTrue(NumberUtils.isNumberDecimal("-25.25d", true, true));
+        assertTrue(NumberUtils.isNumberDecimal(".25", true, true));
+        assertTrue(NumberUtils.isNumberDecimal(".25f", true, true));
+        assertTrue(NumberUtils.isNumberDecimal("2f", true, true));
+        assertFalse(NumberUtils.isNumberDecimal("2l", true, true));
+
+        // not type supported + not lenient
+        p = Pattern.compile("[+-]?(\\d+)?\\.\\d+");
+
+        assertFalse(p.matcher("25").matches());
+        assertFalse(p.matcher("+25").matches());
+        assertTrue(p.matcher("-25.25").matches());
+        assertFalse(p.matcher("-25.25d").matches());
+        assertTrue(p.matcher(".25").matches());
+        assertFalse(p.matcher(".25f").matches());
+        assertFalse(p.matcher("2f").matches());
+        assertFalse(p.matcher("2l").matches());
+
+        assertFalse(NumberUtils.isNumberDecimal("25"));
+        assertFalse(NumberUtils.isNumberDecimal("+25"));
+        assertTrue(NumberUtils.isNumberDecimal("-25.25"));
+        assertFalse(NumberUtils.isNumberDecimal("-25.25d"));
+        assertTrue(NumberUtils.isNumberDecimal(".25"));
+        assertFalse(NumberUtils.isNumberDecimal(".25f"));
+        assertFalse(NumberUtils.isNumberDecimal("2f"));
+        assertFalse(NumberUtils.isNumberDecimal("2l"));
+
+        // not type supported + lenient
+        p = Pattern.compile("[+-]?(\\d+|(\\d+)?\\.\\d+)?");
+
+        assertTrue(p.matcher("25").matches());
+        assertTrue(p.matcher("+25").matches());
+        assertTrue(p.matcher("-25.25").matches());
+        assertFalse(p.matcher("-25.25d").matches());
+        assertTrue(p.matcher(".25").matches());
+        assertFalse(p.matcher(".25f").matches());
+        assertFalse(p.matcher("2f").matches());
+        assertFalse(p.matcher("2l").matches());
+
+        assertTrue(NumberUtils.isNumberDecimal("25", false, true));
+        assertTrue(NumberUtils.isNumberDecimal("+25", false, true));
+        assertTrue(NumberUtils.isNumberDecimal("-25.25", false, true));
+        assertFalse(NumberUtils.isNumberDecimal("-25.25d", false, true));
+        assertTrue(NumberUtils.isNumberDecimal(".25", false, true));
+        assertFalse(NumberUtils.isNumberDecimal(".25f", false, true));
+        assertFalse(NumberUtils.isNumberDecimal("2f", false, true));
+        assertFalse(NumberUtils.isNumberDecimal("2l", false, true));
+
+        // errors
+
+        assertFalse(NumberUtils.isNumberDecimal("25."));
+        assertFalse(NumberUtils.isNumberDecimal("25.."));
+        assertFalse(NumberUtils.isNumberDecimal("."));
+        assertFalse(NumberUtils.isNumberDecimal("text"));
+        assertFalse(NumberUtils.isNumberDecimal((String) null));
+
+        // Class
+
+        assertFalse(NumberUtils.isNumberDecimal(Byte.class));
+        assertFalse(NumberUtils.isNumberDecimal(Short.class));
+        assertFalse(NumberUtils.isNumberDecimal(Integer.class));
+        assertFalse(NumberUtils.isNumberDecimal(Long.class));
+        assertTrue(NumberUtils.isNumberDecimal(Float.class));
+        assertTrue(NumberUtils.isNumberDecimal(Double.class));
+        assertFalse(NumberUtils.isNumberDecimal(BigInteger.class));
+        assertTrue(NumberUtils.isNumberDecimal(BigDecimal.class));
+        assertFalse(NumberUtils.isNumberDecimal(String.class));
+        assertFalse(NumberUtils.isNumberDecimal((Class<Number>) null));
+
+        // Object
+
+        assertFalse(NumberUtils.isNumberDecimal((byte) 12));
+        assertFalse(NumberUtils.isNumberDecimal((short) 12));
+        assertFalse(NumberUtils.isNumberDecimal(12));
+        assertFalse(NumberUtils.isNumberDecimal(12L));
+        assertTrue(NumberUtils.isNumberDecimal(12F));
+        assertTrue(NumberUtils.isNumberDecimal(12D));
+        assertFalse(NumberUtils.isNumberDecimal(BigInteger.TEN));
+        assertTrue(NumberUtils.isNumberDecimal(BigDecimal.TEN));
+        assertFalse(NumberUtils.isNumberDecimal((Object) ""));
+        assertFalse(NumberUtils.isNumberDecimal((Object) null));
     }
 }

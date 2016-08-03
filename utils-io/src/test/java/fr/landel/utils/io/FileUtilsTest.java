@@ -13,6 +13,7 @@
 package fr.landel.utils.io;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +31,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check file utils
@@ -55,9 +57,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.io.FileUtils#getFileContent(java.io.InputStream)}
-     * .
+     * Test method for {@link FileUtils#getFileContent(java.io.InputStream)} .
      */
     @Test
     public void testGetFileContentInputStream() {
@@ -74,7 +74,7 @@ public class FileUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.io.FileUtils#getFileContent(java.io.InputStream, java.nio.charset.Charset)}
+     * {@link FileUtils#getFileContent(java.io.InputStream, java.nio.charset.Charset)}
      * .
      */
     @Test
@@ -126,6 +126,10 @@ public class FileUtilsTest {
             outputSb = FileUtils.getFileContent(outputFile, EncodingUtils.CHARSET_UTF_8);
 
             assertEquals(sb.toString(), outputSb.toString());
+
+            // Do nothing
+            FileUtils.writeFileContent(null, outputFile, EncodingUtils.CHARSET_UTF_8);
+            FileUtils.writeFileContent(sb, (File) null, EncodingUtils.CHARSET_UTF_8);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -133,8 +137,8 @@ public class FileUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.io.FileUtils#writeFileContent(java.io.InputStream, java.lang.String)}
-     * {@link fr.landel.utils.io.FileUtils#getFileContent(java.lang.String)} .
+     * {@link FileUtils#writeFileContent(java.io.InputStream, java.lang.String)}
+     * {@link FileUtils#getFileContent(java.lang.String)} .
      */
     @Test
     public void testWriteFileContentInputStreamString() {
@@ -192,7 +196,7 @@ public class FileUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.io.FileUtils#writeStream(java.io.InputStream, java.io.OutputStream)}
+     * {@link FileUtils#writeStream(java.io.InputStream, java.io.OutputStream)}
      * .
      */
     @Test
@@ -212,9 +216,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.io.FileUtils#isEqual(java.io.File, java.io.File)}
-     * .
+     * Test method for {@link FileUtils#isEqual(java.io.File, java.io.File)} .
      * 
      * @throws IOException
      *             On copy failed
@@ -225,15 +227,40 @@ public class FileUtilsTest {
         File copiedFile = new File(CHECK_CRC32_TARGET_PATH, CHECK_CRC32_FILE);
 
         FileSystemUtils.createDirectory(CHECK_CRC32_TARGET_PATH);
-
         FileSystemUtils.copyFile(referenceFile, copiedFile);
 
         assertTrue(FileUtils.isEqual(referenceFile, copiedFile));
+        assertTrue(FileUtils.isEqual(referenceFile.getAbsolutePath(), copiedFile.getAbsolutePath()));
+
+        File file2 = new File("target/test2.txt");
+        FileUtils.writeFileContent(new StringBuilder(), file2, StandardCharsets.UTF_8);
+        assertFalse(FileUtils.isEqual(referenceFile, file2));
+        assertFalse(FileUtils.isEqual(file2, copiedFile));
+
+        File file1 = new File("target/test1.txt");
+        FileUtils.writeFileContent(new StringBuilder(), file1, StandardCharsets.UTF_8);
+        assertTrue(FileUtils.isEqual(file1, file2));
+
+        Expect.exception(() -> {
+            FileUtils.isEqual(null, copiedFile);
+        }, IllegalArgumentException.class, "The first file isn't valid");
+
+        Expect.exception(() -> {
+            FileUtils.isEqual(new File("./"), copiedFile);
+        }, IllegalArgumentException.class, "The first file isn't valid");
+
+        Expect.exception(() -> {
+            FileUtils.isEqual(referenceFile, null);
+        }, IllegalArgumentException.class, "The second file isn't valid");
+
+        Expect.exception(() -> {
+            FileUtils.isEqual(referenceFile, new File("./"));
+        }, IllegalArgumentException.class, "The second file isn't valid");
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.io.FileUtils#getFileContent(String, java.nio.charset.Charset, ClassLoader)}
+     * {@link FileUtils#getFileContent(String, java.nio.charset.Charset, ClassLoader)}
      * .
      * 
      * @throws IOException
@@ -245,10 +272,15 @@ public class FileUtilsTest {
 
         StringBuilder referenceContent = FileUtils.getFileContent(referenceFile, StandardCharsets.UTF_8);
         StringBuilder content = FileUtils.getFileContent("io/" + CHECK_CRC32_FILE, StandardCharsets.UTF_8, null);
+        content = FileUtils.getFileContent("io/" + CHECK_CRC32_FILE, StandardCharsets.UTF_8, FileUtils.class.getClassLoader());
 
         assertNotNull(referenceContent);
         assertNotNull(content);
 
         Assertor.that(content).isEqual(referenceContent);
+
+        content = FileUtils.getFileContent(new File("src/test/resources/io/", CHECK_CRC32_FILE));
+
+        assertNotNull(content);
     }
 }

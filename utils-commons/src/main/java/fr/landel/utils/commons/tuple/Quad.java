@@ -12,12 +12,6 @@
  */
 package fr.landel.utils.commons.tuple;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
 /**
  * <p>
  * A quad consisting of four elements.
@@ -48,139 +42,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  * @author Gilles
  *
  */
-public abstract class Quad<A, B, C, D> implements Comparable<Quad<A, B, C, D>>, Serializable {
+public abstract class Quad<A, B, C, D> extends AbstractQuad<A, B, C, D> {
 
     /**
      * serialVersionUID
      */
     private static final long serialVersionUID = -7359128872551227845L;
-
-    /**
-     * <p>
-     * Gets the first element from this quad.
-     * </p>
-     *
-     * @return the first element, may be null
-     */
-    public abstract A getFirst();
-
-    /**
-     * <p>
-     * Gets the second element from this quad.
-     * </p>
-     *
-     * @return the second element, may be null
-     */
-    public abstract B getSecond();
-
-    /**
-     * <p>
-     * Gets the third element from this quad.
-     * </p>
-     *
-     * @return the third element, may be null
-     */
-    public abstract C getThird();
-
-    /**
-     * <p>
-     * Gets the fourth element from this quad.
-     * </p>
-     *
-     * @return the fourth element, may be null
-     */
-    public abstract D getFourth();
-
-    /**
-     * <p>
-     * Compares the quad based on the first element followed by the second, the
-     * third and the fourth element. The types must be {@code Comparable}.
-     * </p>
-     * 
-     * @param other
-     *            the other quad, not null
-     * @return negative if this is less, zero if equal, positive if greater and
-     *         if other is {@code null}, returns {@link Integer#MAX_VALUE}
-     */
-    @Override
-    public int compareTo(final Quad<A, B, C, D> other) {
-        if (other == null) {
-            return Integer.MAX_VALUE;
-        }
-
-        return new CompareToBuilder().append(this.getFirst(), other.getFirst()).append(this.getSecond(), other.getSecond())
-                .append(this.getThird(), other.getThird()).append(this.getFourth(), other.getFourth()).toComparison();
-    }
-
-    /**
-     * <p>
-     * Compares this quad to another based on the four elements.
-     * </p>
-     * 
-     * @param obj
-     *            the object to compare to, null returns false
-     * @return true if the elements of the quad are equal
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj instanceof Quad<?, ?, ?, ?>) {
-            final Quad<?, ?, ?, ?> other = (Quad<?, ?, ?, ?>) obj;
-            return new EqualsBuilder().append(this.getFirst(), other.getFirst()).append(this.getSecond(), other.getSecond())
-                    .append(this.getThird(), other.getThird()).append(this.getFourth(), other.getFourth()).isEquals();
-        }
-        return false;
-    }
-
-    /**
-     * <p>
-     * Returns a suitable hash code.
-     * </p>
-     * 
-     * @return the hash code
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getFirst(), this.getSecond(), this.getThird(), this.getFourth());
-    }
-
-    /**
-     * <p>
-     * Returns a String representation of this quad using the format
-     * {@code ($left,$middle,$right)}.
-     * </p>
-     * 
-     * @return a string describing this object, not null
-     */
-    @Override
-    public String toString() {
-        return new StringBuilder().append('(').append(this.getFirst()).append(',').append(this.getSecond()).append(',')
-                .append(this.getThird()).append(',').append(this.getFourth()).append(')').toString();
-    }
-
-    /**
-     * <p>
-     * Formats the receiver using the given format.
-     * </p>
-     * 
-     * <p>
-     * This uses {@link java.util.Formattable} to perform the formatting. Two
-     * variables may be used to embed the left and right elements. Use
-     * {@code %1$s} for the first element (key) and {@code %2$s} for the second
-     * element (value)... The default format used by {@code toString()} is
-     * {@code (%1$s,%2$s,%3$s,%4$s)}.
-     * </p>
-     * 
-     * @param format
-     *            the format string, optionally containing {@code %1$s} and
-     *            {@code %2$s}, not null
-     * @return the formatted string, not null
-     */
-    public String toString(final String format) {
-        return String.format(format, this.getFirst(), this.getSecond(), this.getThird(), this.getFourth());
-    }
 
     /**
      * <p>
@@ -243,7 +110,7 @@ public abstract class Quad<A, B, C, D> implements Comparable<Quad<A, B, C, D>>, 
      *            the fourth element, may be null
      * @return a quad formed from the four parameters, not null
      */
-    public static <A, B, C, D> Quad<A, B, C, D> ofMutable(final A first, final B second, final C third, final D fourth) {
+    public static <A, B, C, D> MutableQuad<A, B, C, D> ofMutable(final A first, final B second, final C third, final D fourth) {
         return new MutableQuad<A, B, C, D>(first, second, third, fourth);
     }
 }

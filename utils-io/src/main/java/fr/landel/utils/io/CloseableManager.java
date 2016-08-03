@@ -84,6 +84,20 @@ public final class CloseableManager {
     /**
      * Check if a closeable is already created.
      * 
+     * @param closeable
+     *            The associated closeable
+     * @return true, if found
+     */
+    public static boolean isCloseable(final Closeable closeable) {
+        if (closeable != null) {
+            return CLOSEABLES.containsKey(closeable.hashCode());
+        }
+        return false;
+    }
+
+    /**
+     * Check if a closeable is already created.
+     * 
      * @param hashcode
      *            The associated hashcode
      * @return true, if found
@@ -172,6 +186,26 @@ public final class CloseableManager {
                 CLOSEABLES.put(hashcode, new ArrayList<Closeable>());
             }
             CLOSEABLES.get(hashcode).add(closeable);
+            return closeable;
+        }
+        return null;
+    }
+
+    /**
+     * Add closeable to the list associated closeable to the hashcode.
+     * 
+     * @param closeable
+     *            The closeable to be added
+     * @param <C>
+     *            The closeable type
+     * @return the input closeable parameter
+     */
+    public static <C extends Closeable> C addCloseable(final C closeable) {
+        if (closeable != null) {
+            if (!CLOSEABLES.containsKey(closeable.hashCode())) {
+                CLOSEABLES.put(closeable.hashCode(), new ArrayList<Closeable>());
+            }
+            CLOSEABLES.get(closeable.hashCode()).add(closeable);
             return closeable;
         }
         return null;
@@ -340,14 +374,10 @@ public final class CloseableManager {
     public static void close(final Closeable closeable) {
         if (closeable != null) {
             try {
-                if (CLOSEABLES.containsValue(closeable)) {
-                    final Optional<Integer> hashcode = CLOSEABLES.entrySet().stream().filter((e) -> closeable.equals(e.getValue()))
-                            .map((e) -> e.getKey()).findFirst();
-                    if (hashcode.isPresent()) {
-                        close(hashcode.get());
-                    } else {
-                        closeable.close();
-                    }
+                final Optional<Integer> hashcode = CLOSEABLES.entrySet().stream().filter((e) -> e.getValue().contains(closeable))
+                        .map((e) -> e.getKey()).findFirst();
+                if (hashcode.isPresent()) {
+                    close(hashcode.get());
                 } else {
                     closeable.close();
                 }

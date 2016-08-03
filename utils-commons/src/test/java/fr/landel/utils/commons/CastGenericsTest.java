@@ -270,6 +270,7 @@ public class CastGenericsTest {
         Object[] objects5 = {"TEST", -1};
 
         assertNull(CastGenerics.map(ExException.class, objects5));
+        assertNull(CastGenerics.map(Exception.class, "", ""));
 
         assertNull(CastGenerics.map(null, objects4));
         assertNull(CastGenerics.map(null, (Object[]) null));

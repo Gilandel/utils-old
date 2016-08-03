@@ -89,6 +89,8 @@ public class FileSizeUtilsTest {
 
         assertEquals(CHECK_CRC32_SIZE * 2, FileSizeUtils.getSize(target));
 
+        assertEquals(0, FileSizeUtils.getSize(new File(CHECK_CRC32_FILE, ".not-exist")));
         assertEquals(0, FileSizeUtils.getSize((String) null));
+        assertEquals(0, FileSizeUtils.getSize((File) null));
     }
 }

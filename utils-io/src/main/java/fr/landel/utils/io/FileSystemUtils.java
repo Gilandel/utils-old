@@ -644,10 +644,23 @@ public final class FileSystemUtils {
      */
     public static String getExtensionPart(final String fileName) {
         if (fileName != null) {
-            final int index = fileName.lastIndexOf('.');
-            if (index > -1 && index + 1 < fileName.length()) {
-                return fileName.substring(index + 1);
+            final int sep = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+            String temp = fileName;
+            if (sep > -1) {
+                if (sep < temp.length() - 1) {
+                    temp = temp.substring(sep + 1);
+                } else {
+                    temp = "";
+                }
             }
+
+            final int index = temp.lastIndexOf('.');
+            if (index > -1) {
+                temp = temp.substring(index + 1);
+            } else {
+                temp = "";
+            }
+            return temp;
         }
         return null;
     }
@@ -660,7 +673,7 @@ public final class FileSystemUtils {
      * @return The extension part or null
      */
     public static String getExtensionPart(final File file) {
-        if (file.isFile()) {
+        if (file != null) {
             return getExtensionPart(file.getName());
         }
         return null;
@@ -696,7 +709,7 @@ public final class FileSystemUtils {
      * @return true, if one extension matchs
      */
     public static boolean hasExtensionPart(final File file, final String... extensions) {
-        if (file.isFile()) {
+        if (file != null) {
             return hasExtensionPart(file.getName(), extensions);
         }
         return false;
@@ -711,10 +724,20 @@ public final class FileSystemUtils {
      */
     public static String getFileNamePart(final String fileName) {
         if (fileName != null) {
-            final int index = fileName.lastIndexOf('.');
-            if (index > -1 && index + 1 < fileName.length()) {
-                return fileName.substring(0, index);
+            final int sep = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+            String temp = fileName;
+            if (sep > -1) {
+                if (sep < temp.length() - 1) {
+                    temp = fileName.substring(sep + 1);
+                } else {
+                    temp = "";
+                }
             }
+            final int index = temp.lastIndexOf('.');
+            if (index > -1) {
+                return temp.substring(0, index);
+            }
+            return temp;
         }
         return null;
     }
@@ -727,7 +750,7 @@ public final class FileSystemUtils {
      * @return The file name part or null
      */
     public static String getFileNamePart(final File file) {
-        if (file.isFile()) {
+        if (file != null) {
             return getFileNamePart(file.getName());
         }
         return null;
@@ -747,7 +770,7 @@ public final class FileSystemUtils {
         }
         return new FilenameFilter() {
             @Override
-            public boolean accept(File file, String name) {
+            public boolean accept(final File file, final String name) {
                 if (allowedExts.size() > 0) {
                     final String ext = FileSystemUtils.getExtensionPart(name);
                     if (ext != null) {
@@ -760,12 +783,25 @@ public final class FileSystemUtils {
     }
 
     /**
-     * Create File from base and add sub directories/file.
+     * Create {@link File} from base and add sub directories/file.
      * 
      * @param base
-     *            The base directory
+     *            The base directory (required, not null)
      * @param subFiles
-     *            The list of sub directories/file
+     *            The list of sub directories/file (required, not null)
+     * @return The concatenation of the arguments
+     */
+    public static File createFile(final String base, final String... subFiles) {
+        return createFile(new File(base), subFiles);
+    }
+
+    /**
+     * Create {@link File} from base and add sub directories/file.
+     * 
+     * @param base
+     *            The base directory (required, not null)
+     * @param subFiles
+     *            The list of sub directories/file (required, not null)
      * @return The concatenation of the arguments
      */
     public static File createFile(final File base, final String... subFiles) {
@@ -779,6 +815,5 @@ public final class FileSystemUtils {
         }
 
         return generatedFile;
-
     }
 }

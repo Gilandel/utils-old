@@ -36,10 +36,63 @@ package fr.landel.utils.commons.tuple;
  * @author Gilles
  *
  */
-public abstract class Quadri<T> extends Quad<T, T, T, T> {
+public abstract class Quadri<T> extends AbstractQuad<T, T, T, T> {
 
     /**
      * serialVersionUID
      */
     private static final long serialVersionUID = -6033257956595424676L;
+
+    /**
+     * <p>
+     * Obtains an immutable quad of from four objects inferring the generic
+     * types.
+     * </p>
+     * 
+     * <p>
+     * This factory allows the quad to be created using inference to obtain the
+     * generic types.
+     * </p>
+     * 
+     * @param <T>
+     *            the element types
+     * @param first
+     *            the first element, may be null
+     * @param second
+     *            the second element, may be null
+     * @param third
+     *            the third element, may be null
+     * @param fourth
+     *            the fourth element, may be null
+     * @return a quad formed from the four parameters, not null
+     */
+    public static <T> Quadri<T> of(final T first, final T second, final T third, final T fourth) {
+        return new ImmutableQuadri<T>(first, second, third, fourth);
+    }
+
+    /**
+     * <p>
+     * Obtains a mutable quad of from four objects inferring the generic types.
+     * </p>
+     * 
+     * <p>
+     * This factory allows the quad to be created using inference to obtain the
+     * generic types.
+     * </p>
+     * 
+     * @param <T>
+     *            the element type
+     * @param first
+     *            the first element, may be null
+     * @param second
+     *            the second element, may be null
+     * @param third
+     *            the third element, may be null
+     * @param fourth
+     *            the fourth element, may be null
+     * @return a quad formed from the four parameters, not null
+     */
+    public static <T> MutableQuadri<T> ofMutable(final T first, final T second, final T third, final T fourth) {
+        return new MutableQuadri<T>(first, second, third, fourth);
+    }
 }
