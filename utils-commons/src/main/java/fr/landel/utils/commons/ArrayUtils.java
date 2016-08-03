@@ -34,7 +34,7 @@ package fr.landel.utils.commons;
 public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
     /**
-     * {@inheritDoc}
+     * Hidden constructor
      */
     private ArrayUtils() {
         super();
