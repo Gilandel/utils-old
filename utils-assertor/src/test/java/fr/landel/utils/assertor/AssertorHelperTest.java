@@ -43,10 +43,12 @@ public class AssertorHelperTest extends AbstractTest {
         assertEquals("message 23.26", AssertorHelper.getMessage("default", Locale.US, "message %.2f", null, new Object[] {23.256f}));
         assertEquals("message 23,26", AssertorHelper.getMessage("default", Locale.FRANCE, "message %.2f", null, new Object[] {23.256f}));
 
+        Assertor.setLocale(Locale.FRANCE);
         Expect.exception(() -> {
             Assertor.that(23.6f).isEqual(25.6f).toThrow();
             fail();
         }, IllegalArgumentException.class, "the number '23,600' should be equal to '25,600'", JUNIT_ERROR);
+        Assertor.setLocale(Locale.US);
 
         Expect.exception(() -> {
             Assertor.that("texte11").not().isEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
