@@ -72,25 +72,20 @@ public class AssertMatcherTest extends AbstractTest {
         List<Matcher<? super Color>> matcherList = Arrays.<Matcher<? super Color>> asList(matcherBlack, matcherWhite, matcherBlue,
                 matcherCyan);
 
-        assertTrue(Assertor.that(colors).matches(Matchers.hasSize(nbColors)).and().matches(Matchers.contains(matcherList)).isOK());
+        assertTrue(Assertor.that(colors).validates((object) -> Matchers.hasSize(nbColors).matches(object)).and()
+                .validates((object) -> Matchers.contains(matcherList).matches(object)).isOK());
 
         Expect.exception(() -> {
-            Assertor.that(colors).matches(null).and().matches(Matchers.contains(matcherList)).toThrow();
+            Assertor.that(colors).validates(null).and().validates((object) -> Matchers.contains(matcherList).matches(object)).toThrow();
             fail();
-        }, IllegalArgumentException.class, "the matcher cannot be null", JUNIT_ERROR);
+        }, IllegalArgumentException.class, "the predicate cannot be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that((List<Color>) null).matches(Matchers.hasSize(nbColors)).and().matches(Matchers.contains(matcherList)).toThrow();
+            Assertor.that((List<Color>) null).validates((object) -> Matchers.hasSize(nbColors).matches(object)).and()
+                    .validates((object) -> Matchers.contains(matcherList).matches(object)).toThrow();
             fail();
         }, IllegalArgumentException.class,
-                "the object 'null' should match, errors:\n\tExpected: a collection with size <4>\n\t     but: was null\n"
-                        + " AND the object 'null' should match, errors:\n"
-                        + "\tExpected: iterable containing [(hasProperty(\"green\", is <0>) and hasProperty(\"red\", is <0>) and hasProperty(\"blue\", is <0>)"
-                        + " and hasProperty(\"alpha\", is <255>)), (hasProperty(\"green\", is <255>) and hasProperty(\"red\", is <255>) and hasProperty(\"blue\", is <255>)"
-                        + " and hasProperty(\"alpha\", is <255>)), (hasProperty(\"green\", is <0>) and hasProperty(\"red\", is <0>) and hasProperty(\"blue\", is <255>)"
-                        + " and hasProperty(\"alpha\", is <255>)), (hasProperty(\"green\", is <255>) and hasProperty(\"red\", is <0>) and hasProperty(\"blue\", is <255>) and hasProperty(\"alpha\", is <255>))]\n"
-                        + "\t     but: was null\n",
-                JUNIT_ERROR);
+                "the object 'null' should validate the predicate AND the object 'null' should validate the predicate", JUNIT_ERROR);
     }
 
     /**
@@ -105,6 +100,6 @@ public class AssertMatcherTest extends AbstractTest {
         colors.add(Color.BLUE);
         colors.add(Color.CYAN);
 
-        Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1)).toThrow();
+        Assertor.that(colors).validates((object) -> Matchers.hasSize(colors.size() - 1).matches(object)).toThrow();
     }
 }

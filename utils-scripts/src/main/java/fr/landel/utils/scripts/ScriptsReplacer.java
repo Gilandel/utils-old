@@ -22,8 +22,8 @@ import java.util.Set;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.assertor.AssertCharSequence;
 import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.PredicateAssertorCharSequence;
 
 /**
  * Scripts replacer (parse, execute and replace all scripts). Default
@@ -157,19 +157,19 @@ public class ScriptsReplacer {
             Assertor.that(entry.getKey()).isNotNull().toThrow("Replacement key cannot be null");
             Assertor.that(entry.getValue()).isNotNull().toThrow("Replacement value cannot be null");
 
-            final String errorKey = "Replacement key cannot contains: ";
-            AssertCharSequence<String> assertor = Assertor.that(entry.getKey());
-            assertor.not().contains(this.template.getExpressionOpen()).toThrow(errorKey + this.template.getExpressionOpen());
-            assertor.not().contains(this.template.getExpressionClose()).toThrow(errorKey + this.template.getExpressionClose());
-            assertor.not().contains(this.template.getOperatorThen()).toThrow(errorKey + this.template.getOperatorThen());
-            assertor.not().contains(this.template.getOperatorElse()).toThrow(errorKey + this.template.getOperatorElse());
+            final String errorKey = "Replacement key cannot contains: %s";
+            PredicateAssertorCharSequence<String> assertorNot = Assertor.that(entry.getKey()).not();
+            assertorNot.contains(this.template.getExpressionOpen()).toThrow(errorKey, this.template.getExpressionOpen());
+            assertorNot.contains(this.template.getExpressionClose()).toThrow(errorKey, this.template.getExpressionClose());
+            assertorNot.contains(this.template.getOperatorThen()).toThrow(errorKey, this.template.getOperatorThen());
+            assertorNot.contains(this.template.getOperatorElse()).toThrow(errorKey, this.template.getOperatorElse());
 
             final String errorValue = "Replacement value cannot contains: ";
-            assertor = Assertor.that(entry.getValue());
-            assertor.not().contains(this.template.getExpressionOpen()).toThrow(errorValue + this.template.getExpressionOpen());
-            assertor.not().contains(this.template.getExpressionClose()).toThrow(errorValue + this.template.getExpressionClose());
-            assertor.not().contains(this.template.getOperatorThen()).toThrow(errorValue + this.template.getOperatorThen());
-            assertor.not().contains(this.template.getOperatorElse()).toThrow(errorValue + this.template.getOperatorElse());
+            assertorNot = Assertor.that(entry.getValue()).not();
+            assertorNot.contains(this.template.getExpressionOpen()).toThrow(errorValue, this.template.getExpressionOpen());
+            assertorNot.contains(this.template.getExpressionClose()).toThrow(errorValue, this.template.getExpressionClose());
+            assertorNot.contains(this.template.getOperatorThen()).toThrow(errorValue, this.template.getOperatorThen());
+            assertorNot.contains(this.template.getOperatorElse()).toThrow(errorValue, this.template.getOperatorElse());
 
             if (this.template.getChecker() != null) {
                 this.template.getChecker().acceptThrows(entry.getValue());

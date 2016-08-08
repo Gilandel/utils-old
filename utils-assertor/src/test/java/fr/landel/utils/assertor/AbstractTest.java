@@ -23,7 +23,7 @@ import fr.landel.utils.commons.function.TriFunction;
  * @author Gilles
  *
  */
-public abstract class AbstractTest {
+public abstract class AbstractTest extends AssertorConstants {
 
     /**
      * Function to manage the creation of Junit exception

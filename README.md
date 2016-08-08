@@ -26,9 +26,9 @@ An improved version of Assert provided by the Spring Team.
 
 Examples:
 ```java
-Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(); // -&gt; if conditions are false, an IllegalArgumentException is thrown
-Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(new MyException("invalid")); // -&gt; if conditions are false, a MyException is thrown
-Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow((errors, parameters) -&gt; new MyException("invalid")); // -&gt; if conditions are false, a MyException is thrown
+Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(); // -> if conditions are false, an IllegalArgumentException is thrown
+Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(new MyException("invalid")); // -> if conditions are false, a MyException is thrown
+Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
 ```
 
 [Link to the summary](./utils-assertor#summary)

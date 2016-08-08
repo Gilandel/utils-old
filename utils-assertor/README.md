@@ -167,10 +167,12 @@ Throw an exception if the assertion is false. Two ways to personalize the except
 	- toThrow(CharSequence message, Object... arguments)
 	- toThrow(Locale locale, CharSequence message, Object... arguments)
 	- toThrow(E exception)
+	- toThrow(BiFunction<CharSequence, Object[], E> exceptionBuilder)
 	- toThrow(boolean reset)
 	- toThrow(boolean reset, CharSequence message, Object... arguments)
 	- toThrow(boolean reset, Locale locale, CharSequence message, Object... arguments)
 	- toThrow(boolean reset, E exception)
+	- toThrow(boolean reset, BiFunction<CharSequence, Object[], E> exceptionBuilder)
 
 * Examples:
 ```java

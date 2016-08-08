@@ -75,15 +75,21 @@ public final class CollectionUtils2 {
         if (!IterableUtils.isEmpty(iterable)) {
             final Iterator<T> iterator = iterable.iterator();
             final List<T> list = new ArrayList<>();
+            final Set<Class<T>> classes = new HashSet<>();
             while (iterator.hasNext()) {
                 final T obj = iterator.next();
                 list.add(obj);
+                if (obj != null) {
+                    classes.add(ClassUtils.getClass(obj));
+                }
             }
-            final Class<T> typeClass;
+            final Class<?> typeClass;
             if (type != null) {
                 typeClass = type;
+            } else if (classes.size() == 1) {
+                typeClass = classes.iterator().next();
             } else {
-                typeClass = CastGenerics.getClass(list.get(0));
+                typeClass = Object.class;
             }
             return list.toArray((T[]) Array.newInstance(typeClass, list.size()));
         }

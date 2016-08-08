@@ -29,9 +29,7 @@ import fr.landel.utils.assertor.expect.Expect;
 public class AssertorHelperTest extends AbstractTest {
 
     /**
-     * Test method for
-     * {@link AssertObject#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
-     * .
+     * Test method for {@link AssertorHelper#getMessage} .
      */
     @Test
     public void testGetMessage() {
@@ -65,13 +63,14 @@ public class AssertorHelperTest extends AbstractTest {
             Assertor.that("texte11").isBlank().or().isNotEqual("texte11").toThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
-                "the char sequence 'texte11' should be null, empty or blank OR the object 'texte11' should be NOT equal to 'texte11'");
+                "the char sequence 'texte11' should be null, empty or blank OR the object 'texte11' should NOT be equal to 'texte11'",
+                JUNIT_ERROR);
 
         try {
             Assertor.that("texte11").isNotBlank().and().isNotEqual("texte11").toThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals("the object 'texte11' should be NOT equal to 'texte11'", e.getMessage());
+            assertEquals("the object 'texte11' should NOT be equal to 'texte11'", e.getMessage());
         }
 
         try {
@@ -79,7 +78,7 @@ public class AssertorHelperTest extends AbstractTest {
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals(
-                    "the char sequence 'texte11' should be null, empty or blank OR NOT (the object 'texte11' should be equal to 'texte11')",
+                    "the char sequence 'texte11' should be null, empty or blank OR the object 'texte11' should NOT be equal to 'texte11'",
                     e.getMessage());
         }
 
@@ -87,8 +86,7 @@ public class AssertorHelperTest extends AbstractTest {
             Assertor.that("texte11").isBlank().or("texte12").isEqual("texte13").toThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals(
-                    "(the char sequence 'texte11' should be null, empty or blank) OR (the object 'texte12' should be equal to 'texte12')",
+            assertEquals("the char sequence 'texte11' should be null, empty or blank OR the object 'texte12' should be equal to 'texte12'",
                     e.getMessage());
         }
 
@@ -96,7 +94,9 @@ public class AssertorHelperTest extends AbstractTest {
             Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
-                "(the char sequence 'texte11' should be null, empty or blank) OR (NOT (the char sequence 'texte12' should start with 'text') OR the char sequence 'texte12' should be null, empty or blank)",
+                "the char sequence 'texte11' should be null, empty or blank"
+                        + " OR the char sequence 'texte12' should NOT start with 'text'"
+                        + " OR the char sequence 'texte12' should be null, empty or blank",
                 JUNIT_ERROR);
 
         // prerequisites == false
@@ -104,7 +104,9 @@ public class AssertorHelperTest extends AbstractTest {
             Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
-                "(the char sequence 'texte11' should be null, empty or blank) OR (NOT (the char sequence 'texte12' should start with 'text') OR the char sequence 'texte12' should be null, empty or blank)",
+                "the char sequence 'texte11' should be null, empty or blank"
+                        + " OR the char sequence 'texte12' should NOT start with 'text'"
+                        + " OR the char sequence 'texte12' should be null, empty or blank",
                 JUNIT_ERROR);
 
         // previous assertion is invalid (prerequisites == false), only first
@@ -114,12 +116,23 @@ public class AssertorHelperTest extends AbstractTest {
     }
 
     /**
-     * Test method for
-     * {@link AssertObject#getMessage(java.lang.String, java.lang.String, java.lang.Object[], java.lang.Object[])}
-     * .
+     * Test method for {@link AssertorHelper#getMessage} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testGetMessageNullObject() {
         Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", (Object[]) null);
+    }
+
+    /**
+     * Test method for {@link AssertorConstants#getProperty} .
+     */
+    @Test
+    public void testGetProperty() {
+        assertEquals(DEFAULT_ASSERTION, AssertorConstants.getProperty(null, ""));
+        assertEquals("the boolean should be true", AssertorConstants.getProperty("boolean.true"));
+        assertEquals("the boolean should be true", AssertorConstants.getProperty("boolean.true", "arg"));
+        assertEquals("the object '{0}' should be null", AssertorConstants.getProperty("object.null"));
+        assertEquals("the object 'arg' should be null", AssertorConstants.getProperty("object.null", "arg"));
+        assertEquals("the object 'arg' should be null", AssertorConstants.getProperty("object.null", "arg", ""));
     }
 }

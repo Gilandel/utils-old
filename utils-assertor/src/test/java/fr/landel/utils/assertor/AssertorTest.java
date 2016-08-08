@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -35,13 +36,15 @@ public class AssertorTest extends AbstractTest {
      */
     @Test
     public void testThatN() {
-        assertTrue(AssertIterable.class.isAssignableFrom(Assertor.that(new ArrayList<Color>()).getClass()));
-        assertTrue(AssertObject.class.isAssignableFrom(Assertor.that(Color.BLACK).getClass()));
-        assertTrue(AssertMap.class.isAssignableFrom(Assertor.that(new HashMap<String, Integer>()).getClass()));
-        assertTrue(AssertNumber.class.isAssignableFrom(Assertor.that(12).getClass()));
-        assertTrue(AssertCharSequence.class.isAssignableFrom(Assertor.that("test").getClass()));
-        assertTrue(AssertArray.class.isAssignableFrom(Assertor.that(new String[0]).getClass()));
-        assertTrue(AssertDate.class.isAssignableFrom(Assertor.that(new Date()).getClass()));
-        assertTrue(AssertClass.class.isAssignableFrom(Assertor.that(String.class).getClass()));
+        assertTrue(PredicateAssertorBoolean.class.isAssignableFrom(Assertor.that(true).getClass()));
+        assertTrue(PredicateAssertorIterable.class.isAssignableFrom(Assertor.that(new ArrayList<Color>()).getClass()));
+        assertTrue(PredicateAssertor.class.isAssignableFrom(Assertor.that(Color.BLACK).getClass()));
+        assertTrue(PredicateAssertorMap.class.isAssignableFrom(Assertor.that(new HashMap<String, Integer>()).getClass()));
+        assertTrue(PredicateAssertorNumber.class.isAssignableFrom(Assertor.that(12).getClass()));
+        assertTrue(PredicateAssertorCharSequence.class.isAssignableFrom(Assertor.that("test").getClass()));
+        assertTrue(PredicateAssertorArray.class.isAssignableFrom(Assertor.that(new String[0]).getClass()));
+        assertTrue(PredicateAssertorDate.class.isAssignableFrom(Assertor.that(new Date()).getClass()));
+        assertTrue(PredicateAssertorCalendar.class.isAssignableFrom(Assertor.that(Calendar.getInstance()).getClass()));
+        assertTrue(PredicateAssertorClass.class.isAssignableFrom(Assertor.that(String.class).getClass()));
     }
 }

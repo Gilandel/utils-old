@@ -17,11 +17,13 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,7 @@ import fr.landel.utils.commons.EnumChar;
 /**
  * Assertor constants
  *
- * @since 30 juil. 2016
+ * @since Aug 7, 2016
  * @author Gilles
  *
  */
@@ -41,33 +43,6 @@ public class AssertorConstants {
      */
     protected static final Logger LOGGER = LoggerFactory.getLogger(Assertor.class);
 
-    // ---------- OPERATORS
-
-    /**
-     * AND operator
-     */
-    protected static final int AND = 0;
-
-    /**
-     * OR operator
-     */
-    protected static final int OR = 1;
-
-    /**
-     * XOR operator
-     */
-    protected static final int XOR = 2;
-
-    /**
-     * The operator strings
-     */
-    protected static final String[] OPERATORS = {" AND ", " OR ", " XOR "};
-
-    /**
-     * The not operator
-     */
-    protected static final String NOT = "NOT (";
-
     // ---------- DEFAULT
 
     /**
@@ -76,26 +51,16 @@ public class AssertorConstants {
     protected static final String DEFAULT_ASSERTION = "Assertion failed";
 
     /**
-     * Default assertion prefix
-     */
-    protected static final String ASSERTION_PREFIX = "";
-
-    /**
-     * Default assertion suffix
-     */
-    protected static final String ASSERTION_SUFFIX = "";
-
-    /**
      * Default exception builder
      */
-    protected static final BiFunction<CharSequence, Object[], IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (CharSequence errors,
-            Object[] parameters) -> new IllegalArgumentException(
-                    AssertorHelper.getMessage(Assertor.DEFAULT_ASSERTION, null, errors.toString(), parameters, null));
+    protected static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (
+            String errors, List<Triple<Object, EnumType, Boolean>> parameters) -> new IllegalArgumentException(
+                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors.toString(), parameters, null));
 
     // ---------- PROPERTIES / MESSAGES
 
     /**
-     * Messages properties
+     * Messages properties (for now doesn't support locale, maybe later)
      */
     protected static final Properties PROPS;
     static {
@@ -131,7 +96,7 @@ public class AssertorConstants {
         CALENDAR_FIELDS = Collections.unmodifiableMap(map);
     }
 
-    // ---------- PRIVATE
+    // ---------- PROPERTIES LOADER
 
     /**
      * Returns the property associated to the key with replaced arguments or the
@@ -160,66 +125,6 @@ public class AssertorConstants {
     }
 
     // ---------- SUB PROPERTIES
-
-    /**
-     * Type constants
-     *
-     * @since 30 juil. 2016
-     * @author Gilles
-     *
-     */
-    protected static interface TYPE {
-
-        /**
-         * Unknown type
-         */
-        int UNKNOWN = 0;
-
-        /**
-         * Boolean type
-         */
-        int BOOLEAN = 1;
-
-        /**
-         * Number, integer type
-         */
-        int NUMBER_INTEGER = 2;
-
-        /**
-         * Number, floating point type
-         */
-        int NUMBER_DECIMAL = 3;
-
-        /**
-         * Date type
-         */
-        int DATE = 4;
-
-        /**
-         * String type
-         */
-        int CHAR_SEQUENCE = 5;
-
-        /**
-         * Class type
-         */
-        int CLASS = 6;
-
-        /**
-         * Iterable type
-         */
-        int ITERABLE = 7;
-
-        /**
-         * Map type
-         */
-        int MAP = 8;
-
-        /**
-         * Array type
-         */
-        int ARRAY = 9;
-    }
 
     /**
      * Messages constants
@@ -268,11 +173,6 @@ public class AssertorConstants {
              * Message key for object assignable from
              */
             String ASSIGNABLE = "object.assignable";
-
-            /**
-             * Message key for object matches the hamcrest matcher
-             */
-            String MATCHES = "object.matches";
 
             /**
              * Message key for object validates predicate
