@@ -139,7 +139,7 @@
 			requires Hibernate 5 -->
 		<!-- For the others classes, Hibernate 4.3.11 can be used -->
 		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
-		<hibernate.version>5.2.1.Final</hibernate.version>
+		<hibernate.version>5.2.2.Final</hibernate.version>
 		<hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
 
 		<spring.version>4.3.2.RELEASE</spring.version>

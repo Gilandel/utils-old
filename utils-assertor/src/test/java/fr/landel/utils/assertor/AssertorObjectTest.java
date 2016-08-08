@@ -487,6 +487,8 @@ public class AssertorObjectTest extends AbstractTest {
 
         assertEquals(EnumType.ARRAY, EnumType.getType(new Object[0]));
 
+        assertEquals(EnumType.ENUMERATION, EnumType.getType(EnumOperator.AND));
+
         assertEquals(EnumType.ITERABLE, EnumType.getType(Collections.EMPTY_LIST));
         assertEquals(EnumType.ITERABLE, EnumType.getType(Collections.EMPTY_SET));
 

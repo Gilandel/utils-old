@@ -15,6 +15,8 @@ package fr.landel.utils.assertor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.Locale;
+
 import org.junit.Test;
 
 import fr.landel.utils.assertor.expect.Expect;
@@ -34,6 +36,17 @@ public class AssertorHelperTest extends AbstractTest {
     @Test
     public void testGetMessage() {
         // TEST GET MESSAGE
+
+        assertEquals("default", AssertorHelper.getMessage("default", null, null, null, null));
+        assertEquals("message", AssertorHelper.getMessage("default", null, "message", null, null));
+        assertEquals("message test", AssertorHelper.getMessage("default", null, "message %s", null, new Object[] {"test"}));
+        assertEquals("message 23.26", AssertorHelper.getMessage("default", Locale.US, "message %.2f", null, new Object[] {23.256f}));
+        assertEquals("message 23,26", AssertorHelper.getMessage("default", Locale.FRANCE, "message %.2f", null, new Object[] {23.256f}));
+
+        Expect.exception(() -> {
+            Assertor.that(23.6f).isEqual(25.6f).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the number '23,600' should be equal to '25,600'", JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that("texte11").not().isEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");

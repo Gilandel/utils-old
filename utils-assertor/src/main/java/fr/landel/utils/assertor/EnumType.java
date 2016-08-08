@@ -37,6 +37,11 @@ public enum EnumType {
     BOOLEAN,
 
     /**
+     * Enumeration type
+     */
+    ENUMERATION,
+
+    /**
      * Number, integer type
      */
     NUMBER_INTEGER,
@@ -108,6 +113,8 @@ public enum EnumType {
                 type = ITERABLE;
             } else if (Map.class.isAssignableFrom(clazz)) {
                 type = MAP;
+            } else if (clazz.isEnum()) {
+                type = ENUMERATION;
             } else if (Date.class.isAssignableFrom(clazz) || Calendar.class.isAssignableFrom(clazz)) {
                 type = DATE;
             } else if (Class.class.isInstance(object)) {

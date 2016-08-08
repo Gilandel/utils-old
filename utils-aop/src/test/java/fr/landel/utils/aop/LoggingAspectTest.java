@@ -13,6 +13,7 @@
 package fr.landel.utils.aop;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -61,6 +62,9 @@ public class LoggingAspectTest extends AbstractAspectTest<LoggingAspect> {
 
         AspectJProxyFactory factory = new AspectJProxyFactory(target);
         LoggingAspect aspect = new LoggingAspect();
+
+        assertNotNull(aspect.getLogger());
+
         factory.addAspect(aspect);
 
         AOPObservable proxy = factory.getProxy();

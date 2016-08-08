@@ -317,16 +317,6 @@ public final class AssertorHelper extends AssertorConstants {
         return getProperty(keyProperty, arguments);
     }
 
-    @SuppressWarnings("unchecked")
-    protected static <S extends PredicateStep<S, T>, T> S cast(final PredicateStep<S, T> predicate) {
-        return (S) predicate;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static <S extends PredicateStep<S, T>, P extends PredicateAssertor<S, T>, T> P cast(final PredicateAssertor<S, T> predicate) {
-        return (P) predicate;
-    }
-
     protected static <T> Supplier<AssertorResult<T>> not(final Supplier<AssertorResult<T>> supplier) {
         return () -> new AssertorResult<>(supplier.get());
     }

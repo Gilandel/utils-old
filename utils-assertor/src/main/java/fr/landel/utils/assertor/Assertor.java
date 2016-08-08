@@ -63,6 +63,10 @@ public class Assertor {
         return () -> () -> new AssertorResult<>(map, EnumType.MAP);
     }
 
+    public static <T extends Enum<T>> PredicateAssertorEnum<T> that(final T enumeration) {
+        return () -> () -> new AssertorResult<>(enumeration, EnumType.ENUMERATION);
+    }
+
     public static PredicateAssertorDate that(final Date date) {
         return () -> () -> new AssertorResult<>(date, EnumType.DATE);
     }

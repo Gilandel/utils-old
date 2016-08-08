@@ -459,5 +459,25 @@ public class AssertorConstants {
              */
             String CONTAINS_MAP_ANY = "map.contains.map.any";
         }
+
+        /**
+         * ENUM constants
+         *
+         * @since 30 juil. 2016
+         * @author Gilles
+         *
+         */
+        static interface ENUM {
+
+            /**
+             * Message key for enumeration name
+             */
+            String NAME = "enum.name";
+
+            /**
+             * Message key for enumeration ordinal
+             */
+            String ORDINAL = "enum.ordinal";
+        }
     }
 }

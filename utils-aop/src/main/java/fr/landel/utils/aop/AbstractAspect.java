@@ -91,7 +91,7 @@ public abstract class AbstractAspect {
      * @return the signature
      */
     protected String getSignature(final JoinPoint joinPoint) {
-        final StringBuffer signBuilder = new StringBuffer();
+        final StringBuilder signBuilder = new StringBuilder();
 
         signBuilder.append(joinPoint.getTarget().getClass());
         signBuilder.append(EnumChar.DOT);
@@ -123,7 +123,7 @@ public abstract class AbstractAspect {
      * @param object
      *            object
      */
-    protected void appendObject(final StringBuffer logEntry, final Object object) {
+    protected void appendObject(final StringBuilder logEntry, final Object object) {
         final Class<?> objClass = object.getClass();
 
         if (!this.checkSimpleType(logEntry, object, objClass)) {
@@ -151,7 +151,7 @@ public abstract class AbstractAspect {
      *            object classs
      * @return <code>true</code> if simple type, <code>false</code> otherwise
      */
-    protected boolean checkSimpleType(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected boolean checkSimpleType(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         boolean done = false;
 
         if (String.class.equals(objClass)) {
@@ -186,10 +186,10 @@ public abstract class AbstractAspect {
      * @return the formatted date
      */
     protected String formatDate(final Date date) {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        int time = calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
+        final int time = calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
         if (time > 0) {
             return this.dtf.format(date);
         }
@@ -206,7 +206,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    protected void appendArray(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendArray(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Object[] objects = (Object[]) object;
 
@@ -235,7 +235,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    protected void appendIterator(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendIterator(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Iterator<?> iterator;
         if (Iterable.class.isAssignableFrom(objClass)) {
@@ -272,7 +272,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    protected void appendMap(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendMap(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Map<?, ?> map = (Map<?, ?>) object;
 
