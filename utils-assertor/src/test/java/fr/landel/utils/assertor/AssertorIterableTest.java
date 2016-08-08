@@ -13,6 +13,7 @@
 package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -28,7 +29,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check {@link AssertIterable}
+ * Check {@link AssertorIterable}
  *
  * @since 4 juin 2016
  * @author Gilles
@@ -39,7 +40,15 @@ public class AssertorIterableTest extends AbstractTest {
     private final String ERROR = "error expected";
 
     /**
-     * Test method for {@link AssertIterable#hasSize(int)}.
+     * Test method for {@link AssertorIterable#AssertorIterable()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorIterable());
+    }
+
+    /**
+     * Test method for {@link AssertorIterable#hasSize(int)}.
      * 
      * @throws IOException
      *             On not empty iterable
@@ -72,7 +81,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#hasSize(int)}.
+     * Test method for {@link AssertorIterable#hasSize(int)}.
      * 
      * @throws IOException
      *             On not empty iterable
@@ -101,7 +110,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#isEmpty}.
+     * Test method for {@link AssertorIterable#isEmpty}.
      * 
      * @throws IOException
      *             On not empty iterable
@@ -133,7 +142,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#isNotEmpty}.
+     * Test method for {@link AssertorIterable#isNotEmpty}.
      * 
      * @throws IOException
      *             On empty iterable
@@ -171,7 +180,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#contains}.
+     * Test method for {@link AssertorIterable#contains}.
      * 
      * @throws IOException
      *             On not contain
@@ -225,7 +234,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#contains}.
+     * Test method for {@link AssertorIterable#contains}.
      * 
      * @throws IOException
      *             On not contain
@@ -298,7 +307,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#contains}.
+     * Test method for {@link AssertorIterable#contains}.
      * 
      * @throws IOException
      *             On contain
@@ -338,7 +347,7 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#contains}.
+     * Test method for {@link AssertorIterable#contains}.
      * 
      * @throws IOException
      *             On contain
@@ -398,7 +407,7 @@ public class AssertorIterableTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertIterable#isNotEmpty(java.util.Collection, String, Object...)}
+     * {@link AssertorIterable#isNotEmpty(java.util.Collection, String, Object...)}
      * .
      */
     @Test
@@ -412,7 +421,7 @@ public class AssertorIterableTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertIterable#isNotEmpty(java.util.Collection, String, Object...)}
+     * {@link AssertorIterable#isNotEmpty(java.util.Collection, String, Object...)}
      * .
      */
     @Test(expected = IllegalArgumentException.class)
@@ -421,7 +430,8 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#isNotEmpty(java.util.Collection)} .
+     * Test method for {@link AssertorIterable#isNotEmpty(java.util.Collection)}
+     * .
      */
     @Test
     public void testIsNotEmptyOKCollectionOfQ() {
@@ -433,7 +443,8 @@ public class AssertorIterableTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertIterable#isNotEmpty(java.util.Collection)} .
+     * Test method for {@link AssertorIterable#isNotEmpty(java.util.Collection)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQ() {

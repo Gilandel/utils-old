@@ -27,7 +27,7 @@ import fr.landel.utils.assertor.expect.Expect;
 import fr.landel.utils.commons.DateUtils;
 
 /**
- * Test date assert
+ * Test {@link AssertorDate}
  *
  * @since 29 mai 2016
  * @author Gilles
@@ -36,7 +36,15 @@ import fr.landel.utils.commons.DateUtils;
 public class AssertorDateAndCalendarTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertDate#isEqual}.
+     * Test method for {@link AssertorDate#AssertorDate()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorDate());
+    }
+
+    /**
+     * Test method for {@link AssertorDate#isEqual}.
      */
     @Test
     public void testIsEqualOK() {
@@ -84,7 +92,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isEqual}.
+     * Test method for {@link AssertorDate#isEqual}.
      */
     @Test
     public void testIsEqualKO() {
@@ -302,7 +310,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isNotEqual}.
+     * Test method for {@link AssertorDate#isNotEqual}.
      */
     @Test
     public void testIsNotEqualOK() {
@@ -320,7 +328,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isNotEqual}.
+     * Test method for {@link AssertorDate#isNotEqual}.
      */
     @Test
     public void testIsNotEqualKO() {
@@ -343,7 +351,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isAfter}.
+     * Test method for {@link AssertorDate#isAfter}.
      */
     @Test
     public void testIsAfterOK() {
@@ -409,7 +417,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isAfterOrEqual}.
+     * Test method for {@link AssertorDate#isAfterOrEqual}.
      */
     @Test
     public void testIsAfterOrEqualOK() {
@@ -429,7 +437,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isAfterOrEqual}.
+     * Test method for {@link AssertorDate#isAfterOrEqual}.
      */
     @Test
     public void testIsAfterOrEqualKO() {
@@ -461,7 +469,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isBefore}.
+     * Test method for {@link AssertorDate#isBefore}.
      */
     @Test
     public void testIsBefore() {
@@ -503,7 +511,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertDate#isBeforeOrEqual}.
+     * Test method for {@link AssertorDate#isBeforeOrEqual}.
      */
     @Test
     public void testIsBeforeOrEqual() {

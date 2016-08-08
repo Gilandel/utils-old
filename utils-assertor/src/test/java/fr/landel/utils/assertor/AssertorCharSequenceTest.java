@@ -13,6 +13,7 @@
 package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -23,7 +24,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check assert
+ * Check {@link AssertorCharSequence}
  *
  * @since 10 dec. 2015
  * @author Gilles Landel
@@ -32,7 +33,15 @@ import fr.landel.utils.assertor.expect.Expect;
 public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertCharSequence#hasLength(int)} .
+     * Test method for {@link AssertorCharSequence#AssertorCharSequence()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorCharSequence());
+    }
+
+    /**
+     * Test method for {@link AssertorCharSequence#hasLength(int)} .
      */
     @Test
     public void testHasLength() {
@@ -43,7 +52,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#hasLength(int)} .
+     * Test method for {@link AssertorCharSequence#hasLength(int)} .
      */
     @Test
     public void testHasNotLength() {
@@ -55,7 +64,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isNotEmpty(String, String, Object...)} .
+     * {@link AssertorCharSequence#isNotEmpty(String, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKStringString() {
@@ -68,7 +77,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isNotEmpty(String, String, Object...)} .
+     * {@link AssertorCharSequence#isNotEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOStringString() {
@@ -77,7 +86,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isNotEmpty(String, String, Object...)} .
+     * {@link AssertorCharSequence#isNotEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2StringString() {
@@ -85,7 +94,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isNotEmpty(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isNotEmpty(java.lang.String)}
+     * .
      */
     @Test
     public void testIsNotEmptyOKString() {
@@ -97,7 +107,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isNotEmpty(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isNotEmpty(java.lang.String)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOString() {
@@ -105,7 +116,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isNotEmpty(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isNotEmpty(java.lang.String)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2String() {
@@ -114,7 +126,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isEmpty(String, String, Object...)} .
+     * {@link AssertorCharSequence#isEmpty(String, String, Object...)} .
      */
     @Test
     public void testIsEmptyOKStringString() {
@@ -128,7 +140,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isEmpty(String, String, Object...)} .
+     * {@link AssertorCharSequence#isEmpty(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOStringString() {
@@ -136,7 +148,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isEmpty(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isEmpty(java.lang.String)} .
      */
     @Test
     public void testIsEmptyOKString() {
@@ -149,7 +161,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isEmpty(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isEmpty(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOString() {
@@ -158,7 +170,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isNotBlank(String, String, Object...)} .
+     * {@link AssertorCharSequence#isNotBlank(String, String, Object...)} .
      */
     @Test
     public void testIsNotBlankOKStringString() {
@@ -171,7 +183,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isNotBlank(String, String, Object...)} .
+     * {@link AssertorCharSequence#isNotBlank(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOStringString() {
@@ -179,7 +191,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isNotBlank(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isNotBlank(java.lang.String)}
+     * .
      */
     @Test
     public void testIsNotBlankOKString() {
@@ -191,7 +204,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isNotBlank(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isNotBlank(java.lang.String)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOString() {
@@ -200,7 +214,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isBlank(String, String, Object...)} .
+     * {@link AssertorCharSequence#isBlank(String, String, Object...)} .
      */
     @Test
     public void testIsBlankOKStringString() {
@@ -213,7 +227,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#isBlank(String, String, Object...)} .
+     * {@link AssertorCharSequence#isBlank(String, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOStringString() {
@@ -221,7 +235,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isBlank(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isBlank(java.lang.String)} .
      */
     @Test
     public void testIsBlankOKString() {
@@ -233,7 +247,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#isBlank(java.lang.String)} .
+     * Test method for {@link AssertorCharSequence#isBlank(java.lang.String)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOString() {
@@ -242,7 +256,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(String, String, String, Object...)} .
+     * {@link AssertorCharSequence#contains(String, String, String, Object...)}
+     * .
      */
     @Test
     public void testDoesNotContainOKStringStringString() {
@@ -255,7 +270,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(String, String, String, Object...)} .
+     * {@link AssertorCharSequence#contains(String, String, String, Object...)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringStringString() {
@@ -264,7 +280,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#not().contains(java.lang.String,
+     * {@link AssertorCharSequence#not().contains(java.lang.String,
      * java.lang.String)} .
      */
     @Test
@@ -278,7 +294,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(java.lang.String, java.lang.String)} .
+     * {@link AssertorCharSequence#contains(java.lang.String, java.lang.String)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringString() {
@@ -287,7 +304,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(java.lang.String, java.lang.String)} .
+     * {@link AssertorCharSequence#contains(java.lang.String, java.lang.String)}
+     * .
      */
     @Test
     public void testContains() {
@@ -317,7 +335,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(java.lang.String, java.lang.String)} .
+     * {@link AssertorCharSequence#contains(java.lang.String, java.lang.String)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringString() {
@@ -326,7 +345,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(String, String, String, Object...)} .
+     * {@link AssertorCharSequence#contains(String, String, String, Object...)}
+     * .
      */
     @Test
     public void testContainsOKStringStringString() {
@@ -339,7 +359,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
-     * {@link AssertCharSequence#contains(String, String, String, Object...)} .
+     * {@link AssertorCharSequence#contains(String, String, String, Object...)}
+     * .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringStringString() {
@@ -347,8 +368,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#startsWith} and
-     * {@link AssertCharSequence#startsWithIgnoreCase}.
+     * Test method for {@link AssertorCharSequence#startsWith} and
+     * {@link AssertorCharSequence#startsWithIgnoreCase}.
      */
     @Test
     public void testStartsWith() {
@@ -372,8 +393,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#endsWith} and
-     * {@link AssertCharSequence#endsWithIgnoreCase}.
+     * Test method for {@link AssertorCharSequence#endsWith} and
+     * {@link AssertorCharSequence#endsWithIgnoreCase}.
      */
     @Test
     public void testEndsWith() {
@@ -397,7 +418,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#matches}.
+     * Test method for {@link AssertorCharSequence#matches}.
      */
     @Test
     public void testMatches() {
@@ -416,7 +437,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertCharSequence#find}.
+     * Test method for {@link AssertorCharSequence#find}.
      */
     @Test
     public void testFind() {

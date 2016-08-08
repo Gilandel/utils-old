@@ -14,6 +14,7 @@ package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -21,7 +22,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check the assert number classes
+ * Check {@link AssertorNumber}
  *
  * @since 16 juil. 2016
  * @author Gilles
@@ -30,7 +31,15 @@ import fr.landel.utils.assertor.expect.Expect;
 public class AssertorNumberTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertNumber#isEqual(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#AssertorNumber()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorNumber());
+    }
+
+    /**
+     * Test method for {@link AssertorNumber#isEqual(java.lang.Number)}.
      */
     @Test
     public void testIsEqualN() {
@@ -62,7 +71,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertNumber#isNotEqual(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isNotEqual(java.lang.Number)}.
      */
     @Test
     public void testIsNotEqualN() {
@@ -88,7 +97,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertNumber#isGT(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isGT(java.lang.Number)}.
      */
     @Test
     public void testIsGT() {
@@ -116,7 +125,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertNumber#isGTE(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isGTE(java.lang.Number)}.
      */
     @Test
     public void testIsGTE() {
@@ -144,7 +153,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertNumber#isLT(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isLT(java.lang.Number)}.
      */
     @Test
     public void testIsLT() {
@@ -171,7 +180,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertNumber#isLTE(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isLTE(java.lang.Number)}.
      */
     @Test
     public void testIsLTE() {

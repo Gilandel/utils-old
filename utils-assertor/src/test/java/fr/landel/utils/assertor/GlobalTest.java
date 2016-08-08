@@ -24,7 +24,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * (Description)
+ * Check assertor (future: convert this to jmh tests)
  *
  * @since 3 août 2016
  * @author Gilles

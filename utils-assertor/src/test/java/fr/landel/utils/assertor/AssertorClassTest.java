@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -23,7 +24,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check assert class
+ * Check {@link AssertorClass}
  *
  * @since 18 juil. 2016
  * @author Gilles
@@ -32,7 +33,15 @@ import fr.landel.utils.assertor.expect.Expect;
 public class AssertorClassTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertClass#isAssignableFrom} .
+     * Test method for {@link AssertorClass#AssertorClass()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorClass());
+    }
+
+    /**
+     * Test method for {@link AssertorClass#isAssignableFrom} .
      * 
      * @throws IOException
      *             On errors

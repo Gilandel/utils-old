@@ -39,7 +39,7 @@ public class PredicateStepEndPointsTest extends AbstractTest {
 
     private static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IOException> EXCEPTION_BUILDER = (String errors,
             List<Triple<Object, EnumType, Boolean>> parameters) -> new IOException(
-                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors.toString(), parameters, null));
+                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     /**
      * Test method for {@link Operator#toThrow()}.

@@ -13,6 +13,7 @@
 package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -28,6 +29,14 @@ import fr.landel.utils.assertor.expect.Expect;
  *
  */
 public class AssertorArrayTest extends AbstractTest {
+
+    /**
+     * Test method for {@link AssertorArray#AssertorArray()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorArray());
+    }
 
     /**
      * Test method for {@link AssertorArray#hasSize} .

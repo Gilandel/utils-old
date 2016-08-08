@@ -14,6 +14,7 @@ package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -33,7 +34,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check assertor
+ * Check {@link AssertorObject}
  *
  * @since 10 dec. 2015
  * @author Gilles Landel
@@ -42,8 +43,16 @@ import fr.landel.utils.assertor.expect.Expect;
 public class AssertorObjectTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertObject#getLocale()}
-     * {@link AssertObject#setLocale(Locale)}.
+     * Test method for {@link AssertorObject#AssertorObject()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorObject());
+    }
+
+    /**
+     * Test method for {@link AssertorObject#getLocale()}
+     * {@link AssertorObject#setLocale(Locale)}.
      */
     @Test
     public void testLocale() {
@@ -90,7 +99,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNull()} .
+     * Test method for {@link AssertorObject#isNull()} .
      */
     @Test
     public void testIsNullOKObjectString() {
@@ -103,7 +112,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNull()} .
+     * Test method for {@link AssertorObject#isNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObjectString() {
@@ -111,7 +120,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNull()} .
+     * Test method for {@link AssertorObject#isNull()} .
      */
     @Test
     public void testIsNullOKObject() {
@@ -124,7 +133,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNull()} .
+     * Test method for {@link AssertorObject#isNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObject() {
@@ -132,7 +141,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull()} .
+     * Test method for {@link AssertorObject#isNotNull()} .
      */
     @Test
     public void testIsNotNullOKObjectString() {
@@ -144,7 +153,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull()} .
+     * Test method for {@link AssertorObject#isNotNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObjectString() {
@@ -152,7 +161,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull()} .
+     * Test method for {@link AssertorObject#isNotNull()} .
      */
     @Test
     public void testIsNotNullOKObject() {
@@ -164,7 +173,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotNull()} .
+     * Test method for {@link AssertorObject#isNotNull()} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObject() {
@@ -172,7 +181,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      */
     @Test
     public void testIsNotEqualOKObjectObject() {
@@ -191,7 +200,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObject() {
@@ -199,7 +208,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOCharSequence() {
@@ -209,7 +218,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKONull() {
@@ -217,7 +226,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      * 
      * @throws IOException
      *             On errors
@@ -228,7 +237,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      */
     @Test
     public void testIsNotEqualOKObjectObjectString() {
@@ -240,7 +249,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isNotEqual(Object)} .
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObjectString() {
@@ -248,7 +257,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      * 
      * @throws IOException
      *             exception if isEqual fails
@@ -270,7 +279,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObject() {
@@ -278,7 +287,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test
     public void testIsEqualOKObjectObjectString() {
@@ -291,7 +300,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObjectString() {
@@ -299,7 +308,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKONullObjectString() {
@@ -307,7 +316,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectNullString() {
@@ -315,7 +324,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOIntegerStringString() {
@@ -323,7 +332,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isEqual(Object)} .
+     * Test method for {@link AssertorObject#isEqual(Object)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOStringIntegerString() {
@@ -331,7 +340,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isInstanceOf(Class)} .
+     * Test method for {@link AssertorObject#isInstanceOf(Class)} .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObject() {
@@ -343,7 +352,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isInstanceOf(Class)} .
+     * Test method for {@link AssertorObject#isInstanceOf(Class)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObject() {
@@ -351,7 +360,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isInstanceOf(Class)} .
+     * Test method for {@link AssertorObject#isInstanceOf(Class)} .
      */
     @Test
     public void testIsInstanceOfOKClassOfQObjectString() {
@@ -378,7 +387,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#isAssignableFrom} .
+     * Test method for {@link AssertorObject#isAssignableFrom} .
      */
     @Test
     public void testIsAssignableFrom() {
@@ -394,7 +403,7 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertObject#not} .
+     * Test method for {@link AssertorObject#not} .
      */
     @Test
     public void testNot() {
@@ -402,17 +411,10 @@ public class AssertorObjectTest extends AbstractTest {
         assertTrue(Assertor.that("text").not().isNull().and().isNotNull().isOK());
         assertTrue(Assertor.that("text").not().not().isNotNull().isOK());
         assertFalse(Assertor.that("text").not().isNotNull().isOK());
-
-        // Expect.exception(() -> {
-        // Assertor.that("").not().combine(AssertorConstants.AND,
-        // Assertor.that(""));
-        // fail();
-        // }, IllegalArgumentException.class, "'Not' cannot be followed by a
-        // condition");
     }
 
     /**
-     * Test method for {@link AssertObject#validates} .
+     * Test method for {@link AssertorObject#validates} .
      */
     @Test
     public void testValidates() {

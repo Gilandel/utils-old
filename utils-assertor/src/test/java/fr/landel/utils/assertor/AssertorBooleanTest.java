@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -21,7 +23,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check assert boolean
+ * Check {@link AssertorBoolean}
  *
  * @since 18 juil. 2016
  * @author Gilles
@@ -30,10 +32,21 @@ import fr.landel.utils.assertor.expect.Expect;
 public class AssertorBooleanTest extends AbstractTest {
 
     /**
-     * Test method for {@link AssertBoolean#isFalse()} .
+     * Test method for {@link AssertorBoolean#AssertorBoolean()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorBoolean());
+    }
+
+    /**
+     * Test method for {@link AssertorBoolean#isFalse()} .
      */
     @Test
     public void testIsFalse() {
+        AssertorResult<Boolean> assertorResult = new AssertorResult<>(true, EnumType.BOOLEAN);
+        assertFalse(AssertorBoolean.isFalse(() -> assertorResult, null, null, null).get().isValid());
+
         try {
             Assertor.that(false).isFalse().toThrow("not false");
             Assertor.that(false).isFalse().and(true).not().isFalse().toThrow("not false");
@@ -59,7 +72,7 @@ public class AssertorBooleanTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertBoolean#isTrue()} .
+     * Test method for {@link AssertorBoolean#isTrue()} .
      */
     @Test
     public void testIsTrue() {

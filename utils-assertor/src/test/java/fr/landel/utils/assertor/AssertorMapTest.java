@@ -14,6 +14,7 @@ package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -28,7 +29,7 @@ import org.junit.Test;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
- * Check {@link AssertMap}
+ * Check {@link AssertorMap}
  *
  * @since 5 juin 2016
  * @author Gilles
@@ -39,7 +40,15 @@ public class AssertorMapTest extends AbstractTest {
     private final String ERROR = "error expected";
 
     /**
-     * Test method for {@link AssertMap#isEmpty}.
+     * Test method for {@link AssertorMap#AssertorMap()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new AssertorMap());
+    }
+
+    /**
+     * Test method for {@link AssertorMap#isEmpty}.
      * 
      * @throws IOException
      *             On error
@@ -75,7 +84,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#isNotEmpty}.
+     * Test method for {@link AssertorMap#isNotEmpty}.
      * 
      * @throws IOException
      *             On error
@@ -112,7 +121,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#contains}.
+     * Test method for {@link AssertorMap#contains}.
      * 
      * @throws IOException
      *             On error
@@ -186,7 +195,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#doesNotContain}.
+     * Test method for {@link AssertorMap#doesNotContain}.
      * 
      * @throws IOException
      *             On error
@@ -246,7 +255,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#isNotEmpty(Map, String, Object...)} .
+     * Test method for {@link AssertorMap#isNotEmpty(Map, String, Object...)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQString() {
@@ -260,7 +269,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#isNotEmpty(Map, String, Object...)} .
+     * Test method for {@link AssertorMap#isNotEmpty(Map, String, Object...)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQString() {
@@ -268,7 +277,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#isNotEmpty(java.util.Map)} .
+     * Test method for {@link AssertorMap#isNotEmpty(java.util.Map)} .
      */
     @Test
     public void testIsNotEmptyOKMapOfQQ() {
@@ -282,7 +291,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#isNotEmpty(java.util.Map)} .
+     * Test method for {@link AssertorMap#isNotEmpty(java.util.Map)} .
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQ() {
@@ -290,7 +299,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#hasSize}.
+     * Test method for {@link AssertorMap#hasSize}.
      */
     @Test
     public void testHasSize() {
@@ -309,7 +318,7 @@ public class AssertorMapTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertMap#hasNotSize}.
+     * Test method for {@link AssertorMap#hasNotSize}.
      */
     @Test
     public void testHasNotSize() {

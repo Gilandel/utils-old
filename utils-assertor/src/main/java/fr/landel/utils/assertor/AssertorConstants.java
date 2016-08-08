@@ -55,7 +55,7 @@ public class AssertorConstants {
      */
     protected static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (
             String errors, List<Triple<Object, EnumType, Boolean>> parameters) -> new IllegalArgumentException(
-                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors.toString(), parameters, null));
+                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     // ---------- PROPERTIES / MESSAGES
 
