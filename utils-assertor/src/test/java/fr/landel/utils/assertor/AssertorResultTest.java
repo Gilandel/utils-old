@@ -115,7 +115,7 @@ public class AssertorResultTest extends AbstractTest {
      * {@link AssertorResult#AssertorResult(AssertorResult, AssertorResult, EnumOperator)}.
      */
     @Test
-    public void testAssertorResultAssertorResultOfTAssertorResultOfXEnumOperator() {
+    public void testAssertorResultAssertorResultOfTAssertorResultOfAND() {
         final AssertorResult<String> a = new AssertorResult<>("test", EnumType.CHAR_SEQUENCE);
         final AssertorResult<Boolean> b = new AssertorResult<>(true, EnumType.BOOLEAN);
 
@@ -162,12 +162,22 @@ public class AssertorResultTest extends AbstractTest {
         assertFalse(assertorResult.isValid());
         assertEquals("", assertorResult.getPreconditionMessage().toString());
         assertEquals("error1 AND (error2)", assertorResult.getMessage().toString());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorResult#AssertorResult(AssertorResult, AssertorResult, EnumOperator)}.
+     */
+    @Test
+    public void testAssertorResultAssertorResultOfTAssertorResultOfOR() {
+        final AssertorResult<String> a = new AssertorResult<>("test", EnumType.CHAR_SEQUENCE);
+        final AssertorResult<Boolean> b = new AssertorResult<>(true, EnumType.BOOLEAN);
 
         // precondition: false & false, valid: false & true
-        assertorResult1 = new AssertorResult<>(a, false, false, "pre-error1", "error1");
-        assertorResult2 = new AssertorResult<>(b, false, true, "pre-error2", "error2");
+        AssertorResult<String> assertorResult1 = new AssertorResult<>(a, false, false, "pre-error1", "error1");
+        AssertorResult<Boolean> assertorResult2 = new AssertorResult<>(b, false, true, "pre-error2", "error2");
 
-        assertorResult = new AssertorResult<>(assertorResult1, assertorResult2, EnumOperator.OR);
+        AssertorResult<String> assertorResult = new AssertorResult<>(assertorResult1, assertorResult2, EnumOperator.OR);
 
         assertFalse(assertorResult.isPreconditionOK());
         assertTrue(assertorResult.isValid());
@@ -206,12 +216,22 @@ public class AssertorResultTest extends AbstractTest {
         assertFalse(assertorResult.isValid());
         assertEquals("pre-error1 AND pre-error2", assertorResult.getPreconditionMessage().toString());
         assertEquals("error1 OR (error2)", assertorResult.getMessage().toString());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorResult#AssertorResult(AssertorResult, AssertorResult, EnumOperator)}.
+     */
+    @Test
+    public void testAssertorResultAssertorResultOfTAssertorResultOfXOR() {
+        final AssertorResult<String> a = new AssertorResult<>("test", EnumType.CHAR_SEQUENCE);
+        final AssertorResult<Boolean> b = new AssertorResult<>(true, EnumType.BOOLEAN);
 
         // precondition: false & false, valid: false & true
-        assertorResult1 = new AssertorResult<>(a, false, false, "pre-error1", "error1");
-        assertorResult2 = new AssertorResult<>(b, false, true, "pre-error2", "error2");
+        AssertorResult<String> assertorResult1 = new AssertorResult<>(a, false, false, "pre-error1", "error1");
+        AssertorResult<Boolean> assertorResult2 = new AssertorResult<>(b, false, true, "pre-error2", "error2");
 
-        assertorResult = new AssertorResult<>(assertorResult1, assertorResult2, EnumOperator.XOR);
+        AssertorResult<String> assertorResult = new AssertorResult<>(assertorResult1, assertorResult2, EnumOperator.XOR);
 
         assertFalse(assertorResult.isPreconditionOK());
         assertTrue(assertorResult.isValid());
