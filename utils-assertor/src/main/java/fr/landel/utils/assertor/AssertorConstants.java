@@ -65,7 +65,7 @@ public class AssertorConstants {
     protected static final Properties PROPS;
     static {
         PROPS = new Properties();
-        try (InputStream is = Assertor.class.getClassLoader().getResourceAsStream("assertor_messages.properties");) {
+        try (InputStream is = Assertor.class.getClassLoader().getResourceAsStream("assertor_messages.properties")) {
             PROPS.load(is);
         } catch (IOException e) {
             LOGGER.error("Cannot load the assertor configuration file");
