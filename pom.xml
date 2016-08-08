@@ -125,7 +125,7 @@
 		<license.plugin.version>1.9</license.plugin.version>
 		<javadoc.plugin.version>2.10.4</javadoc.plugin.version>
 		<changelog.plugin.version>2.3</changelog.plugin.version>
-		<versioneye.plugin.version>3.10.0</versioneye.plugin.version>
+		<versioneye.plugin.version>3.10.2</versioneye.plugin.version>
 
 		<!-- Dependencies version -->
 		<commons.lang.version>3.4</commons.lang.version>
