@@ -77,26 +77,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>perf-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>**/Perf*.java</include>
-								<include>**/*Perf.java</include>
-								<include>**/*PerfCase.java</include>
-							</includes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 

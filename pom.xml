@@ -381,6 +381,15 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${surefire.plugin.version}</version>
 					<configuration>
+						<includes>
+							<include>**/Test*.java</include>
+							<include>**/*Test.java</include>
+							<include>**/*TestCase.java</include>
+							
+							<include>**/Perf*.java</include>
+							<include>**/*Perf.java</include>
+							<include>**/*PerfCase.java</include>
+						</includes>
 						<argLine>-Dfile.encoding=${project.build.resourcesEncoding}</argLine>
 					</configuration>
 				</plugin>
@@ -610,7 +619,7 @@
 			<artifactId>hamcrest-all</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Logging in unit tests -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
