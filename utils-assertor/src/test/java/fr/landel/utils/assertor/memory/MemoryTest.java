@@ -63,6 +63,6 @@ public class MemoryTest extends AbstractTest {
         memory = memory - runtime.freeMemory();
 
         LOGGER.info(String.format("Memory used: %,d bytes", memory));
-        assertTrue(memory < 25_000_000);
+        assertTrue(memory < 30_000_000);
     }
 }
