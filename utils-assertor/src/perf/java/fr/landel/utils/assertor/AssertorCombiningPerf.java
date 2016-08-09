@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 
 import org.junit.Test;
@@ -59,6 +61,6 @@ public class AssertorCombiningPerf extends AbstractMicrobenchmark {
 
     @Test
     public void testPerf() throws IOException, RunnerException {
-        super.run();
+        assertNotNull(super.run());
     }
 }

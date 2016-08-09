@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -63,6 +65,6 @@ public class AssertorCharSequenceOKPerf extends AbstractMicrobenchmark {
 
     @Test
     public void testPerf() throws IOException, RunnerException {
-        super.run();
+        assertNotNull(super.run());
     }
 }
