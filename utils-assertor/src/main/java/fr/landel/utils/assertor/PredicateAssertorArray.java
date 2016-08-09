@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 /**
  * (Description)
@@ -26,13 +25,13 @@ import java.util.function.Supplier;
 public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateStepArray<T>, T[]> {
 
     @Override
-    default PredicateStepArray<T> get(final Supplier<AssertorResult<T[]>> supplier) {
-        return () -> supplier;
+    default PredicateStepArray<T> get(final AssertorResult<T[]> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorArray<T> not() {
-        return () -> AssertorHelper.not(getStep());
+        return () -> HelperAssertor.not(getResult());
     }
 
     default PredicateStepArray<T> hasLength(final int length) {
@@ -44,7 +43,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     default PredicateStepArray<T> hasLength(final int length, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.hasLength(this.getStep(), length, locale, message, arguments);
+        return () -> AssertorArray.hasLength(this.getResult(), length, locale, message, arguments);
     }
 
     default PredicateStepArray<T> isEmpty() {
@@ -56,7 +55,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     default PredicateStepArray<T> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.isEmpty(this.getStep(), locale, message, arguments);
+        return () -> AssertorArray.isEmpty(this.getResult(), locale, message, arguments);
     }
 
     default PredicateStepArray<T> isNotEmpty() {
@@ -68,7 +67,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     default PredicateStepArray<T> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.isNotEmpty(this.getStep(), locale, message, arguments);
+        return () -> AssertorArray.isNotEmpty(this.getResult(), locale, message, arguments);
     }
 
     default PredicateStepArray<T> contains(final T object) {
@@ -80,7 +79,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     default PredicateStepArray<T> contains(final T object, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.contains(this.getStep(), object, locale, message, arguments);
+        return () -> AssertorArray.contains(this.getResult(), object, locale, message, arguments);
     }
 
     default PredicateStepArray<T> containsAll(final T[] objects) {
@@ -93,7 +92,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepArray<T> containsAll(final T[] objects, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorArray.containsAll(this.getStep(), objects, locale, message, arguments);
+        return () -> AssertorArray.containsAll(this.getResult(), objects, locale, message, arguments);
     }
 
     default PredicateStepArray<T> containsAny(final T[] objects) {
@@ -106,6 +105,6 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepArray<T> containsAny(final T[] objects, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorArray.containsAny(this.getStep(), objects, locale, message, arguments);
+        return () -> AssertorArray.containsAny(this.getResult(), objects, locale, message, arguments);
     }
 }

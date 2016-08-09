@@ -12,8 +12,6 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.function.Supplier;
-
 /**
  * 
  * (Description)
@@ -31,22 +29,22 @@ public interface PredicateStepCharSequence<T extends CharSequence> extends Predi
      * {@inheritDoc}
      */
     @Override
-    default PredicateStepCharSequence<T> get(final Supplier<AssertorResult<T>> supplier) {
-        return () -> supplier;
+    default PredicateStepCharSequence<T> get(final AssertorResult<T> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorCharSequence<T> and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorCharSequence<T> or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorCharSequence<T> xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

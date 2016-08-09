@@ -39,7 +39,7 @@ public class PredicateStepEndPointsTest extends AbstractTest {
 
     private static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IOException> EXCEPTION_BUILDER = (String errors,
             List<Triple<Object, EnumType, Boolean>> parameters) -> new IOException(
-                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors, parameters, null));
+                    HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     /**
      * Test method for {@link Operator#toThrow()}.
@@ -97,10 +97,10 @@ public class PredicateStepEndPointsTest extends AbstractTest {
             fail();
         }, IllegalArgumentException.class, "test");
 
-        Assertor.that("text").isNotEmpty().toThrow(AssertorConstants.DEFAULT_EXCEPTION_BUILDER);
+        Assertor.that("text").isNotEmpty().toThrow(Constants.DEFAULT_EXCEPTION_BUILDER);
 
         Expect.exception(() -> {
-            Assertor.that("text").isEmpty().toThrow(AssertorConstants.DEFAULT_EXCEPTION_BUILDER);
+            Assertor.that("text").isEmpty().toThrow(Constants.DEFAULT_EXCEPTION_BUILDER);
         }, IllegalArgumentException.class, "the char sequence 'text' should be null or empty", JUNIT_ERROR);
 
         Expect.exception(() -> {

@@ -12,8 +12,6 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.function.Supplier;
-
 /**
  * (Description)
  *
@@ -24,22 +22,22 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface PredicateStepNumber<N extends Number & Comparable<N>> extends PredicateStep<PredicateStepNumber<N>, N> {
 
-    default PredicateStepNumber<N> get(final Supplier<AssertorResult<N>> supplier) {
-        return () -> supplier;
+    default PredicateStepNumber<N> get(final AssertorResult<N> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorNumber<N> and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorNumber<N> or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorNumber<N> xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

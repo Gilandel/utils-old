@@ -45,6 +45,6 @@ public enum EnumOperator {
 
     @Override
     public String toString() {
-        return AssertorConstants.getProperty(this.text).toString();
+        return Constants.getProperty(this.text).toString();
     }
 }

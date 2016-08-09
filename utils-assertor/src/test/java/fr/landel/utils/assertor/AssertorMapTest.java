@@ -232,7 +232,7 @@ public class AssertorMapTest extends AbstractTest {
         assertFalse(assertMap.not().containsAny(keys).isOK());
         assertTrue(assertMap.not().containsAny(map1).isOK());
 
-        assertEquals("the map '{element1=1}' should NOT contain the key 'element1'", Assertor.that(map).not().contains(key1).getErrors());
+        assertEquals("the map '[element1=1]' should NOT contain the key 'element1'", Assertor.that(map).not().contains(key1).getErrors());
         assertFalse(Assertor.that(map).not().contains(key1).isOK());
         assertFalse(Assertor.that(map).not().contains(key1, val1).isOK());
         assertFalse(Assertor.that(map).not().containsAll(map.keySet()).isOK());

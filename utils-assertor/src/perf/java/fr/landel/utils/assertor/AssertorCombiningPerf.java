@@ -10,7 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.assertor.perf;
+package fr.landel.utils.assertor;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.RunnerException;
 
-import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.assertor.memory.MemoryTest;
 
 /**
  * Checks assertor performance
@@ -29,12 +29,12 @@ import fr.landel.utils.assertor.Assertor;
  * @author Gilles
  *
  */
-@State(Scope.Thread)
-public class AssertorCombiningTest extends AbstractMicrobenchmark {
+@State(Scope.Benchmark)
+public class AssertorCombiningPerf extends AbstractMicrobenchmark {
 
     @Override
     protected double getExpectedMinNbOpsPerSeconds() {
-        return 15_000d;
+        return 20_000d;
     }
 
     /**
@@ -42,6 +42,8 @@ public class AssertorCombiningTest extends AbstractMicrobenchmark {
      */
     @Benchmark
     public void assertorCombiningPerf() {
+        Assertor.that(MemoryTest.class).isAssignableFrom(AbstractTest.class).or().isNull().isOK();
+
         Assertor.that("text").contains("ex").and().endsWithIgnoreCase("T").isOK();
         Assertor.that("text").contains("ex").or().endsWithIgnoreCase("E").isOK();
         Assertor.that("text").contains("ex").xor().endsWithIgnoreCase("X").isOK();
@@ -56,7 +58,7 @@ public class AssertorCombiningTest extends AbstractMicrobenchmark {
     }
 
     @Test
-    public void perfTest() throws IOException, RunnerException {
+    public void testPerf() throws IOException, RunnerException {
         super.run();
     }
 }

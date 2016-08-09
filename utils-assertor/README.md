@@ -79,6 +79,7 @@
     1. [isAssignableFrom](#isassignablefrom-1)
 6. [Others](#others)
   1. [Expect](#expect)
+7. [TODO](#todo)
 
 ## Description
 
@@ -863,3 +864,7 @@ Expect.exception(() -> {
      getMyType(null);
  }, IllegalArgumentException.class, "parameter cannot be null", junitError);  // -> throw a ComparisonFailure
 ```
+
+## TODO
+
+- Improve message generation (only build message at the end) (which locale?)

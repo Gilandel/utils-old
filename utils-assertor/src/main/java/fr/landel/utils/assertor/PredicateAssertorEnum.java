@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 /**
  * 
@@ -27,13 +26,13 @@ import java.util.function.Supplier;
 public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAssertor<PredicateStepEnum<T>, T> {
 
     @Override
-    default PredicateStepEnum<T> get(final Supplier<AssertorResult<T>> supplier) {
-        return () -> supplier;
+    default PredicateStepEnum<T> get(final AssertorResult<T> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorEnum<T> not() {
-        return () -> AssertorHelper.not(getStep());
+        return () -> HelperAssertor.not(getResult());
     }
 
     default PredicateStepEnum<T> isName(final CharSequence name) {
@@ -46,7 +45,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
 
     default PredicateStepEnum<T> isName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.isName(this.getStep(), name, locale, message, arguments);
+        return () -> AssertorEnum.isName(this.getResult(), name, locale, message, arguments);
     }
 
     default PredicateStepEnum<T> isNameIgnoreCase(final CharSequence name) {
@@ -59,7 +58,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
 
     default PredicateStepEnum<T> isNameIgnoreCase(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.isNameIgnoreCase(this.getStep(), name, locale, message, arguments);
+        return () -> AssertorEnum.isNameIgnoreCase(this.getResult(), name, locale, message, arguments);
     }
 
     default PredicateStepEnum<T> isOrdinal(final int ordinal) {
@@ -71,6 +70,6 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
     }
 
     default PredicateStepEnum<T> isOrdinal(final int ordinal, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorEnum.isOrdinal(this.getStep(), ordinal, locale, message, arguments);
+        return () -> AssertorEnum.isOrdinal(this.getResult(), ordinal, locale, message, arguments);
     }
 }

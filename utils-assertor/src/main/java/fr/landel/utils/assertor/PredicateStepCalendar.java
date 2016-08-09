@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Calendar;
-import java.util.function.Supplier;
 
 /**
  * (Description)
@@ -25,22 +24,22 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface PredicateStepCalendar extends PredicateStep<PredicateStepCalendar, Calendar> {
 
-    default PredicateStepCalendar get(final Supplier<AssertorResult<Calendar>> supplier) {
-        return () -> supplier;
+    default PredicateStepCalendar get(final AssertorResult<Calendar> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorCalendar and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorCalendar or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorCalendar xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

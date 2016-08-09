@@ -12,8 +12,6 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.function.Supplier;
-
 /**
  * (Description)
  *
@@ -24,22 +22,22 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface PredicateStepIterable<T> extends PredicateStep<PredicateStepIterable<T>, Iterable<T>> {
 
-    default PredicateStepIterable<T> get(final Supplier<AssertorResult<Iterable<T>>> supplier) {
-        return () -> supplier;
+    default PredicateStepIterable<T> get(final AssertorResult<Iterable<T>> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorIterable<T> and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorIterable<T> or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorIterable<T> xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

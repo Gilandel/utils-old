@@ -45,7 +45,7 @@ public class AssertorBooleanTest extends AbstractTest {
     @Test
     public void testIsFalse() {
         AssertorResult<Boolean> assertorResult = new AssertorResult<>(true, EnumType.BOOLEAN);
-        assertFalse(AssertorBoolean.isFalse(() -> assertorResult, null, null, null).get().isValid());
+        assertFalse(AssertorBoolean.isFalse(assertorResult, null, null, null).isValid());
 
         try {
             Assertor.that(false).isFalse().toThrow("not false");

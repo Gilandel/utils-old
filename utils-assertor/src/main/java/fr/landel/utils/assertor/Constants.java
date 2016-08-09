@@ -36,7 +36,7 @@ import fr.landel.utils.commons.EnumChar;
  * @author Gilles
  *
  */
-public class AssertorConstants {
+public class Constants {
 
     /**
      * The logger
@@ -55,7 +55,7 @@ public class AssertorConstants {
      */
     protected static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (
             String errors, List<Triple<Object, EnumType, Boolean>> parameters) -> new IllegalArgumentException(
-                    AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, null, errors, parameters, null));
+                    HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     // ---------- PROPERTIES / MESSAGES
 
@@ -100,7 +100,7 @@ public class AssertorConstants {
 
     /**
      * Returns the property associated to the key with replaced arguments or the
-     * default string if not found {@link AssertorConstants#DEFAULT_ASSERTION}.
+     * default string if not found {@link Constants#DEFAULT_ASSERTION}.
      * 
      * @param key
      *            The property key

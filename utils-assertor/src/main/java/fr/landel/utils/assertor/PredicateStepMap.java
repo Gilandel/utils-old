@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * (Description)
@@ -25,22 +24,22 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface PredicateStepMap<K, V> extends PredicateStep<PredicateStepMap<K, V>, Map<K, V>> {
 
-    default PredicateStepMap<K, V> get(final Supplier<AssertorResult<Map<K, V>>> supplier) {
-        return () -> supplier;
+    default PredicateStepMap<K, V> get(final AssertorResult<Map<K, V>> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorMap<K, V> and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorMap<K, V> or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorMap<K, V> xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

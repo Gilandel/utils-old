@@ -48,7 +48,7 @@ public class AssertorEnumTest extends AbstractTest {
     @Test
     public void testIsName() {
         AssertorResult<EnumChar> assertorResult = new AssertorResult<>(EnumChar.ASTERISK, EnumType.ENUMERATION);
-        assertTrue(AssertorEnum.isName(() -> assertorResult, "ASTERISK", null, null, null).get().isValid());
+        assertTrue(AssertorEnum.isName(assertorResult, "ASTERISK", null, null, null).isValid());
 
         try {
             Assertor.that(EnumChar.ASTERISK).isName("ASTERISK").toThrow("not found");

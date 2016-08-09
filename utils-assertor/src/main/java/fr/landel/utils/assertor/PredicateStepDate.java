@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Date;
-import java.util.function.Supplier;
 
 /**
  * (Description)
@@ -25,22 +24,22 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface PredicateStepDate extends PredicateStep<PredicateStepDate, Date> {
 
-    default PredicateStepDate get(final Supplier<AssertorResult<Date>> supplier) {
-        return () -> supplier;
+    default PredicateStepDate get(final AssertorResult<Date> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorDate and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorDate or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorDate xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

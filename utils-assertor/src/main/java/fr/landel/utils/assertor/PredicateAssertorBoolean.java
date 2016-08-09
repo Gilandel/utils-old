@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 /**
  * 
@@ -27,13 +26,13 @@ import java.util.function.Supplier;
 public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateStepBoolean, Boolean> {
 
     @Override
-    default PredicateStepBoolean get(final Supplier<AssertorResult<Boolean>> supplier) {
-        return () -> supplier;
+    default PredicateStepBoolean get(final AssertorResult<Boolean> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorBoolean not() {
-        return () -> AssertorHelper.not(getStep());
+        return () -> HelperAssertor.not(this.getResult());
     }
 
     default PredicateStepBoolean isTrue() {
@@ -45,7 +44,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
     }
 
     default PredicateStepBoolean isTrue(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorBoolean.isTrue(this.getStep(), locale, message, arguments);
+        return () -> AssertorBoolean.isTrue(this.getResult(), locale, message, arguments);
     }
 
     default PredicateStepBoolean isFalse() {
@@ -57,6 +56,6 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
     }
 
     default PredicateStepBoolean isFalse(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorBoolean.isFalse(this.getStep(), locale, message, arguments);
+        return () -> AssertorBoolean.isFalse(this.getResult(), locale, message, arguments);
     }
 }

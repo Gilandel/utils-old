@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -64,7 +63,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
     /**
      * @return the step result
      */
-    Supplier<AssertorResult<T>> getStep();
+    AssertorResult<T> getResult();
 
     /**
      * The only purpose is to avoid the copy of basic methods into children
@@ -72,13 +71,13 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * {@link PredicateStep} by overriding this interface. All children class
      * has to override this method
      * 
-     * @param supplier
-     *            the supplier
+     * @param result
+     *            the result
      * @return the predicate step
      */
     @SuppressWarnings("unchecked")
-    default S get(final Supplier<AssertorResult<T>> supplier) {
-        return (S) (PredicateStep<S, T>) () -> supplier;
+    default S get(final AssertorResult<T> result) {
+        return (S) (PredicateStep<S, T>) () -> result;
     }
 
     /**
@@ -87,7 +86,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @return true, if valid
      */
     default boolean isOK() {
-        final AssertorResult<T> step = this.getStep().get();
+        final AssertorResult<T> step = this.getResult();
         return step.isPreconditionOK() && step.isValid();
     }
 
@@ -107,12 +106,12 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @return a {@code String} containing the errors
      */
     default String getErrors() {
-        final AssertorResult<T> step = this.getStep().get();
+        final AssertorResult<T> step = this.getResult();
         if (!step.isPreconditionOK()) {
-            return AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, Assertor.getLocale(), step.getPreconditionMessage(),
+            return HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, Assertor.getLocale(), step.getPreconditionMessage(),
                     step.getParameters(), null);
         } else if (!step.isValid()) {
-            return AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, Assertor.getLocale(), step.getMessage(),
+            return HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, Assertor.getLocale(), step.getMessage(),
                     step.getParameters(), null);
         }
         return "";
@@ -189,16 +188,16 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      *            the messages arguments
      */
     default void toThrow(final Locale locale, final CharSequence message, final Object... arguments) {
-        final AssertorResult<T> step = this.getStep().get();
+        final AssertorResult<T> step = this.getResult();
         if (!step.isPreconditionOK() || !step.isValid()) {
             final String error;
             if (message != null) {
-                error = AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, locale, message, step.getParameters(), arguments);
+                error = HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, message, step.getParameters(), arguments);
             } else if (!step.isPreconditionOK()) {
-                error = AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, locale, step.getPreconditionMessage(),
+                error = HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, step.getPreconditionMessage(),
                         step.getParameters(), null);
             } else {
-                error = AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION, locale, step.getMessage(), step.getParameters(),
+                error = HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, step.getMessage(), step.getParameters(),
                         null);
             }
             throw new IllegalArgumentException(error);
@@ -239,7 +238,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      *             The type of exception to throw
      */
     default <E extends Throwable> void toThrow(final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, E> function) throws E {
-        final AssertorResult<T> step = this.getStep().get();
+        final AssertorResult<T> step = this.getResult();
         if (!step.isPreconditionOK() || !step.isValid()) {
             final E exception;
             if (!step.isPreconditionOK()) {
@@ -247,7 +246,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
             } else {
                 exception = function.apply(String.valueOf(step.getMessage()), step.getParameters());
             }
-            exception.addSuppressed(new IllegalArgumentException(AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION,
+            exception.addSuppressed(new IllegalArgumentException(HelperMessage.getMessage(Constants.DEFAULT_ASSERTION,
                     Assertor.getLocale(), step.getMessage(), step.getParameters(), null)));
             throw exception;
         }
@@ -275,11 +274,11 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      *             the type of exception to throw
      */
     default <E extends Throwable> void toThrow(final E exception, final boolean injectSuppressed) throws E {
-        final AssertorResult<T> step = this.getStep().get();
+        final AssertorResult<T> step = this.getResult();
         if (!step.isPreconditionOK() || !step.isValid()) {
             if (exception != null) {
                 if (injectSuppressed) {
-                    exception.addSuppressed(new IllegalArgumentException(AssertorHelper.getMessage(AssertorConstants.DEFAULT_ASSERTION,
+                    exception.addSuppressed(new IllegalArgumentException(HelperMessage.getMessage(Constants.DEFAULT_ASSERTION,
                             Assertor.getLocale(), step.getMessage(), step.getParameters(), null)));
                 }
                 throw exception;
@@ -316,51 +315,51 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @return this predicate step with the other injected
      */
     default <X, R extends PredicateStep<R, X>> S and(final PredicateStep<R, X> other) {
-        return this.get(AssertorHelper.and(this.getStep(), other.getStep()));
+        return this.get(HelperAssertor.and(this.getResult(), other.getResult()));
     }
 
     default <X, R extends PredicateStep<R, X>> PredicateAssertor<R, X> and(final X other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default PredicateAssertorBoolean and(final Boolean other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default <X extends CharSequence> PredicateAssertorCharSequence<X> and(final X other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default <N extends Number & Comparable<N>> PredicateAssertorNumber<N> and(final N other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default <X> PredicateAssertorArray<X> and(final X[] other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default <X> PredicateAssertorClass<X> and(final Class<X> other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default <K, V> PredicateAssertorMap<K, V> and(final Map<K, V> other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default <X> PredicateAssertorIterable<X> and(final Iterable<X> other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default PredicateAssertorDate and(final Date other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default PredicateAssertorCalendar and(final Calendar other) {
-        return () -> AssertorHelper.and(this.getStep(), other);
+        return () -> HelperAssertor.and(this.getResult(), other);
     }
 
     default PredicateAssertor<S, T> and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     /**
@@ -390,51 +389,51 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @return this predicate step with the other injected
      */
     default <X, R extends PredicateStep<R, X>> S or(final PredicateStep<R, X> other) {
-        return this.get(AssertorHelper.or(this.getStep(), other.getStep()));
+        return this.get(HelperAssertor.or(this.getResult(), other.getResult()));
     }
 
     default <X, R extends PredicateStep<R, X>> PredicateAssertor<R, X> or(final X other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default PredicateAssertorBoolean or(final Boolean other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default <X extends CharSequence> PredicateAssertorCharSequence<X> or(final X other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default <N extends Number & Comparable<N>> PredicateAssertorNumber<N> or(final N other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default <X> PredicateAssertorArray<X> or(final X[] other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default <X> PredicateAssertorClass<X> or(final Class<X> other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default <K, V> PredicateAssertorMap<K, V> or(final Map<K, V> other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default <X> PredicateAssertorIterable<X> or(final Iterable<X> other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default PredicateAssertorDate or(final Date other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default PredicateAssertorCalendar or(final Calendar other) {
-        return () -> AssertorHelper.or(this.getStep(), other);
+        return () -> HelperAssertor.or(this.getResult(), other);
     }
 
     default PredicateAssertor<S, T> or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     /**
@@ -464,50 +463,50 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @return this predicate step with the other injected
      */
     default <X, R extends PredicateStep<R, X>> S xor(final PredicateStep<R, X> other) {
-        return this.get(AssertorHelper.xor(this.getStep(), other.getStep()));
+        return this.get(HelperAssertor.xor(this.getResult(), other.getResult()));
     }
 
     default <X, R extends PredicateStep<R, X>> PredicateAssertor<R, X> xor(final X other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default PredicateAssertorBoolean xor(final Boolean other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default <X extends CharSequence> PredicateAssertorCharSequence<X> xor(final X other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default <N extends Number & Comparable<N>> PredicateAssertorNumber<N> xor(final N other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default <X> PredicateAssertorArray<X> xor(final X[] other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default <X> PredicateAssertorClass<X> xor(final Class<X> other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default <K, V> PredicateAssertorMap<K, V> xor(final Map<K, V> other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default <X> PredicateAssertorIterable<X> xor(final Iterable<X> other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default PredicateAssertorDate xor(final Date other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default PredicateAssertorCalendar xor(final Calendar other) {
-        return () -> AssertorHelper.xor(this.getStep(), other);
+        return () -> HelperAssertor.xor(this.getResult(), other);
     }
 
     default PredicateAssertor<S, T> xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

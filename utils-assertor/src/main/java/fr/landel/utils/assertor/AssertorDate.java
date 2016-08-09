@@ -15,15 +15,14 @@ package fr.landel.utils.assertor;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.Comparators;
 import fr.landel.utils.commons.DateUtils;
 import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.QuadFunction;
 import fr.landel.utils.commons.function.TriFunction;
 
 /**
@@ -33,39 +32,36 @@ import fr.landel.utils.commons.function.TriFunction;
  * @author Gilles
  *
  */
-public class AssertorDate extends AssertorConstants {
+public class AssertorDate extends Constants {
 
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isEqual(
-            final Supplier<AssertorResult<T>> step, final T date, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
-
-        return AssertorDate.isAround(step, date, -1, 0, locale, message, arguments);
-    }
-
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isNotEqual(
-            final Supplier<AssertorResult<T>> step, final T date, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
-
-        return AssertorDate.isNotAround(step, date, -1, 0, locale, message, arguments);
-    }
-
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isAround(
-            final Supplier<AssertorResult<T>> step, final T date, final int calendarField, final int calendarAmount, final Locale locale,
-            final CharSequence message, final Object[] arguments) {
-
-        return AssertorDate.isAround(step, date, calendarField, calendarAmount, false, locale, message, arguments);
-    }
-
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isNotAround(
-            final Supplier<AssertorResult<T>> step, final T date, final int calendarField, final int calendarAmount, final Locale locale,
-            final CharSequence message, final Object[] arguments) {
-
-        return AssertorDate.isAround(step, date, calendarField, calendarAmount, true, locale, message, arguments);
-    }
-
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isAround(
-            final Supplier<AssertorResult<T>> step, final T date, final int calendarField, final int calendarAmount, final boolean reverse,
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isEqual(final AssertorResult<T> result, final T date,
             final Locale locale, final CharSequence message, final Object[] arguments) {
+
+        return AssertorDate.isAround(result, date, -1, 0, locale, message, arguments);
+    }
+
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isNotEqual(final AssertorResult<T> result,
+            final T date, final Locale locale, final CharSequence message, final Object[] arguments) {
+
+        return AssertorDate.isNotAround(result, date, -1, 0, locale, message, arguments);
+    }
+
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isAround(final AssertorResult<T> result, final T date,
+            final int calendarField, final int calendarAmount, final Locale locale, final CharSequence message, final Object[] arguments) {
+
+        return AssertorDate.isAround(result, date, calendarField, calendarAmount, false, locale, message, arguments);
+    }
+
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isNotAround(final AssertorResult<T> result,
+            final T date, final int calendarField, final int calendarAmount, final Locale locale, final CharSequence message,
+            final Object[] arguments) {
+
+        return AssertorDate.isAround(result, date, calendarField, calendarAmount, true, locale, message, arguments);
+    }
+
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isAround(final AssertorResult<T> result, final T date,
+            final int calendarField, final int calendarAmount, final boolean reverse, final Locale locale, final CharSequence message,
+            final Object[] arguments) {
 
         final Function<T, Boolean> precondition = (date1) -> {
             final boolean prerequisites;
@@ -80,36 +76,35 @@ public class AssertorDate extends AssertorConstants {
             return prerequisites && calendarFieldOk;
         };
 
-        final TriFunction<AssertorResult<T>, Integer, Integer, CharSequence> preconditionMessage = (result, objectIndex, paramIndex) -> {
-            return AssertorHelper.msg(result, MSG.DATE.AROUND, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> {
+            return HelperMessage.getDefaultMessage(result, MSG.DATE.AROUND, true, false, objectIndex, paramIndex);
         };
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (date1, not) -> {
-            boolean result = false;
+            boolean around = false;
             final int compare = Comparators.compare(date1, date);
             if (compare == 0) {
-                result = true;
+                around = true;
             } else if (calendarField != -1) {
-                result = AssertorDate.isAround(date1, date, calendarField, calendarAmount, compare);
+                around = AssertorDate.isAround(date1, date, calendarField, calendarAmount, compare);
             }
-            return reverse ^ result;
+            return reverse ^ around;
         };
 
-        final QuadFunction<AssertorResult<T>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> {
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> {
             if (calendarField == -1) {
-                return AssertorHelper.getMessage(result, locale, message, arguments, MSG.DATE.EQUALS, not, objectIndex, paramIndex);
+                return HelperMessage.getMessage(result, locale, message, arguments, MSG.DATE.EQUALS, not, objectIndex, paramIndex);
             } else {
-                return AssertorHelper.getMessage(result, locale, message, arguments, MSG.DATE.AROUND, not, objectIndex, paramIndex,
+                return HelperMessage.getMessage(result, locale, message, arguments, MSG.DATE.AROUND, not, objectIndex, paramIndex,
                         paramIndex + 1, paramIndex + 2);
             }
         };
 
         if (calendarField == -1) {
-            return AssertorHelper.prepareStep(step, precondition, checker, preconditionMessage, builtMessage, false,
+            return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
                     Pair.of(date, EnumType.DATE));
         } else {
-            return AssertorHelper.prepareStep(step, precondition, checker, preconditionMessage, builtMessage, false,
+            return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
                     Pair.of(date, EnumType.DATE), Pair.of(calendarField, EnumType.CALENDAR_FIELD),
                     Pair.of(calendarAmount, EnumType.NUMBER_INTEGER));
         }
@@ -141,56 +136,52 @@ public class AssertorDate extends AssertorConstants {
         return true;
     }
 
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isAfter(
-            final Supplier<AssertorResult<T>> step, final T date, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isAfter(final AssertorResult<T> result, final T date,
+            final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (date1, not) -> Comparators.compare(date1, date) > 0;
 
-        return AssertorDate.is(step, date, MSG.DATE.AFTER, checker, locale, message, arguments);
+        return AssertorDate.is(result, date, MSG.DATE.AFTER, checker, locale, message, arguments);
     }
 
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isAfterOrEquals(
-            final Supplier<AssertorResult<T>> step, final T date, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isAfterOrEquals(final AssertorResult<T> result,
+            final T date, final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (date1, not) -> Comparators.compare(date1, date) >= 0;
 
-        return AssertorDate.is(step, date, MSG.DATE.AFTER_OR_EQUALS, checker, locale, message, arguments);
+        return AssertorDate.is(result, date, MSG.DATE.AFTER_OR_EQUALS, checker, locale, message, arguments);
     }
 
-    private static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> is(final Supplier<AssertorResult<T>> step,
-            final T date, final CharSequence key, final BiFunctionThrowable<T, Boolean, Boolean, E> checker, final Locale locale,
+    private static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> is(final AssertorResult<T> result, final T date,
+            final CharSequence key, final BiFunctionThrowable<T, Boolean, Boolean, E> checker, final Locale locale,
             final CharSequence message, final Object[] arguments) {
 
         final Function<T, Boolean> precondition = (date1) -> date1 != null && date != null;
 
-        final TriFunction<AssertorResult<T>, Integer, Integer, CharSequence> preconditionMessage = (result, objectIndex,
-                paramIndex) -> AssertorHelper.msg(result, key, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
+                true, false, objectIndex, paramIndex);
 
-        final QuadFunction<AssertorResult<T>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> AssertorHelper.getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
 
-        return AssertorHelper.prepareStep(step, precondition, checker, preconditionMessage, builtMessage, false,
+        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
                 Pair.of(date, EnumType.DATE));
     }
 
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isBefore(
-            final Supplier<AssertorResult<T>> step, final T date, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isBefore(final AssertorResult<T> result, final T date,
+            final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (date1, not) -> Comparators.compare(date1, date) < 0;
 
-        return AssertorDate.is(step, date, MSG.DATE.BEFORE, checker, locale, message, arguments);
+        return AssertorDate.is(result, date, MSG.DATE.BEFORE, checker, locale, message, arguments);
     }
 
-    protected static <T extends Comparable<T>, E extends Throwable> Supplier<AssertorResult<T>> isBeforeOrEquals(
-            final Supplier<AssertorResult<T>> step, final T date, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isBeforeOrEquals(final AssertorResult<T> result,
+            final T date, final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (date1, not) -> Comparators.compare(date1, date) <= 0;
 
-        return AssertorDate.is(step, date, MSG.DATE.BEFORE_OR_EQUALS, checker, locale, message, arguments);
+        return AssertorDate.is(result, date, MSG.DATE.BEFORE_OR_EQUALS, checker, locale, message, arguments);
     }
 
 }

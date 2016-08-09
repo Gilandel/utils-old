@@ -14,7 +14,6 @@ package fr.landel.utils.assertor;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * (Description)
@@ -27,13 +26,13 @@ import java.util.function.Supplier;
 public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateStepMap<K, V>, Map<K, V>> {
 
     @Override
-    default PredicateStepMap<K, V> get(final Supplier<AssertorResult<Map<K, V>>> supplier) {
-        return () -> supplier;
+    default PredicateStepMap<K, V> get(final AssertorResult<Map<K, V>> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorMap<K, V> not() {
-        return () -> AssertorHelper.not(getStep());
+        return () -> HelperAssertor.not(getResult());
     }
 
     default PredicateStepMap<K, V> hasSize(final int size) {
@@ -45,7 +44,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> hasSize(final int size, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.hasSize(this.getStep(), size, locale, message, arguments);
+        return () -> AssertorMap.hasSize(this.getResult(), size, locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> isEmpty() {
@@ -57,7 +56,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.isEmpty(this.getStep(), locale, message, arguments);
+        return () -> AssertorMap.isEmpty(this.getResult(), locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> isNotEmpty() {
@@ -69,7 +68,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.isNotEmpty(this.getStep(), locale, message, arguments);
+        return () -> AssertorMap.isNotEmpty(this.getResult(), locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> contains(final K key) {
@@ -81,7 +80,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> contains(final K key, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.contains(this.getStep(), key, locale, message, arguments);
+        return () -> AssertorMap.contains(this.getResult(), key, locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> contains(final K key, final V value) {
@@ -94,7 +93,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> contains(final K key, final V value, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.contains(this.getStep(), key, value, locale, message, arguments);
+        return () -> AssertorMap.contains(this.getResult(), key, value, locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> containsAll(final Iterable<K> keys) {
@@ -107,7 +106,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAll(final Iterable<K> keys, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAll(this.getStep(), keys, locale, message, arguments);
+        return () -> AssertorMap.containsAll(this.getResult(), keys, locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> containsAll(final Map<K, V> map) {
@@ -120,7 +119,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAll(final Map<K, V> map, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAll(this.getStep(), map, locale, message, arguments);
+        return () -> AssertorMap.containsAll(this.getResult(), map, locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> containsAny(final Iterable<K> keys) {
@@ -133,7 +132,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAny(final Iterable<K> keys, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAny(this.getStep(), keys, locale, message, arguments);
+        return () -> AssertorMap.containsAny(this.getResult(), keys, locale, message, arguments);
     }
 
     default PredicateStepMap<K, V> containsAny(final Map<K, V> map) {
@@ -146,6 +145,6 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAny(final Map<K, V> map, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAny(this.getStep(), map, locale, message, arguments);
+        return () -> AssertorMap.containsAny(this.getResult(), map, locale, message, arguments);
     }
 }

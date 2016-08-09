@@ -12,8 +12,6 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.function.Supplier;
-
 /**
  * (Description)
  *
@@ -24,22 +22,22 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface PredicateStepBoolean extends PredicateStep<PredicateStepBoolean, Boolean> {
 
-    default PredicateStepBoolean get(final Supplier<AssertorResult<Boolean>> supplier) {
-        return () -> supplier;
+    default PredicateStepBoolean get(final AssertorResult<Boolean> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorBoolean and() {
-        return () -> AssertorHelper.and(this.getStep());
+        return () -> HelperAssertor.and(this.getResult());
     }
 
     @Override
     default PredicateAssertorBoolean or() {
-        return () -> AssertorHelper.or(this.getStep());
+        return () -> HelperAssertor.or(this.getResult());
     }
 
     @Override
     default PredicateAssertorBoolean xor() {
-        return () -> AssertorHelper.xor(this.getStep());
+        return () -> HelperAssertor.xor(this.getResult());
     }
 }

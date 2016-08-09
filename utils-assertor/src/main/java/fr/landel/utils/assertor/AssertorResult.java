@@ -196,7 +196,7 @@ public class AssertorResult<T> implements Serializable {
      */
     public <X> AssertorResult(final AssertorResult<T> result, final AssertorResult<X> other, final EnumOperator operator) {
         this(result.getObject(), result.getType(), result.getParameters(), result.isPreconditionOK() && other.isPreconditionOK(),
-                AssertorHelper.isValid(result.isValid(), other.isValid(), operator), operator, false, null, null);
+                HelperAssertor.isValid(result.isValid(), other.isValid(), operator), operator, false, null, null);
 
         result.getParameters().addAll(other.getParameters());
 

@@ -13,32 +13,31 @@
 package fr.landel.utils.assertor;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.QuadFunction;
+import fr.landel.utils.commons.function.TriFunction;
 
-public class AssertorBoolean extends AssertorConstants {
+public class AssertorBoolean extends Constants {
 
-    protected static <E extends Throwable> Supplier<AssertorResult<Boolean>> isTrue(final Supplier<AssertorResult<Boolean>> step,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <E extends Throwable> AssertorResult<Boolean> isTrue(final AssertorResult<Boolean> result, final Locale locale,
+            final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<Boolean, Boolean, Boolean, E> checker = (bool, not) -> Boolean.TRUE.equals(bool);
 
-        final QuadFunction<AssertorResult<Boolean>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex,
-                paramIndex, not) -> AssertorHelper.getMessage(result, locale, message, arguments, MSG.BOOLEAN.TRUE, not, objectIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, MSG.BOOLEAN.TRUE, not, objectIndex);
 
-        return AssertorHelper.prepareStep(step, null, checker, null, builtMessage, false);
+        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
     }
 
-    protected static <E extends Throwable> Supplier<AssertorResult<Boolean>> isFalse(final Supplier<AssertorResult<Boolean>> step,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <E extends Throwable> AssertorResult<Boolean> isFalse(final AssertorResult<Boolean> result, final Locale locale,
+            final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<Boolean, Boolean, Boolean, E> checker = (bool, not) -> Boolean.FALSE.equals(bool);
 
-        final QuadFunction<AssertorResult<Boolean>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex,
-                paramIndex, not) -> AssertorHelper.getMessage(result, locale, message, arguments, MSG.BOOLEAN.FALSE, not, objectIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, MSG.BOOLEAN.FALSE, not, objectIndex);
 
-        return AssertorHelper.prepareStep(step, null, checker, null, builtMessage, false);
+        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
     }
 }

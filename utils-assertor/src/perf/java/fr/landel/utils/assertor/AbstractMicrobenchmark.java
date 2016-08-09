@@ -10,22 +10,7 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-/*
- * Copyright 2012 The Netty Project
- *
- * The Netty Project licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
-package fr.landel.utils.assertor.perf;
+package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -34,6 +19,9 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BinaryOperator;
 
 import org.openjdk.jmh.results.BenchmarkResult;
 import org.openjdk.jmh.results.IterationResult;
@@ -43,13 +31,25 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.runner.options.VerboseMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.landel.utils.assertor.Assertor;
-
 /**
  * Base class for all JMH benchmarks.
+ * 
+ * <p>
+ * Based on the Netty project class.
+ * </p>
+ * 
+ * <p>
+ * To use it directly in Eclipse, just run the maven build in test life cycle to
+ * generate JMH classes.
+ * </p>
+ *
+ * @since Aug 8, 2016
+ * @author Gilles
+ *
  */
 public abstract class AbstractMicrobenchmark {
 
@@ -57,13 +57,14 @@ public abstract class AbstractMicrobenchmark {
     protected static final int MEASURE_ITERATIONS = 5;
     protected static final int NUM_FORKS = 2;
 
+    // Use the default JVM args
     protected static final String JVM_ARGS = "-server";
 
     protected static final String OUTPUT_DIRECTORY = "target/benchmark/";
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Microbenchmark");
 
-    public void run() throws IOException, RunnerException {
+    public Collection<RunResult> run() throws IOException, RunnerException {
         final String classPath = getClass().getCanonicalName();
 
         final ChainedOptionsBuilder runnerOptions = new OptionsBuilder().include(classPath).jvmArgs(this.getJvmArgs())
@@ -76,9 +77,10 @@ public abstract class AbstractMicrobenchmark {
             file.getParentFile().mkdirs();
             file.createNewFile();
         }
-
         runnerOptions.resultFormat(ResultFormatType.JSON);
         runnerOptions.result(file.getAbsolutePath());
+
+        runnerOptions.verbosity(VerboseMode.SILENT);
 
         final Runner runner = new Runner(runnerOptions.build());
 
@@ -87,21 +89,28 @@ public abstract class AbstractMicrobenchmark {
         assertNotNull(runResults);
         assertNotEquals(0, runResults.size());
 
+        final BinaryOperator<Double> avg = (s1, s2) -> (s1 + s2) / 2;
+
         for (final RunResult runResult : runResults) {
-            assertNotEquals(0, runResult.getBenchmarkResults().size());
+            assertEquals(this.getNumForks(), runResult.getBenchmarkResults().size());
 
             for (final BenchmarkResult result : runResult.getBenchmarkResults()) {
                 assertEquals(this.getMeasureIterations(), result.getIterationResults().size());
 
+                final Set<Double> scores = new HashSet<>();
                 for (final IterationResult ir : result.getIterationResults()) {
-                    final Double avgScore = ir.getRawPrimaryResults().stream().map((r) -> r.getScore()).reduce((s1, s2) -> (s1 + s2) / 2)
-                            .get();
-                    LOGGER.info("score: {} {}", avgScore, ir.getScoreUnit());
-                    Assertor.that(avgScore).isGT(this.getExpectedMinNbOpsPerSeconds())
-                            .toThrow((errors, parameters) -> new AssertionError(errors));
+                    scores.add(ir.getRawPrimaryResults().stream().map((r) -> r.getScore()).reduce(avg).get());
                 }
+
+                final Double avgScore = scores.stream().reduce(avg).get();
+                LOGGER.info(String.format("[%s] score: %,.3f %s", this.getClass().getSimpleName(), avgScore, result.getScoreUnit()));
+
+                Assertor.that(avgScore).isGT(this.getExpectedMinNbOpsPerSeconds())
+                        .toThrow((errors, parameters) -> new AssertionError(errors));
             }
         }
+
+        return runResults;
     }
 
     /**

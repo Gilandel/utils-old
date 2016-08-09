@@ -13,14 +13,13 @@
 package fr.landel.utils.assertor;
 
 import java.util.Locale;
+import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.ArrayUtils;
 import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.QuadFunction;
 import fr.landel.utils.commons.function.TriFunction;
 
 /**
@@ -30,94 +29,91 @@ import fr.landel.utils.commons.function.TriFunction;
  * @author Gilles
  *
  */
-public class AssertorArray extends AssertorConstants {
+public class AssertorArray extends Constants {
 
-    protected static <T, E extends Throwable> Supplier<AssertorResult<T[]>> hasLength(final Supplier<AssertorResult<T[]>> step,
-            final int length, final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T, E extends Throwable> AssertorResult<T[]> hasLength(final AssertorResult<T[]> result, final int length,
+            final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final Function<T[], Boolean> precondition = (object) -> length >= 0 && object != null;
 
-        final TriFunction<AssertorResult<T[]>, Integer, Integer, CharSequence> preconditionMessage = (result, objectIndex,
-                paramIndex) -> AssertorHelper.msg(result, MSG.ARRAY.LENGTH, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
+                MSG.ARRAY.LENGTH, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> object.length == length;
 
-        final QuadFunction<AssertorResult<T[]>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> AssertorHelper.getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.ARRAY.LENGTH, not,
-                        objectIndex, paramIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.ARRAY.LENGTH, not, objectIndex, paramIndex);
 
-        return AssertorHelper.prepareStep(step, precondition, checker, preconditionMessage, builtMessage, false,
+        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
                 Pair.of(length, EnumType.NUMBER_INTEGER));
     }
 
-    protected static <T, E extends Throwable> Supplier<AssertorResult<T[]>> isEmpty(final Supplier<AssertorResult<T[]>> step,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T, E extends Throwable> AssertorResult<T[]> isEmpty(final AssertorResult<T[]> result, final Locale locale,
+            final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> ArrayUtils.isEmpty(object);
 
-        final QuadFunction<AssertorResult<T[]>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> AssertorHelper.getMessage(result, locale, message, arguments, MSG.ARRAY.EMPTY, not, objectIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, MSG.ARRAY.EMPTY, not, objectIndex);
 
-        return AssertorHelper.prepareStep(step, null, checker, null, builtMessage, false);
+        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
     }
 
-    protected static <T, E extends Throwable> Supplier<AssertorResult<T[]>> isNotEmpty(final Supplier<AssertorResult<T[]>> step,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T, E extends Throwable> AssertorResult<T[]> isNotEmpty(final AssertorResult<T[]> result, final Locale locale,
+            final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> ArrayUtils.isNotEmpty(object);
 
-        final QuadFunction<AssertorResult<T[]>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> AssertorHelper.getMessage(result, locale, message, arguments, MSG.ARRAY.EMPTY, !not, objectIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, MSG.ARRAY.EMPTY, !not, objectIndex);
 
-        return AssertorHelper.prepareStep(step, null, checker, null, builtMessage, false);
+        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
     }
 
-    protected static <T, E extends Throwable> Supplier<AssertorResult<T[]>> contains(final Supplier<AssertorResult<T[]>> step,
-            final T object, final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T, E extends Throwable> AssertorResult<T[]> contains(final AssertorResult<T[]> result, final T object,
+            final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final Function<T[], Boolean> precondition = (object1) -> object1 != null;
 
-        final TriFunction<AssertorResult<T[]>, Integer, Integer, CharSequence> preconditionMessage = (result, objectIndex,
-                paramIndex) -> AssertorHelper.msg(result, MSG.ARRAY.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
+                MSG.ARRAY.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object1, not) -> AssertorArray.has(object1, object);
 
-        final QuadFunction<AssertorResult<T[]>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> AssertorHelper.getMessage(result, locale, message, arguments, MSG.ARRAY.CONTAINS_OBJECT, not, objectIndex,
-                        paramIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, MSG.ARRAY.CONTAINS_OBJECT, not, objectIndex, paramIndex);
 
-        return AssertorHelper.prepareStep(step, precondition, checker, preconditionMessage, builtMessage, false,
+        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
                 Pair.of(object, EnumType.getType(object)));
     }
 
-    private static <T, E extends Throwable> Supplier<AssertorResult<T[]>> contains(final Supplier<AssertorResult<T[]>> step,
-            final T[] array, final CharSequence key, final boolean all, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    private static <T, E extends Throwable> AssertorResult<T[]> contains(final AssertorResult<T[]> result, final T[] array,
+            final CharSequence key, final boolean all, final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final Function<T[], Boolean> precondition = (object) -> array != null && object != null;
 
-        final TriFunction<AssertorResult<T[]>, Integer, Integer, CharSequence> preconditionMessage = (result, objectIndex,
-                paramIndex) -> AssertorHelper.msg(result, key, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
+                true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> AssertorArray.has(object, array, all, not);
 
-        final QuadFunction<AssertorResult<T[]>, Integer, Integer, Boolean, CharSequence> builtMessage = (result, objectIndex, paramIndex,
-                not) -> AssertorHelper.getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
 
-        return AssertorHelper.prepareStep(step, precondition, checker, preconditionMessage, builtMessage, true,
+        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, true,
                 Pair.of(array, EnumType.ARRAY));
     }
 
-    protected static <T, E extends Throwable> Supplier<AssertorResult<T[]>> containsAll(final Supplier<AssertorResult<T[]>> step,
-            final T[] array, final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T, E extends Throwable> AssertorResult<T[]> containsAll(final AssertorResult<T[]> result, final T[] array,
+            final Locale locale, final CharSequence message, final Object[] arguments) {
 
-        return AssertorArray.contains(step, array, MSG.ARRAY.CONTAINS_ALL, true, locale, message, arguments);
+        return AssertorArray.contains(result, array, MSG.ARRAY.CONTAINS_ALL, true, locale, message, arguments);
     }
 
-    protected static <T, E extends Throwable> Supplier<AssertorResult<T[]>> containsAny(final Supplier<AssertorResult<T[]>> step,
-            final T[] array, final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T, E extends Throwable> AssertorResult<T[]> containsAny(final AssertorResult<T[]> result, final T[] array,
+            final Locale locale, final CharSequence message, final Object[] arguments) {
 
-        return AssertorArray.contains(step, array, MSG.ARRAY.CONTAINS_ANY, false, locale, message, arguments);
+        return AssertorArray.contains(result, array, MSG.ARRAY.CONTAINS_ANY, false, locale, message, arguments);
     }
 
     private static <T> boolean has(final T[] array, final T object) {

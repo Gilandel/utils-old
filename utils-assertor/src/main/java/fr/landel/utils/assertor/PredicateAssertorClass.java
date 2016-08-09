@@ -13,7 +13,6 @@
 package fr.landel.utils.assertor;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 /**
  * (Description)
@@ -26,13 +25,13 @@ import java.util.function.Supplier;
 public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateStepClass<T>, Class<T>> {
 
     @Override
-    default PredicateStepClass<T> get(final Supplier<AssertorResult<Class<T>>> supplier) {
-        return () -> supplier;
+    default PredicateStepClass<T> get(final AssertorResult<Class<T>> result) {
+        return () -> result;
     }
 
     @Override
     default PredicateAssertorClass<T> not() {
-        return () -> AssertorHelper.not(getStep());
+        return () -> HelperAssertor.not(getResult());
     }
 
     @Override
@@ -48,6 +47,6 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
     @Override
     default PredicateStepClass<T> isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.isAssignableFrom(this.getStep(), clazz, locale, message, arguments);
+        return () -> AssertorClass.isAssignableFrom(this.getResult(), clazz, locale, message, arguments);
     }
 }

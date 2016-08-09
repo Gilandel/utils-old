@@ -16,6 +16,39 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-perf-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/perf/java</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-perf-resources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/perf/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- Add license header and generate third-party text file -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -41,6 +74,26 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>perf-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/Perf*.java</include>
+								<include>**/*Perf.java</include>
+								<include>**/*PerfCase.java</include>
+							</includes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
