@@ -14,6 +14,7 @@ package fr.landel.utils.scripts;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -31,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.io.FileUtils;
-import fr.landel.utils.scripts.ScriptsLoader;
 import fr.landel.utils.scripts.PatientSearch.Attendance;
 import fr.landel.utils.scripts.PatientSearch.Distance;
 import fr.landel.utils.scripts.PatientSearch.Health;
@@ -61,17 +61,63 @@ public class ScriptsLoaderTest {
 
     private static final Pattern PATTERN_COLUMN = Pattern.compile("\\w+");
 
-    private static final String PATH = "src/test/resources/scripts/";
+    private static final String PATH = "src/test/resources/my_scripts/";
 
     private ScriptsLoader queriesLoader;
 
     /**
      * initialize the loader with scripts list
+     * 
+     * @throws IOException
+     *             On failures
      */
     @Before
-    public void init() {
+    public void init() throws IOException {
         this.queriesLoader = new ScriptsLoader();
+
+        this.queriesLoader.setPath("my_scripts");
         this.queriesLoader.init(EnumScripts.values());
+
+        this.queriesLoader.setPath("my_scripts/");
+        this.queriesLoader.init(EnumScripts.values());
+
+        assertNotNull(this.queriesLoader.getReplacer());
+    }
+
+    /**
+     * Test queries loader
+     * 
+     * @throws IOException
+     *             On error
+     */
+    @Test
+    public void testGetScripts() throws IOException {
+
+        // STANDARD TEMPLATE
+        StringBuilder content = this.queriesLoader.get(EnumScripts.TEST);
+        assertNotNull(content);
+        assertEquals("select * from test where id = ''", content.toString());
+
+        content = this.queriesLoader.get(EnumScripts.TEST_ONE_lINE, "app.id", "app_id");
+        assertNotNull(content);
+        assertEquals("select * from test where id = 'app_id' ", content.toString());
+
+        assertNull(this.queriesLoader.get(null));
+        assertNull(this.queriesLoader.get(null, null));
+        assertNull(this.queriesLoader.get(null, null, null));
+
+        // JSON TEMPLATE
+        final ScriptsLoader loader = new ScriptsLoader();
+
+        assertNotNull(loader);
+
+        loader.setPath("my_scripts");
+        loader.getReplacer().setTemplate(ScriptsTemplate.TEMPLATE_JSON);
+
+        loader.init(EnumScripts.INDEX_AGGS);
+
+        assertEquals(FileUtils.getFileContent(PATH + "index.expected.elastic").toString(),
+                loader.get(EnumScripts.INDEX_AGGS, "apps", "my_app_id").toString());
     }
 
     /**

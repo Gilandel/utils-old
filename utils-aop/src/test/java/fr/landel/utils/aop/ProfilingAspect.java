@@ -32,7 +32,7 @@ public class ProfilingAspect extends AbstractAspectExtends {
     /**
      * point cut for all methods of the service layer of the application
      */
-    @Pointcut("execution(* " + BASE_PACKAGE + ".*.*(..))")
+    @Pointcut("execution(* " + OBSERVABLE + ".*(..))")
     public void trace() {
         // Point cut, no code here
     }

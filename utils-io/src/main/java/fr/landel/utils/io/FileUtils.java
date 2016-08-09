@@ -142,7 +142,7 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final InputStream inputStream, final Charset charset) throws IOException {
-        Assertor.that(inputStream).isNotNull().toThrow("The 'inpuStream' parameter cannot be null");
+        Assertor.that(inputStream).isNotNull().toThrow("The 'inputStream' parameter cannot be null");
         Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
 
         int bufferReadSize;

@@ -25,6 +25,11 @@ import java.util.List;
 public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
+     * The join separator (for readability)
+     */
+    public static final String JOIN_SEPARATOR = ", ";
+
+    /**
      * Hidden constructor.
      */
     private StringUtils() {

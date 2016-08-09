@@ -60,6 +60,8 @@ public class AssertorIterableTest extends AbstractTest {
         final Set<String> set = new HashSet<>();
         set.add(el);
 
+        assertTrue(Assertor.that(set).isNotEmpty().and(Assertor.that(el).isNotBlank()).isOK());
+
         assertTrue(Assertor.that(set).hasSize(1).isOK());
         assertFalse(Assertor.that(set).hasSize(2).isOK());
         assertFalse(Assertor.that((Set<String>) null).hasSize(1).isOK());
@@ -155,6 +157,11 @@ public class AssertorIterableTest extends AbstractTest {
         set.add(el);
 
         Assertor.that(set).isNotEmpty().toThrow();
+
+        Expect.exception(() -> {
+            Assertor.that(set).not().isNotEmpty().toThrow("iterable is not empty");
+            fail(ERROR);
+        }, IllegalArgumentException.class, "iterable is not empty");
 
         set.clear();
 

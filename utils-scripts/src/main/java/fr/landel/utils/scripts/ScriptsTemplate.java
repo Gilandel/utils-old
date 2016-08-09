@@ -123,7 +123,8 @@ public interface ScriptsTemplate {
     ConsumerThrowable<String, IllegalArgumentException> CHECKER_JSON = (v) -> {
         // Avoid some JSON injections but not all!, parameters has to be
         // checked before
-        Assertor.that(v).contains(EXPRESSION_OPEN).or().contains(EXPRESSION_CLOSE).toThrow("Replacement value hasn't to contain braces");
+        Assertor.that(v).not().contains(EXPRESSION_OPEN).and().not().contains(EXPRESSION_CLOSE)
+                .toThrow("Replacement value hasn't to contain braces");
     };
 
     /**
@@ -152,8 +153,7 @@ public interface ScriptsTemplate {
             this.setRemoveBlankLines(Boolean.TRUE);
 
             this.setOneLineCommentOperator(COMMENT_SQL);
-            this.setMultiLineCommentOperatorOpen(COMMENT_OPEN);
-            this.setMultiLineCommentOperatorClose(COMMENT_CLOSE);
+            this.setMultiLineCommentOperators(COMMENT_OPEN, COMMENT_CLOSE);
 
             this.setChecker(CHECKER_SQL);
         }
@@ -185,8 +185,7 @@ public interface ScriptsTemplate {
             this.setRemoveBlankLines(Boolean.TRUE);
 
             this.setOneLineCommentOperator(COMMENT_STANDARD);
-            this.setMultiLineCommentOperatorOpen(COMMENT_OPEN);
-            this.setMultiLineCommentOperatorClose(COMMENT_CLOSE);
+            this.setMultiLineCommentOperators(COMMENT_OPEN, COMMENT_CLOSE);
 
             this.setChecker(CHECKER_JSON);
         }

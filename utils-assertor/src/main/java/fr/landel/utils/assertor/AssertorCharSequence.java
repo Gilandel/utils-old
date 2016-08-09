@@ -30,8 +30,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> length >= 0 && object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.LENGTH, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.LENGTH, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.length() == length;
 
@@ -87,12 +87,29 @@ public class AssertorCharSequence extends Constants {
     }
 
     protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> contains(final AssertorResult<T> result,
+            final Character character, final Locale locale, final CharSequence message, final Object[] arguments) {
+
+        final Function<T, Boolean> precondition = (object) -> object != null && character != null;
+
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.CONTAINS, true, false, objectIndex, paramIndex);
+
+        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.toString().indexOf(character) > -1;
+
+        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
+                .getMessage(result, locale, message, arguments, MSG.CSQ.CONTAINS, not, objectIndex, paramIndex);
+
+        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+                Pair.of(character, EnumType.CHARACTER));
+    }
+
+    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> contains(final AssertorResult<T> result,
             final CharSequence substring, final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.CONTAINS, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.CONTAINS, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> containsCharSequence(object, substring);
 
@@ -129,8 +146,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.STARTS, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.STARTS, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.startsWith(object, substring);
 
@@ -146,8 +163,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.STARTS, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.STARTS, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.startsWithIgnoreCase(object, substring);
 
@@ -163,8 +180,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.ENDS, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.ENDS, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.endsWith(object, substring);
 
@@ -180,8 +197,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.ENDS, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.ENDS, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.endsWithIgnoreCase(object, substring);
 
@@ -197,8 +214,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && pattern != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.MATCHES, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.MATCHES, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> pattern.matcher(object).matches();
 
@@ -214,8 +231,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(regex);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.MATCHES, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.MATCHES, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> Pattern.matches(regex.toString(), object);
 
@@ -231,8 +248,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && pattern != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.FIND, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.FIND, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> pattern.matcher(object).find();
 
@@ -248,8 +265,8 @@ public class AssertorCharSequence extends Constants {
 
         final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(regex);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.CSQ.FIND, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.CSQ.FIND, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> Pattern.compile(regex.toString()).matcher(object)
                 .find();

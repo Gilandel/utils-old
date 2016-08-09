@@ -93,6 +93,11 @@ public class PredicateStepEndPointsTest extends AbstractTest {
         }, IOException.class);
 
         Expect.exception(() -> {
+            Assertor.that("text").isEmpty().toThrow(null, false);
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
             Assertor.that("text").isEmpty("unused message").toThrow("test");
             fail();
         }, IllegalArgumentException.class, "test");
@@ -124,6 +129,8 @@ public class PredicateStepEndPointsTest extends AbstractTest {
      */
     @Test
     public void testGetErrors() {
+        assertEquals("", Assertor.that(new BigDecimal("265.45155")).isNotNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
+
         assertEquals("test 265,452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
         assertEquals("test 265.452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors());
         assertEquals("test 2 654 125,452",

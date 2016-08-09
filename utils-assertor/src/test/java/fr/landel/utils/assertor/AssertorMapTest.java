@@ -63,6 +63,8 @@ public class AssertorMapTest extends AbstractTest {
 
         assertMap.isEmpty().toThrow();
 
+        Assertor.that(map).isEmpty().and(assertMap.isEmpty()).isOK();
+
         map.put(el, 1);
 
         Expect.exception(() -> {
@@ -99,6 +101,11 @@ public class AssertorMapTest extends AbstractTest {
         final PredicateAssertorMap<String, Integer> assertMap = Assertor.that(map);
 
         assertMap.isNotEmpty().toThrow();
+
+        Expect.exception(() -> {
+            assertMap.not().isNotEmpty().toThrow();
+            fail(ERROR);
+        }, IllegalArgumentException.class);
 
         map.clear();
 
@@ -229,7 +236,7 @@ public class AssertorMapTest extends AbstractTest {
         assertFalse(assertMap.not().containsAll(keys).isOK());
         assertFalse(assertMap.not().containsAll(map1).isOK());
 
-        assertFalse(assertMap.not().containsAny(keys).isOK());
+        assertTrue(assertMap.not().containsAny(keys).isOK());
         assertTrue(assertMap.not().containsAny(map1).isOK());
 
         assertEquals("the map '[element1=1]' should NOT contain the key 'element1'", Assertor.that(map).not().contains(key1).getErrors());

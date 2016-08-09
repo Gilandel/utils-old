@@ -238,22 +238,6 @@ public abstract class AbstractScriptsTemplate implements ScriptsTemplate {
     }
 
     /**
-     * @param multiLineCommentOperatorOpen
-     *            the multiLineCommentOperatorOpen to set
-     */
-    protected void setMultiLineCommentOperatorOpen(final String multiLineCommentOperatorOpen) {
-        this.multiLineCommentOperatorOpen = multiLineCommentOperatorOpen;
-    }
-
-    /**
-     * @param multiLineCommentOperatorClose
-     *            the multiLineCommentOperatorClose to set
-     */
-    protected void setMultiLineCommentOperatorClose(final String multiLineCommentOperatorClose) {
-        this.multiLineCommentOperatorClose = multiLineCommentOperatorClose;
-    }
-
-    /**
      * @param checker
      *            the checker to set
      */

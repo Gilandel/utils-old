@@ -14,6 +14,7 @@ package fr.landel.utils.assertor;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -46,6 +47,8 @@ public class AssertorBooleanTest extends AbstractTest {
     public void testIsFalse() {
         AssertorResult<Boolean> assertorResult = new AssertorResult<>(true, EnumType.BOOLEAN);
         assertFalse(AssertorBoolean.isFalse(assertorResult, null, null, null).isValid());
+
+        assertTrue(Assertor.that(true).isFalse().or(Assertor.that("").isEmpty()).isOK());
 
         try {
             Assertor.that(false).isFalse().toThrow("not false");

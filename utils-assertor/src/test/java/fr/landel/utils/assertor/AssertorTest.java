@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -30,6 +31,14 @@ import org.junit.Test;
  *
  */
 public class AssertorTest extends AbstractTest {
+
+    /**
+     * Test method for {@link Assertor#Assertor()} .
+     */
+    @Test
+    public void testConstructor() {
+        assertNotNull(new Assertor());
+    }
 
     /**
      * Test method for {@link fr.landel.utils.assertor.Assertor#that}.

@@ -41,95 +41,105 @@ public class AssertorEnumTest extends AbstractTest {
     }
 
     /**
-     * Test method for
-     * {@link AssertorEnum#isName(java.util.function.Supplier, CharSequence, java.util.Locale, CharSequence, Object[])}
-     * .
+     * Test method for {@link AssertorEnum} .
      */
     @Test
-    public void testIsName() {
+    public void testValues() {
+        Assertor.that(EnumType.values())
+                .containsAll(new EnumType[] {EnumType.BOOLEAN, EnumType.NUMBER_INTEGER, EnumType.NUMBER_DECIMAL, EnumType.ARRAY,
+                        EnumType.ENUMERATION, EnumType.ITERABLE, EnumType.MAP, EnumType.DATE, EnumType.CHAR_SEQUENCE, EnumType.CLASS,
+                        EnumType.CHARACTER, EnumType.UNKNOWN})
+                .toThrow();
+
+        Assertor.that(EnumType.BOOLEAN).hasName("BOOLEAN").isOK();
+    }
+
+    /**
+     * Test method for {@link AssertorEnum#hasName} .
+     */
+    @Test
+    public void testHasName() {
         AssertorResult<EnumChar> assertorResult = new AssertorResult<>(EnumChar.ASTERISK, EnumType.ENUMERATION);
-        assertTrue(AssertorEnum.isName(assertorResult, "ASTERISK", null, null, null).isValid());
+        assertTrue(AssertorEnum.hasName(assertorResult, "ASTERISK", null, null, null).isValid());
 
         try {
-            Assertor.that(EnumChar.ASTERISK).isName("ASTERISK").toThrow("not found");
-            Assertor.that(EnumChar.ASTERISK).not().isName("ASTERIS").toThrow("not found");
-            Assertor.that(EnumChar.ASTERISK).isName("ASTERISK").toThrow(new IllegalArgumentException(), true);
-            Assertor.that(EnumChar.ASTERISK).isNameIgnoreCase("asTerisK").toThrow("not found");
-            Assertor.that(EnumChar.ASTERISK).not().isNameIgnoreCase("asTeris").toThrow();
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").toThrow("not found");
+            Assertor.that(EnumChar.ASTERISK).not().hasName("ASTERIS").toThrow("not found");
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").toThrow(new IllegalArgumentException(), true);
+            Assertor.that(EnumChar.ASTERISK).hasNameIgnoreCase("asTerisK").toThrow("not found");
+            Assertor.that(EnumChar.ASTERISK).not().hasNameIgnoreCase("asTeris").toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that(EnumChar.ASTERISK).isName("asterisk").toThrow("not found");
+            Assertor.that(EnumChar.ASTERISK).hasName("asterisk").toThrow("not found");
             fail();
         }, IllegalArgumentException.class, "not found");
 
         Expect.exception(() -> {
-            Assertor.that(EnumChar.ASTERISK).isName("asterisk", "%s, '%s*'", "not found").toThrow();
+            Assertor.that(EnumChar.ASTERISK).hasName("asterisk", "%s, '%s*'", "not found").toThrow();
             fail();
 
             // to string = unicode character
         }, IllegalArgumentException.class, "not found, '*'");
 
         Expect.exception(() -> {
-            Assertor.that(EnumChar.ASTERISK).isName("asterisk").toThrow(new IOException("not found"), true);
+            Assertor.that(EnumChar.ASTERISK).hasName("asterisk").toThrow(new IOException("not found"), true);
             fail();
         }, IOException.class, "not found");
 
         Expect.exception(() -> {
-            Assertor.that((EnumChar) null).isName("asterisk").toThrow(new IOException("not found"), true);
+            Assertor.that((EnumChar) null).hasName("asterisk").toThrow(new IOException("not found"), true);
             fail();
         }, IOException.class, "not found");
 
         Expect.exception(() -> {
-            Assertor.that(EnumChar.ASTERISK).isName("").toThrow(new IOException("not found"), true);
+            Assertor.that(EnumChar.ASTERISK).hasName("").toThrow(new IOException("not found"), true);
             fail();
         }, IOException.class, "not found");
     }
 
     /**
-     * Test method for
-     * {@link AssertorEnum#isOrdinal(java.util.function.Supplier, int, java.util.Locale, CharSequence, Object[])}
-     * .
+     * Test method for {@link AssertorEnum#hasOrdinal} .
      */
     @Test
-    public void testIsOrdinal() {
+    public void testHasOrdinal() {
         try {
-            assertTrue(Assertor.that(EnumOperator.OR).isOrdinal(1).isOK());
+            assertTrue(Assertor.that(EnumOperator.OR).hasOrdinal(1).isOK());
 
             Assertor.that(EnumOperator.OR).isNotNull().toThrow();
 
-            Assertor.that(EnumOperator.OR).isOrdinal(1).toThrow();
-            Assertor.that(EnumOperator.OR).isOrdinal(1).and(false).not().isTrue().toThrow("not true");
-            Assertor.that(EnumOperator.OR).isOrdinal(1).toThrow(new IllegalArgumentException(), true);
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).toThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).and(false).not().isTrue().toThrow("not true");
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).toThrow(new IllegalArgumentException(), true);
 
-            Assertor.that(EnumOperator.OR).isOrdinal(1).and().not().isName("xor").toThrow();
-            Assertor.that(EnumOperator.OR).isOrdinal(1).or().isName("xor").toThrow();
-            Assertor.that(EnumOperator.OR).isOrdinal(1).xor().isName("xor").toThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).and().not().hasName("xor").toThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).or().hasName("xor").toThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).xor().hasName("xor").toThrow();
 
-            Assertor.that(EnumOperator.OR).isOrdinal(1).and(Assertor.that("").isBlank().or().isEqual("r")).toThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).and(Assertor.that("").isBlank().or().isEqual("r")).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that(EnumOperator.OR).isOrdinal(0).toThrow("not correct");
+            Assertor.that(EnumOperator.OR).hasOrdinal(0).toThrow("not correct");
             fail();
         }, IllegalArgumentException.class, "not correct", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(EnumOperator.OR).isOrdinal(0, "%s, '%s*'", "not correct").toThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(0, "%s, '%s*'", "not correct").toThrow();
             fail();
         }, IllegalArgumentException.class, "not correct, ' OR '", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that((EnumOperator) null).isOrdinal(0).toThrow(new IOException("not correct"), true);
+            Assertor.that((EnumOperator) null).hasOrdinal(0).toThrow(new IOException("not correct"), true);
             fail();
         }, IOException.class, "not correct", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(EnumOperator.OR).isOrdinal(-1).toThrow(new IOException("not correct"), true);
+            Assertor.that(EnumOperator.OR).hasOrdinal(-1).toThrow(new IOException("not correct"), true);
             fail();
         }, IOException.class, "not correct", JUNIT_ERROR);
     }

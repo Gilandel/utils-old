@@ -35,41 +35,41 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
         return () -> HelperAssertor.not(getResult());
     }
 
-    default PredicateStepEnum<T> isName(final CharSequence name) {
-        return this.isName(name, null);
+    default PredicateStepEnum<T> hasName(final CharSequence name) {
+        return this.hasName(name, null);
     }
 
-    default PredicateStepEnum<T> isName(final CharSequence name, final CharSequence message, final Object... arguments) {
-        return this.isName(name, null, message, arguments);
+    default PredicateStepEnum<T> hasName(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasName(name, null, message, arguments);
     }
 
-    default PredicateStepEnum<T> isName(final CharSequence name, final Locale locale, final CharSequence message,
+    default PredicateStepEnum<T> hasName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.isName(this.getResult(), name, locale, message, arguments);
+        return () -> AssertorEnum.hasName(this.getResult(), name, locale, message, arguments);
     }
 
-    default PredicateStepEnum<T> isNameIgnoreCase(final CharSequence name) {
-        return this.isNameIgnoreCase(name, null);
+    default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name) {
+        return this.hasNameIgnoreCase(name, null);
     }
 
-    default PredicateStepEnum<T> isNameIgnoreCase(final CharSequence name, final CharSequence message, final Object... arguments) {
-        return this.isNameIgnoreCase(name, null, message, arguments);
+    default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasNameIgnoreCase(name, null, message, arguments);
     }
 
-    default PredicateStepEnum<T> isNameIgnoreCase(final CharSequence name, final Locale locale, final CharSequence message,
+    default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.isNameIgnoreCase(this.getResult(), name, locale, message, arguments);
+        return () -> AssertorEnum.hasNameIgnoreCase(this.getResult(), name, locale, message, arguments);
     }
 
-    default PredicateStepEnum<T> isOrdinal(final int ordinal) {
-        return this.isOrdinal(ordinal, null);
+    default PredicateStepEnum<T> hasOrdinal(final int ordinal) {
+        return this.hasOrdinal(ordinal, null);
     }
 
-    default PredicateStepEnum<T> isOrdinal(final int ordinal, final CharSequence message, final Object... arguments) {
-        return this.isOrdinal(ordinal, null, message, arguments);
+    default PredicateStepEnum<T> hasOrdinal(final int ordinal, final CharSequence message, final Object... arguments) {
+        return this.hasOrdinal(ordinal, null, message, arguments);
     }
 
-    default PredicateStepEnum<T> isOrdinal(final int ordinal, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorEnum.isOrdinal(this.getResult(), ordinal, locale, message, arguments);
+    default PredicateStepEnum<T> hasOrdinal(final int ordinal, final Locale locale, final CharSequence message, final Object... arguments) {
+        return () -> AssertorEnum.hasOrdinal(this.getResult(), ordinal, locale, message, arguments);
     }
 }

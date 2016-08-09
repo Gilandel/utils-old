@@ -97,4 +97,50 @@ public class AssertXLSTest {
             assertEquals("Style fill foreground color [3, 4]", e.getMessage());
         }
     }
+
+    /**
+     * Check XLS comparison exception
+     * 
+     * @throws IOException
+     *             On loading exception
+     */
+    @Test
+    public void testAssertNotEquals3() throws IOException {
+        final File source = new File(SRC_DIR);
+
+        File expectedFile = new File(source, "file1.xls"); // no box
+        File targetFile = new File(source, "file4.xls"); // blue box
+
+        try {
+            AssertXLS.assertEquals(expectedFile, targetFile);
+
+            fail("The files must have differences");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Shapes children", e.getMessage());
+        }
+    }
+
+    /**
+     * Check XLS comparison exception
+     * 
+     * @throws IOException
+     *             On loading exception
+     */
+    @Test
+    public void testAssertNotEquals4() throws IOException {
+        final File source = new File(SRC_DIR);
+
+        // no comment
+        File expectedFile = new File(source, "file5.xls");
+        // comment in cell bellow image
+        File targetFile = new File(source, "file6.xls");
+
+        try {
+            AssertXLS.assertEquals(expectedFile, targetFile);
+
+            fail("The files must have differences");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Comment text [17, 4]", e.getMessage());
+        }
+    }
 }

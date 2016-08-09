@@ -13,8 +13,14 @@
 package fr.landel.utils.web;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,9 +44,28 @@ public class ResourceBundleUTF8ControlTest extends AbstractTest {
      */
     @Test
     public void testNewBundleStringLocaleStringClassLoaderBoolean() {
-        ResourceBundle bundle = ResourceBundle.getBundle("test-utf8", new ResourceBundleUTF8Control());
+        final Control control = new ResourceBundleUTF8Control();
+        ResourceBundle bundle = ResourceBundle.getBundle("test-utf8", control);
 
-        assertEquals("text accentu\u00e9", bundle.getString("utf8.prop1"));
+        assertEquals("texte accentu\u00e9", bundle.getString("utf8.prop1"));
+
+        try {
+            bundle = control.newBundle("test-utf8", Locale.FRANCE, "java.class", ResourceBundleUTF8Control.class.getClassLoader(), true);
+
+            assertNotNull(bundle);
+
+            assertEquals("texte accentu\u00e9", bundle.getString("utf8.prop1"));
+        } catch (IllegalAccessException | InstantiationException | IOException e) {
+            fail();
+        }
+
+        try {
+            bundle = control.newBundle("test-utf8", Locale.ITALY, "java.class", ResourceBundleUTF8Control.class.getClassLoader(), true);
+
+            assertNull(bundle);
+        } catch (IllegalAccessException | InstantiationException | IOException e) {
+            fail();
+        }
     }
 
     /**
@@ -48,6 +73,6 @@ public class ResourceBundleUTF8ControlTest extends AbstractTest {
      */
     @Test
     public void testPropertiesFactoryBean() {
-        assertEquals("text accentu\u00e9", this.prop1);
+        assertEquals("texte accentu\u00e9", this.prop1);
     }
 }

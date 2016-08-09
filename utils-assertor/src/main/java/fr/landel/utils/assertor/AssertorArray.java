@@ -36,8 +36,8 @@ public class AssertorArray extends Constants {
 
         final Function<T[], Boolean> precondition = (object) -> length >= 0 && object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.ARRAY.LENGTH, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.ARRAY.LENGTH, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> object.length == length;
 
@@ -75,8 +75,8 @@ public class AssertorArray extends Constants {
 
         final Function<T[], Boolean> precondition = (object1) -> object1 != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.ARRAY.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.ARRAY.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object1, not) -> AssertorArray.has(object1, object);
 
@@ -92,8 +92,8 @@ public class AssertorArray extends Constants {
 
         final Function<T[], Boolean> precondition = (object) -> array != null && object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
-                true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> AssertorArray.has(object, array, all, not);
 
@@ -144,14 +144,6 @@ public class AssertorArray extends Constants {
             }
         }
 
-        if (not && all) { // NOT ALL
-            return found > 0 && found < array2.length;
-        } else if (!not && all) { // ALL
-            return found == array2.length;
-        } else if (not && !all) { // NOT ANY
-            return found == 0;
-        } else { // ANY
-            return found > 0;
-        }
+        return HelperAssertor.isValid(all, not, found, array2.length);
     }
 }

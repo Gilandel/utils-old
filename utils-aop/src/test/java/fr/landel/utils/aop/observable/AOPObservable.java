@@ -41,6 +41,16 @@ public class AOPObservable {
     }
 
     /**
+     * Test method with object parameter (logging)
+     * 
+     * @param object
+     *            Object
+     */
+    public void test(final Object object) {
+        // Observable method, object parameter
+    }
+
+    /**
      * Test method with parameters (logging)
      * 
      * @param p1

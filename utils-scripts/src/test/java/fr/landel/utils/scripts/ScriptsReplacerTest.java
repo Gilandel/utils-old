@@ -13,8 +13,10 @@
 package fr.landel.utils.scripts;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +25,8 @@ import java.util.Map.Entry;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import fr.landel.utils.assertor.expect.Expect;
 
 /**
  * Check scripts replacer
@@ -186,5 +190,44 @@ public class ScriptsReplacerTest {
         } catch (IllegalArgumentException e) {
             LOGGER.info("Expected exception", e);
         }
+    }
+
+    /**
+     * Test new template
+     * 
+     * @throws IOException
+     *             On loading error
+     * 
+     */
+    @Test
+    public void testTemplate() throws IOException {
+        final ScriptsLoader loader = new ScriptsLoader();
+
+        assertNotNull(loader);
+
+        loader.setPath("my_scripts");
+        loader.getReplacer().setTemplate(new MyTemplate());
+
+        loader.init(EnumScripts2.values());
+
+        final Map<String, String> replacements = new HashMap<>();
+
+        replacements.put("value1", "v1");
+        // replacements.put("value2", "v2");
+        replacements.put("value3", "v3");
+
+        StringBuilder content = loader.get(EnumScripts2.TEST_UNIX, replacements);
+        assertEquals("\t12", content.toString());
+
+        replacements.clear();
+        replacements.put("value1", "v1");
+        content = loader.get(EnumScripts2.TEST_MAC, replacements);
+        assertEquals("\tv1", content.toString());
+
+        replacements.put("value3", "v=3");
+        Expect.exception(() -> {
+            loader.get(EnumScripts2.TEST_UNIX, replacements);
+            fail();
+        }, IllegalArgumentException.class, "the script cannot contains the '=' character");
     }
 }

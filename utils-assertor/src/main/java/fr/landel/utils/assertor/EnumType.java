@@ -57,6 +57,11 @@ public enum EnumType {
     DATE,
 
     /**
+     * Character type
+     */
+    CHARACTER,
+
+    /**
      * String type
      */
     CHAR_SEQUENCE,
@@ -67,6 +72,11 @@ public enum EnumType {
     CLASS,
 
     /**
+     * Array type
+     */
+    ARRAY,
+
+    /**
      * Iterable type
      */
     ITERABLE,
@@ -75,11 +85,6 @@ public enum EnumType {
      * Map type
      */
     MAP,
-
-    /**
-     * Array type
-     */
-    ARRAY,
 
     /**
      * Calendar field (only used by converter)
@@ -107,6 +112,8 @@ public enum EnumType {
                 type = CHAR_SEQUENCE;
             } else if (Boolean.class.isAssignableFrom(clazz)) {
                 type = BOOLEAN;
+            } else if (Character.class.isAssignableFrom(clazz)) {
+                type = CHARACTER;
             } else if (clazz.isArray()) {
                 type = ARRAY;
             } else if (Iterable.class.isAssignableFrom(clazz)) {

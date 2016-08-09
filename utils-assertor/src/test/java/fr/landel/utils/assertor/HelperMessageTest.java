@@ -147,7 +147,7 @@ public class HelperMessageTest extends AbstractTest {
         // previous assertion is invalid (prerequisites == false), only first
         // prerequisite error set as message
         assertEquals("the char sequence cannot be null and the searched substring cannot be null or empty",
-                Assertor.that("text1").contains(null).and("text2").isBlank().getErrors());
+                Assertor.that("text1").contains((CharSequence) null).and("text2").isBlank().getErrors());
     }
 
     /**

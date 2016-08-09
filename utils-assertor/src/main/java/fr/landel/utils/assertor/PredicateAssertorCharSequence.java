@@ -152,6 +152,19 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
         return () -> AssertorCharSequence.isNotBlank(this.getResult(), locale, message, arguments);
     }
 
+    default PredicateStepCharSequence<T> contains(final Character character) {
+        return this.contains(character, null);
+    }
+
+    default PredicateStepCharSequence<T> contains(final Character character, final CharSequence message, final Object... arguments) {
+        return this.contains(character, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> contains(final Character character, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorCharSequence.contains(this.getResult(), character, locale, message, arguments);
+    }
+
     default PredicateStepCharSequence<T> contains(final CharSequence substring) {
         return this.contains(substring, null);
     }

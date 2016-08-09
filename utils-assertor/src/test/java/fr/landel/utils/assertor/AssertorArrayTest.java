@@ -53,6 +53,8 @@ public class AssertorArrayTest extends AbstractTest {
         assertTrue(Assertor.that(array).isNotEmpty().and().hasLength(2).isOK());
         assertTrue(Assertor.that(array).isEmpty().or().hasLength(2).isOK());
         assertTrue(Assertor.that(array).isEmpty().xor().hasLength(2).isOK());
+
+        assertTrue(Assertor.that(array).hasLength(2).and(Assertor.that("ee").contains("ee")).and().contains("2").isOK());
     }
 
     /**
@@ -83,6 +85,7 @@ public class AssertorArrayTest extends AbstractTest {
     @Test
     public void testIsNotEmpty() {
         try {
+            Assertor.that(new String[0]).not().isNotEmpty().toThrow("not empty array");
             Assertor.that(new String[] {""}).isNotEmpty().toThrow("empty array");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
@@ -92,6 +95,11 @@ public class AssertorArrayTest extends AbstractTest {
             Assertor.that(new Object[0]).isNotEmpty().toThrow("empty array");
             fail();
         }, IllegalArgumentException.class, "empty array");
+
+        Expect.exception(() -> {
+            Assertor.that(new String[] {"z"}).not().isNotEmpty().toThrow("not empty array");
+            fail();
+        }, IllegalArgumentException.class, "not empty array");
     }
 
     /**

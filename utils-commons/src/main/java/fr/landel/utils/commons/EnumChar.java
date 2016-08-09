@@ -86,6 +86,18 @@ public enum EnumChar {
     LF('\n', "\n", "&NewLine;"),
 
     /**
+     * Line Feed (code: 10, unicode: <code>\n</code> (u000a), HTML:
+     * <code>&amp;NewLine;</code>)
+     */
+    LINE_FEED(LF),
+
+    /**
+     * Line Feed (code: 10, unicode: <code>\n</code> (u000a), HTML:
+     * <code>&amp;NewLine;</code>)
+     */
+    NEW_LINE(LF),
+
+    /**
      * Vertical Tab (code: 11, unicode: u001e, HTML: <code>&amp;male;</code>)
      */
     VT(11, "\u000b", "&male;"),
@@ -100,6 +112,16 @@ public enum EnumChar {
      * Carriage Return (code: 13, unicode: <code>\r</code> (u000d))
      */
     CR('\r', "\r"),
+
+    /**
+     * Carriage Return (code: 13, unicode: <code>\r</code> (u000d))
+     */
+    CARRIAGE_RETURN(CR),
+
+    /**
+     * Carriage Return (code: 13, unicode: <code>\r</code> (u000d))
+     */
+    LINE_RETURN(CR),
 
     /**
      * Shift Out (code: 14, unicode: u000e)

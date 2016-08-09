@@ -17,11 +17,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import fr.landel.utils.assertor.Assertor;
+import fr.landel.utils.commons.EnumChar;
 import fr.landel.utils.commons.StringUtils;
-import fr.landel.utils.io.EncodingUtils;
 import fr.landel.utils.io.FileUtils;
 
 /**
@@ -39,10 +37,8 @@ public class ScriptsLoader {
      */
     private static final String DEFAULT_PATH = "scripts/";
 
-    private static final String NEW_LINE = "\n";
-    private static final String LINE_RETURN = "\r";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptsLoader.class);
+    private static final String NEW_LINE = EnumChar.LF.getUnicode();
+    private static final String LINE_RETURN = EnumChar.CR.getUnicode();
 
     private final Map<ScriptsList<?>, StringBuilder> scripts;
     private final ScriptsReplacer replacer;
@@ -60,7 +56,7 @@ public class ScriptsLoader {
 
         this.path = DEFAULT_PATH;
 
-        this.replacer.setTemplate(AbstractScriptsTemplate.TEMPLATE_SQL);
+        this.replacer.setTemplate(ScriptsTemplate.TEMPLATE_SQL);
     }
 
     /**
@@ -75,7 +71,13 @@ public class ScriptsLoader {
      *            The base path (default path: scripts/)
      */
     public void setPath(final String path) {
-        this.path = path;
+        Assertor.that(path).isNotEmpty().toThrow("Scripts path cannot be null or empty");
+
+        if (!path.endsWith("/")) {
+            this.path = path + '/';
+        } else {
+            this.path = path;
+        }
     }
 
     /**
@@ -85,16 +87,16 @@ public class ScriptsLoader {
      *            The current class loader
      * @param scriptsList
      *            The scripts list
+     * @throws IOException
+     *             On loading file failures
      */
-    public void init(final ClassLoader loader, final ScriptsList<?>... scriptsList) {
+    public void init(final ClassLoader loader, final ScriptsList<?>... scriptsList) throws IOException {
         for (ScriptsList<?> value : scriptsList) {
             final StringBuilder sb = new StringBuilder();
             this.scripts.put(value, sb);
 
             try (final InputStream is = loader.getResourceAsStream(this.path + value.getName())) {
                 sb.append(FileUtils.getFileContent(is, value.getCharset()));
-            } catch (IOException e) {
-                LOGGER.error("Error occurred while loading " + value.getName(), e);
             }
         }
     }
@@ -104,18 +106,11 @@ public class ScriptsLoader {
      * 
      * @param scriptsList
      *            The scripts list
+     * @throws IOException
+     *             On loading file failures
      */
-    public void init(final ScriptsList<?>... scriptsList) {
-        for (ScriptsList<?> value : scriptsList) {
-            final StringBuilder sb = new StringBuilder();
-            this.scripts.put(value, sb);
-
-            try (final InputStream is = ScriptsLoader.class.getClassLoader().getResourceAsStream(this.path + value.getName())) {
-                sb.append(FileUtils.getFileContent(is, EncodingUtils.CHARSET_UTF_8));
-            } catch (IOException e) {
-                LOGGER.error("Error occurred while loading " + value.getName(), e);
-            }
-        }
+    public void init(final ScriptsList<?>... scriptsList) throws IOException {
+        this.init(ScriptsLoader.class.getClassLoader(), scriptsList);
     }
 
     /**
@@ -192,6 +187,16 @@ public class ScriptsLoader {
         int startComments = 0;
         int endComments = 0;
 
+        // removes multi-lines comments
+        while ((startComments = builder.indexOf(this.replacer.getTemplate().getMultiLineCommentOperatorOpen())) > -1) {
+            endComments = builder.indexOf(this.replacer.getTemplate().getMultiLineCommentOperatorClose(), startComments);
+            if (endComments > startComments) {
+                builder.delete(startComments, endComments + 2);
+            } else {
+                builder.delete(startComments, builder.length());
+            }
+        }
+
         // removes line comments
         while ((startComments = builder.indexOf(this.replacer.getTemplate().getOneLineCommentOperator())) > -1) {
             // For Windows / Mac / Unix
@@ -210,16 +215,6 @@ public class ScriptsLoader {
                 builder.delete(startComments, endComments);
             }
         }
-
-        // removes multi-lines comments
-        while ((startComments = builder.indexOf(this.replacer.getTemplate().getMultiLineCommentOperatorOpen())) > -1) {
-            endComments = builder.indexOf(this.replacer.getTemplate().getMultiLineCommentOperatorClose(), startComments);
-            if (endComments > startComments) {
-                builder.delete(startComments, endComments + 2);
-            } else {
-                builder.delete(startComments, builder.length());
-            }
-        }
     }
 
     private void removeBlankLines(final StringBuilder builder) {
@@ -227,18 +222,37 @@ public class ScriptsLoader {
         int startLine = 0;
         int endLine = 0;
 
-        // removes return character to simplify the remove of blank lines
-        while ((lineSeparator = builder.indexOf(LINE_RETURN)) > -1) {
-            builder.delete(lineSeparator, lineSeparator + 1);
+        final String newLine;
+
+        boolean hasNewLine = builder.indexOf(NEW_LINE) > -1;
+        boolean hasLineReturn = builder.indexOf(LINE_RETURN) > -1;
+
+        if (hasNewLine && hasLineReturn) {
+            newLine = NEW_LINE;
+
+            // removes return character to simplify the remove of blank lines
+            while ((lineSeparator = builder.indexOf(LINE_RETURN)) > -1) {
+                builder.delete(lineSeparator, lineSeparator + 1);
+            }
+        } else if (hasLineReturn) {
+            newLine = LINE_RETURN;
+        } else {
+            newLine = NEW_LINE;
         }
 
         // removes blank lines
-        while ((endLine = builder.indexOf(NEW_LINE, startLine)) > -1) {
+        while ((endLine = builder.indexOf(newLine, startLine)) > -1) {
             if (endLine >= startLine && StringUtils.isBlank(builder.substring(startLine, endLine))) {
                 builder.delete(startLine, endLine + 1);
             } else {
                 startLine = endLine + 1;
             }
+        }
+
+        // remove the last new line character
+        int length = builder.length();
+        if (length > 0 && builder.lastIndexOf(newLine) == length - 1) {
+            builder.delete(length - 1, length);
         }
     }
 }

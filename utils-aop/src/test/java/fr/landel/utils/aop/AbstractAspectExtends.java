@@ -22,7 +22,7 @@ package fr.landel.utils.aop;
 public abstract class AbstractAspectExtends extends AbstractAspect {
 
     /**
-     * Base package path
+     * Observable
      */
-    protected static final String BASE_PACKAGE = "fr.landel.utils.aop.observable";
+    protected static final String OBSERVABLE = "fr.landel.utils.aop.observable.AOPObservable";
 }

@@ -61,6 +61,8 @@ public class AssertorNumberTest extends AbstractTest {
 
         assertEquals("error1", Assertor.that(2).isEqual(1, "error1").getErrors());
 
+        Assertor.that(2).isEqual(2).and(Assertor.that(12).isGT(10)).isOK();
+
         Expect.exception(() -> {
             Assertor.that(2).isEqual(1, "error1 %1$s* %s %2$s*", 0).toThrow();
         }, IllegalArgumentException.class, "error1 2 0 1");
@@ -93,6 +95,10 @@ public class AssertorNumberTest extends AbstractTest {
 
         Expect.exception(() -> {
             Assertor.that(2).isNotEqual(2, "error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+
+        Expect.exception(() -> {
+            Assertor.that(2).not().isNotEqual(1, "error1").toThrow("error2");
         }, IllegalArgumentException.class, "error2");
     }
 

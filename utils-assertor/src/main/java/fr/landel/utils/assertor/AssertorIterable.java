@@ -29,8 +29,8 @@ public class AssertorIterable extends Constants {
 
         final Function<Iterable<T>, Boolean> precondition = (iterable) -> size >= 0 && iterable != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.ITERABLE.SIZE, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.ITERABLE.SIZE, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable, not) -> IterableUtils.size(iterable) == size;
 
@@ -82,8 +82,8 @@ public class AssertorIterable extends Constants {
         final Function<Iterable<T>, Boolean> precondition = (iterable1) -> !IterableUtils.isEmpty(iterable1)
                 && !IterableUtils.isEmpty(iterable);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
-                true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable1, not) -> AssertorIterable.has(iterable1, iterable,
                 all, not);
@@ -100,8 +100,8 @@ public class AssertorIterable extends Constants {
 
         final Function<Iterable<T>, Boolean> precondition = (iterable) -> !IterableUtils.isEmpty(iterable);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.ITERABLE.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.ITERABLE.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable, not) -> AssertorIterable.has(iterable, value);
 
@@ -140,14 +140,6 @@ public class AssertorIterable extends Constants {
             }
         }
 
-        if (not && all) { // NOT ALL
-            return found > 0 && found < IterableUtils.size(iterable2);
-        } else if (!not && all) { // ALL
-            return found == IterableUtils.size(iterable2);
-        } else if (not && !all) { // NOT ANY
-            return found == 0;
-        } else { // ANY
-            return found > 0;
-        }
+        return HelperAssertor.isValid(all, not, found, IterableUtils.size(iterable2));
     }
 }

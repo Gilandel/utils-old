@@ -50,12 +50,12 @@ public class AssertorEnum extends Constants {
      *            the checker exception type
      * @return the result supplier
      */
-    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> isNameIgnoreCase(final AssertorResult<T> result,
+    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasNameIgnoreCase(final AssertorResult<T> result,
             final CharSequence name, final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.name().equalsIgnoreCase(name.toString());
 
-        return AssertorEnum.isName(result, name, MSG.ENUM.NAME, checker, locale, message, arguments);
+        return AssertorEnum.hasName(result, name, MSG.ENUM.NAME, checker, locale, message, arguments);
     }
 
     /**
@@ -77,15 +77,15 @@ public class AssertorEnum extends Constants {
      *            the checker exception type
      * @return the result supplier
      */
-    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> isName(final AssertorResult<T> result,
+    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasName(final AssertorResult<T> result,
             final CharSequence name, final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.name().equals(name);
 
-        return AssertorEnum.isName(result, name, MSG.ENUM.NAME, checker, locale, message, arguments);
+        return AssertorEnum.hasName(result, name, MSG.ENUM.NAME, checker, locale, message, arguments);
     }
 
-    private static <T extends Enum<T>, E extends Throwable> AssertorResult<T> isName(final AssertorResult<T> result,
+    private static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasName(final AssertorResult<T> result,
             final CharSequence name, final CharSequence key, final BiFunctionThrowable<T, Boolean, Boolean, E> checker, final Locale locale,
             final CharSequence message, final Object[] arguments) {
 
@@ -120,7 +120,7 @@ public class AssertorEnum extends Constants {
      *            the checker exception type
      * @return the result supplier
      */
-    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> isOrdinal(final AssertorResult<T> result, final int ordinal,
+    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasOrdinal(final AssertorResult<T> result, final int ordinal,
             final Locale locale, final CharSequence message, final Object[] arguments) {
 
         final Function<T, Boolean> precondition = (object) -> object != null && ordinal >= 0;

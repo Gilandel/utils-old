@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFAnchor;
+import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFName;
 import org.apache.poi.hssf.usermodel.HSSFObjectData;
@@ -79,20 +80,16 @@ public final class AssertXLS {
      *             if doesn't match
      */
     public static void assertEquals(final File expectedFile, final File fileToCheck) {
-        try (FileInputStream isExpected = new FileInputStream(expectedFile)) {
-            try (FileInputStream isToCheck = new FileInputStream(fileToCheck)) {
-                final AssertXLS assertXLS = new AssertXLS(expectedFile, fileToCheck, isExpected, isToCheck);
+        try (FileInputStream isExpected = new FileInputStream(expectedFile); FileInputStream isToCheck = new FileInputStream(fileToCheck)) {
+            final AssertXLS assertXLS = new AssertXLS(expectedFile, fileToCheck, isExpected, isToCheck);
 
-                assertXLS.checkSheets();
-                assertXLS.checkFonts();
-                assertXLS.checkNames();
-                assertXLS.checkEmbeddedObjects();
-                assertXLS.checkPictures();
-            } catch (IOException e) {
-                throw new IllegalArgumentException("File to check cannot be loaded. ", e);
-            }
+            assertXLS.checkSheets();
+            assertXLS.checkFonts();
+            assertXLS.checkNames();
+            assertXLS.checkEmbeddedObjects();
+            assertXLS.checkPictures();
         } catch (IOException e) {
-            throw new IllegalArgumentException("Expected file cannot be loaded. ", e);
+            throw new IllegalArgumentException("files cannot be loaded. ", e);
         }
     }
 
@@ -163,6 +160,14 @@ public final class AssertXLS {
                     isEqual(pictureExpected.getShapeType(), picture.getShapeType(), "Picture shape type");
 
                     this.checkPictureData(errorBytesLength, pictureExpected.getPictureData(), picture.getPictureData());
+                } else if (HSSFComment.class.isAssignableFrom(shapeExpected.getClass())) {
+                    HSSFComment commentExpected = (HSSFComment) shapeExpected;
+                    HSSFComment comment = (HSSFComment) shape;
+
+                    isEqual(commentExpected.getBackgroundImageId(), comment.getBackgroundImageId(), "Comment background");
+                    isEqual(commentExpected.getClientAnchor(), comment.getClientAnchor(), "Comment client anchor");
+
+                    checkComment(commentExpected, comment, commentExpected.getRow(), commentExpected.getColumn());
                 } else if (HSSFShapeGroup.class.isAssignableFrom(shapeExpected.getClass())) {
                     HSSFShapeGroup shapeGroupExpected = (HSSFShapeGroup) shapeExpected;
                     HSSFShapeGroup shapeGroup = (HSSFShapeGroup) shape;
@@ -220,6 +225,8 @@ public final class AssertXLS {
             isEqual(commentExpected.getColumn(), comment.getColumn(), "Comment column" + cellPosition);
             isEqual(commentExpected.getRow(), comment.getRow(), "Comment row" + cellPosition);
             isEqual(commentExpected.isVisible(), comment.isVisible(), "Comment visible" + cellPosition);
+
+            isEqual(commentExpected.getString().getString(), comment.getString().getString(), "Comment text" + cellPosition);
         }
     }
 

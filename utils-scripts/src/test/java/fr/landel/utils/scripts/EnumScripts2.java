@@ -22,27 +22,17 @@ import java.nio.charset.StandardCharsets;
  * @author Gilles
  *
  */
-public enum EnumScripts implements ScriptsList<EnumScripts> {
+public enum EnumScripts2 implements ScriptsList<EnumScripts2> {
 
     /**
-     * The SQL test file (for test on loader)
+     * The TST test file (for test on loader with Unix line character)
      */
-    TEST("test.sql"),
+    TEST_UNIX("test_unix.tst"),
 
     /**
-     * The SQL test file (for test on loader with one line)
+     * The TST test file (for test on loader with Mac line character)
      */
-    TEST_ONE_lINE("test_one_line.sql"),
-
-    /**
-     * Select patient search by sector or unit (count and paginated select)
-     */
-    PATIENTS_SEARCH("patientsSearch.sql"),
-
-    /**
-     * Select patient search by sector or unit (count and paginated select)
-     */
-    INDEX_AGGS("index.elastic", StandardCharsets.UTF_8);
+    TEST_MAC("test_mac.tst");
 
     private String name;
     private Charset charset;
@@ -56,7 +46,7 @@ public enum EnumScripts implements ScriptsList<EnumScripts> {
      * @param charset
      *            The file charset
      */
-    EnumScripts(final String name, final Charset charset) {
+    EnumScripts2(final String name, final Charset charset) {
         this.name = name;
         this.charset = charset;
     }
@@ -68,7 +58,7 @@ public enum EnumScripts implements ScriptsList<EnumScripts> {
      * @param name
      *            The file name
      */
-    EnumScripts(final String name) {
+    EnumScripts2(final String name) {
         this(name, StandardCharsets.UTF_8);
     }
 
@@ -77,8 +67,8 @@ public enum EnumScripts implements ScriptsList<EnumScripts> {
     }
 
     @Override
-    public EnumScripts[] getValues() {
-        return EnumScripts.values();
+    public EnumScripts2[] getValues() {
+        return EnumScripts2.values();
     }
 
     @Override

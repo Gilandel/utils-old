@@ -27,10 +27,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Transformer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 
 import fr.landel.utils.commons.CollectionUtils2;
+import fr.landel.utils.commons.EnumChar;
+import fr.landel.utils.commons.StringUtils;
 
 /**
  * Prepare the {@link CharSequence} message before calling
@@ -254,7 +255,7 @@ public final class HelperMessage extends Constants {
 
     /**
      * Converts parameters list into array and also converts types to improve
-     * readability (ex: {@link Calendar} into {@link Date})
+     * readability (ex: {@link Calendar} into {@link java.util.Date})
      * 
      * @param parameters
      *            the input list
@@ -267,6 +268,9 @@ public final class HelperMessage extends Constants {
             Triple<Object, EnumType, Boolean> triple;
             int calendarField = -1;
 
+            // in order for binary search
+            final EnumType[] surroundable = new EnumType[] {EnumType.ARRAY, EnumType.ITERABLE, EnumType.MAP};
+
             for (int i = 0; i < parameters.size(); i++) {
                 triple = parameters.get(i);
                 if (triple.getLeft() != null) {
@@ -277,23 +281,29 @@ public final class HelperMessage extends Constants {
                         if (CALENDAR_FIELDS.containsKey(calendarField)) {
                             convertedParams.set(i, CALENDAR_FIELDS.get(calendarField));
                         }
-                    } else if (EnumType.ARRAY.equals(triple.getMiddle())) {
-                        convertedParams.set(i,
-                                new StringBuilder("[").append(StringUtils.join((Object[]) triple.getLeft(), ", ")).append("]"));
-                    } else if (EnumType.ITERABLE.equals(triple.getMiddle())) {
-                        convertedParams.set(i,
-                                new StringBuilder("[").append(StringUtils.join((Iterable<?>) triple.getLeft(), ", ")).append("]"));
-                    } else if (EnumType.MAP.equals(triple.getMiddle())) {
-                        Map<?, ?> map = (Map<?, ?>) triple.getLeft();
-                        convertedParams.set(i, new StringBuilder("[").append(StringUtils.join(map.entrySet(), ", ")).append("]"));
                     } else if (EnumType.CLASS.equals(triple.getMiddle())) {
                         convertedParams.set(i, ((Class<?>) triple.getLeft()).getSimpleName());
+                    } else if (Arrays.binarySearch(surroundable, triple.getMiddle()) > -1) {
+                        convertedParams.set(i, HelperMessage.surroundByBrackets(triple.getLeft(), triple.getMiddle()));
                     }
                 }
             }
             return convertedParams.toArray();
         }
         return new Object[0];
+    }
+
+    private static StringBuilder surroundByBrackets(final Object object, final EnumType type) {
+        final StringBuilder sb = new StringBuilder(EnumChar.BRACKET_OPEN.getUnicode());
+        if (EnumType.ARRAY.equals(type)) {
+            sb.append(StringUtils.join((Object[]) object, StringUtils.JOIN_SEPARATOR));
+        } else if (EnumType.ITERABLE.equals(type)) {
+            sb.append(StringUtils.join((Iterable<?>) object, StringUtils.JOIN_SEPARATOR));
+        } else { // see surroundable
+            Map<?, ?> map = (Map<?, ?>) object;
+            sb.append(StringUtils.join(map.entrySet(), StringUtils.JOIN_SEPARATOR));
+        }
+        return sb.append(EnumChar.BRACKET_CLOSE.getUnicode());
     }
 
     /**

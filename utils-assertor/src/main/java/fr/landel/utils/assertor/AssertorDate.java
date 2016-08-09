@@ -133,7 +133,7 @@ public class AssertorDate extends Constants {
             calendar2.add(calendarField, calendarAmount);
             return !calendar2.before(calendar1);
         }
-        return true;
+        return true; // normally not used (equals)
     }
 
     protected static <T extends Comparable<T>, E extends Throwable> AssertorResult<T> isAfter(final AssertorResult<T> result, final T date,
@@ -158,8 +158,8 @@ public class AssertorDate extends Constants {
 
         final Function<T, Boolean> precondition = (date1) -> date1 != null && date != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
-                true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
 
         final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
                 .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);

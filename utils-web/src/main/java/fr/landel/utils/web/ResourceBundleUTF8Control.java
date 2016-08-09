@@ -44,6 +44,18 @@ public class ResourceBundleUTF8Control extends Control {
         String bundleName = toBundleName(baseName, locale);
         String resourceName = toResourceName(bundleName, "properties");
         ResourceBundle bundle = null;
+
+        try (InputStream stream = this.getResourceStream(resourceName, loader, reload)) {
+            // Only this line is changed to make it to read properties files
+            // as UTF-8.
+            if (stream != null) {
+                bundle = new PropertyResourceBundle(new InputStreamReader(stream, EncodingUtils.CHARSET_UTF_8));
+            }
+        }
+        return bundle;
+    }
+
+    private InputStream getResourceStream(final String resourceName, final ClassLoader loader, final boolean reload) throws IOException {
         InputStream stream = null;
         if (reload) {
             URL url = loader.getResource(resourceName);
@@ -57,15 +69,6 @@ public class ResourceBundleUTF8Control extends Control {
         } else {
             stream = loader.getResourceAsStream(resourceName);
         }
-        if (stream != null) {
-            try {
-                // Only this line is changed to make it to read properties files
-                // as UTF-8.
-                bundle = new PropertyResourceBundle(new InputStreamReader(stream, EncodingUtils.CHARSET_UTF_8));
-            } finally {
-                stream.close();
-            }
-        }
-        return bundle;
+        return stream;
     }
 }

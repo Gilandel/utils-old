@@ -32,8 +32,8 @@ public class AssertorMap extends Constants {
 
         final Function<Map<K, V>, Boolean> precondition = (map) -> size >= 0 && map != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.MAP.SIZE, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.MAP.SIZE, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> map.size() == size;
 
@@ -96,8 +96,8 @@ public class AssertorMap extends Constants {
 
         final Function<Map<K, V>, Boolean> precondition = (map) -> MapUtils.isNotEmpty(map) && !IterableUtils.isEmpty(keys);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
-                true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> AssertorMap.contains(map, keys, all, not);
 
@@ -114,8 +114,8 @@ public class AssertorMap extends Constants {
 
         final Function<Map<K, V>, Boolean> precondition = (map1) -> MapUtils.isNotEmpty(map1) && MapUtils.isNotEmpty(map);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
-                true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map1, not) -> AssertorMap.contains(map1, map, all, not);
 
@@ -130,8 +130,8 @@ public class AssertorMap extends Constants {
 
         final Function<Map<K, V>, Boolean> precondition = (map) -> MapUtils.isNotEmpty(map);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.MAP.CONTAINS_KEY, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.MAP.CONTAINS_KEY, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> map.containsKey(key);
 
@@ -147,8 +147,8 @@ public class AssertorMap extends Constants {
 
         final Function<Map<K, V>, Boolean> precondition = (map) -> MapUtils.isNotEmpty(map);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.MAP.CONTAINS_PAIR, true, false, objectIndex, paramIndex);
+        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
+                .getDefaultMessage(result, MSG.MAP.CONTAINS_PAIR, true, false, objectIndex, paramIndex);
 
         final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> AssertorMap.contains(map, key, value);
 
@@ -166,13 +166,8 @@ public class AssertorMap extends Constants {
                 found++;
             }
         }
-        if (all ^ not) { // ALL or NOT ANY
-            return found == IterableUtils.size(keys);
-        } else if (all && not) { // NOT ALL
-            return found > 0 && found < IterableUtils.size(keys);
-        } else { // ANY
-            return found > 0;
-        }
+
+        return HelperAssertor.isValid(all, not, found, IterableUtils.size(keys));
     }
 
     private static <K, V> boolean contains(final Map<K, V> map, final Map<K, V> objects, final boolean all, final boolean not) {
@@ -183,15 +178,7 @@ public class AssertorMap extends Constants {
             }
         }
 
-        if (not && all) { // NOT ALL
-            return found > 0 && found < objects.size();
-        } else if (!not && all) { // ALL
-            return found == objects.size();
-        } else if (not && !all) { // NOT ANY
-            return found == 0;
-        } else { // ANY
-            return found > 0;
-        }
+        return HelperAssertor.isValid(all, not, found, objects.size());
     }
 
     private static <K, V> boolean contains(final Map<K, V> map, final K key, final V value) {

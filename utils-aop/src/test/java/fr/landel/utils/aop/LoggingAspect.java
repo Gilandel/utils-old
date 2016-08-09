@@ -30,7 +30,7 @@ public class LoggingAspect extends AbstractAspectExtends {
     /**
      * Point cut to monitor controller
      */
-    @Pointcut("execution(* " + BASE_PACKAGE + ".*.*(..))")
+    @Pointcut("execution(* " + OBSERVABLE + ".*(..))")
     public void trace() {
         // Point cut, no code here
     }

@@ -31,7 +31,7 @@ import fr.landel.utils.commons.function.TriFunction;
  * @author Gilles
  *
  */
-public final class HelperAssertor extends Constants {
+public class HelperAssertor extends Constants {
 
     /**
      * Empty {@code String}
@@ -44,12 +44,6 @@ public final class HelperAssertor extends Constants {
             return Triple.of(input.getLeft(), input.getValue(), false);
         }
     };
-
-    /**
-     * Hidden Constructor
-     */
-    private HelperAssertor() {
-    }
 
     protected static <T> AssertorResult<T> not(final AssertorResult<T> result) {
         return new AssertorResult<>(result);
@@ -157,18 +151,6 @@ public final class HelperAssertor extends Constants {
         return currentOK;
     }
 
-    protected static boolean isValid(final boolean previousOK, final boolean currentOK, final EnumOperator operator) {
-        boolean OK = false;
-        if (EnumOperator.AND.equals(operator) || operator == null) {
-            OK = previousOK & currentOK;
-        } else if (EnumOperator.OR.equals(operator)) {
-            OK = previousOK | currentOK;
-        } else if (EnumOperator.XOR.equals(operator)) {
-            OK = previousOK ^ currentOK;
-        }
-        return OK;
-    }
-
     private static <T> CharSequence getPreconditionErrors(final AssertorResult<T> result, final boolean previousPrecondition,
             final boolean currentPrecondition, final BiFunction<Integer, Integer, CharSequence> preconditionMessage, final int objectIndex,
             final int paramSize) {
@@ -199,5 +181,33 @@ public final class HelperAssertor extends Constants {
             }
         }
         return sb;
+    }
+
+    protected static boolean isValid(final boolean previousOK, final boolean currentOK, final EnumOperator operator) {
+        boolean OK = false;
+        if (EnumOperator.AND.equals(operator)) {
+            OK = previousOK & currentOK;
+        } else if (EnumOperator.OR.equals(operator)) {
+            OK = previousOK | currentOK;
+        } else if (EnumOperator.XOR.equals(operator)) {
+            OK = previousOK ^ currentOK;
+        } else {
+            OK = previousOK & currentOK;
+        }
+        return OK;
+    }
+
+    protected static boolean isValid(final boolean all, final boolean not, final int found, final int size) {
+        if (all) {
+            if (not) { // NOT ALL
+                return found > 0 && found < size;
+            } else { // ALL
+                return found == size;
+            }
+        } else if (not) { // NOT ANY
+            return found == 0;
+        } else { // ANY
+            return found > 0;
+        }
     }
 }

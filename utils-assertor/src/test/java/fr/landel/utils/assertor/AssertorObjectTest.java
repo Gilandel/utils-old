@@ -257,6 +257,14 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
+     * Test method for {@link AssertorObject#isNotEqual(Object)} .
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsNotEqualKONOT() {
+        Assertor.that("texte6").not().isNotEqual("texte").toThrow("equal");
+    }
+
+    /**
      * Test method for {@link AssertorObject#isEqual(Object)} .
      * 
      * @throws IOException
@@ -271,6 +279,8 @@ public class AssertorObjectTest extends AbstractTest {
             StringBuilder sb1 = new StringBuilder("texte4");
             StringBuilder sb2 = new StringBuilder("texte4");
             Assertor.that(sb1).isEqual(sb2).toThrow(new IOException(), true);
+
+            assertTrue(Assertor.that('A').isEqual((char) 65).isOK());
 
             Assertor.that(Color.BLACK).isEqual(new Color(0)).toThrow(new IOException(), true);
         } catch (IllegalArgumentException e) {
@@ -504,5 +514,7 @@ public class AssertorObjectTest extends AbstractTest {
 
         assertEquals(EnumType.UNKNOWN, EnumType.getType(Color.BLACK));
         assertEquals(EnumType.UNKNOWN, EnumType.getType(null));
+
+        assertEquals(EnumType.CHARACTER, EnumType.getType('e'));
     }
 }
