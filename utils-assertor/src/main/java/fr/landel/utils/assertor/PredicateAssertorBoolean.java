@@ -26,13 +26,13 @@ import java.util.Locale;
 public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateStepBoolean, Boolean> {
 
     @Override
-    default PredicateStepBoolean get(final AssertorResult<Boolean> result) {
+    default PredicateStepBoolean get(final StepAssertor<Boolean> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorBoolean not() {
-        return () -> HelperAssertor.not(this.getResult());
+        return () -> HelperAssertor.not(this.getStep());
     }
 
     default PredicateStepBoolean isTrue() {
@@ -44,7 +44,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
     }
 
     default PredicateStepBoolean isTrue(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorBoolean.isTrue(this.getResult(), locale, message, arguments);
+        return () -> AssertorBoolean.isTrue(this.getStep(), Message.of(locale, message, arguments));
     }
 
     default PredicateStepBoolean isFalse() {
@@ -56,6 +56,6 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
     }
 
     default PredicateStepBoolean isFalse(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorBoolean.isFalse(this.getResult(), locale, message, arguments);
+        return () -> AssertorBoolean.isFalse(this.getStep(), Message.of(locale, message, arguments));
     }
 }

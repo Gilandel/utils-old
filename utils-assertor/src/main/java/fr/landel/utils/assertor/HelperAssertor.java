@@ -12,16 +12,15 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.collections4.Transformer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import fr.landel.utils.commons.CollectionUtils2;
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
+import fr.landel.utils.commons.EnumChar;
 
 /**
  * 
@@ -38,149 +37,232 @@ public class HelperAssertor extends Constants {
      */
     protected static final CharSequence EMPTY_STRING = "";
 
-    private static final Transformer<Pair<Object, EnumType>, Triple<Object, EnumType, Boolean>> PAIR_TO_TRIPLE_TRANSFORMER = new Transformer<Pair<Object, EnumType>, Triple<Object, EnumType, Boolean>>() {
+    protected static final Transformer<Pair<Object, EnumType>, Object> PARAM_TRANSFORMER = new Transformer<Pair<Object, EnumType>, Object>() {
         @Override
-        public Triple<Object, EnumType, Boolean> transform(final Pair<Object, EnumType> input) {
-            return Triple.of(input.getLeft(), input.getValue(), false);
+        public Object transform(final Pair<Object, EnumType> input) {
+            return input.getKey();
         }
     };
 
-    protected static <T> AssertorResult<T> not(final AssertorResult<T> result) {
-        return new AssertorResult<>(result);
+    protected static <T> StepAssertor<T> not(final StepAssertor<T> result) {
+        return new StepAssertor<>(result);
     }
 
-    protected static <X, T> AssertorResult<T> and(final AssertorResult<X> result, final T object) {
-        return new AssertorResult<>(result, object, EnumOperator.AND);
+    protected static <X, T> StepAssertor<T> and(final StepAssertor<X> result, final T object, final EnumType type) {
+        return new StepAssertor<>(result, object, type, EnumOperator.AND);
     }
 
-    protected static <X, T> AssertorResult<T> or(final AssertorResult<X> result, final T object) {
-        return new AssertorResult<>(result, object, EnumOperator.OR);
+    protected static <X, T> StepAssertor<T> or(final StepAssertor<X> result, final T object, final EnumType type) {
+        return new StepAssertor<>(result, object, type, EnumOperator.OR);
     }
 
-    protected static <X, T> AssertorResult<T> xor(final AssertorResult<X> result, final T object) {
-        return new AssertorResult<>(result, object, EnumOperator.XOR);
+    protected static <X, T> StepAssertor<T> xor(final StepAssertor<X> result, final T object, final EnumType type) {
+        return new StepAssertor<>(result, object, type, EnumOperator.XOR);
     }
 
-    protected static <T> AssertorResult<T> and(final AssertorResult<T> result) {
-        return new AssertorResult<>(result, EnumOperator.AND);
+    protected static <T> StepAssertor<T> and(final StepAssertor<T> result) {
+        return new StepAssertor<>(result, EnumOperator.AND);
     }
 
-    protected static <T> AssertorResult<T> or(final AssertorResult<T> result) {
-        return new AssertorResult<>(result, EnumOperator.OR);
+    protected static <T> StepAssertor<T> or(final StepAssertor<T> result) {
+        return new StepAssertor<>(result, EnumOperator.OR);
     }
 
-    protected static <T> AssertorResult<T> xor(final AssertorResult<T> result) {
-        return new AssertorResult<>(result, EnumOperator.XOR);
+    protected static <T> StepAssertor<T> xor(final StepAssertor<T> result) {
+        return new StepAssertor<>(result, EnumOperator.XOR);
     }
 
-    protected static <T, X> AssertorResult<T> and(final AssertorResult<T> result, final AssertorResult<X> other) {
-        return new AssertorResult<>(result, other, EnumOperator.AND);
+    protected static <T, X> StepAssertor<T> and(final StepAssertor<T> result, final StepAssertor<X> other) {
+        return new StepAssertor<>(result, other, EnumOperator.AND);
     }
 
-    protected static <T, X> AssertorResult<T> or(final AssertorResult<T> result, final AssertorResult<X> other) {
-        return new AssertorResult<>(result, other, EnumOperator.OR);
+    protected static <T, X> StepAssertor<T> or(final StepAssertor<T> result, final StepAssertor<X> other) {
+        return new StepAssertor<>(result, other, EnumOperator.OR);
     }
 
-    protected static <T, X> AssertorResult<T> xor(final AssertorResult<T> result, final AssertorResult<X> other) {
-        return new AssertorResult<>(result, other, EnumOperator.XOR);
+    protected static <T, X> StepAssertor<T> xor(final StepAssertor<T> result, final StepAssertor<X> other) {
+        return new StepAssertor<>(result, other, EnumOperator.XOR);
     }
 
-    @SafeVarargs
-    protected static <T, E extends Throwable> AssertorResult<T> combine(final AssertorResult<T> result,
-            final Function<T, Boolean> precondition, final BiFunctionThrowable<T, Boolean, Boolean, E> checker,
-            final BiFunction<Integer, Integer, CharSequence> preconditionMessage,
-            final TriFunction<Integer, Integer, Boolean, CharSequence> message, final boolean notAppliedByChecker,
-            final Pair<Object, EnumType>... parameters) {
+    protected static <T> ResultAssertor combine(final StepAssertor<T> step, final boolean loadMessage) {
 
-        int objectIndex = 0;
-        final int paramSize = result.getParameters().size();
-        for (int i = paramSize - 1; i >= 0; i--) {
-            if (result.getParameters().get(i).getRight()) {
-                objectIndex = i;
-                break;
+        // load all steps and reverse the order
+        final List<StepAssertor<?>> steps = new ArrayList<>();
+        steps.add(step);
+        StepAssertor<?> currentStep = step;
+        StepAssertor<?> previousStep;
+        while ((previousStep = currentStep.getPreviousStep()) != null) {
+            steps.add(previousStep);
+            currentStep = previousStep;
+
+        }
+        Collections.reverse(steps);
+
+        boolean not = false;
+        boolean valid = true;
+        EnumOperator operator = null;
+        final StringBuilder message = new StringBuilder();
+        Object object = null;
+        EnumType type = null;
+        Pair<Object, EnumType> pair = null;
+
+        final List<Pair<Object, EnumType>> parameters = new ArrayList<>();
+
+        for (StepAssertor<?> s : steps) {
+            if (EnumStep.CREATION.equals(s.getStepType())) {
+
+                object = s.getObject();
+                type = s.getType();
+                pair = Pair.of(object, type);
+
+                parameters.add(pair);
+
+            } else if (EnumStep.ASSERTION.equals(s.getStepType())) {
+
+                parameters.addAll(s.getParameters());
+
+                // if precondition returns false, we end all treatments
+                if (!HelperAssertor.preCheck(s, object)) {
+                    return HelperAssertor.getPreconditionMessage(s, pair, parameters, loadMessage);
+
+                } else if (!EnumOperator.AND.equals(operator) || valid) {
+                    valid = HelperAssertor.validatesAndGetMessage(s, pair, object, valid, not, operator, message, loadMessage);
+                }
+
+                not = false;
+
+            } else if (EnumStep.OPERATOR.equals(s.getStepType())) {
+
+                operator = s.getOperator();
+
+            } else if (EnumStep.NOT.equals(s.getStepType())) {
+
+                not = not ^ s.isNot();
+
+            } else if (EnumStep.OBJECT.equals(s.getStepType())) {
+
+                operator = s.getOperator();
+                object = s.getObject();
+                type = s.getType();
+                pair = Pair.of(object, type);
+
+                parameters.add(pair);
+
+            } else if (EnumStep.SUB.equals(s.getStepType()) && s.getSubStep() != null) {
+                final Triple<Boolean, EnumOperator, ResultAssertor> output = HelperAssertor.managesSub(s, parameters, valid, operator,
+                        message, loadMessage);
+
+                if (output.getRight() != null) {
+                    return output.getRight();
+                } else {
+                    valid = output.getLeft();
+                    operator = output.getMiddle();
+                }
             }
         }
 
-        if (parameters.length > 0) {
-            result.getParameters().addAll(CollectionUtils2.transformIntoList(parameters, PAIR_TO_TRIPLE_TRANSFORMER));
-        }
-
-        final boolean previousPrecondition = result.isPreconditionOK();
-        final boolean currentPrecondition = precondition == null || precondition.apply(result.getObject());
-
-        final boolean newPrecondition;
-        final boolean newValid;
-        final CharSequence newPreconditionMessage;
-        final CharSequence newMessage;
-
-        if (!previousPrecondition || !currentPrecondition) {
-            newPrecondition = false;
-            newPreconditionMessage = getPreconditionErrors(result, previousPrecondition, currentPrecondition, preconditionMessage,
-                    objectIndex, paramSize);
-            newValid = false;
-            newMessage = EMPTY_STRING;
-        } else {
-            final boolean previousOK = result.isValid();
-            final boolean currentOK = callChecker(result, checker, notAppliedByChecker);
-
-            newPrecondition = true;
-            newPreconditionMessage = EMPTY_STRING;
-            newValid = isValid(previousOK, currentOK, result.getOperator());
-            newMessage = getErrors(newValid, previousOK, currentOK, result, message, objectIndex, paramSize);
-        }
-
-        return new AssertorResult<>(result, newPrecondition, newValid, newPreconditionMessage, newMessage);
+        return new ResultAssertor(true, valid, message.toString(), parameters);
     }
 
-    private static <T, E extends Throwable> boolean callChecker(final AssertorResult<T> result,
-            final BiFunctionThrowable<T, Boolean, Boolean, E> checker, final boolean notAppliedByChecker) {
-        boolean currentOK;
-        if (checker != null) {
+    private static <T> ResultAssertor getPreconditionMessage(final StepAssertor<T> step, final Pair<Object, EnumType> pair,
+            final List<Pair<Object, EnumType>> parameters, final boolean loadMessage) {
+
+        final List<Pair<Object, EnumType>> assertParameters = new ArrayList<>();
+        assertParameters.add(pair);
+        assertParameters.addAll(step.getParameters());
+
+        final String error;
+        if (loadMessage) {
+            final String preconditionMessage = HelperMessage.getDefaultMessage(step.getMessageKey(), true, false, assertParameters);
+            error = String.format(Assertor.getLocale(), preconditionMessage, assertParameters);
+        } else {
+            error = null;
+        }
+
+        return new ResultAssertor(false, false, error, parameters);
+    }
+
+    private static <T> boolean validatesAndGetMessage(final StepAssertor<T> step, final Pair<Object, EnumType> pair, final Object object,
+            final boolean valid, final boolean not, final EnumOperator operator, final StringBuilder message, final boolean loadMessage) {
+
+        boolean nextValid = HelperAssertor.isValid(valid, HelperAssertor.check(step, object, not), operator);
+
+        if (!nextValid && loadMessage) {
+            if (message.length() > 0 && operator != null) {
+                message.append(operator);
+            }
+
+            final List<Pair<Object, EnumType>> assertParameters = new ArrayList<>();
+            assertParameters.add(pair);
+            assertParameters.addAll(step.getParameters());
+
+            message.append(
+                    HelperMessage.getMessage(step.getMessage(), step.getMessageKey(), not ^ step.isMessageKeyNot(), assertParameters));
+
+        }
+
+        return nextValid;
+    }
+
+    private static <T> Triple<Boolean, EnumOperator, ResultAssertor> managesSub(final StepAssertor<T> step,
+            final List<Pair<Object, EnumType>> parameters, final boolean valid, final EnumOperator operator, final StringBuilder message,
+            final boolean loadMessage) {
+
+        final StepAssertor<?> subStep = step.getSubStep();
+        EnumOperator nextOperator = operator;
+        boolean nextValid = valid;
+
+        if (!EnumOperator.AND.equals(step.getOperator()) || nextValid) {
+
+            final ResultAssertor subResult = HelperAssertor.combine(subStep, loadMessage);
+
+            if (!subResult.isPrecondition()) {
+                return Triple.of(false, null, subResult);
+            } else {
+                nextOperator = step.getOperator();
+
+                nextValid = HelperAssertor.isValid(nextValid, subResult.isValid(), nextOperator);
+
+                parameters.addAll(subResult.getParameters());
+
+                if (!nextValid && loadMessage && subResult.getMessage() != null) {
+
+                    if (message.length() > 0 && nextOperator != null) {
+                        message.append(nextOperator);
+                    }
+
+                    message.append(EnumChar.PARENTHESIS_OPEN);
+                    message.append(subResult.getMessage());
+                    message.append(EnumChar.PARENTHESIS_CLOSE);
+                }
+            }
+        }
+
+        return Triple.of(nextValid, nextOperator, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> boolean preCheck(final StepAssertor<T> step, final Object object) {
+        if (step.getPreChecker() != null) {
+            return step.getPreChecker().test((T) object);
+        }
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> boolean check(final StepAssertor<T> step, final Object object, final boolean not) {
+        if (step.getChecker() != null) {
             try {
-                if (notAppliedByChecker) {
-                    currentOK = checker.apply(result.getObject(), result.isNot());
+                if (step.isNotAppliedByChecker()) {
+                    return step.getChecker().test((T) object, not);
                 } else {
-                    currentOK = result.isNot() ^ checker.apply(result.getObject(), result.isNot());
+                    return not ^ step.getChecker().test((T) object, not);
                 }
             } catch (Throwable e) {
-                currentOK = result.isNot() ^ false;
-            }
-        } else {
-            currentOK = !result.isNot();
-        }
-        return currentOK;
-    }
-
-    private static <T> CharSequence getPreconditionErrors(final AssertorResult<T> result, final boolean previousPrecondition,
-            final boolean currentPrecondition, final BiFunction<Integer, Integer, CharSequence> preconditionMessage, final int objectIndex,
-            final int paramSize) {
-        final StringBuilder sb = new StringBuilder();
-        if (!previousPrecondition && !currentPrecondition) {
-            sb.append(result.getPreconditionMessage()).append(EnumOperator.AND).append(preconditionMessage.apply(objectIndex, paramSize));
-        } else if (!previousPrecondition) {
-            sb.append(result.getPreconditionMessage());
-        } else {
-            sb.append(preconditionMessage.apply(objectIndex, paramSize));
-        }
-        return sb;
-    }
-
-    private static <T> CharSequence getErrors(final boolean OK, final boolean previousOK, final boolean currentOK,
-            final AssertorResult<T> result, final TriFunction<Integer, Integer, Boolean, CharSequence> message, final int objectIndex,
-            final int paramSize) {
-        final StringBuilder sb = new StringBuilder();
-        if (!OK) {
-            if (result.getOperator() != null && !previousOK) {
-                sb.append(result.getMessage());
-                if (!currentOK) {
-                    sb.append(result.getOperator());
-                }
-            }
-            if (!currentOK && message != null) {
-                sb.append(message.apply(objectIndex, paramSize, result.isNot()));
+                return false;
             }
         }
-        return sb;
+        return !not;
     }
 
     protected static boolean isValid(final boolean previousOK, final boolean currentOK, final EnumOperator operator) {

@@ -29,22 +29,22 @@ public interface PredicateStepCharSequence<T extends CharSequence> extends Predi
      * {@inheritDoc}
      */
     @Override
-    default PredicateStepCharSequence<T> get(final AssertorResult<T> result) {
+    default PredicateStepCharSequence<T> get(final StepAssertor<T> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorCharSequence<T> and() {
-        return () -> HelperAssertor.and(this.getResult());
+        return () -> HelperAssertor.and(this.getStep());
     }
 
     @Override
     default PredicateAssertorCharSequence<T> or() {
-        return () -> HelperAssertor.or(this.getResult());
+        return () -> HelperAssertor.or(this.getStep());
     }
 
     @Override
     default PredicateAssertorCharSequence<T> xor() {
-        return () -> HelperAssertor.xor(this.getResult());
+        return () -> HelperAssertor.xor(this.getStep());
     }
 }

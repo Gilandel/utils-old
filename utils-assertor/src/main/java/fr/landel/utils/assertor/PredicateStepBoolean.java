@@ -22,22 +22,22 @@ package fr.landel.utils.assertor;
 @FunctionalInterface
 public interface PredicateStepBoolean extends PredicateStep<PredicateStepBoolean, Boolean> {
 
-    default PredicateStepBoolean get(final AssertorResult<Boolean> result) {
+    default PredicateStepBoolean get(final StepAssertor<Boolean> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorBoolean and() {
-        return () -> HelperAssertor.and(this.getResult());
+        return () -> HelperAssertor.and(this.getStep());
     }
 
     @Override
     default PredicateAssertorBoolean or() {
-        return () -> HelperAssertor.or(this.getResult());
+        return () -> HelperAssertor.or(this.getStep());
     }
 
     @Override
     default PredicateAssertorBoolean xor() {
-        return () -> HelperAssertor.xor(this.getResult());
+        return () -> HelperAssertor.xor(this.getStep());
     }
 }

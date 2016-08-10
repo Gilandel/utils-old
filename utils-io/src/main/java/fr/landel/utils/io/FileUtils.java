@@ -346,15 +346,15 @@ public final class FileUtils {
     private static boolean isIdentical(final File file1, final File file2) {
         boolean result = true;
 
-        try (BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(file1))) {
-            try (BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(file2))) {
-                final byte[] buffer1 = new byte[BUFFER_SIZE];
-                final byte[] buffer2 = new byte[BUFFER_SIZE];
+        try (BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(file1));
+                BufferedInputStream bis2 = new BufferedInputStream(new FileInputStream(file2))) {
 
-                while (bis1.read(buffer1, 0, BUFFER_SIZE) > 0 && bis2.read(buffer2, 0, BUFFER_SIZE) > 0 && result) {
-                    if (!ArrayUtils.isSameLength(buffer1, buffer2) || !Arrays.equals(buffer1, buffer2)) {
-                        result = false;
-                    }
+            final byte[] buffer1 = new byte[BUFFER_SIZE];
+            final byte[] buffer2 = new byte[BUFFER_SIZE];
+
+            while (result && bis1.read(buffer1, 0, BUFFER_SIZE) > 0 && bis2.read(buffer2, 0, BUFFER_SIZE) > 0) {
+                if (!ArrayUtils.isSameLength(buffer1, buffer2) || !Arrays.equals(buffer1, buffer2)) {
+                    result = false;
                 }
             }
         } catch (IOException e) {

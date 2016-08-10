@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
 import fr.landel.utils.assertor.expect.Expect;
@@ -199,7 +199,7 @@ public class HelperMessageTest extends AbstractTest {
      */
     @Test
     public void testConvertParams() {
-        List<Triple<Object, EnumType, Boolean>> parameters = new ArrayList<>();
+        List<Pair<Object, EnumType>> parameters = new ArrayList<>();
 
         final Date date1 = new Date(1464475553640L);
         final Calendar calendar1 = DateUtils.getCalendar(date1);
@@ -209,20 +209,20 @@ public class HelperMessageTest extends AbstractTest {
         map.put("key1", "value1");
         map.put("key2", "value2");
 
-        parameters.add(Triple.of(true, EnumType.BOOLEAN, true));
-        parameters.add(Triple.of(integers, EnumType.ARRAY, true));
-        parameters.add(Triple.of(Calendar.YEAR, EnumType.CALENDAR_FIELD, false));
-        parameters.add(Triple.of(Calendar.ZONE_OFFSET, EnumType.CALENDAR_FIELD, false));
-        parameters.add(Triple.of("text", EnumType.CHAR_SEQUENCE, true));
-        parameters.add(Triple.of(HelperMessage.class, EnumType.CLASS, true));
-        parameters.add(Triple.of(date1, EnumType.DATE, true));
-        parameters.add(Triple.of(calendar1, EnumType.DATE, true));
-        parameters.add(Triple.of(EnumOperator.AND, EnumType.ENUMERATION, true));
-        parameters.add(Triple.of(texts, EnumType.ITERABLE, true));
-        parameters.add(Triple.of(map, EnumType.MAP, true));
-        parameters.add(Triple.of(3.25f, EnumType.NUMBER_DECIMAL, true));
-        parameters.add(Triple.of(12, EnumType.NUMBER_INTEGER, true));
-        parameters.add(Triple.of(Color.BLACK, EnumType.UNKNOWN, true));
+        parameters.add(Pair.of(true, EnumType.BOOLEAN));
+        parameters.add(Pair.of(integers, EnumType.ARRAY));
+        parameters.add(Pair.of(Calendar.YEAR, EnumType.CALENDAR_FIELD));
+        parameters.add(Pair.of(Calendar.ZONE_OFFSET, EnumType.CALENDAR_FIELD));
+        parameters.add(Pair.of("text", EnumType.CHAR_SEQUENCE));
+        parameters.add(Pair.of(HelperMessage.class, EnumType.CLASS));
+        parameters.add(Pair.of(date1, EnumType.DATE));
+        parameters.add(Pair.of(calendar1, EnumType.DATE));
+        parameters.add(Pair.of(EnumOperator.AND, EnumType.ENUMERATION));
+        parameters.add(Pair.of(texts, EnumType.ITERABLE));
+        parameters.add(Pair.of(map, EnumType.MAP));
+        parameters.add(Pair.of(3.25f, EnumType.NUMBER_DECIMAL));
+        parameters.add(Pair.of(12, EnumType.NUMBER_INTEGER));
+        parameters.add(Pair.of(Color.BLACK, EnumType.UNKNOWN));
 
         Object[] convertedParams = HelperMessage.convertParams(parameters);
 

@@ -32,13 +32,13 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * {@inheritDoc}
      */
     @Override
-    default PredicateStepCharSequence<T> get(final AssertorResult<T> result) {
+    default PredicateStepCharSequence<T> get(final StepAssertor<T> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorCharSequence<T> not() {
-        return () -> HelperAssertor.not(getResult());
+        return () -> HelperAssertor.not(getStep());
     }
 
     /**
@@ -101,7 +101,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      */
     default PredicateStepCharSequence<T> hasLength(final int length, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.hasLength(this.getResult(), length, locale, message, arguments);
+        return () -> AssertorCharSequence.hasLength(this.getStep(), length, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> isEmpty() {
@@ -113,7 +113,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
     }
 
     default PredicateStepCharSequence<T> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isEmpty(this.getResult(), locale, message, arguments);
+        return () -> AssertorCharSequence.isEmpty(this.getStep(), Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> isNotEmpty() {
@@ -125,7 +125,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
     }
 
     default PredicateStepCharSequence<T> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isNotEmpty(this.getResult(), locale, message, arguments);
+        return () -> AssertorCharSequence.isNotEmpty(this.getStep(), Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> isBlank() {
@@ -137,7 +137,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
     }
 
     default PredicateStepCharSequence<T> isBlank(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isBlank(this.getResult(), locale, message, arguments);
+        return () -> AssertorCharSequence.isBlank(this.getStep(), Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> isNotBlank() {
@@ -149,7 +149,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
     }
 
     default PredicateStepCharSequence<T> isNotBlank(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isNotBlank(this.getResult(), locale, message, arguments);
+        return () -> AssertorCharSequence.isNotBlank(this.getStep(), Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> contains(final Character character) {
@@ -162,7 +162,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> contains(final Character character, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.contains(this.getResult(), character, locale, message, arguments);
+        return () -> AssertorCharSequence.contains(this.getStep(), character, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> contains(final CharSequence substring) {
@@ -175,7 +175,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> contains(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.contains(this.getResult(), substring, locale, message, arguments);
+        return () -> AssertorCharSequence.contains(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> startsWith(final CharSequence substring) {
@@ -188,7 +188,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> startsWith(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.startsWith(this.getResult(), substring, locale, message, arguments);
+        return () -> AssertorCharSequence.startsWith(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> startsWithIgnoreCase(final CharSequence substring) {
@@ -202,7 +202,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> startsWithIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.startsWithIgnoreCase(this.getResult(), substring, locale, message, arguments);
+        return () -> AssertorCharSequence.startsWithIgnoreCase(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> endsWith(final CharSequence substring) {
@@ -215,7 +215,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> endsWith(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.endsWith(this.getResult(), substring, locale, message, arguments);
+        return () -> AssertorCharSequence.endsWith(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> endsWithIgnoreCase(final CharSequence substring) {
@@ -229,7 +229,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> endsWithIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.endsWithIgnoreCase(this.getResult(), substring, locale, message, arguments);
+        return () -> AssertorCharSequence.endsWithIgnoreCase(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> matches(final Pattern pattern) {
@@ -242,7 +242,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> matches(final Pattern pattern, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.matches(this.getResult(), pattern, locale, message, arguments);
+        return () -> AssertorCharSequence.matches(this.getStep(), pattern, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> matches(final CharSequence regex) {
@@ -255,7 +255,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> matches(final CharSequence regex, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.matches(this.getResult(), regex, locale, message, arguments);
+        return () -> AssertorCharSequence.matches(this.getStep(), regex, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> find(final Pattern pattern) {
@@ -268,7 +268,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> find(final Pattern pattern, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.find(this.getResult(), pattern, locale, message, arguments);
+        return () -> AssertorCharSequence.find(this.getStep(), pattern, Message.of(locale, message, arguments));
     }
 
     default PredicateStepCharSequence<T> find(final CharSequence regex) {
@@ -281,6 +281,6 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
 
     default PredicateStepCharSequence<T> find(final CharSequence regex, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.find(this.getResult(), regex, locale, message, arguments);
+        return () -> AssertorCharSequence.find(this.getStep(), regex, Message.of(locale, message, arguments));
     }
 }

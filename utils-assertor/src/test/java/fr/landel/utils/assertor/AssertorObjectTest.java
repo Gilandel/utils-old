@@ -424,6 +424,56 @@ public class AssertorObjectTest extends AbstractTest {
     }
 
     /**
+     * Test method for {@link AssertorObject#hasHashCode} .
+     * 
+     * @throws IOException
+     *             On errors
+     */
+    @Test
+    public void testHasHashCode() throws IOException {
+        int hashCode = IOException.class.hashCode();
+
+        assertTrue(Assertor.that(IOException.class).hasHashCode(hashCode).isOK());
+        assertFalse(Assertor.that(IOException.class).hasHashCode(1).isOK());
+
+        assertTrue(Assertor.that(IOException.class).isNotNull().and().hasHashCode(hashCode).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().hasHashCode(hashCode).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().xor().hasHashCode(hashCode).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().not().hasHashCode(1).isOK());
+
+        assertTrue(Assertor.that(IOException.class).hasHashCode(hashCode).and("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasHashCode(hashCode).or("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasHashCode(hashCode).xor("ara").contains('e').isOK());
+
+        assertTrue(Assertor.that((Class<?>) null).hasHashCode(0).isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasHashCode(1).toThrow();
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasHashCode(1).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the object 'Exception' should have the hash code '1'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).hasHashCode(1).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the object 'null' should have the hash code '1'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasHashCode(0).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the object 'Exception' should have the hash code '0'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).not().hasHashCode(0).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the object 'null' should NOT have the hash code '0'", JUNIT_ERROR);
+    }
+
+    /**
      * Test method for {@link AssertorObject#validates} .
      */
     @Test
@@ -505,7 +555,7 @@ public class AssertorObjectTest extends AbstractTest {
         assertEquals(EnumType.MAP, EnumType.getType(Collections.EMPTY_MAP));
 
         assertEquals(EnumType.DATE, EnumType.getType(new Date()));
-        assertEquals(EnumType.DATE, EnumType.getType(Calendar.getInstance()));
+        assertEquals(EnumType.CALENDAR, EnumType.getType(Calendar.getInstance()));
 
         assertEquals(EnumType.CHAR_SEQUENCE, EnumType.getType(""));
         assertEquals(EnumType.CHAR_SEQUENCE, EnumType.getType(new StringBuilder()));

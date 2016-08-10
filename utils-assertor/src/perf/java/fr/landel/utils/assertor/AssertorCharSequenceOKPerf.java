@@ -38,7 +38,7 @@ public class AssertorCharSequenceOKPerf extends AbstractMicrobenchmark {
 
     @Override
     protected double getExpectedMinNbOpsPerSeconds() {
-        return 75_000d;
+        return 100_000d;
     }
 
     /**

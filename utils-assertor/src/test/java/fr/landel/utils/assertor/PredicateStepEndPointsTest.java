@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
-import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
 import fr.landel.utils.assertor.expect.Expect;
@@ -37,8 +37,15 @@ import fr.landel.utils.assertor.expect.ExpectException;
  */
 public class PredicateStepEndPointsTest extends AbstractTest {
 
-    private static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IOException> EXCEPTION_BUILDER = (String errors,
-            List<Triple<Object, EnumType, Boolean>> parameters) -> new IOException(
+    /**
+     * Default exception builder
+     */
+    protected static final BiFunction<String, List<Pair<Object, EnumType>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (
+            String errors, List<Pair<Object, EnumType>> parameters) -> new IllegalArgumentException(
+                    HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
+
+    private static final BiFunction<String, List<Pair<Object, EnumType>>, IOException> EXCEPTION_BUILDER = (String errors,
+            List<Pair<Object, EnumType>> parameters) -> new IOException(
                     HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     /**
@@ -102,10 +109,10 @@ public class PredicateStepEndPointsTest extends AbstractTest {
             fail();
         }, IllegalArgumentException.class, "test");
 
-        Assertor.that("text").isNotEmpty().toThrow(Constants.DEFAULT_EXCEPTION_BUILDER);
+        Assertor.that("text").isNotEmpty().toThrow(DEFAULT_EXCEPTION_BUILDER);
 
         Expect.exception(() -> {
-            Assertor.that("text").isEmpty().toThrow(Constants.DEFAULT_EXCEPTION_BUILDER);
+            Assertor.that("text").isEmpty().toThrow(DEFAULT_EXCEPTION_BUILDER);
         }, IllegalArgumentException.class, "the char sequence 'text' should be null or empty", JUNIT_ERROR);
 
         Expect.exception(() -> {

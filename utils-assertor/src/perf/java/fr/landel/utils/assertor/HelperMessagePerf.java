@@ -15,6 +15,8 @@ package fr.landel.utils.assertor;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -36,7 +38,7 @@ public class HelperMessagePerf extends AbstractMicrobenchmark {
 
     @Override
     protected double getExpectedMinNbOpsPerSeconds() {
-        return 250_000d;
+        return 1_000_000d;
     }
 
     /**
@@ -44,16 +46,21 @@ public class HelperMessagePerf extends AbstractMicrobenchmark {
      */
     @Benchmark
     public void assertorBasicPerf2() {
-        final AssertorResult<String> a = new AssertorResult<>("test", EnumType.CHAR_SEQUENCE);
-        final AssertorResult<Boolean> b = new AssertorResult<>(true, EnumType.BOOLEAN);
+        final Predicate<String> apTrue = (obj) -> true;
+        final BiPredicate<String, Boolean> aTrue = (obj, not) -> true;
+        final Predicate<Boolean> bpTrue = (obj) -> true;
+        final BiPredicate<Boolean, Boolean> bTrue = (obj, not) -> true;
+
+        final StepAssertor<String> a = new StepAssertor<>("test", EnumType.CHAR_SEQUENCE);
+        final StepAssertor<Boolean> b = new StepAssertor<>(true, EnumType.BOOLEAN);
 
         // precondition: true & true, valid: true & false
-        AssertorResult<String> assertorResult1 = new AssertorResult<>(a, true, true, "pre-error1", "error1");
-        AssertorResult<Boolean> assertorResult2 = new AssertorResult<>(b, true, false, "pre-error2", "error2");
+        StepAssertor<String> step1 = new StepAssertor<>(a, apTrue, aTrue, false, null, MSG.CSQ.CONTAINS, false);
+        StepAssertor<Boolean> step2 = new StepAssertor<>(b, bpTrue, bTrue, false, null, MSG.BOOLEAN.TRUE, false);
 
-        AssertorResult<String> assertorResult = new AssertorResult<>(assertorResult1, assertorResult2, EnumOperator.AND);
+        StepAssertor<String> result = new StepAssertor<>(step1, step2, EnumOperator.AND);
 
-        HelperMessage.getMessage(assertorResult, null, null, null, MSG.BOOLEAN.TRUE, false, 0);
+        HelperAssertor.combine(result, true);
     }
 
     @Test

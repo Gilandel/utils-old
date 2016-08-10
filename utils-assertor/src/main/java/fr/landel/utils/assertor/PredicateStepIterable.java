@@ -22,22 +22,22 @@ package fr.landel.utils.assertor;
 @FunctionalInterface
 public interface PredicateStepIterable<T> extends PredicateStep<PredicateStepIterable<T>, Iterable<T>> {
 
-    default PredicateStepIterable<T> get(final AssertorResult<Iterable<T>> result) {
+    default PredicateStepIterable<T> get(final StepAssertor<Iterable<T>> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorIterable<T> and() {
-        return () -> HelperAssertor.and(this.getResult());
+        return () -> HelperAssertor.and(this.getStep());
     }
 
     @Override
     default PredicateAssertorIterable<T> or() {
-        return () -> HelperAssertor.or(this.getResult());
+        return () -> HelperAssertor.or(this.getStep());
     }
 
     @Override
     default PredicateAssertorIterable<T> xor() {
-        return () -> HelperAssertor.xor(this.getResult());
+        return () -> HelperAssertor.xor(this.getStep());
     }
 }

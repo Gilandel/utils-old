@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.junit.ComparisonFailure;
 import org.junit.Test;
@@ -52,7 +53,8 @@ public class ExpectTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link Expect#exception(ConsumerAssert, Class, String)}.
+     * Test method for {@link Expect#exception(ConsumerAssert, Class, String)}
+     * and {@link Expect#exception(ConsumerAssert, Class, Pattern)}.
      */
     @Test
     public void testExceptionConsumerAssertOfThrowableClassOfTString() {
@@ -60,10 +62,23 @@ public class ExpectTest extends AbstractTest {
             throw new IllegalArgumentException("message");
         }, IllegalArgumentException.class, "message");
 
+        Expect.exception(() -> {
+            throw new IllegalArgumentException("message");
+        }, IllegalArgumentException.class, Pattern.compile("^mes.*"));
+
         try {
             Expect.exception(() -> {
                 throw new IllegalArgumentException("message");
             }, IllegalArgumentException.class, "message2");
+            fail();
+        } catch (ExpectException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            Expect.exception(() -> {
+                throw new IllegalArgumentException("message");
+            }, IllegalArgumentException.class, Pattern.compile(".*?2$"));
             fail();
         } catch (ExpectException e) {
             assertNotNull(e);

@@ -17,13 +17,10 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,13 +46,6 @@ public class Constants {
      * Default assertion
      */
     protected static final String DEFAULT_ASSERTION = "Assertion failed";
-
-    /**
-     * Default exception builder
-     */
-    protected static final BiFunction<String, List<Triple<Object, EnumType, Boolean>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (
-            String errors, List<Triple<Object, EnumType, Boolean>> parameters) -> new IllegalArgumentException(
-                    HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     // ---------- PROPERTIES / MESSAGES
 
@@ -108,7 +98,7 @@ public class Constants {
      *            The arguments to replace
      * @return The property
      */
-    protected static CharSequence getProperty(final CharSequence key, final CharSequence... arguments) {
+    protected static String getProperty(final CharSequence key, final CharSequence... arguments) {
         String property = PROPS.getProperty(String.valueOf(key));
         if (property != null) {
             if (ArrayUtils.isNotEmpty(arguments)) {
@@ -129,7 +119,7 @@ public class Constants {
     /**
      * Messages constants
      *
-     * @since 30 juil. 2016
+     * @since Aug 10, 2016
      * @author Gilles
      *
      */
@@ -148,7 +138,7 @@ public class Constants {
         /**
          * Object constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -175,6 +165,11 @@ public class Constants {
             String ASSIGNABLE = "object.assignable";
 
             /**
+             * Message key for object hash code
+             */
+            String HASH_CODE = "object.hashCode";
+
+            /**
              * Message key for object validates predicate
              */
             String VALIDATES = "object.validates";
@@ -183,7 +178,7 @@ public class Constants {
         /**
          * Boolean constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -203,7 +198,7 @@ public class Constants {
         /**
          * Class constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -213,12 +208,37 @@ public class Constants {
              * Message key for class assignable from
              */
             String ASSIGNABLE = "class.assignable";
+
+            /**
+             * Message key for class name
+             */
+            String NAME = "class.name";
+
+            /**
+             * Message key for class simple name
+             */
+            String SIMPLE_NAME = "class.simpleName";
+
+            /**
+             * Message key for class canonical name
+             */
+            String CANONICAL_NAME = "class.canonicalName";
+
+            /**
+             * Message key for class type name
+             */
+            String TYPE_NAME = "class.typeName";
+
+            /**
+             * Message key for class package name
+             */
+            String PACKAGE_NAME = "class.packageName";
         }
 
         /**
          * Number constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -253,7 +273,7 @@ public class Constants {
         /**
          * Char sequence constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -303,7 +323,7 @@ public class Constants {
         /**
          * Date constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -341,9 +361,39 @@ public class Constants {
         }
 
         /**
+         * Comparable constants
+         *
+         * @since Aug 10, 2016
+         * @author Gilles
+         *
+         */
+        static interface COMPARABLE {
+
+            /**
+             * Message key for comparable after
+             */
+            String AFTER = "comparable.after";
+
+            /**
+             * Message key for comparable after or equals
+             */
+            String AFTER_OR_EQUALS = "comparable.afterOrEquals";
+
+            /**
+             * Message key for comparable before
+             */
+            String BEFORE = "comparable.before";
+
+            /**
+             * Message key for comparable before or equals
+             */
+            String BEFORE_OR_EQUALS = "comparable.beforeOrEquals";
+        }
+
+        /**
          * Array constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -378,7 +428,7 @@ public class Constants {
         /**
          * Iterable constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -413,7 +463,7 @@ public class Constants {
         /**
          * MAP constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */
@@ -463,7 +513,7 @@ public class Constants {
         /**
          * ENUM constants
          *
-         * @since 30 juil. 2016
+         * @since Aug 10, 2016
          * @author Gilles
          *
          */

@@ -149,15 +149,15 @@ public abstract class AbstractQuad<A, B, C, D> implements Comparable<AbstractQua
     /**
      * <p>
      * Returns a String representation of this quad using the format
-     * {@code ($left,$middle,$right)}.
+     * {@code ($first,$second,$third,$fourth)}.
      * </p>
      * 
      * @return a string describing this object, not null
      */
     @Override
     public String toString() {
-        return new StringBuilder().append('(').append(this.getFirst()).append(", ").append(this.getSecond()).append(", ")
-                .append(this.getThird()).append(", ").append(this.getFourth()).append(')').toString();
+        return new StringBuilder().append('(').append(this.getFirst()).append(",").append(this.getSecond()).append(",")
+                .append(this.getThird()).append(",").append(this.getFourth()).append(')').toString();
     }
 
     /**

@@ -24,22 +24,22 @@ import java.util.Date;
 @FunctionalInterface
 public interface PredicateStepDate extends PredicateStep<PredicateStepDate, Date> {
 
-    default PredicateStepDate get(final AssertorResult<Date> result) {
+    default PredicateStepDate get(final StepAssertor<Date> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorDate and() {
-        return () -> HelperAssertor.and(this.getResult());
+        return () -> HelperAssertor.and(this.getStep());
     }
 
     @Override
     default PredicateAssertorDate or() {
-        return () -> HelperAssertor.or(this.getResult());
+        return () -> HelperAssertor.or(this.getStep());
     }
 
     @Override
     default PredicateAssertorDate xor() {
-        return () -> HelperAssertor.xor(this.getResult());
+        return () -> HelperAssertor.xor(this.getStep());
     }
 }

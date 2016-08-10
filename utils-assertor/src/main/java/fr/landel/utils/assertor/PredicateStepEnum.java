@@ -22,22 +22,22 @@ package fr.landel.utils.assertor;
 @FunctionalInterface
 public interface PredicateStepEnum<T extends Enum<T>> extends PredicateStep<PredicateStepEnum<T>, T> {
 
-    default PredicateStepEnum<T> get(final AssertorResult<T> result) {
+    default PredicateStepEnum<T> get(final StepAssertor<T> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorEnum<T> and() {
-        return () -> HelperAssertor.and(this.getResult());
+        return () -> HelperAssertor.and(this.getStep());
     }
 
     @Override
     default PredicateAssertorEnum<T> or() {
-        return () -> HelperAssertor.or(this.getResult());
+        return () -> HelperAssertor.or(this.getStep());
     }
 
     @Override
     default PredicateAssertorEnum<T> xor() {
-        return () -> HelperAssertor.xor(this.getResult());
+        return () -> HelperAssertor.xor(this.getStep());
     }
 }

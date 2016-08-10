@@ -16,6 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import fr.landel.utils.commons.exception.FunctionException;
@@ -38,11 +40,11 @@ public class SupplierThrowableTest {
         final String error = "error";
 
         final SupplierThrowable<String, IllegalArgumentException> s1 = () -> "";
-        final SupplierThrowable<String, IllegalArgumentException> s2 = () -> {
+        final SupplierThrowable<String, IOException> s2 = () -> {
             if (test) {
                 return "";
             }
-            throw new IllegalArgumentException(error);
+            throw new IOException(error);
         };
 
         try {
@@ -56,7 +58,7 @@ public class SupplierThrowableTest {
             fail("Supplier has to fail");
         } catch (FunctionException e) {
             assertNotNull(e);
-            assertEquals("java.lang.IllegalArgumentException: " + error, e.getMessage());
+            assertEquals("java.io.IOException: " + error, e.getMessage());
         }
     }
 
@@ -69,11 +71,11 @@ public class SupplierThrowableTest {
         final String error = "error";
 
         final SupplierThrowable<String, IllegalArgumentException> s1 = () -> "";
-        final SupplierThrowable<String, IllegalArgumentException> s2 = () -> {
+        final SupplierThrowable<String, IOException> s2 = () -> {
             if (test) {
                 return "";
             }
-            throw new IllegalArgumentException(error);
+            throw new IOException(error);
         };
 
         try {
@@ -85,7 +87,7 @@ public class SupplierThrowableTest {
         try {
             s2.getThrows();
             fail("Supplier has to fail");
-        } catch (IllegalArgumentException e) {
+        } catch (IOException e) {
             assertNotNull(e);
             assertEquals(error, e.getMessage());
         }

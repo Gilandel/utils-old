@@ -26,13 +26,13 @@ import java.util.Locale;
 public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAssertor<PredicateStepEnum<T>, T> {
 
     @Override
-    default PredicateStepEnum<T> get(final AssertorResult<T> result) {
+    default PredicateStepEnum<T> get(final StepAssertor<T> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorEnum<T> not() {
-        return () -> HelperAssertor.not(getResult());
+        return () -> HelperAssertor.not(getStep());
     }
 
     default PredicateStepEnum<T> hasName(final CharSequence name) {
@@ -45,7 +45,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
 
     default PredicateStepEnum<T> hasName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.hasName(this.getResult(), name, locale, message, arguments);
+        return () -> AssertorEnum.hasName(this.getStep(), name, Message.of(locale, message, arguments));
     }
 
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name) {
@@ -58,7 +58,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
 
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.hasNameIgnoreCase(this.getResult(), name, locale, message, arguments);
+        return () -> AssertorEnum.hasNameIgnoreCase(this.getStep(), name, Message.of(locale, message, arguments));
     }
 
     default PredicateStepEnum<T> hasOrdinal(final int ordinal) {
@@ -70,6 +70,6 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
     }
 
     default PredicateStepEnum<T> hasOrdinal(final int ordinal, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorEnum.hasOrdinal(this.getResult(), ordinal, locale, message, arguments);
+        return () -> AssertorEnum.hasOrdinal(this.getStep(), ordinal, Message.of(locale, message, arguments));
     }
 }

@@ -12,117 +12,207 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Locale;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
-
+/**
+ * Utility class to prepare the check of {@link CharSequence}
+ *
+ * @since Aug 10, 2016
+ * @author Gilles
+ *
+ */
 public class AssertorCharSequence extends Constants {
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> hasLength(final AssertorResult<T> result,
-            final int length, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} has the
+     * specified length
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and size cannot
+     * be lower than zero
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param length
+     *            the expected length
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> hasLength(final StepAssertor<T> step, final int length,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> length >= 0 && object != null;
+        final Predicate<T> preChecker = (object) -> length >= 0 && object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.LENGTH, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> object.length() == length;
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.length() == length;
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.LENGTH, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.LENGTH, false,
                 Pair.of(length, EnumType.NUMBER_INTEGER));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> isEmpty(final AssertorResult<T> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} is
+     * {@code null} or empty
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> isEmpty(final StepAssertor<T> step, final Message message) {
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.isEmpty(object);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.isEmpty(object);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.EMPTY, not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EMPTY, false);
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> isNotEmpty(final AssertorResult<T> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} is NOT
+     * {@code null} and NOT empty
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> isNotEmpty(final StepAssertor<T> step, final Message message) {
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.isNotEmpty(object);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.isNotEmpty(object);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.EMPTY, !not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EMPTY, true);
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> isBlank(final AssertorResult<T> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} is
+     * {@code null}, empty or blank
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> isBlank(final StepAssertor<T> step, final Message message) {
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.isBlank(object);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.isBlank(object);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.BLANK, not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.BLANK, false);
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> isNotBlank(final AssertorResult<T> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} is NOT
+     * {@code null}, NOT empty and NOT blank
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> isNotBlank(final StepAssertor<T> step, final Message message) {
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.isNotBlank(object);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.isNotBlank(object);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.BLANK, !not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.BLANK, true);
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> contains(final AssertorResult<T> result,
-            final Character character, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} contains
+     * the specified character
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code character} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param character
+     *            the character to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> contains(final StepAssertor<T> step, final Character character,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && character != null;
+        final Predicate<T> preChecker = (object) -> object != null && character != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.CONTAINS, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> object.toString().indexOf(character) > -1;
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.toString().indexOf(character) > -1;
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.CONTAINS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.CONTAINS, false,
                 Pair.of(character, EnumType.CHARACTER));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> contains(final AssertorResult<T> result,
-            final CharSequence substring, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} contains
+     * the specified substring
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the substring to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> contains(final StepAssertor<T> step, final CharSequence substring,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.CONTAINS, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> containsCharSequence(object, substring);
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> containsCharSequence(object, substring);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.CONTAINS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.CONTAINS, false,
                 Pair.of(substring, EnumType.CHAR_SEQUENCE));
     }
 
     /**
      * Searches in char sequence, if the specified sub sequence exists in.
-     * {@code null} values have to be checked before.
+     * {@code null} values have to be checked first.
      * 
      * @param textToSearch
      *            where to search
@@ -141,140 +231,240 @@ public class AssertorCharSequence extends Constants {
         return p == l;
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> startsWith(final AssertorResult<T> result,
-            final CharSequence substring, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} starts with
+     * the specified substring
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the substring to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> startsWith(final StepAssertor<T> step, final CharSequence substring,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.STARTS, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.startsWith(object, substring);
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.startsWith(object, substring);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.STARTS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.STARTS, false,
                 Pair.of(substring, EnumType.CHAR_SEQUENCE));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> startsWithIgnoreCase(final AssertorResult<T> result,
-            final CharSequence substring, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} starts with
+     * the specified substring (insensitive case)
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the substring to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> startsWithIgnoreCase(final StepAssertor<T> step, final CharSequence substring,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.STARTS, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.startsWithIgnoreCase(object, substring);
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.startsWithIgnoreCase(object, substring);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.STARTS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.STARTS, false,
                 Pair.of(substring, EnumType.CHAR_SEQUENCE));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> endsWith(final AssertorResult<T> result,
-            final CharSequence substring, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} ends with
+     * the specified substring
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the substring to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> endsWith(final StepAssertor<T> step, final CharSequence substring,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.ENDS, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.endsWith(object, substring);
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.endsWith(object, substring);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.ENDS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.ENDS, false,
                 Pair.of(substring, EnumType.CHAR_SEQUENCE));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> endsWithIgnoreCase(final AssertorResult<T> result,
-            final CharSequence substring, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} ends with
+     * the specified substring (insensitive case)
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the substring to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> endsWithIgnoreCase(final StepAssertor<T> step, final CharSequence substring,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(substring);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(substring);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.ENDS, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.endsWithIgnoreCase(object, substring);
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> StringUtils.endsWithIgnoreCase(object, substring);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.ENDS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.ENDS, false,
                 Pair.of(substring, EnumType.CHAR_SEQUENCE));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> matches(final AssertorResult<T> result,
-            final Pattern pattern, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} matches the
+     * specified pattern
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param pattern
+     *            the pattern to validate
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> matches(final StepAssertor<T> step, final Pattern pattern,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && pattern != null;
+        final Predicate<T> preChecker = (object) -> object != null && pattern != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.MATCHES, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> pattern.matcher(object).matches();
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> pattern.matcher(object).matches();
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.MATCHES, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
-                Pair.of(pattern, EnumType.UNKNOWN));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.MATCHES, false, Pair.of(pattern, EnumType.UNKNOWN));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> matches(final AssertorResult<T> result,
-            final CharSequence regex, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} matches the
+     * specified regular expression
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the
+     * expression regular cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param regex
+     *            the regular expression to validate
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> matches(final StepAssertor<T> step, final CharSequence regex,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(regex);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(regex);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.MATCHES, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> Pattern.matches(regex.toString(), object);
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> Pattern.matches(regex.toString(), object);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.MATCHES, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.MATCHES, false,
                 Pair.of(regex, EnumType.CHAR_SEQUENCE));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> find(final AssertorResult<T> result,
-            final Pattern pattern, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the specified pattern can be found
+     * in the {@link CharSequence}
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param pattern
+     *            the pattern to validate
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> find(final StepAssertor<T> step, final Pattern pattern,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && pattern != null;
+        final Predicate<T> preChecker = (object) -> object != null && pattern != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.FIND, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> pattern.matcher(object).find();
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> pattern.matcher(object).find();
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.FIND, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
-                Pair.of(pattern, EnumType.UNKNOWN));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false, Pair.of(pattern, EnumType.UNKNOWN));
     }
 
-    protected static <T extends CharSequence, E extends Throwable> AssertorResult<T> find(final AssertorResult<T> result,
-            final CharSequence regex, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the specified regular expression can
+     * be found in the {@link CharSequence}
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the
+     * expression regular cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param regex
+     *            the regular expression to validate
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> find(final StepAssertor<T> step, final CharSequence regex,
+            final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(regex);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(regex);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.CSQ.FIND, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> Pattern.compile(regex.toString()).matcher(object).find();
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> Pattern.compile(regex.toString()).matcher(object)
-                .find();
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.CSQ.FIND, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
-                Pair.of(regex, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false, Pair.of(regex, EnumType.CHAR_SEQUENCE));
     }
 }

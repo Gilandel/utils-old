@@ -24,22 +24,22 @@ import java.util.Calendar;
 @FunctionalInterface
 public interface PredicateStepCalendar extends PredicateStep<PredicateStepCalendar, Calendar> {
 
-    default PredicateStepCalendar get(final AssertorResult<Calendar> result) {
+    default PredicateStepCalendar get(final StepAssertor<Calendar> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorCalendar and() {
-        return () -> HelperAssertor.and(this.getResult());
+        return () -> HelperAssertor.and(this.getStep());
     }
 
     @Override
     default PredicateAssertorCalendar or() {
-        return () -> HelperAssertor.or(this.getResult());
+        return () -> HelperAssertor.or(this.getStep());
     }
 
     @Override
     default PredicateAssertorCalendar xor() {
-        return () -> HelperAssertor.xor(this.getResult());
+        return () -> HelperAssertor.xor(this.getStep());
     }
 }

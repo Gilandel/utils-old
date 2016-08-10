@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 import org.junit.After;
 import org.junit.Test;
@@ -88,6 +89,8 @@ public class FileUtilsTest {
         } catch (IOException e) {
             fail(e.getMessage());
         }
+
+        Expect.exception(() -> FileUtils.getFileContent("unknown"), IOException.class, Pattern.compile(".*?unknown.*"));
 
         try (ByteArrayInputStream bais = new ByteArrayInputStream(test.getBytes(EncodingUtils.CHARSET_UTF_8))) {
             StringBuilder sb = FileUtils.getFileContent(bais, EncodingUtils.CHARSET_US_ASCII);

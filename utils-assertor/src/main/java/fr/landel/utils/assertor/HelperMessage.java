@@ -24,10 +24,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Transformer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.CollectionUtils2;
 import fr.landel.utils.commons.EnumChar;
@@ -57,13 +56,6 @@ public final class HelperMessage extends Constants {
      * Flags in regular expression (sorted for binarySearch)
      */
     private static final byte[] FLAGS = " #(+,-0<\\".getBytes(StandardCharsets.UTF_8);
-
-    private static final Transformer<Triple<Object, EnumType, Boolean>, Object> PARAM_TRANSFORMER = new Transformer<Triple<Object, EnumType, Boolean>, Object>() {
-        @Override
-        public Object transform(final Triple<Object, EnumType, Boolean> input) {
-            return input.getLeft();
-        }
-    };
 
     /**
      * Parse the string to find parameters and arguments expressions, changes
@@ -261,30 +253,30 @@ public final class HelperMessage extends Constants {
      *            the input list
      * @return the output array
      */
-    public static Object[] convertParams(final List<Triple<Object, EnumType, Boolean>> parameters) {
+    public static Object[] convertParams(final List<Pair<Object, EnumType>> parameters) {
         if (CollectionUtils.isNotEmpty(parameters)) {
-            final List<Object> convertedParams = CollectionUtils2.transformIntoList(parameters, PARAM_TRANSFORMER);
+            final List<Object> convertedParams = CollectionUtils2.transformIntoList(parameters, HelperAssertor.PARAM_TRANSFORMER);
             // The object, the type and if it's a checked object
-            Triple<Object, EnumType, Boolean> triple;
+            Pair<Object, EnumType> pair;
             int calendarField = -1;
 
             // in order for binary search
             final EnumType[] surroundable = new EnumType[] {EnumType.ARRAY, EnumType.ITERABLE, EnumType.MAP};
 
             for (int i = 0; i < parameters.size(); i++) {
-                triple = parameters.get(i);
-                if (triple.getLeft() != null) {
-                    if (EnumType.DATE.equals(triple.getMiddle()) && Calendar.class.isAssignableFrom(triple.getLeft().getClass())) {
-                        convertedParams.set(i, ((Calendar) triple.getLeft()).getTime());
-                    } else if (EnumType.CALENDAR_FIELD.equals(triple.getMiddle())) {
-                        calendarField = (Integer) triple.getLeft();
+                pair = parameters.get(i);
+                if (pair.getLeft() != null) {
+                    if (EnumType.DATE.equals(pair.getValue()) && Calendar.class.isAssignableFrom(pair.getLeft().getClass())) {
+                        convertedParams.set(i, ((Calendar) pair.getLeft()).getTime());
+                    } else if (EnumType.CALENDAR_FIELD.equals(pair.getValue())) {
+                        calendarField = (Integer) pair.getLeft();
                         if (CALENDAR_FIELDS.containsKey(calendarField)) {
                             convertedParams.set(i, CALENDAR_FIELDS.get(calendarField));
                         }
-                    } else if (EnumType.CLASS.equals(triple.getMiddle())) {
-                        convertedParams.set(i, ((Class<?>) triple.getLeft()).getSimpleName());
-                    } else if (Arrays.binarySearch(surroundable, triple.getMiddle()) > -1) {
-                        convertedParams.set(i, HelperMessage.surroundByBrackets(triple.getLeft(), triple.getMiddle()));
+                    } else if (EnumType.CLASS.equals(pair.getValue())) {
+                        convertedParams.set(i, ((Class<?>) pair.getLeft()).getSimpleName());
+                    } else if (Arrays.binarySearch(surroundable, pair.getValue()) > -1) {
+                        convertedParams.set(i, HelperMessage.surroundByBrackets(pair.getLeft(), pair.getValue()));
                     }
                 }
             }
@@ -310,46 +302,34 @@ public final class HelperMessage extends Constants {
      * Gets the message (the locale can be change through <code>setLocale</code>
      * ). Supports injecting parameters in message by using %s* or %1$s*
      * 
-     * <pre>
-     * Operator.getMessage(10, 20, &quot;The number '%s*' is not greater than number '%s*'&quot;);
-     * // Exception: "The number '10' is not greater than number '20'"
-     * Operator.getMessage(10, 20, &quot;'%2$s*' &gt; '%1$s*'&quot;);
-     * // Exception: "'20' &gt; '10'"
-     * </pre>
-     * 
-     * @param result
-     *            The assertor result
-     * @param locale
-     *            The message locale
      * @param message
-     *            The user message
-     * @param arguments
-     *            The user arguments
+     *            the message object
      * @param defaultKey
-     *            The default message key
+     *            the default message key
      * @param not
      *            If not has to be appended to the default message key
-     * @param paramIndexes
+     * @param parameters
      *            The list of parameters to inject in message
-     * @param <T>
-     *            the type assertor result
      * @return The message formatted
      */
-    protected static <T> String getMessage(final AssertorResult<T> result, final Locale locale, final CharSequence message,
-            final Object[] arguments, final CharSequence defaultKey, final boolean not, final Integer... paramIndexes) {
+    protected static String getMessage(final Message message, final CharSequence defaultKey, final boolean not,
+            final List<Pair<Object, EnumType>> parameters) {
 
+        final Locale locale;
         final String currentMessage;
         final Object[] currentArguments;
-        if (message != null) {
-            currentMessage = message.toString();
-            currentArguments = arguments;
+        if (message != null && message.getMessage() != null) {
+            currentMessage = message.getMessage().toString();
+            currentArguments = message.getArguments();
+            locale = message.getLocale();
         } else {
-            currentMessage = HelperMessage.getDefaultMessage(result, defaultKey, false, not, paramIndexes).toString();
+            currentMessage = HelperMessage.getDefaultMessage(defaultKey, false, not, parameters).toString();
             currentArguments = null;
+            locale = null;
         }
 
         if (currentMessage.indexOf('%') > -1) {
-            return HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, currentMessage, result.getParameters(), currentArguments);
+            return HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, currentMessage, parameters, currentArguments);
         } else {
             return currentMessage;
         }
@@ -358,13 +338,6 @@ public final class HelperMessage extends Constants {
     /**
      * Gets the message (the locale can be change through <code>setLocale</code>
      * ). Supports injecting parameters in message by using %s* or %1$s*
-     * 
-     * <pre>
-     * Operator.getMessage(10, 20, &quot;The number '%s*' is not greater than number '%s*'&quot;);
-     * // Exception: "The number '10' is not greater than number '20'"
-     * Operator.getMessage(10, 20, &quot;'%2$s*' &gt; '%1$s*'&quot;);
-     * // Exception: "'20' &gt; '10'"
-     * </pre>
      * 
      * @param defaultString
      *            The default message provided by each method
@@ -379,7 +352,7 @@ public final class HelperMessage extends Constants {
      * @return The message formatted
      */
     public static String getMessage(final CharSequence defaultString, final Locale locale, final CharSequence message,
-            final List<Triple<Object, EnumType, Boolean>> parameters, final Object[] arguments) {
+            final List<Pair<Object, EnumType>> parameters, final Object[] arguments) {
 
         String msg;
         Locale l = Assertor.getLocale(locale);
@@ -405,23 +378,18 @@ public final class HelperMessage extends Constants {
      * Get the message and define that the current condition uses a personalized
      * message, not the default one
      * 
-     * @param result
-     *            The assertor result (required, not null)
      * @param key
      *            The message key (required, not null)
      * @param precondition
      *            If 'precondition' suffix has to be appended
      * @param not
      *            If 'not' suffix has to be appended
-     * @param paramIndexes
-     *            The arguments index to replace in message
-     * @param <T>
-     *            the type of assertor result
+     * @param parameters
+     *            The parameters
      * @return The loaded property
      */
-    protected static <T> CharSequence getDefaultMessage(final AssertorResult<T> result, final CharSequence key, final boolean precondition,
-            final boolean not, final Integer... paramIndexes) {
-        Objects.requireNonNull(result);
+    protected static String getDefaultMessage(final CharSequence key, final boolean precondition, final boolean not,
+            final List<Pair<Object, EnumType>> parameters) {
         Objects.requireNonNull(key);
 
         final StringBuilder keyProperty = new StringBuilder(key);
@@ -434,9 +402,9 @@ public final class HelperMessage extends Constants {
             keyProperty.append(MSG.NOT);
         }
 
-        final CharSequence[] arguments = new CharSequence[paramIndexes.length];
-        for (int i = 0; i < paramIndexes.length; i++) {
-            arguments[i] = HelperMessage.getParam(paramIndexes[i] + 1, result.getParameters().get(paramIndexes[i]).getMiddle());
+        final CharSequence[] arguments = new CharSequence[parameters.size()];
+        for (int i = 0; i < parameters.size(); i++) {
+            arguments[i] = HelperMessage.getParam(i + 1, parameters.get(i).getValue());
         }
 
         return getProperty(keyProperty, arguments);
@@ -462,7 +430,7 @@ public final class HelperMessage extends Constants {
             stringBuilder.append(percent).append(index).append("$,d*");
         } else if (EnumType.NUMBER_DECIMAL.equals(type)) {
             stringBuilder.append(percent).append(index).append("$,.3f*");
-        } else if (EnumType.DATE.equals(type)) {
+        } else if (EnumType.DATE.equals(type) || EnumType.CALENDAR.equals(type)) {
             stringBuilder.append(percent).append(index).append("$tY*/");
             stringBuilder.append(percent).append(index).append("$tm*/");
             stringBuilder.append(percent).append(index).append("$td* ");

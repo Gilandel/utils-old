@@ -339,19 +339,19 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").toThrow();
-        }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'");
+        }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'", JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains("toto").and().contains("voyage")
                     .and(Assertor.that("text").isBlank().or().contains("text")).toThrow();
-        }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'");
+        }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'", JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains("toto").and().contains("voyage")
-                    .and(Assertor.that("text").isBlank().or().not().contains("text")).toThrow();
+                    .or(Assertor.that("text").isBlank().or().not().contains("text")).toThrow();
         }, IllegalArgumentException.class,
                 "the char sequence 'toto part en vacances' should contain 'voyage'"
-                        + " AND (the char sequence 'text' should be null, empty or blank OR the char sequence 'text' should NOT contain 'text')",
+                        + " OR (the char sequence 'text' should be null, empty or blank OR the char sequence 'text' should NOT contain 'text')",
                 JUNIT_ERROR);
 
         Expect.exception(() -> {
@@ -365,16 +365,16 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains('t').and().contains('y')
-                    .and(Assertor.that("text").isBlank().or().not().contains('t')).toThrow();
+                    .or(Assertor.that("text").isBlank().or().not().contains('t')).toThrow();
         }, IllegalArgumentException.class,
                 "the char sequence 'toto part en vacances' should contain 'y'"
-                        + " AND (the char sequence 'text' should be null, empty or blank OR the char sequence 'text' should NOT contain 't')",
+                        + " OR (the char sequence 'text' should be null, empty or blank OR the char sequence 'text' should NOT contain 't')",
                 JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that((CharSequence) null).contains('t').and().contains((Character) null).toThrow();
-        }, IllegalArgumentException.class, "the char sequence cannot be null and the searched substring cannot be null or empty"
-                + " AND the char sequence cannot be null and the searched substring cannot be null or empty", JUNIT_ERROR);
+        }, IllegalArgumentException.class, "the char sequence cannot be null and the searched substring cannot be null or empty",
+                JUNIT_ERROR);
     }
 
     /**

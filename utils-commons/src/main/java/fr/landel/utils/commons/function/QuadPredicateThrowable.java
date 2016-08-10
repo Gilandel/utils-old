@@ -40,6 +40,7 @@ import fr.landel.utils.commons.exception.FunctionException;
  * @param <E>
  *            the exception type
  */
+@FunctionalInterface
 public interface QuadPredicateThrowable<T, U, V, W, E extends Throwable> extends QuadPredicate<T, U, V, W> {
 
     /**

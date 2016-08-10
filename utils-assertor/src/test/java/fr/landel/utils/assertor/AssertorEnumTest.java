@@ -51,7 +51,7 @@ public class AssertorEnumTest extends AbstractTest {
                         EnumType.CHARACTER, EnumType.UNKNOWN})
                 .toThrow();
 
-        Assertor.that(EnumType.BOOLEAN).hasName("BOOLEAN").isOK();
+        assertTrue(Assertor.that(EnumType.BOOLEAN).hasName("BOOLEAN").isOK());
     }
 
     /**
@@ -59,8 +59,8 @@ public class AssertorEnumTest extends AbstractTest {
      */
     @Test
     public void testHasName() {
-        AssertorResult<EnumChar> assertorResult = new AssertorResult<>(EnumChar.ASTERISK, EnumType.ENUMERATION);
-        assertTrue(AssertorEnum.hasName(assertorResult, "ASTERISK", null, null, null).isValid());
+        StepAssertor<EnumChar> assertorResult = new StepAssertor<>(EnumChar.ASTERISK, EnumType.ENUMERATION);
+        assertTrue(AssertorEnum.hasName(assertorResult, "ASTERISK", null).getChecker().test(EnumChar.ASTERISK, false));
 
         try {
             Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").toThrow("not found");
@@ -68,6 +68,10 @@ public class AssertorEnumTest extends AbstractTest {
             Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").toThrow(new IllegalArgumentException(), true);
             Assertor.that(EnumChar.ASTERISK).hasNameIgnoreCase("asTerisK").toThrow("not found");
             Assertor.that(EnumChar.ASTERISK).not().hasNameIgnoreCase("asTeris").toThrow();
+
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").and(EnumOperator.AND).hasName("AND").toThrow();
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").or(EnumOperator.AND).hasName("AND").toThrow();
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").xor(EnumOperator.AND).hasName("XOR").toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }

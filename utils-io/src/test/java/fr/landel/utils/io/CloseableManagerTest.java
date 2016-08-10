@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Check utility class (streams).
@@ -39,6 +41,8 @@ public class CloseableManagerTest {
     private static final String CHECK_CRC32_PATH = "src/test/resources/io";
     private static final String CHECK_CRC32_FILE_INPUT = CHECK_CRC32_PATH + "/checkCRC32.xml";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CloseableManager.class);
+
     /**
      * Test method for {@link CloseableManager#isCloseable(java.lang.Class)} .
      */
@@ -46,6 +50,8 @@ public class CloseableManagerTest {
     public void testStreamClass() {
         FileInputStream fis;
         try {
+            CloseableManager.defineLogger(LOGGER);
+
             CloseableManager.isCloseable((Class<?>) null);
             CloseableManager.close(CloseableManagerTest.class);
             CloseableManager.close((Class<?>) null);

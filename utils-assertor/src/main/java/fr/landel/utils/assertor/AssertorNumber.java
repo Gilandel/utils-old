@@ -12,79 +12,174 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Locale;
+import java.util.function.BiPredicate;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.Comparators;
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
 
+/**
+ * Utility class to prepare the check of {@link Number}
+ *
+ * @since Aug 10, 2016
+ * @author Gilles
+ *
+ */
 public class AssertorNumber extends Constants {
 
-    protected static <N extends Number & Comparable<N>, E extends Throwable> AssertorResult<N> isEqual(final AssertorResult<N> result,
-            final N number, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if {@link Number} is equal to
+     * {@code number}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param number
+     *            the number to compare
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isEqual(final StepAssertor<N> step, final N number,
+            final Message message) {
 
-        final BiFunctionThrowable<N, Boolean, Boolean, E> checker = (object, not) -> Comparators.compare(object, number) == 0;
+        final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) == 0;
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.NUMBER.EQUALS, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, false, Pair.of(number, EnumType.getType(number)));
     }
 
-    protected static <N extends Number & Comparable<N>, E extends Throwable> AssertorResult<N> isNotEqual(final AssertorResult<N> result,
-            final N number, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if {@link Number} is NOT equal to
+     * {@code number}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param number
+     *            the number to compare
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isNotEqual(final StepAssertor<N> step, final N number,
+            final Message message) {
 
-        final BiFunctionThrowable<N, Boolean, Boolean, E> checker = (object, not) -> Comparators.compare(object, number) != 0;
+        final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) != 0;
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.NUMBER.EQUALS, !not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, true, Pair.of(number, EnumType.getType(number)));
     }
 
-    protected static <N extends Number & Comparable<N>, E extends Throwable> AssertorResult<N> isGT(final AssertorResult<N> result,
-            final N number, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if {@link Number} is greater than
+     * {@code number}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param number
+     *            the number to compare
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isGT(final StepAssertor<N> step, final N number,
+            final Message message) {
 
-        final BiFunctionThrowable<N, Boolean, Boolean, E> checker = (object, not) -> Comparators.compare(object, number) > 0;
+        final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) > 0;
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.NUMBER.GT, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GT, false, Pair.of(number, EnumType.getType(number)));
     }
 
-    protected static <N extends Number & Comparable<N>, E extends Throwable> AssertorResult<N> isGTE(final AssertorResult<N> result,
-            final N number, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if {@link Number} is greater than or
+     * equals to {@code number}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param number
+     *            the number to compare
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isGTE(final StepAssertor<N> step, final N number,
+            final Message message) {
 
-        final BiFunctionThrowable<N, Boolean, Boolean, E> checker = (object, not) -> Comparators.compare(object, number) >= 0;
+        final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) >= 0;
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.NUMBER.GTE, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GTE, false, Pair.of(number, EnumType.getType(number)));
     }
 
-    protected static <N extends Number & Comparable<N>, E extends Throwable> AssertorResult<N> isLT(final AssertorResult<N> result,
-            final N number, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if {@link Number} is lower than
+     * {@code number}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param number
+     *            the number to compare
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isLT(final StepAssertor<N> step, final N number,
+            final Message message) {
 
-        final BiFunctionThrowable<N, Boolean, Boolean, E> checker = (object, not) -> Comparators.compare(object, number) < 0;
+        final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) < 0;
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.NUMBER.LT, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LT, false, Pair.of(number, EnumType.getType(number)));
     }
 
-    protected static <N extends Number & Comparable<N>, E extends Throwable> AssertorResult<N> isLTE(final AssertorResult<N> result,
-            final N number, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if {@link Number} is lower than or
+     * equals to {@code number}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param number
+     *            the number to compare
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isLTE(final StepAssertor<N> step, final N number,
+            final Message message) {
 
-        final BiFunctionThrowable<N, Boolean, Boolean, E> checker = (object, not) -> Comparators.compare(object, number) <= 0;
+        final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) <= 0;
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.NUMBER.LTE, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LTE, false, Pair.of(number, EnumType.getType(number)));
     }
 }

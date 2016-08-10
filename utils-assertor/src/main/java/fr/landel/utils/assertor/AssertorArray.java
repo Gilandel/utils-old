@@ -12,108 +12,151 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Locale;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.ArrayUtils;
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
 
 /**
- * (Description)
+ * Utility class to prepare the check of arrays
  *
- * @since 5 août 2016
+ * @since Aug 10, 2016
  * @author Gilles
  *
  */
 public class AssertorArray extends Constants {
 
-    protected static <T, E extends Throwable> AssertorResult<T[]> hasLength(final AssertorResult<T[]> result, final int length,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate the array length
+     * 
+     * @param step
+     *            the current step
+     * @param length
+     *            the length to validate
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the array elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<T[]> hasLength(final StepAssertor<T[]> step, final int length, final Message message) {
 
-        final Function<T[], Boolean> precondition = (object) -> length >= 0 && object != null;
+        final Predicate<T[]> preChecker = (object) -> length >= 0 && object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.ARRAY.LENGTH, true, false, objectIndex, paramIndex);
+        final BiPredicate<T[], Boolean> checker = (object, not) -> object.length == length;
 
-        final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> object.length == length;
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.ARRAY.LENGTH, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ARRAY.LENGTH, false,
                 Pair.of(length, EnumType.NUMBER_INTEGER));
     }
 
-    protected static <T, E extends Throwable> AssertorResult<T[]> isEmpty(final AssertorResult<T[]> result, final Locale locale,
-            final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the array is {@code null} or empty
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the array elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<T[]> isEmpty(final StepAssertor<T[]> step, final Message message) {
 
-        final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> ArrayUtils.isEmpty(object);
+        final BiPredicate<T[], Boolean> checker = (object, not) -> ArrayUtils.isEmpty(object);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.ARRAY.EMPTY, not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.ARRAY.EMPTY, false);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<T[]> isNotEmpty(final AssertorResult<T[]> result, final Locale locale,
-            final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the array is NOT {@code null} and
+     * NOT empty
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the array elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<T[]> isNotEmpty(final StepAssertor<T[]> step, final Message message) {
 
-        final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> ArrayUtils.isNotEmpty(object);
+        final BiPredicate<T[], Boolean> checker = (object, not) -> ArrayUtils.isNotEmpty(object);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.ARRAY.EMPTY, !not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.ARRAY.EMPTY, true);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<T[]> contains(final AssertorResult<T[]> result, final T object,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the array contains the element
+     * 
+     * @param step
+     *            the current step
+     * @param element
+     *            the element to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the array elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<T[]> contains(final StepAssertor<T[]> step, final T element, final Message message) {
 
-        final Function<T[], Boolean> precondition = (object1) -> object1 != null;
+        final Predicate<T[]> preChecker = (object) -> object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.ARRAY.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
+        final BiPredicate<T[], Boolean> checker = (object, not) -> AssertorArray.has(object, element);
 
-        final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object1, not) -> AssertorArray.has(object1, object);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.ARRAY.CONTAINS_OBJECT, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
-                Pair.of(object, EnumType.getType(object)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ARRAY.CONTAINS_OBJECT, false,
+                Pair.of(element, EnumType.UNKNOWN));
     }
 
-    private static <T, E extends Throwable> AssertorResult<T[]> contains(final AssertorResult<T[]> result, final T[] array,
-            final CharSequence key, final boolean all, final Locale locale, final CharSequence message, final Object[] arguments) {
+    private static <T> StepAssertor<T[]> contains(final StepAssertor<T[]> step, final T[] array, final boolean all, final CharSequence key,
+            final Message message) {
 
-        final Function<T[], Boolean> precondition = (object) -> array != null && object != null;
+        final Predicate<T[]> preChecker = (object) -> array != null && object != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
+        final BiPredicate<T[], Boolean> checker = (object, not) -> AssertorArray.has(object, array, all, not);
 
-        final BiFunctionThrowable<T[], Boolean, Boolean, E> checker = (object, not) -> AssertorArray.has(object, array, all, not);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, true,
-                Pair.of(array, EnumType.ARRAY));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(array, EnumType.ARRAY));
     }
 
-    protected static <T, E extends Throwable> AssertorResult<T[]> containsAll(final AssertorResult<T[]> result, final T[] array,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the array contains all elements of
+     * the specified array
+     * 
+     * @param step
+     *            the current step
+     * @param array
+     *            the array to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the array elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<T[]> containsAll(final StepAssertor<T[]> step, final T[] array, final Message message) {
 
-        return AssertorArray.contains(result, array, MSG.ARRAY.CONTAINS_ALL, true, locale, message, arguments);
+        return AssertorArray.contains(step, array, true, MSG.ARRAY.CONTAINS_ALL, message);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<T[]> containsAny(final AssertorResult<T[]> result, final T[] array,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the array contains any elements of
+     * the specified array
+     * 
+     * @param step
+     *            the current step
+     * @param array
+     *            the array to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the array elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<T[]> containsAny(final StepAssertor<T[]> step, final T[] array, final Message message) {
 
-        return AssertorArray.contains(result, array, MSG.ARRAY.CONTAINS_ANY, false, locale, message, arguments);
+        return AssertorArray.contains(step, array, false, MSG.ARRAY.CONTAINS_ANY, message);
     }
 
     private static <T> boolean has(final T[] array, final T object) {

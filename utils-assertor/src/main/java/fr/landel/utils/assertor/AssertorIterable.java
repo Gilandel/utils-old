@@ -12,104 +12,179 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Locale;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
-
+/**
+ * Utility class to prepare the check of {@link Iterable}
+ *
+ * @since Aug 10, 2016
+ * @author Gilles
+ *
+ */
 public class AssertorIterable extends Constants {
 
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> hasSize(final AssertorResult<Iterable<T>> result, final int size,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate the {@link Iterable} size
+     * 
+     * <p>
+     * precondition: {@link Iterable} cannot be {@code null} and size cannot be
+     * lower than zero
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param size
+     *            the size to validate
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the {@link Iterable} elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<Iterable<T>> hasSize(final StepAssertor<Iterable<T>> step, final int size, final Message message) {
 
-        final Function<Iterable<T>, Boolean> precondition = (iterable) -> size >= 0 && iterable != null;
+        final Predicate<Iterable<T>> preChecker = (iterable) -> size >= 0 && iterable != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.ITERABLE.SIZE, true, false, objectIndex, paramIndex);
+        final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> IterableUtils.size(iterable) == size;
 
-        final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable, not) -> IterableUtils.size(iterable) == size;
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.ITERABLE.SIZE, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.SIZE, false,
                 Pair.of(size, EnumType.NUMBER_INTEGER));
     }
 
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> isEmpty(final AssertorResult<Iterable<T>> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Iterable} is {@code null}
+     * or empty
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the {@link Iterable} elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<Iterable<T>> isEmpty(final StepAssertor<Iterable<T>> step, final Message message) {
 
-        final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (map, not) -> IterableUtils.isEmpty(map);
+        final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> IterableUtils.isEmpty(iterable);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.ITERABLE.EMPTY, not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.ITERABLE.EMPTY, false);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> isNotEmpty(final AssertorResult<Iterable<T>> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Iterable} is NOT
+     * {@code null} and NOT empty
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the {@link Iterable} elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<Iterable<T>> isNotEmpty(final StepAssertor<Iterable<T>> step, final Message message) {
 
-        final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable, not) -> !IterableUtils.isEmpty(iterable);
+        final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> !IterableUtils.isEmpty(iterable);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.ITERABLE.EMPTY, !not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.ITERABLE.EMPTY, true);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> containsAll(final AssertorResult<Iterable<T>> result,
-            final Iterable<T> values, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Iterable} contains all
+     * values
+     * 
+     * <p>
+     * precondition: neither {@link Iterable} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param values
+     *            the values to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the {@link Iterable} elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<Iterable<T>> containsAll(final StepAssertor<Iterable<T>> step, final Iterable<T> values,
+            final Message message) {
 
-        return contains(result, values, MSG.ITERABLE.CONTAINS_ALL, true, locale, message, arguments);
+        return contains(step, values, MSG.ITERABLE.CONTAINS_ALL, true, message);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> containsAny(final AssertorResult<Iterable<T>> result,
-            final Iterable<T> values, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Iterable} contains any
+     * values
+     * 
+     * <p>
+     * precondition: neither {@link Iterable} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param values
+     *            the values to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the {@link Iterable} elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<Iterable<T>> containsAny(final StepAssertor<Iterable<T>> step, final Iterable<T> values,
+            final Message message) {
 
-        return contains(result, values, MSG.ITERABLE.CONTAINS_ANY, false, locale, message, arguments);
+        return contains(step, values, MSG.ITERABLE.CONTAINS_ANY, false, message);
     }
 
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> contains(final AssertorResult<Iterable<T>> result,
-            final Iterable<T> iterable, final CharSequence key, final boolean all, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Iterable} contains the
+     * specified value
+     * 
+     * <p>
+     * precondition: the {@link Iterable} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param value
+     *            the value to find
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the {@link Iterable} elements type
+     * @return the next step
+     */
+    protected static <T> StepAssertor<Iterable<T>> contains(final StepAssertor<Iterable<T>> step, final T value, final Message message) {
 
-        final Function<Iterable<T>, Boolean> precondition = (iterable1) -> !IterableUtils.isEmpty(iterable1)
-                && !IterableUtils.isEmpty(iterable);
+        final Predicate<Iterable<T>> preChecker = (iterable) -> !IterableUtils.isEmpty(iterable);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
+        final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> AssertorIterable.has(iterable, value);
 
-        final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable1, not) -> AssertorIterable.has(iterable1, iterable,
-                all, not);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, true,
-                Pair.of(iterable, EnumType.ITERABLE));
-    }
-
-    protected static <T, E extends Throwable> AssertorResult<Iterable<T>> contains(final AssertorResult<Iterable<T>> result, final T value,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
-
-        final Function<Iterable<T>, Boolean> precondition = (iterable) -> !IterableUtils.isEmpty(iterable);
-
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.ITERABLE.CONTAINS_OBJECT, true, false, objectIndex, paramIndex);
-
-        final BiFunctionThrowable<Iterable<T>, Boolean, Boolean, E> checker = (iterable, not) -> AssertorIterable.has(iterable, value);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.ITERABLE.CONTAINS_OBJECT, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.CONTAINS_OBJECT, false,
                 Pair.of(value, EnumType.getType(value)));
+    }
+
+    private static <T> StepAssertor<Iterable<T>> contains(final StepAssertor<Iterable<T>> step, final Iterable<T> iterable,
+            final CharSequence key, final boolean all, final Message message) {
+
+        final Predicate<Iterable<T>> preChecker = (iterable1) -> !IterableUtils.isEmpty(iterable1) && !IterableUtils.isEmpty(iterable);
+
+        final BiPredicate<Iterable<T>, Boolean> checker = (iterable1, not) -> AssertorIterable.has(iterable1, iterable, all, not);
+
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(iterable, EnumType.ITERABLE));
     }
 
     private static <T> boolean has(final Iterable<T> iterable, final T object) {

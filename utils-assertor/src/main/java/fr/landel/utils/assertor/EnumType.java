@@ -57,6 +57,11 @@ public enum EnumType {
     DATE,
 
     /**
+     * Calendar type
+     */
+    CALENDAR,
+
+    /**
      * Character type
      */
     CHARACTER,
@@ -85,6 +90,11 @@ public enum EnumType {
      * Map type
      */
     MAP,
+
+    /**
+     * Comparable type
+     */
+    COMPARABLE,
 
     /**
      * Calendar field (only used by converter)
@@ -122,10 +132,14 @@ public enum EnumType {
                 type = MAP;
             } else if (clazz.isEnum()) {
                 type = ENUMERATION;
-            } else if (Date.class.isAssignableFrom(clazz) || Calendar.class.isAssignableFrom(clazz)) {
+            } else if (Date.class.isAssignableFrom(clazz)) {
                 type = DATE;
+            } else if (Calendar.class.isAssignableFrom(clazz)) {
+                type = CALENDAR;
             } else if (Class.class.isInstance(object)) {
                 type = CLASS;
+            } else if (Comparable.class.isAssignableFrom(clazz)) {
+                type = COMPARABLE;
             }
         }
         return type;

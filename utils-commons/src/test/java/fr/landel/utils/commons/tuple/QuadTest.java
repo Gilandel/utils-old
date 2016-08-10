@@ -134,7 +134,7 @@ public class QuadTest {
 
         Quad<String, String, String, Integer> quad = Quad.of(first, second, third, fourth);
 
-        assertEquals("(first, second, third, 2)", quad.toString());
+        assertEquals("(first,second,third,2)", quad.toString());
     }
 
     /**

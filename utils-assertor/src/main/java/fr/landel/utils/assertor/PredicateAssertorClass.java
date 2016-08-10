@@ -25,13 +25,13 @@ import java.util.Locale;
 public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateStepClass<T>, Class<T>> {
 
     @Override
-    default PredicateStepClass<T> get(final AssertorResult<Class<T>> result) {
+    default PredicateStepClass<T> get(final StepAssertor<Class<T>> result) {
         return () -> result;
     }
 
     @Override
     default PredicateAssertorClass<T> not() {
-        return () -> HelperAssertor.not(getResult());
+        return () -> HelperAssertor.not(getStep());
     }
 
     @Override
@@ -47,6 +47,71 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
     @Override
     default PredicateStepClass<T> isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.isAssignableFrom(this.getResult(), clazz, locale, message, arguments);
+        return () -> AssertorClass.isAssignableFrom(this.getStep(), clazz, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepClass<T> hasName(final CharSequence name) {
+        return this.hasName(name, null);
+    }
+
+    default PredicateStepClass<T> hasName(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasName(name, null, message, arguments);
+    }
+
+    default PredicateStepClass<T> hasName(final CharSequence name, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorClass.hasName(this.getStep(), name, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepClass<T> hasSimpleName(final CharSequence name) {
+        return this.hasSimpleName(name, null);
+    }
+
+    default PredicateStepClass<T> hasSimpleName(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasSimpleName(name, null, message, arguments);
+    }
+
+    default PredicateStepClass<T> hasSimpleName(final CharSequence name, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorClass.hasSimpleName(this.getStep(), name, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepClass<T> hasCanonicalName(final CharSequence name) {
+        return this.hasCanonicalName(name, null);
+    }
+
+    default PredicateStepClass<T> hasCanonicalName(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasCanonicalName(name, null, message, arguments);
+    }
+
+    default PredicateStepClass<T> hasCanonicalName(final CharSequence name, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorClass.hasCanonicalName(this.getStep(), name, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepClass<T> hasTypeName(final CharSequence name) {
+        return this.hasTypeName(name, null);
+    }
+
+    default PredicateStepClass<T> hasTypeName(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasTypeName(name, null, message, arguments);
+    }
+
+    default PredicateStepClass<T> hasTypeName(final CharSequence name, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorClass.hasTypeName(this.getStep(), name, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepClass<T> hasPackageName(final CharSequence name) {
+        return this.hasPackageName(name, null);
+    }
+
+    default PredicateStepClass<T> hasPackageName(final CharSequence name, final CharSequence message, final Object... arguments) {
+        return this.hasPackageName(name, null, message, arguments);
+    }
+
+    default PredicateStepClass<T> hasPackageName(final CharSequence name, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorClass.hasPackageName(this.getStep(), name, Message.of(locale, message, arguments));
     }
 }

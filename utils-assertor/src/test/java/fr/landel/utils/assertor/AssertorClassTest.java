@@ -12,8 +12,10 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -82,4 +84,245 @@ public class AssertorClassTest extends AbstractTest {
             Assertor.that((Class<?>) null).isAssignableFrom(Exception.class).toThrow("msg");
         }, IllegalArgumentException.class, "msg");
     }
+
+    /**
+     * Test method for {@link AssertorClass#hasName} .
+     * 
+     * @throws IOException
+     *             On errors
+     */
+    @Test
+    public void testHasName() throws IOException {
+        String name = IOException.class.getName();
+
+        assertTrue(Assertor.that(IOException.class).hasName(name).isOK());
+        assertFalse(Assertor.that(IOException.class).hasName("rr").isOK());
+
+        assertTrue(Assertor.that(IOException.class).isNotNull().and().hasName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().hasName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().xor().hasName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().not().hasName("ee").isOK());
+
+        assertTrue(Assertor.that(IOException.class).hasName(name).and("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasName(name).or("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasName(name).xor("ara").contains('e').isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the class 'Exception' should have the name 're'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).hasName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasName("").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasName(null).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the name cannot be null or empty", JUNIT_ERROR);
+    }
+
+    /**
+     * Test method for {@link AssertorClass#hasSimpleName} .
+     * 
+     * @throws IOException
+     *             On errors
+     */
+    @Test
+    public void testHasSimpleName() throws IOException {
+        String name = IOException.class.getSimpleName();
+
+        assertTrue(Assertor.that(IOException.class).hasSimpleName(name).isOK());
+        assertFalse(Assertor.that(IOException.class).hasSimpleName("rr").isOK());
+
+        assertTrue(Assertor.that(IOException.class).isNotNull().and().hasSimpleName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().hasSimpleName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().xor().hasSimpleName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().not().hasSimpleName("ee").isOK());
+
+        assertTrue(Assertor.that(IOException.class).hasSimpleName(name).and("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasSimpleName(name).or("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasSimpleName(name).xor("ara").contains('e').isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasSimpleName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasSimpleName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the class 'Exception' should have the simple name 're'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).hasSimpleName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the simple name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasSimpleName("").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the simple name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasSimpleName(null).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the simple name cannot be null or empty", JUNIT_ERROR);
+    }
+
+    /**
+     * Test method for {@link AssertorClass#hasCanonicalName} .
+     * 
+     * @throws IOException
+     *             On errors
+     */
+    @Test
+    public void testHasCanonicalName() throws IOException {
+        String name = IOException.class.getCanonicalName();
+
+        assertTrue(Assertor.that(IOException.class).hasCanonicalName(name).isOK());
+        assertFalse(Assertor.that(IOException.class).hasCanonicalName("rr").isOK());
+
+        assertTrue(Assertor.that(IOException.class).isNotNull().and().hasCanonicalName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().hasCanonicalName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().xor().hasCanonicalName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().not().hasCanonicalName("ee").isOK());
+
+        assertTrue(Assertor.that(IOException.class).hasCanonicalName(name).and("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasCanonicalName(name).or("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasCanonicalName(name).xor("ara").contains('e').isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasCanonicalName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasCanonicalName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the class 'Exception' should have the canonical name 're'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).hasCanonicalName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the canonical name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasCanonicalName("").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the canonical name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasCanonicalName(null).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the canonical name cannot be null or empty", JUNIT_ERROR);
+    }
+
+    /**
+     * Test method for {@link AssertorClass#hasTypeName} .
+     * 
+     * @throws IOException
+     *             On errors
+     */
+    @Test
+    public void testHasTypeName() throws IOException {
+        String name = IOException.class.getTypeName();
+
+        assertTrue(Assertor.that(IOException.class).hasTypeName(name).isOK());
+        assertFalse(Assertor.that(IOException.class).hasTypeName("rr").isOK());
+
+        assertTrue(Assertor.that(IOException.class).isNotNull().and().hasTypeName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().hasTypeName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().xor().hasTypeName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().not().hasTypeName("ee").isOK());
+
+        assertTrue(Assertor.that(IOException.class).hasTypeName(name).and("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasTypeName(name).or("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasTypeName(name).xor("ara").contains('e').isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasTypeName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasTypeName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the class 'Exception' should have the type name 're'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).hasTypeName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the type name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasTypeName("").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the type name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasTypeName(null).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the type name cannot be null or empty", JUNIT_ERROR);
+    }
+
+    /**
+     * Test method for {@link AssertorClass#hasPackageName} .
+     * 
+     * @throws IOException
+     *             On errors
+     */
+    @Test
+    public void testHasPackageName() throws IOException {
+        String name = IOException.class.getPackage().getName();
+
+        assertTrue(Assertor.that(IOException.class).hasPackageName(name).isOK());
+        assertFalse(Assertor.that(IOException.class).hasPackageName("rr").isOK());
+
+        assertTrue(Assertor.that(IOException.class).isNotNull().and().hasPackageName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().hasPackageName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().xor().hasPackageName(name).isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().or().not().hasPackageName("ee").isOK());
+
+        assertTrue(Assertor.that(IOException.class).hasPackageName(name).and("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasPackageName(name).or("ere").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasPackageName(name).xor("ara").contains('e').isOK());
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasPackageName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasPackageName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the class 'Exception' should have the package name 're'", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((Class<?>) null).hasPackageName("re").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the package name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasPackageName("").toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the package name cannot be null or empty", JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that(Exception.class).hasPackageName(null).toThrow();
+            fail();
+        }, IllegalArgumentException.class, "the classes cannot be null and the package name cannot be null or empty", JUNIT_ERROR);
+    }
+
 }

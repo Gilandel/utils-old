@@ -31,6 +31,7 @@ import fr.landel.utils.commons.exception.FunctionException;
  * @author Gilles
  *
  */
+@FunctionalInterface
 public interface BiPredicateThrowable<T, U, E extends Throwable> extends BiPredicate<T, U> {
 
     /**

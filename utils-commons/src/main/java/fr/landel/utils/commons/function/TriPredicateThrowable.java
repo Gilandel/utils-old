@@ -39,6 +39,7 @@ import fr.landel.utils.commons.exception.FunctionException;
  * @param <E>
  *            the exception type
  */
+@FunctionalInterface
 public interface TriPredicateThrowable<T, U, V, E extends Throwable> extends TriPredicate<T, U, V> {
 
     /**

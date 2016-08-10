@@ -39,7 +39,7 @@ import fr.landel.utils.commons.function.PredicateThrowable;
 @FunctionalInterface
 public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
 
-    AssertorResult<T> getResult();
+    StepAssertor<T> getStep();
 
     /**
      * The only purpose of this is to avoid the copy of basic methods into
@@ -52,7 +52,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return The predicate step
      */
     @SuppressWarnings("unchecked")
-    default S get(final AssertorResult<T> result) {
+    default S get(final StepAssertor<T> result) {
         return (S) (PredicateStep<S, T>) () -> result;
     }
 
@@ -62,7 +62,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return an assertor based on the current one
      */
     default PredicateAssertor<S, T> not() {
-        return () -> HelperAssertor.not(this.getResult());
+        return () -> HelperAssertor.not(this.getStep());
     }
 
     default S isNull() {
@@ -74,7 +74,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     default S isNull(final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isNull(this.getResult(), locale, message, arguments));
+        return this.get(AssertorObject.isNull(this.getStep(), Message.of(locale, message, arguments)));
     }
 
     default S isNotNull() {
@@ -86,7 +86,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     default S isNotNull(final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isNotNull(this.getResult(), locale, message, arguments));
+        return this.get(AssertorObject.isNotNull(this.getStep(), Message.of(locale, message, arguments)));
     }
 
     default S isEqual(final Object object) {
@@ -98,7 +98,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     default S isEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isEqual(this.getResult(), object, locale, message, arguments));
+        return this.get(AssertorObject.isEqual(this.getStep(), object, Message.of(locale, message, arguments)));
     }
 
     default S isNotEqual(final Object object) {
@@ -110,7 +110,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     default S isNotEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isNotEqual(this.getResult(), object, locale, message, arguments));
+        return this.get(AssertorObject.isNotEqual(this.getStep(), object, Message.of(locale, message, arguments)));
     }
 
     default S isInstanceOf(final Class<?> clazz) {
@@ -122,7 +122,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     default S isInstanceOf(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isInstanceOf(this.getResult(), clazz, locale, message, arguments));
+        return this.get(AssertorObject.isInstanceOf(this.getStep(), clazz, Message.of(locale, message, arguments)));
     }
 
     default S isAssignableFrom(final Class<?> clazz) {
@@ -134,7 +134,19 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     default S isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isAssignableFrom(this.getResult(), clazz, locale, message, arguments));
+        return this.get(AssertorObject.isAssignableFrom(this.getStep(), clazz, Message.of(locale, message, arguments)));
+    }
+
+    default S hasHashCode(final int hashCode) {
+        return this.hasHashCode(hashCode, null);
+    }
+
+    default S hasHashCode(final int hashCode, final CharSequence message, final Object... arguments) {
+        return this.hasHashCode(hashCode, null, message, arguments);
+    }
+
+    default S hasHashCode(final int hashCode, final Locale locale, final CharSequence message, final Object... arguments) {
+        return this.get(AssertorObject.hasHashCode(this.getStep(), hashCode, Message.of(locale, message, arguments)));
     }
 
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate) {
@@ -148,6 +160,6 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
 
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return this.get(AssertorObject.validates(this.getResult(), predicate, locale, message, arguments));
+        return this.get(AssertorObject.validates(this.getStep(), predicate, Message.of(locale, message, arguments)));
     }
 }

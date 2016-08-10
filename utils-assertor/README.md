@@ -867,6 +867,4 @@ Expect.exception(() -> {
 
 ## TODO
 
-- Improve message generation (only build message at the end) (which locale?)
-- Provide a function to let developer creating the message, (ex: (locale, errors, parameters) -> my message?)
-	and maybe remove current methods? (msg, args + loc, msg, args)
+- Build all messages in one step at the end (one call to String.format, which locale, if multiple?)

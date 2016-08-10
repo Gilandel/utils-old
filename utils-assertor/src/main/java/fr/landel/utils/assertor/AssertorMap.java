@@ -12,151 +12,290 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
-
+/**
+ * Utility class to prepare the check of {@link Map}
+ *
+ * @since Aug 10, 2016
+ * @author Gilles
+ *
+ */
 public class AssertorMap extends Constants {
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> hasSize(final AssertorResult<Map<K, V>> result, final int size,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate the {@link Map} size
+     * 
+     * <p>
+     * precondition: {@link Map} cannot be {@code null} and size cannot be lower
+     * than zero
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param size
+     *            the size to validate
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> hasSize(final StepAssertor<Map<K, V>> step, final int size, final Message message) {
 
-        final Function<Map<K, V>, Boolean> precondition = (map) -> size >= 0 && map != null;
+        final Predicate<Map<K, V>> preChecker = (map) -> size >= 0 && map != null;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.MAP.SIZE, true, false, objectIndex, paramIndex);
+        final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> map.size() == size;
 
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> map.size() == size;
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.MAP.SIZE, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
-                Pair.of(size, EnumType.NUMBER_INTEGER));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.SIZE, false, Pair.of(size, EnumType.NUMBER_INTEGER));
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> isEmpty(final AssertorResult<Map<K, V>> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} is {@code null} or
+     * empty
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> isEmpty(final StepAssertor<Map<K, V>> step, final Message message) {
 
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> MapUtils.isEmpty(map);
+        final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> MapUtils.isEmpty(map);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.MAP.EMPTY, not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.MAP.EMPTY, false);
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> isNotEmpty(final AssertorResult<Map<K, V>> result,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} is NOT {@code null}
+     * and NOT empty
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> isNotEmpty(final StepAssertor<Map<K, V>> step, final Message message) {
 
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> MapUtils.isNotEmpty(map);
+        final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> MapUtils.isNotEmpty(map);
 
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.MAP.EMPTY, !not, objectIndex);
-
-        return HelperAssertor.combine(result, null, checker, null, builtMessage, false);
+        return new StepAssertor<>(step, checker, false, message, MSG.MAP.EMPTY, true);
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> containsAll(final AssertorResult<Map<K, V>> result,
-            final Map<K, V> map, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} contains all
+     * {@code map} entries
+     * 
+     * <p>
+     * precondition: neither {@link Map} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param map
+     *            the map containing entries to find
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> containsAll(final StepAssertor<Map<K, V>> step, final Map<K, V> map,
+            final Message message) {
 
-        return contains(result, map, MSG.MAP.CONTAINS_MAP_ALL, true, locale, message, arguments);
+        return contains(step, map, MSG.MAP.CONTAINS_MAP_ALL, true, message);
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> containsAll(final AssertorResult<Map<K, V>> result,
-            final Iterable<K> keys, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} contains all
+     * {@code keys} entries
+     * 
+     * <p>
+     * precondition: neither {@link Map} and {@code keys} cannot be {@code null}
+     * or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param keys
+     *            the keys to find
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> containsAll(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
+            final Message message) {
 
-        return contains(result, keys, MSG.MAP.CONTAINS_KEYS_ALL, true, locale, message, arguments);
+        return contains(step, keys, MSG.MAP.CONTAINS_KEYS_ALL, true, message);
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> containsAny(final AssertorResult<Map<K, V>> result,
-            final Map<K, V> map, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} contains any
+     * {@code map} entries
+     * 
+     * <p>
+     * precondition: neither {@link Map} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param map
+     *            the map containing entries to find
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> containsAny(final StepAssertor<Map<K, V>> step, final Map<K, V> map,
+            final Message message) {
 
-        return contains(result, map, MSG.MAP.CONTAINS_MAP_ANY, false, locale, message, arguments);
+        return contains(step, map, MSG.MAP.CONTAINS_MAP_ANY, false, message);
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> containsAny(final AssertorResult<Map<K, V>> result,
-            final Iterable<K> keys, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} contains any
+     * {@code keys} entries
+     * 
+     * <p>
+     * precondition: neither {@link Map} and {@code keys} cannot be {@code null}
+     * or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param keys
+     *            the keys to find
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> containsAny(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
+            final Message message) {
 
-        return contains(result, keys, MSG.MAP.CONTAINS_KEYS_ANY, false, locale, message, arguments);
+        return contains(step, keys, MSG.MAP.CONTAINS_KEYS_ANY, false, message);
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> contains(final AssertorResult<Map<K, V>> result,
-            final Iterable<K> keys, final CharSequence key, final boolean all, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} contains the
+     * specified key
+     * 
+     * <p>
+     * precondition: {@link Map} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param key
+     *            the key to find
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final K key, final Message message) {
 
-        final Function<Map<K, V>, Boolean> precondition = (map) -> MapUtils.isNotEmpty(map) && !IterableUtils.isEmpty(keys);
+        final Predicate<Map<K, V>> preChecker = (map) -> MapUtils.isNotEmpty(map);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
+        final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> map.containsKey(key);
 
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> AssertorMap.contains(map, keys, all, not);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, true,
-                Pair.of(keys, EnumType.ITERABLE));
-    }
-
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> contains(final AssertorResult<Map<K, V>> result,
-            final Map<K, V> map, final CharSequence key, final boolean all, final Locale locale, final CharSequence message,
-            final Object[] arguments) {
-
-        final Function<Map<K, V>, Boolean> precondition = (map1) -> MapUtils.isNotEmpty(map1) && MapUtils.isNotEmpty(map);
-
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, key, true, false, objectIndex, paramIndex);
-
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map1, not) -> AssertorMap.contains(map1, map, all, not);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, key, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, true, Pair.of(map, EnumType.MAP));
-    }
-
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> contains(final AssertorResult<Map<K, V>> result, final K key,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
-
-        final Function<Map<K, V>, Boolean> precondition = (map) -> MapUtils.isNotEmpty(map);
-
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.MAP.CONTAINS_KEY, true, false, objectIndex, paramIndex);
-
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> map.containsKey(key);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.MAP.CONTAINS_KEY, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false,
                 Pair.of(key, EnumType.getType(key)));
     }
 
-    protected static <K, V, E extends Throwable> AssertorResult<Map<K, V>> contains(final AssertorResult<Map<K, V>> result, final K key,
-            final V value, final Locale locale, final CharSequence message, final Object[] arguments) {
+    /**
+     * Prepare the next step to validate if the {@link Map} contains the
+     * specified pair key/value
+     * 
+     * <p>
+     * precondition: {@link Map} cannot be {@code null} or empty
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param key
+     *            the key to find
+     * @param value
+     *            the value to find
+     * @param message
+     *            the message if invalid
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the next step
+     */
+    protected static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final K key, final V value,
+            final Message message) {
 
-        final Function<Map<K, V>, Boolean> precondition = (map) -> MapUtils.isNotEmpty(map);
+        final Predicate<Map<K, V>> preChecker = (map) -> MapUtils.isNotEmpty(map);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage
-                .getDefaultMessage(result, MSG.MAP.CONTAINS_PAIR, true, false, objectIndex, paramIndex);
+        final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> AssertorMap.contains(map, key, value);
 
-        final BiFunctionThrowable<Map<K, V>, Boolean, Boolean, E> checker = (map, not) -> AssertorMap.contains(map, key, value);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, locale, message, arguments, MSG.MAP.CONTAINS_PAIR, not, objectIndex, paramIndex, paramIndex + 1);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false,
                 Pair.of(key, EnumType.getType(key)), Pair.of(value, EnumType.getType(value)));
+    }
+
+    private static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
+            final CharSequence key, final boolean all, final Message message) {
+
+        final Predicate<Map<K, V>> preChecker = (map) -> MapUtils.isNotEmpty(map) && !IterableUtils.isEmpty(keys);
+
+        final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> AssertorMap.contains(map, keys, all, not);
+
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(keys, EnumType.ITERABLE));
+    }
+
+    private static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final Map<K, V> map, final CharSequence key,
+            final boolean all, final Message message) {
+
+        final Predicate<Map<K, V>> preChecker = (map1) -> MapUtils.isNotEmpty(map1) && MapUtils.isNotEmpty(map);
+
+        final BiPredicate<Map<K, V>, Boolean> checker = (map1, not) -> AssertorMap.contains(map1, map, all, not);
+
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(map, EnumType.MAP));
     }
 
     private static <K, V> boolean contains(final Map<K, V> map, final Iterable<K> keys, final boolean all, final boolean not) {

@@ -12,128 +12,106 @@
  */
 package fr.landel.utils.assertor;
 
-import java.util.Locale;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import fr.landel.utils.commons.function.BiFunctionThrowable;
-import fr.landel.utils.commons.function.TriFunction;
-
 /**
- * Utility classes to check {@link Enum}
+ * Utility class to prepare the check of {@link Enum}
  *
- * @since 5 août 2016
+ * @since Aug 10, 2016
  * @author Gilles
  *
  */
 public class AssertorEnum extends Constants {
 
     /**
-     * Checks if the enumeration has the specified name.
+     * Prepare the next step to validate if the {@link Enum} has the specified
+     * name (insensitive case)
      * 
-     * @param result
-     *            the previous result
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
      * @param name
      *            the enumeration property name
-     * @param locale
-     *            the message locale
      * @param message
      *            the message if invalid
-     * @param arguments
-     *            the message arguments
      * @param <T>
      *            the enumeration type
-     * @param <E>
-     *            the checker exception type
-     * @return the result supplier
+     * @return the next step
      */
-    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasNameIgnoreCase(final AssertorResult<T> result,
-            final CharSequence name, final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T extends Enum<T>> StepAssertor<T> hasNameIgnoreCase(final StepAssertor<T> step, final CharSequence name,
+            final Message message) {
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.name().equalsIgnoreCase(name.toString());
+        final BiPredicate<T, Boolean> checker = (object, not) -> object.name().equalsIgnoreCase(name.toString());
 
-        return AssertorEnum.hasName(result, name, MSG.ENUM.NAME, checker, locale, message, arguments);
+        return AssertorEnum.hasName(step, name, MSG.ENUM.NAME, checker, message);
     }
 
     /**
-     * Checks if the enumeration has the specified name.
+     * Prepare the next step to validate if the {@link Enum} has the specified
+     * name
      * 
-     * @param result
-     *            the previous result
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
      * @param name
      *            the enumeration property name
-     * @param locale
-     *            the message locale
      * @param message
      *            the message if invalid
-     * @param arguments
-     *            the message arguments
      * @param <T>
      *            the enumeration type
-     * @param <E>
-     *            the checker exception type
-     * @return the result supplier
+     * @return the next step
      */
-    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasName(final AssertorResult<T> result,
-            final CharSequence name, final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T extends Enum<T>> StepAssertor<T> hasName(final StepAssertor<T> step, final CharSequence name,
+            final Message message) {
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.name().equals(name);
+        final BiPredicate<T, Boolean> checker = (object, not) -> object.name().equals(name);
 
-        return AssertorEnum.hasName(result, name, MSG.ENUM.NAME, checker, locale, message, arguments);
+        return AssertorEnum.hasName(step, name, MSG.ENUM.NAME, checker, message);
     }
 
-    private static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasName(final AssertorResult<T> result,
-            final CharSequence name, final CharSequence key, final BiFunctionThrowable<T, Boolean, Boolean, E> checker, final Locale locale,
-            final CharSequence message, final Object[] arguments) {
+    private static <T extends Enum<T>> StepAssertor<T> hasName(final StepAssertor<T> step, final CharSequence name, final CharSequence key,
+            final BiPredicate<T, Boolean> checker, final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && StringUtils.isNotEmpty(name);
+        final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(name);
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result, key,
-                true, false, objectIndex, paramIndex);
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, key, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
-                Pair.of(name, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, Pair.of(name, EnumType.CHAR_SEQUENCE));
     }
 
     /**
-     * Checks if the enumeration has the specified ordinal.
+     * Prepare the next step to validate if the {@link Enum} has the specified
+     * ordinal
      * 
-     * @param result
-     *            the previous result
+     * <p>
+     * precondition: the {@code ordinal} cannot be lower than 0
+     * </p>
+     * 
+     * @param step
+     *            the previous step
      * @param ordinal
      *            the enumeration property ordinal
-     * @param locale
-     *            the message locale
      * @param message
      *            the message if invalid
-     * @param arguments
-     *            the message arguments
      * @param <T>
      *            the enumeration type
-     * @param <E>
-     *            the checker exception type
-     * @return the result supplier
+     * @return the next step
      */
-    protected static <T extends Enum<T>, E extends Throwable> AssertorResult<T> hasOrdinal(final AssertorResult<T> result, final int ordinal,
-            final Locale locale, final CharSequence message, final Object[] arguments) {
+    protected static <T extends Enum<T>> StepAssertor<T> hasOrdinal(final StepAssertor<T> step, final int ordinal, final Message message) {
 
-        final Function<T, Boolean> precondition = (object) -> object != null && ordinal >= 0;
+        final Predicate<T> preChecker = (object) -> object != null && ordinal >= 0;
 
-        final BiFunction<Integer, Integer, CharSequence> preconditionMessage = (objectIndex, paramIndex) -> HelperMessage.getDefaultMessage(result,
-                MSG.ENUM.ORDINAL, true, false, objectIndex, paramIndex);
+        final BiPredicate<T, Boolean> checker = (object, not) -> object.ordinal() == ordinal;
 
-        final BiFunctionThrowable<T, Boolean, Boolean, E> checker = (object, not) -> object.ordinal() == ordinal;
-
-        final TriFunction<Integer, Integer, Boolean, CharSequence> builtMessage = (objectIndex, paramIndex, not) -> HelperMessage
-                .getMessage(result, Assertor.getLocale(locale), message, arguments, MSG.ENUM.ORDINAL, not, objectIndex, paramIndex);
-
-        return HelperAssertor.combine(result, precondition, checker, preconditionMessage, builtMessage, false,
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ENUM.ORDINAL, false,
                 Pair.of(ordinal, EnumType.NUMBER_INTEGER));
     }
 }

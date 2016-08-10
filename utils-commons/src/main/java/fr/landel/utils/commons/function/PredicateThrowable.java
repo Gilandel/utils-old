@@ -28,6 +28,7 @@ import fr.landel.utils.commons.exception.FunctionException;
  * @author Gilles
  *
  */
+@FunctionalInterface
 public interface PredicateThrowable<T, E extends Throwable> extends Predicate<T> {
 
     /**
