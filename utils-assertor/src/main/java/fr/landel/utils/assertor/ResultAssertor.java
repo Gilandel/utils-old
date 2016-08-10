@@ -29,7 +29,7 @@ public class ResultAssertor {
     private final boolean precondition;
     private final boolean valid;
     private final String message;
-    final List<Pair<Object, EnumType>> parameters;
+    private final List<Pair<Object, EnumType>> parameters;
 
     /**
      * Constructor

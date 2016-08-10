@@ -38,7 +38,7 @@ public class AssertorCharSequenceKOPerf extends AbstractMicrobenchmark {
 
     @Override
     protected double getExpectedMinNbOpsPerSeconds() {
-        return 50_000d;
+        return 30_000d;
     }
 
     /**
