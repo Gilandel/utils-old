@@ -204,7 +204,7 @@ public class FileSystemUtilsTest {
         }, FileNotFoundException.class, "the source doesn't exist");
 
         Expect.exception(() -> {
-            FileSystemUtils.moveDirectory(new File(dest3), new File("file:/"));
+            FileSystemUtils.moveDirectory(new File(dest3), new File("file>zzz"));
             fail();
         }, IOException.class, "cannot access or create the destination directory");
     }
@@ -322,12 +322,12 @@ public class FileSystemUtilsTest {
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            FileSystemUtils.moveFile(CHECK_CRC32_TARGET_PATH + "/output4.file", "file:/");
+            FileSystemUtils.moveFile(CHECK_CRC32_TARGET_PATH + "/output4.file", "file>zzz");
             fail();
         }, FileNotFoundException.class);
 
         Expect.exception(() -> {
-            FileSystemUtils.moveFile(file, new File("file:/"));
+            FileSystemUtils.moveFile(file, new File("file>zzz"));
             fail();
         }, FileNotFoundException.class);
     }

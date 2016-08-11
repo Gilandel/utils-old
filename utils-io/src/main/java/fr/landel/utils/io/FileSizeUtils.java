@@ -125,8 +125,9 @@ public final class FileSizeUtils {
             }
         }
         if (size > 1) {
-            return size + EnumChar.SPACE.getUnicode() + mapReversed.get(0L) + "s";
+            return new StringBuilder(String.valueOf(size)).append(EnumChar.SPACE.getUnicode()).append(mapReversed.get(0L)).append("s")
+                    .toString();
         }
-        return size + EnumChar.SPACE.getUnicode() + mapReversed.get(0L);
+        return new StringBuilder(String.valueOf(size)).append(EnumChar.SPACE.getUnicode()).append(mapReversed.get(0L)).toString();
     }
 }
