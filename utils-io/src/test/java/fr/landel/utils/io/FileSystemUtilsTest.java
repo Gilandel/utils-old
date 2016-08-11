@@ -55,6 +55,8 @@ public class FileSystemUtilsTest {
     private static final long CHECK_CRC32_PATH_SIZE = 1_119L;
     private static final long CHECK_CRC32_FILE_SIZE = 1_102L;
 
+    private static final String OS = System.getProperty("os.name").toLowerCase();
+
     private static final String ERROR_PARAM_NULL = "At least one parameter is null";
 
     /**
@@ -203,10 +205,12 @@ public class FileSystemUtilsTest {
             fail();
         }, FileNotFoundException.class, "the source doesn't exist");
 
-        Expect.exception(() -> {
-            FileSystemUtils.moveDirectory(new File(dest3), new File("file>zzz"));
-            fail();
-        }, IOException.class, "cannot access or create the destination directory");
+        if (OS.indexOf("win") > -1) {
+            Expect.exception(() -> {
+                FileSystemUtils.moveDirectory(new File(dest3), new File("file>zzz"));
+                fail();
+            }, IOException.class, "cannot access or create the destination directory");
+        }
     }
 
     /**
@@ -321,15 +325,17 @@ public class FileSystemUtilsTest {
             fail();
         }, IllegalArgumentException.class);
 
-        Expect.exception(() -> {
-            FileSystemUtils.moveFile(CHECK_CRC32_TARGET_PATH + "/output4.file", "file>zzz");
-            fail();
-        }, FileNotFoundException.class);
+        if (OS.indexOf("win") > -1) {
+            Expect.exception(() -> {
+                FileSystemUtils.moveFile(CHECK_CRC32_TARGET_PATH + "/output4.file", "file>zzz");
+                fail();
+            }, FileNotFoundException.class);
 
-        Expect.exception(() -> {
-            FileSystemUtils.moveFile(file, new File("file>zzz"));
-            fail();
-        }, FileNotFoundException.class);
+            Expect.exception(() -> {
+                FileSystemUtils.moveFile(file, new File("file>zzz"));
+                fail();
+            }, FileNotFoundException.class);
+        }
     }
 
     /**

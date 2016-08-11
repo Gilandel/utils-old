@@ -494,7 +494,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      * 
      * @param dir
      *            The directory name
-     * @param filter
+     * @param filenameFilter
      *            The file filter to apply (not used if null)
      * @return true, if full deleted
      * @throws IOException
@@ -543,7 +543,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      * 
      * @param dir
      *            The directory name (required, not null and a directory)
-     * @param fileFilter
+     * @param filenameFilter
      *            The file filter to apply (not used if null)
      * @return true, if full deleted
      * @throws IOException
