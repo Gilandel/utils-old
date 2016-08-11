@@ -71,17 +71,17 @@ public class StepAssertor<T> implements Serializable {
     private final boolean not;
 
     // (object) -> precondition OK?
-    private final Predicate<T> preChecker;
+    private Predicate<T> preChecker;
     // default key message (used id precondition ko or message null)
-    private final CharSequence messageKey;
-    private final boolean messageKeyNot;
+    private CharSequence messageKey;
+    private boolean messageKeyNot;
     // (object, not) -> valid?
-    private final BiPredicate<T, Boolean> checker;
+    private BiPredicate<T, Boolean> checker;
     // if 'not' is directly applied by checker
-    private final boolean notAppliedByChecker;
-    private final Message message;
+    private boolean notAppliedByChecker;
+    private Message message;
 
-    private final List<Pair<Object, EnumType>> parameters;
+    private List<Pair<Object, EnumType>> parameters;
 
     /**
      * Base constructor
@@ -100,30 +100,13 @@ public class StepAssertor<T> implements Serializable {
      *            the operator for the previous combination (with next step)
      * @param not
      *            if NOT operator is applied on the next checker
-     * @param preChecker
-     *            the checker for preconditions
-     * @param checker
-     *            the main checker (only applied if preChecker returns true)
-     * @param notAppliedByChecker
-     *            if 'not' is directly applied by checker
-     * @param message
-     *            the error message (only used if preChecker returns true and
-     *            checker returns false)
-     * @param messageKey
-     *            the default message key (used if preChecker returns false or
-     *            if checker returns false and message is null)
-     * @param messageKeyNot
-     *            if the default message is in NOT version
      * @param <X>
      *            the previous step type
      * @param <Y>
      *            the sub step type
      */
-    @SafeVarargs
     private <X, Y> StepAssertor(final EnumStep stepType, final StepAssertor<X> previousStep, final StepAssertor<Y> subStep, final T object,
-            final EnumType type, final EnumOperator operator, final boolean not, final Predicate<T> preChecker,
-            final BiPredicate<T, Boolean> checker, final boolean notAppliedByChecker, final Message message, final CharSequence messageKey,
-            final boolean messageKeyNot, final Pair<Object, EnumType>... parameters) {
+            final EnumType type, final EnumOperator operator, final boolean not) {
 
         this.stepType = stepType;
         this.subStep = subStep;
@@ -135,15 +118,6 @@ public class StepAssertor<T> implements Serializable {
 
         this.operator = operator;
         this.not = not;
-
-        this.messageKey = messageKey;
-        this.messageKeyNot = messageKeyNot;
-        this.preChecker = preChecker;
-        this.checker = checker;
-        this.notAppliedByChecker = notAppliedByChecker;
-        this.message = message;
-
-        this.parameters = new ArrayList<>(Arrays.asList(parameters));
     }
 
     /**
@@ -155,7 +129,7 @@ public class StepAssertor<T> implements Serializable {
      *            the type of the object
      */
     public StepAssertor(final T object, final EnumType type) {
-        this(EnumStep.CREATION, null, null, object, type, null, false, null, null, false, null, null, false);
+        this(EnumStep.CREATION, null, null, object, type, null, false);
     }
 
     /**
@@ -165,7 +139,7 @@ public class StepAssertor<T> implements Serializable {
      *            the previous step
      */
     public StepAssertor(final StepAssertor<T> previousStep) {
-        this(EnumStep.NOT, previousStep, null, null, null, null, true, null, null, false, null, null, false);
+        this(EnumStep.NOT, previousStep, null, null, null, null, true);
     }
 
     /**
@@ -183,7 +157,7 @@ public class StepAssertor<T> implements Serializable {
      *            the type of previous step object
      */
     public <X> StepAssertor(final StepAssertor<X> previousStep, final T object, final EnumType type, final EnumOperator operator) {
-        this(EnumStep.OBJECT, previousStep, null, object, type, operator, false, null, null, false, null, null, false);
+        this(EnumStep.OBJECT, previousStep, null, object, type, operator, false);
     }
 
     /**
@@ -196,7 +170,23 @@ public class StepAssertor<T> implements Serializable {
      *            The operator for the next combination
      */
     public StepAssertor(final StepAssertor<T> previousStep, final EnumOperator operator) {
-        this(EnumStep.OPERATOR, previousStep, null, null, null, operator, false, null, null, false, null, null, false);
+        this(EnumStep.OPERATOR, previousStep, null, null, null, operator, false);
+    }
+
+    /**
+     * Standard combining constructor (not is set to false)
+     *
+     * @param previousStep
+     *            the previous step
+     * @param subStep
+     *            the sub step
+     * @param operator
+     *            The operator for the next combination
+     * @param <Y>
+     *            the sub step type
+     */
+    public <Y> StepAssertor(final StepAssertor<T> previousStep, final StepAssertor<Y> subStep, final EnumOperator operator) {
+        this(EnumStep.SUB, previousStep, subStep, null, null, operator, false);
     }
 
     /**
@@ -225,8 +215,16 @@ public class StepAssertor<T> implements Serializable {
     public StepAssertor(final StepAssertor<T> previousStep, final Predicate<T> preChecker, final BiPredicate<T, Boolean> checker,
             final boolean notAppliedByChecker, final Message message, final CharSequence messageKey, final boolean messageKeyNot,
             final Pair<Object, EnumType>... parameters) {
-        this(EnumStep.ASSERTION, previousStep, null, null, null, null, false, preChecker, checker, notAppliedByChecker, message, messageKey,
-                messageKeyNot, parameters);
+        this(EnumStep.ASSERTION, previousStep, null, null, null, null, false);
+
+        this.messageKey = messageKey;
+        this.messageKeyNot = messageKeyNot;
+        this.preChecker = preChecker;
+        this.checker = checker;
+        this.notAppliedByChecker = notAppliedByChecker;
+        this.message = message;
+
+        this.parameters = new ArrayList<>(Arrays.asList(parameters));
     }
 
     /**
@@ -252,24 +250,7 @@ public class StepAssertor<T> implements Serializable {
     @SafeVarargs
     public StepAssertor(final StepAssertor<T> previousStep, final BiPredicate<T, Boolean> checker, final boolean notAppliedByChecker,
             final Message message, final CharSequence messageKey, final boolean messageKeyNot, final Pair<Object, EnumType>... parameters) {
-        this(EnumStep.ASSERTION, previousStep, null, null, null, null, false, null, checker, notAppliedByChecker, message, messageKey,
-                messageKeyNot, parameters);
-    }
-
-    /**
-     * Standard combining constructor (not is set to false)
-     *
-     * @param previousStep
-     *            the previous step
-     * @param subStep
-     *            the sub step
-     * @param operator
-     *            The operator for the next combination
-     * @param <Y>
-     *            the sub step type
-     */
-    public <Y> StepAssertor(final StepAssertor<T> previousStep, final StepAssertor<Y> subStep, final EnumOperator operator) {
-        this(EnumStep.SUB, previousStep, subStep, null, null, operator, false, null, null, false, null, null, false);
+        this(previousStep, null, checker, notAppliedByChecker, message, messageKey, messageKeyNot, parameters);
     }
 
     /**
