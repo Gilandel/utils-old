@@ -57,4 +57,4 @@ To add easily MDC in your application in multi-threaded context
 
 # TODO
 
-add JMH
+IO: handle copy/move/delete progress

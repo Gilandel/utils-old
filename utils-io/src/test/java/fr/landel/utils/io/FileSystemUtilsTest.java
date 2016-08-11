@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Test;
 
+import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.assertor.expect.Expect;
 
 /**
@@ -44,21 +44,27 @@ public class FileSystemUtilsTest {
 
     private static final String XML_EXT = "xml";
     private static final String TXT_EXT = "txt";
-    private static final FilenameFilter XML_FILTER = FileSystemUtils.createFilenameFilter(XML_EXT);
-    private static final FileFilter TXT_FILTER = (file) -> TXT_EXT.equals(FileSystemUtils.getExtensionPart(file));
+    private static final FilenameFilter XML_FILENAME_FILTER = FileSystemUtils.createFilenameFilter(XML_EXT);
+    private static final FileFilter XML_FILE_FILTER = (file) -> XML_EXT.equalsIgnoreCase(FileSystemUtils.getExtensionPart(file));
+    private static final FileFilter TXT_FILTER = (file) -> TXT_EXT.equalsIgnoreCase(FileSystemUtils.getExtensionPart(file));
 
     private static final String CHECK_CRC32_PATH = "src/test/resources/io";
     private static final String CHECK_CRC32_TARGET_PATH = "target/io";
     private static final String CHECK_CRC32_FILE = CHECK_CRC32_PATH + "/checkCRC32.xml";
     private static final Long CHECK_CRC32_VALUE = 3_893_630_386L;
-    private static final Long CHECK_CRC32_DIR_UNIX_VALUE = 3_440_695_467L;
-    private static final Long CHECK_CRC32_DIR_WIN_VALUE = 580_225_974L;
+    private static final long CHECK_CRC32_PATH_SIZE = 1_119L;
+    private static final long CHECK_CRC32_FILE_SIZE = 1_102L;
+
+    private static final String ERROR_PARAM_NULL = "At least one parameter is null";
 
     /**
      * Remove test directory
+     * 
+     * @throws IOException
+     *             on error
      */
     @After
-    public void dispose() {
+    public void dispose() throws IOException {
         File target = new File(CHECK_CRC32_TARGET_PATH);
 
         if (target.isDirectory()) {
@@ -87,50 +93,26 @@ public class FileSystemUtilsTest {
     }
 
     /**
-     * Check the CRC32 getter
-     */
-    @Test
-    public void testGetCRC32() {
-        try {
-            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_FILE));
-            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(new File(CHECK_CRC32_FILE)));
-            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(StreamUtils.createBufferedInputStream(CHECK_CRC32_FILE)));
-
-            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_PATH, XML_FILTER));
-
-            final long crc = FileCRC32Utils.getCRC32(CHECK_CRC32_PATH);
-            assertTrue(crc == CHECK_CRC32_DIR_WIN_VALUE || crc == CHECK_CRC32_DIR_UNIX_VALUE);
-
-            final File emptyDir = new File("target/empty");
-            assertTrue(FileSystemUtils.createDirectory(emptyDir));
-            assertEquals(Long.valueOf(0L), FileCRC32Utils.getCRC32(emptyDir));
-
-            final File unknownDir = new File("target/unknown");
-
-            assertEquals(Long.valueOf(0L), FileCRC32Utils.getCRC32(unknownDir));
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-    }
-
-    /**
      * Check {@link FileSystemUtils#copyDirectory}
      */
     @Test
     public void testCopyDirectory() {
         try {
-            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILTER);
-            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_TARGET_PATH, XML_FILTER));
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER);
+            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER));
 
             String dest = "target/dir" + UUID.randomUUID();
             FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, dest, TXT_FILTER);
             assertTrue(new File(dest).isDirectory());
 
             FileSystemUtils.copyDirectory(new File(CHECK_CRC32_PATH), new File("target/dir" + UUID.randomUUID()));
-            FileSystemUtils.copyDirectory(new File(CHECK_CRC32_PATH), new File("target/dir" + UUID.randomUUID()), XML_FILTER);
+            FileSystemUtils.copyDirectory(new File(CHECK_CRC32_PATH), new File("target/dir" + UUID.randomUUID()), XML_FILENAME_FILTER);
             FileSystemUtils.copyDirectory(new File(CHECK_CRC32_PATH), new File("target/dir" + UUID.randomUUID()), TXT_FILTER);
+            FileSystemUtils.copyDirectory(new File(CHECK_CRC32_PATH).getParentFile(), new File("target/dir" + UUID.randomUUID()));
 
             FileSystemUtils.copyDirectory(new File(CHECK_CRC32_TARGET_PATH), new File("target/dir" + UUID.randomUUID()));
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_FILE, "target/dir" + UUID.randomUUID(), TXT_FILTER);
 
             String newDir = "target/dir" + UUID.randomUUID();
             if (FileSystemUtils.createDirectory(newDir)) {
@@ -143,32 +125,32 @@ public class FileSystemUtilsTest {
         Expect.exception(() -> {
             FileSystemUtils.copyDirectory(null, (String) null);
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.copyDirectory(null, "");
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.copyDirectory("", null);
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.copyDirectory(null, (File) null);
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.copyDirectory(null, new File(""));
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.copyDirectory(new File(""), null);
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
     }
 
     /**
@@ -176,12 +158,13 @@ public class FileSystemUtilsTest {
      */
     @Test
     public void testMoveDirectory() {
+        String dest = "target/dir" + UUID.randomUUID();
+        final String dest3 = "target/dir" + UUID.randomUUID();
         try {
-            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILTER);
-            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_TARGET_PATH, XML_FILTER));
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER);
+            assertEquals(CHECK_CRC32_VALUE, FileCRC32Utils.getCRC32(CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER));
             FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH + 2, TXT_FILTER);
 
-            String dest = "target/dir" + UUID.randomUUID();
             FileSystemUtils.moveDirectory(CHECK_CRC32_TARGET_PATH, dest);
             assertFalse(new File(CHECK_CRC32_TARGET_PATH).isDirectory());
             assertTrue(new File(dest).isDirectory());
@@ -189,51 +172,86 @@ public class FileSystemUtilsTest {
             String dest2 = "target/dir" + UUID.randomUUID();
             FileSystemUtils.moveDirectory(new File(dest), new File(dest2));
 
-            FileSystemUtils.moveDirectory(new File(dest2), new File(dest), XML_FILTER);
-            FileSystemUtils.moveDirectory(dest, dest2, XML_FILTER);
+            FileSystemUtils.moveDirectory(new File(dest2), new File(dest), XML_FILENAME_FILTER);
+            FileSystemUtils.moveDirectory(dest, dest2, XML_FILENAME_FILTER);
 
             FileSystemUtils.moveDirectory(new File(CHECK_CRC32_TARGET_PATH + 2), new File(dest), TXT_FILTER);
             FileSystemUtils.moveDirectory(dest, dest2, TXT_FILTER);
 
-            FileSystemUtils.copyDirectory(CHECK_CRC32_TARGET_PATH, "target/dir" + UUID.randomUUID());
-            FileSystemUtils.moveDirectory(CHECK_CRC32_TARGET_PATH, "target/dir" + UUID.randomUUID());
-
-            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH + 4, XML_FILTER);
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH + 4, XML_FILENAME_FILTER);
             FileSystemUtils.copyDirectory(CHECK_CRC32_TARGET_PATH + 4 + "/checkCRC32.xml", CHECK_CRC32_PATH);
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH + 4, XML_FILENAME_FILTER);
+            FileSystemUtils.copyDirectory(CHECK_CRC32_TARGET_PATH + 4 + "/checkCRC32.xml", CHECK_CRC32_PATH, XML_FILENAME_FILTER);
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH + 4, XML_FILENAME_FILTER);
+            FileSystemUtils.copyDirectory(CHECK_CRC32_TARGET_PATH + 4 + "/checkCRC32.xml", CHECK_CRC32_PATH, XML_FILE_FILTER);
+
+            // prepare next step
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, dest3);
         } catch (IOException e) {
             fail(e.getMessage());
         }
 
         Expect.exception(() -> {
-            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILTER);
-            File file = new File(CHECK_CRC32_TARGET_PATH, "checkCRC32.xml");
-            assertTrue(file.isFile());
-            try (FileReader reader = new FileReader(file)) {
-                FileSystemUtils.moveDirectory(new File(CHECK_CRC32_TARGET_PATH), new File(CHECK_CRC32_TARGET_PATH + 3));
-            }
+            FileSystemUtils.copyDirectory(CHECK_CRC32_TARGET_PATH, "target/dir" + UUID.randomUUID());
             fail();
-        }, IOException.class);
+        }, FileNotFoundException.class, "the source doesn't exist");
+
+        Expect.exception(() -> {
+            FileSystemUtils.moveDirectory(CHECK_CRC32_TARGET_PATH, "target/dir" + UUID.randomUUID());
+            fail();
+        }, FileNotFoundException.class, "the source doesn't exist");
+
+        Expect.exception(() -> {
+            FileSystemUtils.moveDirectory(new File(dest3), new File("//\\"));
+            fail();
+        }, IOException.class, "cannot access or create the destination directory");
     }
 
     /**
-     * Check the remove directory method
+     * Check {@link FileSystemUtils#deleteDirectory}
      */
     @Test
-    public void testRemoveDirectory() {
+    public void testDeleteDirectory() {
         try {
             final File target = new File(CHECK_CRC32_TARGET_PATH);
 
             if (!target.exists()) {
-                FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILTER);
+                FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER);
             }
+            assertTrue(target.exists());
+            assertTrue(FileSystemUtils.deleteDirectory(CHECK_CRC32_TARGET_PATH));
+            assertFalse(target.exists());
 
-            if (target.exists()) {
-                FileSystemUtils.deleteDirectory(CHECK_CRC32_TARGET_PATH);
-
-                assertFalse(target.exists());
-            } else {
-                fail("The target '" + target.getAbsolutePath() + "' doesn't exists");
+            if (!target.exists()) {
+                FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER);
             }
+            assertTrue(target.exists());
+            assertTrue(FileSystemUtils.deleteDirectory(new File(CHECK_CRC32_TARGET_PATH)));
+            assertFalse(target.exists());
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH);
+            assertTrue(FileSystemUtils.deleteDirectory(CHECK_CRC32_TARGET_PATH, XML_FILE_FILTER));
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH);
+            assertTrue(FileSystemUtils.deleteDirectory(new File(CHECK_CRC32_TARGET_PATH), XML_FILE_FILTER));
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH);
+            assertTrue(FileSystemUtils.deleteDirectory(CHECK_CRC32_TARGET_PATH, XML_FILENAME_FILTER));
+
+            FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH);
+            assertTrue(FileSystemUtils.deleteDirectory(new File(CHECK_CRC32_TARGET_PATH), XML_FILENAME_FILTER));
+
+            Expect.exception(() -> {
+                assertFalse(FileSystemUtils.deleteDirectory((File) null));
+                fail();
+            }, IllegalArgumentException.class, ERROR_PARAM_NULL);
+
+            Expect.exception(() -> {
+                assertFalse(FileSystemUtils.deleteDirectory(CHECK_CRC32_FILE));
+                fail();
+            }, IllegalArgumentException.class, "not a directory");
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -243,6 +261,7 @@ public class FileSystemUtilsTest {
      * Check {@link FileSystemUtils#createDirectory}
      * 
      * @throws IOException
+     *             on error
      */
     @Test
     public void testCreateDirectory() throws IOException {
@@ -268,6 +287,7 @@ public class FileSystemUtilsTest {
      * Check {@link FileSystemUtils#moveFile}
      * 
      * @throws IOException
+     *             on error
      */
     @Test
     public void testMoveFile() throws IOException {
@@ -289,24 +309,17 @@ public class FileSystemUtilsTest {
         Expect.exception(() -> {
             FileSystemUtils.moveFile(null, CHECK_CRC32_TARGET_PATH + "output3.file");
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.moveFile((String) null, null);
             fail();
-        }, FileNotFoundException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.moveFile(CHECK_CRC32_TARGET_PATH + "output3.file", null);
             fail();
-        }, FileNotFoundException.class);
-
-        Expect.exception(() -> {
-            try (FileReader reader = new FileReader(file)) {
-                FileSystemUtils.moveFile(file, new File(CHECK_CRC32_TARGET_PATH + "output5.file"));
-            }
-            fail();
-        }, IOException.class);
+        }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
             FileSystemUtils.moveFile(CHECK_CRC32_TARGET_PATH + "/output4.file", "//\\");
@@ -332,6 +345,20 @@ public class FileSystemUtilsTest {
         assertEquals("", FileSystemUtils.getExtensionPart("file"));
         assertNull(FileSystemUtils.getExtensionPart((File) null));
         assertNull(FileSystemUtils.getExtensionPart((String) null));
+    }
+
+    /**
+     * Check {@link FileSystemUtils#getExtensionPart}
+     */
+    @Test
+    public void testHasExtensionPart() {
+        assertTrue(FileSystemUtils.hasExtensionPart(CHECK_CRC32_FILE, XML_EXT));
+        assertFalse(FileSystemUtils.hasExtensionPart(CHECK_CRC32_FILE));
+        assertFalse(FileSystemUtils.hasExtensionPart((String) null));
+
+        assertTrue(FileSystemUtils.hasExtensionPart(new File(CHECK_CRC32_FILE), XML_EXT));
+        assertFalse(FileSystemUtils.hasExtensionPart(new File(CHECK_CRC32_FILE)));
+        assertFalse(FileSystemUtils.hasExtensionPart((File) null));
     }
 
     /**
@@ -363,5 +390,152 @@ public class FileSystemUtilsTest {
 
         assertNull(FileSystemUtils.createFile((File) null, "classes", "fr", "landel", "utils", "io", "FileSystemUtils.class"));
         assertNull(FileSystemUtils.createFile("target"));
+    }
+
+    /**
+     * Check {@link FileSystemUtils#getSize}
+     * 
+     * @throws IOException
+     *             on error
+     */
+    @Test
+    public void testGetSize() throws IOException {
+        assertEquals(CHECK_CRC32_PATH_SIZE, FileSystemUtils.getSize(CHECK_CRC32_PATH));
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(CHECK_CRC32_PATH, XML_FILENAME_FILTER));
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(CHECK_CRC32_PATH, XML_FILE_FILTER));
+        assertEquals(CHECK_CRC32_PATH_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_PATH)));
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_PATH), XML_FILENAME_FILTER));
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_PATH), XML_FILE_FILTER));
+
+        assertEquals(CHECK_CRC32_PATH_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_PATH).getParentFile()));
+
+        Expect.exception(() -> {
+            FileSystemUtils.getSize((String) null);
+            fail();
+        }, IllegalArgumentException.class);
+
+        Expect.exception(() -> {
+            FileSystemUtils.getSize((File) null);
+            fail();
+        }, IllegalArgumentException.class);
+
+        String dir = "target/dirSize";
+        assertTrue(FileSystemUtils.createDirectory(dir));
+        assertEquals(0, FileSystemUtils.getSize(new File(dir)));
+
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_FILE)));
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_FILE), XML_FILENAME_FILTER));
+        assertEquals(CHECK_CRC32_FILE_SIZE, FileSystemUtils.getSize(new File(CHECK_CRC32_FILE), XML_FILE_FILTER));
+
+        FileSystemUtils.copyDirectory(CHECK_CRC32_PATH, CHECK_CRC32_TARGET_PATH, XML_FILE_FILTER);
+        assertEquals(0, FileSystemUtils.getSize(new File(CHECK_CRC32_TARGET_PATH), TXT_FILTER));
+    }
+
+    /**
+     * Check {@link FileSystemUtils#listFiles}
+     * 
+     * @throws IOException
+     *             on error
+     */
+    @Test
+    public void testListFiles() throws IOException {
+        assertTrue(
+                Assertor.that(FileSystemUtils.listFiles(CHECK_CRC32_PATH)).isNotEmpty().and().contains(new File(CHECK_CRC32_FILE)).isOK());
+
+        assertEquals(2, FileSystemUtils.listFiles(CHECK_CRC32_PATH).size());
+        assertEquals(1, FileSystemUtils.listFiles(CHECK_CRC32_PATH, XML_FILENAME_FILTER).size());
+        assertEquals(1, FileSystemUtils.listFiles(CHECK_CRC32_PATH, XML_FILE_FILTER).size());
+
+        assertEquals(1, FileSystemUtils.listFiles(CHECK_CRC32_FILE).size());
+        assertEquals(1, FileSystemUtils.listFiles(CHECK_CRC32_FILE, XML_FILENAME_FILTER).size());
+        assertEquals(0, FileSystemUtils.listFiles(CHECK_CRC32_FILE, TXT_FILTER).size());
+
+        assertTrue(Assertor.that(FileSystemUtils.listFiles(new File(CHECK_CRC32_PATH))).isNotEmpty().and()
+                .contains(new File(CHECK_CRC32_FILE)).isOK());
+
+        assertEquals(2, FileSystemUtils.listFiles(new File(CHECK_CRC32_PATH)).size());
+        assertEquals(1, FileSystemUtils.listFiles(new File(CHECK_CRC32_PATH), XML_FILENAME_FILTER).size());
+        assertEquals(1, FileSystemUtils.listFiles(new File(CHECK_CRC32_PATH), XML_FILE_FILTER).size());
+
+        assertEquals(1, FileSystemUtils.listFiles(new File(CHECK_CRC32_FILE)).size());
+        assertEquals(1, FileSystemUtils.listFiles(new File(CHECK_CRC32_FILE), XML_FILENAME_FILTER).size());
+        assertEquals(0, FileSystemUtils.listFiles(new File(CHECK_CRC32_FILE), TXT_FILTER).size());
+    }
+
+    /**
+     * Check {@link FileSystemUtils#createFilenameFilter}
+     * 
+     * @throws IOException
+     *             on error
+     */
+    @Test
+    public void testCreateFilenameFilter() throws IOException {
+        FilenameFilter filter = FileSystemUtils.createFilenameFilter(TXT_EXT, XML_EXT);
+
+        assertEquals(2, FileSystemUtils.listFiles(new File(CHECK_CRC32_PATH), filter).size());
+
+        assertFalse(filter.accept(null, null));
+
+        Expect.exception(() -> {
+            FileSystemUtils.createFilenameFilter();
+            fail();
+        }, IllegalArgumentException.class, ERROR_PARAM_NULL);
+
+        Expect.exception(() -> {
+            FileSystemUtils.createFilenameFilter((String[]) null);
+            fail();
+        }, IllegalArgumentException.class, ERROR_PARAM_NULL);
+
+        Expect.exception(() -> {
+            FileSystemUtils.createFilenameFilter(new String[] {"log", null});
+            fail();
+        }, IllegalArgumentException.class, "extensions array cannot contains 'null'");
+    }
+
+    /**
+     * Check {@link FileSystemUtils#getAbsolutePath}
+     * 
+     * @throws IOException
+     *             on error
+     */
+    @Test
+    public void testGetAbsolutePath() throws IOException {
+        String relative = new File(CHECK_CRC32_FILE).getPath();
+        String absolute = new File(CHECK_CRC32_FILE).getAbsolutePath();
+        String base = absolute.substring(0, absolute.length() - relative.length());
+
+        assertEquals(base + relative, FileSystemUtils.getAbsolutePath(base, relative));
+
+        assertEquals(absolute, FileSystemUtils.getAbsolutePath("base", absolute));
+
+        assertEquals(base + relative, FileSystemUtils.getAbsolutePath(new File(base), new File(relative)));
+
+        assertEquals(absolute, FileSystemUtils.getAbsolutePath(new File("base"), new File(absolute)));
+    }
+
+    /**
+     * Check {@link FileSystemUtils#isDirectoryEmpty}
+     * 
+     * @throws IOException
+     *             on error
+     */
+    @Test
+    public void testIsDirectoryEmpty() throws IOException {
+        String dir = "target/empty";
+        assertTrue(FileSystemUtils.createDirectory(dir));
+        assertTrue(FileSystemUtils.isDirectoryEmpty(dir));
+        assertTrue(FileSystemUtils.isDirectoryEmpty(new File(dir)));
+
+        assertFalse(FileSystemUtils.isDirectoryEmpty(CHECK_CRC32_FILE));
+
+        Expect.exception(() -> {
+            FileSystemUtils.isDirectoryEmpty((String) null);
+            fail();
+        }, IllegalArgumentException.class, ERROR_PARAM_NULL);
+
+        Expect.exception(() -> {
+            FileSystemUtils.isDirectoryEmpty((File) null);
+            fail();
+        }, IllegalArgumentException.class, ERROR_PARAM_NULL);
     }
 }

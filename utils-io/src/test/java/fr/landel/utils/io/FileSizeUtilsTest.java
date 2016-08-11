@@ -13,13 +13,9 @@
 package fr.landel.utils.io;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 
-import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -30,23 +26,6 @@ import org.junit.Test;
  *
  */
 public class FileSizeUtilsTest {
-
-    private static final String CHECK_CRC32_PATH = "src/test/resources/io";
-    private static final String CHECK_CRC32_TARGET_PATH = "target/io";
-    private static final String CHECK_CRC32_FILE = CHECK_CRC32_PATH + "/checkCRC32.xml";
-    private static final long CHECK_CRC32_SIZE = 1_102L;
-
-    /**
-     * Remove test directory
-     */
-    @After
-    public void dispose() {
-        File target = new File(CHECK_CRC32_TARGET_PATH);
-
-        if (target.isDirectory()) {
-            assertTrue(FileSystemUtils.deleteDirectory(target));
-        }
-    }
 
     /**
      * Check size formatter
@@ -61,36 +40,5 @@ public class FileSizeUtilsTest {
         assertEquals("21.437 Tio", FileSizeUtils.formatSize(23569896548855L, Locale.US));
         assertEquals("20.934 Pio", FileSizeUtils.formatSize(23569896548855142L, Locale.US));
         assertEquals("20,934 Pio", FileSizeUtils.formatSize(23569896548855142L, Locale.FRANCE));
-    }
-
-    /**
-     * Check size getter
-     * 
-     * @throws IOException
-     *             On copy failed
-     */
-    @Test
-    public void testGetSize() throws IOException {
-        assertEquals(CHECK_CRC32_SIZE, FileSizeUtils.getSize(CHECK_CRC32_FILE));
-
-        File target = new File(CHECK_CRC32_TARGET_PATH, "tree");
-
-        if (target.isDirectory()) {
-            assertTrue(FileSystemUtils.deleteDirectory(target));
-        }
-
-        assertTrue(FileSystemUtils.createDirectory(target));
-
-        FileSystemUtils.copyFile(CHECK_CRC32_FILE, target.getAbsolutePath());
-        File target2 = new File(target, "sub");
-        assertTrue(FileSystemUtils.createDirectory(target2));
-
-        FileSystemUtils.copyFile(CHECK_CRC32_FILE, target2.getAbsolutePath());
-
-        assertEquals(CHECK_CRC32_SIZE * 2, FileSizeUtils.getSize(target));
-
-        assertEquals(0, FileSizeUtils.getSize(new File(CHECK_CRC32_FILE, ".not-exist")));
-        assertEquals(0, FileSizeUtils.getSize((String) null));
-        assertEquals(0, FileSizeUtils.getSize((File) null));
     }
 }

@@ -49,12 +49,16 @@ public class FileUtilsTest {
 
     /**
      * Remove test directory
+     * 
+     * @throws IOException
+     *             on error
      */
     @After
-    public void dispose() {
+    public void dispose() throws IOException {
         File target = new File(CHECK_CRC32_TARGET_PATH);
-
-        assertTrue(FileSystemUtils.deleteDirectory(target));
+        if (target.exists()) {
+            assertTrue(FileSystemUtils.deleteDirectory(target));
+        }
     }
 
     /**
@@ -133,6 +137,7 @@ public class FileUtilsTest {
             // Do nothing
             FileUtils.writeFileContent(null, outputFile, EncodingUtils.CHARSET_UTF_8);
             FileUtils.writeFileContent(sb, (File) null, EncodingUtils.CHARSET_UTF_8);
+            FileUtils.writeFileContent(sb, new File("//\\"), EncodingUtils.CHARSET_UTF_8);
         } catch (IOException e) {
             fail(e.getMessage());
         }

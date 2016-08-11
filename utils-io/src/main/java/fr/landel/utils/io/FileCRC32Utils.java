@@ -14,6 +14,7 @@ package fr.landel.utils.io;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +52,7 @@ public final class FileCRC32Utils {
      *             specified path
      */
     public static Long getCRC32(final String path) throws IOException {
-        return getCRC32(path, null);
+        return getCRC32(path, (FilenameFilter) null);
     }
 
     /**
@@ -65,7 +66,7 @@ public final class FileCRC32Utils {
      *             specified path
      */
     public static Long getCRC32(final File file) throws IOException {
-        return getCRC32(file, null);
+        return getCRC32(file, (FilenameFilter) null);
     }
 
     /**
@@ -87,6 +88,42 @@ public final class FileCRC32Utils {
     /**
      * Get the CRC32 of a file or a directory following a filter.
      * 
+     * @param path
+     *            The path of the file or directory
+     * @param filter
+     *            The filter to limit the check of a directory
+     * @return The CRC 32 finger print
+     * @throws IOException
+     *             Exception thrown if problems occurs during accessing to the
+     *             specified path
+     */
+    public static Long getCRC32(final String path, final FileFilter filter) throws IOException {
+        return getCRC32(new File(path), filter);
+    }
+
+    /**
+     * Get the CRC32 of a file or a directory following a filter.
+     * 
+     * @param file
+     *            The file or directory
+     * @param filter
+     *            The filter to limit the check of a directory
+     * @return The CRC 32 finger print
+     * @throws IOException
+     *             Exception thrown if problems occurs during accessing to the
+     *             specified path
+     */
+    public static Long getCRC32(final File file, final FileFilter filter) throws IOException {
+        CRC32.reset();
+
+        recurisiveCRC32(file, filter, null);
+
+        return CRC32.getValue();
+    }
+
+    /**
+     * Get the CRC32 of a file or a directory following a filter.
+     * 
      * @param file
      *            The file or directory
      * @param filter
@@ -99,24 +136,20 @@ public final class FileCRC32Utils {
     public static Long getCRC32(final File file, final FilenameFilter filter) throws IOException {
         CRC32.reset();
 
-        recurisiveCRC32(file, filter);
+        recurisiveCRC32(file, null, filter);
 
         return CRC32.getValue();
     }
 
-    private static void recurisiveCRC32(final File file, final FilenameFilter filter) throws IOException {
+    private static void recurisiveCRC32(final File file, final FileFilter fileFilter, final FilenameFilter filenameFilter)
+            throws IOException {
         if (file.isFile()) {
             getCRC32File(file);
         } else if (file.isDirectory()) {
-            File[] files;
-            if (filter != null) {
-                files = file.listFiles(filter);
-            } else {
-                files = file.listFiles();
-            }
+            File[] files = FileSystemUtils.listFiles(file, fileFilter, filenameFilter);
             if (files != null) {
                 for (File subFile : files) {
-                    recurisiveCRC32(subFile.getAbsoluteFile(), filter);
+                    recurisiveCRC32(subFile.getAbsoluteFile(), fileFilter, filenameFilter);
                 }
             }
         }

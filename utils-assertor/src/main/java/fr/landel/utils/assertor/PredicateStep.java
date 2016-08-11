@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -209,6 +210,10 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * </li>
      * </ul>
      * 
+     * <p>
+     * The function inject original exception as suppressed
+     * </p>
+     * 
      * <pre>
      * Assertor.that("text").isBlank().toThrow((errors, parameters) -&gt; new MyException("text should be blank"));
      * // -&gt; throw a MyException with message: text should be blank
@@ -239,6 +244,37 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
             exception.addSuppressed(new IllegalArgumentException(result.getMessage()));
 
             throw exception;
+        }
+    }
+
+    /**
+     * Calls the function and throw the specific exception, only if assertion is
+     * wrong. The function provide any data (back side, no message is generated,
+     * so this cost less performance).
+     * 
+     * <pre>
+     * Assertor.that("text").isBlank().toThrow((s) -&gt; new MyException("text should be blank"));
+     * // -&gt; throw a MyException with message: text should be blank
+     * 
+     * Assertor.that("text").isNotBlank().toThrow(() -&gt; new MyException("text should be blank"));
+     * // -&gt; do nothing
+     * </pre>
+     * 
+     * @param supplier
+     *            the supplier to call if assertion is wrong (required, cannot
+     *            be {@code null}, throw a {@link NullPointerException})
+     * @param <E>
+     *            the generic exception type
+     * @throws E
+     *             The type of exception to throw
+     */
+    default <E extends Throwable> void toThrow(final Supplier<E> supplier) throws E {
+        Objects.requireNonNull(supplier);
+
+        final ResultAssertor result = HelperAssertor.combine(this.getStep(), false);
+
+        if (!result.isPrecondition() || !result.isValid()) {
+            throw supplier.get();
         }
     }
 

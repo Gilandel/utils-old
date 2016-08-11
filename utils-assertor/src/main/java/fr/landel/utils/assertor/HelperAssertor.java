@@ -121,12 +121,14 @@ public class HelperAssertor extends Constants {
 
                 parameters.addAll(s.getParameters());
 
-                // if precondition returns false, we end all treatments
-                if (!HelperAssertor.preCheck(s, object)) {
-                    return HelperAssertor.getPreconditionMessage(s, pair, parameters, loadMessage);
+                if (!EnumOperator.AND.equals(operator) || valid) {
+                    // if precondition returns false, we end all treatments
+                    if (!HelperAssertor.preCheck(s, object)) {
+                        return HelperAssertor.getPreconditionMessage(s, pair, parameters, loadMessage);
 
-                } else if (!EnumOperator.AND.equals(operator) || valid) {
-                    valid = HelperAssertor.validatesAndGetMessage(s, pair, object, valid, not, operator, message, loadMessage);
+                    } else {
+                        valid = HelperAssertor.validatesAndGetMessage(s, pair, object, valid, not, operator, message, loadMessage);
+                    }
                 }
 
                 not = false;

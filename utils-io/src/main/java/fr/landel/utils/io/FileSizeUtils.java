@@ -12,16 +12,14 @@
  */
 package fr.landel.utils.io;
 
-import java.io.File;
 import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import fr.landel.utils.commons.EnumChar;
-
-import java.util.TreeMap;
 
 /**
  * This class contains the list of file sizes
@@ -130,44 +128,5 @@ public final class FileSizeUtils {
             return size + EnumChar.SPACE.getUnicode() + mapReversed.get(0L) + "s";
         }
         return size + EnumChar.SPACE.getUnicode() + mapReversed.get(0L);
-    }
-
-    /**
-     * Get the size of a file or a directory (doesn't support symbolic links).
-     * 
-     * @param path
-     *            The path
-     * @return the size (0, if the path doesn't exist)
-     */
-    public static long getSize(final String path) {
-        long size = 0;
-        if (path != null) {
-            size = getSize(new File(path));
-        }
-        return size;
-    }
-
-    /**
-     * Get the size of a file or a directory (doesn't support symbolic links).
-     * 
-     * @param file
-     *            The file (file or directory)
-     * @return The size (0, if not a file)
-     */
-    public static long getSize(final File file) {
-        long size = 0;
-        if (file != null) {
-            if (file.isFile()) {
-                size = file.length();
-            } else if (file.isDirectory()) {
-                File[] files = file.listFiles();
-                if (files != null) {
-                    for (File f : files) {
-                        size += getSize(f);
-                    }
-                }
-            }
-        }
-        return size;
     }
 }

@@ -48,6 +48,12 @@ public final class HelperMessage extends Constants {
     // "%(\\d+\\$)?([-#+ 0,(\\<]*)?(\\d+)?(\\.\\d+)?([tT])?([a-zA-Z%])"
 
     /**
+     * the parameter suffix used to detect, if the expression is a standard or a
+     * parameter type
+     */
+    protected static final char PARAM_SUFFIX = '*';
+
+    /**
      * Empty {@code Object} array
      */
     private static final Object[] EMPTY_ARRAY = new Object[0];
@@ -56,6 +62,12 @@ public final class HelperMessage extends Constants {
      * Flags in regular expression (sorted for binarySearch)
      */
     private static final byte[] FLAGS = " #(+,-0<\\".getBytes(StandardCharsets.UTF_8);
+
+    private static final char PERCENT = '%';
+    private static final char PREFIX = PERCENT;
+    private static final char INDEX_SUFFIX = '$';
+    private static final char TIME_LOWERCASE = 't';
+    private static final char TIME_UPPERCASE = 'T';
 
     /**
      * Parse the string to find parameters and arguments expressions, changes
@@ -129,50 +141,62 @@ public final class HelperMessage extends Constants {
         Group group = null;
 
         for (i = 0; i < bytes.length; i++) {
-            if (group == null && bytes[i] == '%') {
+            if (group == null && bytes[i] == PREFIX) {
                 start = i;
                 group = new Group(start);
             } else if (group != null) {
                 if (state < 2 && bytes[i] > 47 && bytes[i] < 58) {
+                    // (\\d+\\$)? ; the number
                     if (state == 0) {
                         state = 1;
                         group.index = 0;
                     }
                     group.index = group.index * 10 + bytes[i] - 48;
-                } else if (state < 2 && bytes[i] == '$') {
+                } else if (state < 2 && bytes[i] == INDEX_SUFFIX) {
+                    // (\\d+\\$)? ; the dollar
                     state |= 2;
                 } else if (state < 8 && Arrays.binarySearch(FLAGS, bytes[i]) > -1) {
+                    // ([-#+ 0,(\\<]*)?
                     state |= 4;
                     group.flags.append((char) bytes[i]);
                 } else if (state < 16 && bytes[i] == '.') {
+                    // (\\d+)?(\\.\\d+)? ; the dot
                     state |= 16;
                     group.number.append((char) bytes[i]);
                 } else if (state < 64 && bytes[i] > 47 && bytes[i] < 58) {
+                    // (\\d+)?(\\.\\d+)? ; 8 for before dot and 32 after
                     if ((state & 16) == 16) {
                         state |= 32;
                     } else {
                         state |= 8;
                     }
                     group.number.append((char) bytes[i]);
-                } else if (state < 64 && bytes[i] == 'T' || bytes[i] == 't') {
+                } else if (state < 64 && bytes[i] == TIME_UPPERCASE || bytes[i] == TIME_LOWERCASE) {
+                    // [tT]
                     state |= 64;
                     group.time = (char) bytes[i];
-                } else if (state < 128 && ((bytes[i] > 64 && bytes[i] < 91) || (bytes[i] > 96 && bytes[i] < 123) || bytes[i] == '%')) {
+                } else if (state < 128 && ((bytes[i] > 64 && bytes[i] < 91) || (bytes[i] > 96 && bytes[i] < 123) || bytes[i] == PERCENT)) {
+                    // [a-zA-Z%]
                     state |= 128;
                     group.type.append((char) bytes[i]);
-                } else if (state < 256 && bytes[i] == '*') {
+                } else if (state < 256 && bytes[i] == PARAM_SUFFIX) {
+                    // to detect internal parameter form
                     state |= 256;
                     group.asterisk = true;
                 } else {
                     if ((state & 2) != 2 && group.index > -1) {
+                        // no index, so first number detected is the format, not
+                        // a number
                         group.number.insert(0, String.valueOf(group.index));
                         group.index = -1;
                     }
                     if ((state & 128) == 128) {
+                        // complete
                         group.end = i;
                         groups.add(group);
                     }
-                    if (bytes[i] == '%') {
+                    if (bytes[i] == PREFIX) {
+                        // prepare the next expression
                         start = i;
                         state = 0;
                         group = new Group(start);
@@ -186,6 +210,8 @@ public final class HelperMessage extends Constants {
 
         if (group != null) {
             if ((state & 2) != 2 && group.index > -1) {
+                // no index, so first number detected is the format, not a
+                // number
                 group.number.insert(0, String.valueOf(group.index));
                 group.index = -1;
             }
@@ -355,16 +381,15 @@ public final class HelperMessage extends Constants {
             final List<Pair<Object, EnumType>> parameters, final Object[] arguments) {
 
         String msg;
-        Locale l = Assertor.getLocale(locale);
 
         if (StringUtils.isNotEmpty(message)) {
-            if (CollectionUtils.isNotEmpty(parameters) || ArrayUtils.isNotEmpty(arguments)) {
+            if (message.toString().indexOf(PREFIX) > -1) {
                 Object[] params = HelperMessage.convertParams(parameters);
                 Object[] args = ObjectUtils.defaultIfNull(arguments, EMPTY_ARRAY);
 
                 msg = HelperMessage.prepare(message, params.length, 1, args.length, 1).toString();
 
-                msg = String.format(Assertor.getLocale(l), msg, ArrayUtils.addAll(params, args));
+                msg = String.format(Assertor.getLocale(locale), msg, ArrayUtils.addAll(params, args));
             } else {
                 msg = message.toString();
             }
