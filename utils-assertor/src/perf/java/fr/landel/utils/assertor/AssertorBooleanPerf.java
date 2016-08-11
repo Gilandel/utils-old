@@ -34,7 +34,7 @@ public class AssertorBooleanPerf extends AbstractMicrobenchmark {
 
     @Override
     protected double getExpectedMinNbOpsPerSeconds() {
-        return 50_000d;
+        return 40_000d;
     }
 
     /**
