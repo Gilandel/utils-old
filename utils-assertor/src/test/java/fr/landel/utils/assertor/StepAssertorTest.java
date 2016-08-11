@@ -48,7 +48,7 @@ public class StepAssertorTest extends AbstractTest {
         assertNull(assertorResult.getMessageKey());
         assertNull(assertorResult.getMessage());
         assertNull(assertorResult.getOperator());
-        assertEquals(0, assertorResult.getParameters().size());
+        assertNull(assertorResult.getParameters());
     }
 
     /**
@@ -70,7 +70,7 @@ public class StepAssertorTest extends AbstractTest {
         assertNull(assertorResult.getMessageKey());
         assertNull(assertorResult.getMessage());
         assertNull(assertorResult.getOperator());
-        assertEquals(0, assertorResult.getParameters().size());
+        assertNull(assertorResult.getParameters());
 
         assertorResult = new StepAssertor<>(assertorResult);
 

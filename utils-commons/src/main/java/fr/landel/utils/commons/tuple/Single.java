@@ -63,8 +63,8 @@ public abstract class Single<T> implements Comparable<Single<T>>, Serializable {
      * Sets the element into this single.
      * </p>
      * 
-     * @param the
-     *            new element, may be null
+     * @param element
+     *            the new element, may be null
      * @return the previous element, may be null
      */
     protected abstract T set(T element);
