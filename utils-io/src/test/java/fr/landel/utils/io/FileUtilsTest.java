@@ -137,7 +137,7 @@ public class FileUtilsTest {
             // Do nothing
             FileUtils.writeFileContent(null, outputFile, EncodingUtils.CHARSET_UTF_8);
             FileUtils.writeFileContent(sb, (File) null, EncodingUtils.CHARSET_UTF_8);
-            FileUtils.writeFileContent(sb, new File("//\\"), EncodingUtils.CHARSET_UTF_8);
+            FileUtils.writeFileContent(sb, new File("file:/"), EncodingUtils.CHARSET_UTF_8);
         } catch (IOException e) {
             fail(e.getMessage());
         }

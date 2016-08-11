@@ -12,28 +12,19 @@
  */
 package fr.landel.utils.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.landel.utils.assertor.Assertor;
-import fr.landel.utils.commons.tuple.MutableSingle;
-import fr.landel.utils.commons.tuple.Single;
 
 /**
  * This class is used to:<br>
@@ -44,17 +35,7 @@ import fr.landel.utils.commons.tuple.Single;
  * @author Gilles Landel
  *
  */
-public final class FileSystemUtils {
-
-    /**
-     * The line separator string (windows = \r\n, unix = \n, macOS = \r)
-     */
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-    private static final int BUFFER_SIZE = 10240;
-    private static final byte[] BUFFER = new byte[BUFFER_SIZE];
-
-    private static final String ERROR_PARAM_NULL = "At least one parameter is null";
+public final class FileSystemUtils extends InternalFileSystemUtils {
 
     private static final Pattern PATTERN_SPECIAL_CHARACTERS = Pattern.compile("[\\\\/:*?\"<>|]");
 
@@ -93,22 +74,6 @@ public final class FileSystemUtils {
     public static boolean createDirectory(final String directory) {
         if (directory != null) {
             return createDirectory(new File(directory));
-        }
-        return false;
-    }
-
-    /**
-     * Create a directory and any intermediate directories.
-     * 
-     * @param directory
-     *            The directory to create
-     * @return true, if already exists or successfully created
-     * @throws SecurityException
-     *             Exception thrown if problems occurs during coping
-     */
-    public static boolean createDirectory(final File directory) {
-        if (directory != null) {
-            return directory.isDirectory() || directory.mkdirs();
         }
         return false;
     }
@@ -175,49 +140,6 @@ public final class FileSystemUtils {
         Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
 
         copyFile(src, dest, false);
-    }
-
-    /**
-     * Copy a file.
-     * 
-     * @param src
-     *            The source file name
-     * @param dest
-     *            The destination file name
-     * @param removeSource
-     *            Remove the source after copy
-     * @throws IOException
-     *             Exception thrown if problems occurs during coping
-     */
-    private static void copyFile(final File src, final File dest, final boolean removeSource) throws IOException {
-        int bufferReadSize;
-
-        final File target;
-        if (dest.isDirectory()) {
-            target = new File(dest, src.getName());
-        } else {
-            target = dest;
-        }
-
-        if (FileSystemUtils.createDirectory(target.getParentFile())) {
-            if (!src.getAbsolutePath().equals(dest.getAbsolutePath())) {
-                final BufferedInputStream bis = StreamUtils.createBufferedInputStream(src);
-                final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(target);
-
-                while ((bufferReadSize = bis.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-                    bos.write(BUFFER, 0, bufferReadSize);
-                }
-
-                CloseableManager.close(target);
-                CloseableManager.close(src);
-
-                if (removeSource && !src.delete()) {
-                    throw new IOException("Cannot remove the source file");
-                }
-            }
-        } else {
-            throw new FileNotFoundException("destination directory doesn't exist and cannot be created");
-        }
     }
 
     /**
@@ -440,69 +362,6 @@ public final class FileSystemUtils {
         copyDirectory(src, dest, null, filenameFilter, false);
     }
 
-    /**
-     * Copy a directory recursively.
-     * 
-     * @param src
-     *            The source directory name
-     * @param dest
-     *            The destination directory name, the directory is created if it
-     *            not exists
-     * @param fileFilter
-     *            The filter to limit file to be copied
-     * @param filenameFilter
-     *            The filename filter to limit file to be copied
-     * @param removeSource
-     *            Remove the source after copy
-     * @throws IOException
-     *             Exception thrown if problems occurs during coping
-     */
-    private static void copyDirectory(final File src, final File dest, final FileFilter fileFilter, final FilenameFilter filenameFilter,
-            final boolean removeSource) throws IOException {
-        Assertor.that(src).validates((file) -> file.exists()).toThrow(() -> new FileNotFoundException("the source doesn't exist"));
-
-        if (src.isDirectory()) {
-            // creation du repertoire si necessaire
-            if (FileSystemUtils.createDirectory(dest)) {
-                // creation de la liste des fichiers et repertoires
-                File[] filesToCopy;
-                if (fileFilter != null) {
-                    filesToCopy = src.listFiles(fileFilter);
-                } else if (filenameFilter != null) {
-                    filesToCopy = src.listFiles(filenameFilter);
-                } else {
-                    filesToCopy = src.listFiles();
-                }
-
-                if (ArrayUtils.isNotEmpty(filesToCopy)) {
-                    copy(filesToCopy, dest, fileFilter, filenameFilter, removeSource);
-                }
-                if (removeSource && !src.delete()) {
-                    throw new IOException("Cannot delete the directory" + src.getAbsolutePath());
-                }
-            } else {
-                throw new IOException("cannot access or create the destination directory");
-            }
-        } else if (matchFilter(src, fileFilter, filenameFilter)) {
-            copyFile(src, dest, removeSource);
-        }
-        return;
-    }
-
-    private static boolean matchFilter(final File file, final FileFilter fileFilter, final FilenameFilter filenameFilter) {
-        boolean ok = false;
-        if (file.isFile()) {
-            if (fileFilter != null && fileFilter.accept(file)) {
-                ok = true;
-            } else if (filenameFilter != null && filenameFilter.accept(null, file.getName())) {
-                ok = true;
-            } else if (fileFilter == null && filenameFilter == null) {
-                ok = true;
-            }
-        }
-        return ok;
-    }
-
     public static long getSize(final String src) throws IOException {
         Assertor.that(src).isNotNull().toThrow(ERROR_PARAM_NULL);
 
@@ -537,16 +396,6 @@ public final class FileSystemUtils {
         Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(src, null, filenameFilter);
-    }
-
-    private static long getSize(final File src, final FileFilter fileFilter, final FilenameFilter filenameFilter) throws IOException {
-        final MutableSingle<Long> size = Single.ofMutable(0L);
-        FileSystemUtils.listFiles(Optional.ofNullable(null), src, fileFilter, filenameFilter, (file) -> {
-            if (file.isFile()) {
-                size.set(size.get() + file.length());
-            }
-        });
-        return size.get();
     }
 
     public static List<File> listFiles(final String src) throws IOException {
@@ -585,38 +434,6 @@ public final class FileSystemUtils {
         return FileSystemUtils.listFiles(Optional.empty(), src, null, filenameFilter, null);
     }
 
-    private static List<File> listFiles(final Optional<List<File>> output, final File src, final FileFilter fileFilter,
-            final FilenameFilter filenameFilter, Consumer<File> actionOnEachFile) throws IOException {
-
-        final List<File> list = output.orElse(new ArrayList<>());
-
-        if (src.isDirectory()) {
-            // creation du repertoire si necessaire
-            // creation de la liste des fichiers et repertoires
-            File[] files = listFiles(src, fileFilter, filenameFilter);
-
-            if (files != null) {
-                list.addAll(Arrays.asList(files));
-
-                for (File entry : files) {
-                    if (actionOnEachFile != null) {
-                        actionOnEachFile.accept(entry);
-                    }
-
-                    if (entry.isDirectory()) {
-                        FileSystemUtils.listFiles(Optional.of(list), entry, fileFilter, filenameFilter, actionOnEachFile);
-                    }
-                }
-            }
-        } else if (matchFilter(src, fileFilter, filenameFilter)) {
-            list.add(src);
-            if (actionOnEachFile != null) {
-                actionOnEachFile.accept(src);
-            }
-        }
-        return list;
-    }
-
     /**
      * Gets the list of files following filters
      * 
@@ -638,37 +455,6 @@ public final class FileSystemUtils {
             files = dir.listFiles();
         }
         return files;
-    }
-
-    /**
-     * Copy files.
-     * 
-     * @param filesToCopy
-     *            files to copy
-     * @param dest
-     *            destination file
-     * @param fileFilter
-     *            file filter
-     * @param filenameFilter
-     *            filename filter
-     * @param removeSource
-     *            Remove the source after copy
-     * @throws IOException
-     *             IOexception
-     */
-    private static void copy(final File[] filesToCopy, final File dest, final FileFilter fileFilter, final FilenameFilter filenameFilter,
-            final boolean removeSource) throws IOException {
-        for (int i = 0; i < filesToCopy.length; i++) {
-            // Check if element is a file or a directory
-            File current = filesToCopy[i];
-            if (current.isDirectory()) {
-                // Create the directory
-                copyDirectory(filesToCopy[i], createFile(dest, filesToCopy[i].getName()), fileFilter, filenameFilter, removeSource);
-            } else {
-                // Copy the file
-                copyFile(filesToCopy[i], new File(dest + File.separator + filesToCopy[i].getName()), removeSource);
-            }
-        }
     }
 
     /**
@@ -769,36 +555,6 @@ public final class FileSystemUtils {
         return deleteDirectory(dir, null, filenameFilter);
     }
 
-    private static boolean deleteDirectory(final File dir, final FileFilter fileFilter, final FilenameFilter filenameFilter)
-            throws IOException {
-        Assertor.that(dir).isNotNull().and().validates((file) -> file.isDirectory(), "not a directory").toThrow();
-
-        boolean notDeleted = false;
-
-        // Create the list of files and directories
-        File[] files = listFiles(dir, fileFilter, filenameFilter);
-
-        if (files != null) {
-            for (int i = 0; i < files.length; i++) {
-                // Check if the element is a directory or a file
-                File current = files[i];
-                if (current.isDirectory()) {
-                    notDeleted |= !deleteDirectory(current, fileFilter, filenameFilter);
-                } else {
-                    // Delete the file
-                    notDeleted |= !current.delete();
-                }
-            }
-        }
-
-        if (isDirectoryEmpty(dir.getAbsolutePath())) {
-            // Delete the empty directory following filters
-            notDeleted |= listFiles(dir, fileFilter, filenameFilter).length == 0 && !dir.delete();
-        }
-
-        return !notDeleted;
-    }
-
     /**
      * Check if the specified directory is empty.
      * 
@@ -812,25 +568,6 @@ public final class FileSystemUtils {
         Assertor.that(dir).isNotNull().toThrow(ERROR_PARAM_NULL);
 
         return isDirectoryEmpty(new File(dir));
-    }
-
-    /**
-     * Check if the specified directory is empty.
-     * 
-     * @param dir
-     *            The directory to check
-     * @return true if directory is empty
-     */
-    public static boolean isDirectoryEmpty(final File dir) {
-        Assertor.that(dir).isNotNull().toThrow(ERROR_PARAM_NULL);
-
-        if (dir.isDirectory()) {
-            File[] files = dir.listFiles();
-            if (files == null || files.length == 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -865,36 +602,6 @@ public final class FileSystemUtils {
         Assertor.that(base).isNotNull().and(filePath).isNotNull().toThrow(ERROR_PARAM_NULL);
 
         return getAbsolutePath(new File(base), new File(filePath));
-    }
-
-    /**
-     * Extract the extension part.
-     * 
-     * @param fileName
-     *            The file name
-     * @return The extension part or null
-     */
-    public static String getExtensionPart(final String fileName) {
-        if (fileName != null) {
-            final int sep = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
-            String temp = fileName;
-            if (sep > -1) {
-                if (sep < temp.length() - 1) {
-                    temp = temp.substring(sep + 1);
-                } else {
-                    temp = "";
-                }
-            }
-
-            final int index = temp.lastIndexOf('.');
-            if (index > -1) {
-                temp = temp.substring(index + 1);
-            } else {
-                temp = "";
-            }
-            return temp;
-        }
-        return null;
     }
 
     /**
@@ -950,33 +657,6 @@ public final class FileSystemUtils {
     /**
      * Extract the file name part without extension.
      * 
-     * @param fileName
-     *            The file name
-     * @return The file name part or null
-     */
-    public static String getFileNamePart(final String fileName) {
-        if (fileName != null) {
-            final int sep = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
-            String temp = fileName;
-            if (sep > -1) {
-                if (sep < temp.length() - 1) {
-                    temp = fileName.substring(sep + 1);
-                } else {
-                    temp = "";
-                }
-            }
-            final int index = temp.lastIndexOf('.');
-            if (index > -1) {
-                return temp.substring(0, index);
-            }
-            return temp;
-        }
-        return null;
-    }
-
-    /**
-     * Extract the file name part without extension.
-     * 
      * @param file
      *            The file
      * @return The file name part or null
@@ -986,32 +666,6 @@ public final class FileSystemUtils {
             return getFileNamePart(file.getName());
         }
         return null;
-    }
-
-    /**
-     * Create filename filter for directory tree.
-     * 
-     * @param exts
-     *            The allowed extensions
-     * @return The filter
-     */
-    public static FilenameFilter createFilenameFilter(final String... exts) {
-        Assertor.that(exts).isNotEmpty(ERROR_PARAM_NULL).and().not().contains(null, "extensions array cannot contains 'null'").toThrow();
-
-        final Set<String> allowedExts = new HashSet<>();
-        for (String ext : exts) {
-            allowedExts.add(ext.toLowerCase());
-        }
-        return new FilenameFilter() {
-            @Override
-            public boolean accept(final File file, final String name) {
-                final String ext = FileSystemUtils.getExtensionPart(name);
-                if (ext != null) {
-                    return allowedExts.contains(ext.toLowerCase());
-                }
-                return false;
-            }
-        };
     }
 
     /**
@@ -1025,27 +679,5 @@ public final class FileSystemUtils {
      */
     public static File createFile(final String base, final String... subFiles) {
         return createFile(new File(base), subFiles);
-    }
-
-    /**
-     * Create {@link File} from base and add sub directories/file.
-     * 
-     * @param base
-     *            The base directory (required, not null)
-     * @param subFiles
-     *            The list of sub directories/file (required, not null)
-     * @return The concatenation of the arguments
-     */
-    public static File createFile(final File base, final String... subFiles) {
-        File generatedFile = null;
-
-        if (base != null && subFiles.length > 0) {
-            generatedFile = base;
-            for (String subFile : subFiles) {
-                generatedFile = new File(generatedFile, subFile);
-            }
-        }
-
-        return generatedFile;
     }
 }
