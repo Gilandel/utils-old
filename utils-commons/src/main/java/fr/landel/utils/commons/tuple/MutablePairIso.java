@@ -14,7 +14,7 @@ package fr.landel.utils.commons.tuple;
 
 /**
  * <p>
- * A mutable triple consisting of three {@code Object} elements.
+ * A mutable pair consisting of two {@code Object} elements.
  * </p>
  * 
  * <p>
@@ -24,47 +24,42 @@ package fr.landel.utils.commons.tuple;
  * @param <T>
  *            the element type
  * 
- * @see org.apache.commons.lang3.tuple.Triple
+ * @see org.apache.commons.lang3.tuple.Pair
  *
  * @since 26 juil. 2016
  * @author Gilles
  *
  */
-public class MutableTri<T> extends Tri<T> {
+public class MutablePairIso<T> extends PairIso<T> {
 
     /**
      * serialVersionUID
      */
-    private static final long serialVersionUID = -799774348810900228L;
+    private static final long serialVersionUID = -6102457045775716086L;
 
     /** Left object */
-    private T left;
-    /** Middle object; */
-    private T middle;
+    public T left;
     /** Right object */
-    private T right;
+    public T right;
 
     /**
-     * Create a new mutable triple instance of three nulls.
+     * Create a new pair instance of two nulls.
      */
-    public MutableTri() {
+    public MutablePairIso() {
         super();
     }
 
     /**
-     * Create a new triple instance.
+     * Create a new mutable pair instance.
      *
      * @param left
      *            the left value, may be null
-     * @param middle
-     *            the middle value, may be null
      * @param right
      *            the right value, may be null
      */
-    public MutableTri(final T left, final T middle, final T right) {
+    public MutablePairIso(final T left, final T right) {
         this();
         this.left = left;
-        this.middle = middle;
         this.right = right;
     }
 
@@ -77,7 +72,7 @@ public class MutableTri<T> extends Tri<T> {
     }
 
     /**
-     * Sets the left element of the triple.
+     * Sets the left element of the pair.
      * 
      * @param left
      *            the new value of the left element, may be null
@@ -90,35 +85,32 @@ public class MutableTri<T> extends Tri<T> {
      * {@inheritDoc}
      */
     @Override
-    public T getMiddle() {
-        return middle;
-    }
-
-    /**
-     * Sets the middle element of the triple.
-     * 
-     * @param middle
-     *            the new value of the middle element, may be null
-     */
-    public void setMiddle(final T middle) {
-        this.middle = middle;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public T getRight() {
         return right;
     }
 
     /**
-     * Sets the right element of the triple.
+     * Sets the right element of the pair.
      * 
      * @param right
      *            the new value of the right element, may be null
      */
     public void setRight(final T right) {
         this.right = right;
+    }
+
+    /**
+     * Sets the {@code Map.Entry} value. This sets the right element of the
+     * pair.
+     * 
+     * @param value
+     *            the right value to set, not null
+     * @return the old value for the right element
+     */
+    @Override
+    public T setValue(final T value) {
+        final T result = getRight();
+        setRight(value);
+        return result;
     }
 }

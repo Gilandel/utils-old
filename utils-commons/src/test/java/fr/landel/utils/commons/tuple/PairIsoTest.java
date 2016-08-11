@@ -21,24 +21,24 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
- * Check {@link Bi}
+ * Check {@link PairIso}
  *
  * @since 2 août 2016
  * @author Gilles
  *
  */
-public class BiTest {
+public class PairIsoTest {
 
     /**
-     * Test method for {@link Bi#getLeft()}, {@link Bi#getRight()},
-     * {@link Bi#getKey()}, {@link Bi#getValue()}.
+     * Test method for {@link PairIso#getLeft()}, {@link PairIso#getRight()},
+     * {@link PairIso#getKey()}, {@link PairIso#getValue()}.
      */
     @Test
     public void testGet() {
         String key = "key";
         String value = "value";
 
-        Bi<String> bi = Bi.of(key, value);
+        PairIso<String> bi = PairIso.of(key, value);
 
         assertNotNull(bi);
         assertEquals(key, bi.getKey());
@@ -48,83 +48,83 @@ public class BiTest {
     }
 
     /**
-     * Test method for {@link Bi#equals(Object)}.
+     * Test method for {@link PairIso#equals(Object)}.
      */
     @Test
     public void testEquals() {
         String key = "key";
         String value = "value";
 
-        Bi<String> bi = Bi.of(key, value);
+        PairIso<String> bi = PairIso.of(key, value);
 
         assertTrue(bi.equals(bi));
-        assertTrue(bi.equals(Bi.of(key, value)));
-        assertFalse(bi.equals(Bi.of(key, null)));
-        assertFalse(bi.equals(Bi.of(null, value)));
-        assertFalse(bi.equals(Bi.of(null, null)));
-        Bi<String> biNull = null;
+        assertTrue(bi.equals(PairIso.of(key, value)));
+        assertFalse(bi.equals(PairIso.of(key, null)));
+        assertFalse(bi.equals(PairIso.of(null, value)));
+        assertFalse(bi.equals(PairIso.of(null, null)));
+        PairIso<String> biNull = null;
         assertFalse(bi.equals(biNull));
     }
 
     /**
-     * Test method for {@link Bi#hashCode()}.
+     * Test method for {@link PairIso#hashCode()}.
      */
     @Test
     public void testHashCode() {
         String key = "key";
         String value = "value";
 
-        Bi<String> bi = Bi.of(key, value);
+        PairIso<String> bi = PairIso.of(key, value);
 
         assertEquals(key.hashCode() ^ value.hashCode(), bi.hashCode());
     }
 
     /**
-     * Test method for {@link Bi#compareTo(Bi)}.
+     * Test method for {@link PairIso#compareTo(PairIso)}.
      */
     @Test
     public void testCompareTo() {
         String key = "key";
         String value = "value";
 
-        Bi<String> bi = Bi.of(key, value);
+        PairIso<String> bi = PairIso.of(key, value);
 
         assertEquals(0, bi.compareTo(bi));
-        assertEquals(0, bi.compareTo(Bi.of(key, value)));
-        assertEquals(1, bi.compareTo(Bi.of(key, null)));
-        assertEquals(1, bi.compareTo(Bi.of(null, value)));
-        assertEquals(1, bi.compareTo(Bi.of(null, null)));
+        assertEquals(0, bi.compareTo(PairIso.of(key, value)));
+        assertEquals(1, bi.compareTo(PairIso.of(key, null)));
+        assertEquals(1, bi.compareTo(PairIso.of(null, value)));
+        assertEquals(1, bi.compareTo(PairIso.of(null, null)));
         assertEquals(Integer.MAX_VALUE, bi.compareTo(null));
     }
 
     /**
-     * Test method for {@link Bi#toString()}.
+     * Test method for {@link PairIso#toString()}.
      */
     @Test
     public void testToString() {
         String key = "key";
         String value = "value";
 
-        Bi<String> bi = Bi.of(key, value);
+        PairIso<String> bi = PairIso.of(key, value);
 
         assertEquals("(key, value)", bi.toString());
     }
 
     /**
-     * Test method for {@link Bi#toString(java.lang.String)}.
+     * Test method for {@link PairIso#toString(java.lang.String)}.
      */
     @Test
     public void testToStringString() {
         String key = "key";
         String value = "value";
 
-        Bi<String> bi = Bi.of(key, value);
+        PairIso<String> bi = PairIso.of(key, value);
 
         assertEquals("key=value", bi.toString("%s=%s"));
     }
 
     /**
-     * Test method for {@link Bi#ofMutable(java.lang.Object, java.lang.Object)}.
+     * Test method for {@link PairIso#ofMutable(java.lang.Object, java.lang.Object)}.
      */
     @Test
     public void testOfMutable() {
@@ -132,7 +132,7 @@ public class BiTest {
         String value = "value";
         String value2 = "value2";
 
-        MutableBi<String> bi = Bi.ofMutable(key, value);
+        MutablePairIso<String> bi = PairIso.ofMutable(key, value);
 
         assertEquals(value, bi.getValue());
         bi.setValue(value2);
@@ -147,7 +147,7 @@ public class BiTest {
         bi.setLeft(value2);
         assertEquals(value2, bi.getKey());
 
-        Bi<String> bii = Bi.of(key, value);
+        PairIso<String> bii = PairIso.of(key, value);
         try {
             bii.setValue("test");
             fail();

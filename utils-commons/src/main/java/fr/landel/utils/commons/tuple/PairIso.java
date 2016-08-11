@@ -46,7 +46,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  * @author Gilles
  *
  */
-public abstract class Bi<T> implements Map.Entry<T, T>, Comparable<Bi<T>>, Serializable {
+public abstract class PairIso<T> implements Map.Entry<T, T>, Comparable<PairIso<T>>, Serializable {
 
     /**
      * serialVersionUID
@@ -125,7 +125,7 @@ public abstract class Bi<T> implements Map.Entry<T, T>, Comparable<Bi<T>>, Seria
      *         if other is {@code null}, returns {@link Integer#MAX_VALUE}
      */
     @Override
-    public int compareTo(final Bi<T> other) {
+    public int compareTo(final PairIso<T> other) {
         if (other == null) {
             return Integer.MAX_VALUE;
         }
@@ -222,8 +222,8 @@ public abstract class Bi<T> implements Map.Entry<T, T>, Comparable<Bi<T>>, Seria
      *            the right element, may be null
      * @return a pair formed from the two parameters, not null
      */
-    public static <T> Bi<T> of(final T left, final T right) {
-        return new ImmutableBi<T>(left, right);
+    public static <T> PairIso<T> of(final T left, final T right) {
+        return new ImmutablePairIso<T>(left, right);
     }
 
     /**
@@ -244,7 +244,7 @@ public abstract class Bi<T> implements Map.Entry<T, T>, Comparable<Bi<T>>, Seria
      *            the right element, may be null
      * @return a pair formed from the two parameters, not null
      */
-    public static <T> MutableBi<T> ofMutable(final T left, final T right) {
-        return new MutableBi<T>(left, right);
+    public static <T> MutablePairIso<T> ofMutable(final T left, final T right) {
+        return new MutablePairIso<T>(left, right);
     }
 }

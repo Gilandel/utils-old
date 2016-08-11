@@ -38,7 +38,7 @@ package fr.landel.utils.commons.tuple;
  * @author Gilles
  *
  */
-public abstract class AbstractImmutableQuadri<T> extends Quadri<T> {
+public abstract class AbstractImmutableQuadIso<T> extends QuadIso<T> {
 
     /**
      * serialVersionUID
@@ -66,7 +66,7 @@ public abstract class AbstractImmutableQuadri<T> extends Quadri<T> {
      * @param fourth
      *            the fourth element, may be null
      */
-    public AbstractImmutableQuadri(final T first, final T second, final T third, final T fourth) {
+    public AbstractImmutableQuadIso(final T first, final T second, final T third, final T fourth) {
         super();
         this.first = first;
         this.second = second;

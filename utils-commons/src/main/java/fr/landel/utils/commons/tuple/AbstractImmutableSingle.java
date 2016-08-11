@@ -18,17 +18,17 @@ package fr.landel.utils.commons.tuple;
  * </p>
  * 
  * <p>
- * An immutable pair consisting of two {@code Object} elements.
+ * An immutable single consisting of a single {@code Object} element.
  * </p>
  * 
  * <p>
  * Although the implementation is immutable, there is no restriction on the
- * objects that may be stored. If mutable objects are stored in the pair, then
- * the pair itself effectively becomes mutable.
+ * objects that may be stored. If mutable objects are stored in the single, then
+ * the single itself effectively becomes mutable.
  * </p>
  * 
  * <p>
- * #ThreadSafe# if both paired objects are thread-safe
+ * #ThreadSafe# if the object is thread-safe
  * </p>
  *
  * @param <T>
@@ -40,46 +40,33 @@ package fr.landel.utils.commons.tuple;
  * @author Gilles
  *
  */
-public abstract class AbstractImmutableBi<T> extends Bi<T> {
+public abstract class AbstractImmutableSingle<T> extends Single<T> {
 
     /**
      * serialVersionUID
      */
     private static final long serialVersionUID = 1867548171293331171L;
 
-    /** Left object */
-    public final T left;
-    /** Right object */
-    public final T right;
+    /** object */
+    public final T element;
 
     /**
-     * Create a new immutable pair instance.
+     * Create a new immutable single instance.
      *
-     * @param left
-     *            the left value, may be null
-     * @param right
-     *            the right value, may be null
+     * @param element
+     *            the value, may be null
      */
-    public AbstractImmutableBi(final T left, final T right) {
+    public AbstractImmutableSingle(final T element) {
         super();
-        this.left = left;
-        this.right = right;
+        this.element = element;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public T getLeft() {
-        return this.left;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public T getRight() {
-        return this.right;
+    public T get() {
+        return this.element;
     }
 
     /**
@@ -88,17 +75,17 @@ public abstract class AbstractImmutableBi<T> extends Bi<T> {
      * </p>
      * 
      * <p>
-     * This pair is immutable, so this operation is not supported.
+     * This single is immutable, so this operation is not supported.
      * </p>
      *
-     * @param value
+     * @param element
      *            the value to set
      * @return never
      * @throws UnsupportedOperationException
      *             as this operation is not supported
      */
     @Override
-    public T setValue(final T value) {
+    public T set(final T element) {
         throw new UnsupportedOperationException();
     }
 }

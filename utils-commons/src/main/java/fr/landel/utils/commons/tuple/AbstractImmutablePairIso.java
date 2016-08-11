@@ -18,56 +18,51 @@ package fr.landel.utils.commons.tuple;
  * </p>
  * 
  * <p>
- * An immutable triple consisting of three {@code Object} elements.
+ * An immutable pair consisting of two {@code Object} elements.
  * </p>
  * 
  * <p>
  * Although the implementation is immutable, there is no restriction on the
- * objects that may be stored. If mutable objects are stored in the triple, then
- * the triple itself effectively becomes mutable.
+ * objects that may be stored. If mutable objects are stored in the pair, then
+ * the pair itself effectively becomes mutable.
  * </p>
  * 
  * <p>
- * #ThreadSafe# if all objects are thread-safe
+ * #ThreadSafe# if both paired objects are thread-safe
  * </p>
  *
  * @param <T>
  *            the element type
  * 
- * @see org.apache.commons.lang3.tuple.Triple
+ * @see org.apache.commons.lang3.tuple.Pair
  *
  * @since 26 juil. 2016
  * @author Gilles
  *
  */
-public abstract class AbstractImmutableTri<T> extends Tri<T> {
+public abstract class AbstractImmutablePairIso<T> extends PairIso<T> {
 
     /**
      * serialVersionUID
      */
-    private static final long serialVersionUID = 513699263747939321L;
+    private static final long serialVersionUID = 1867548171293331171L;
 
     /** Left object */
-    private final T left;
-    /** Middle object */
-    private final T middle;
+    public final T left;
     /** Right object */
-    private final T right;
+    public final T right;
 
     /**
-     * Create a new immutable triple instance.
+     * Create a new immutable pair instance.
      *
      * @param left
      *            the left value, may be null
-     * @param middle
-     *            the middle value, may be null
      * @param right
      *            the right value, may be null
      */
-    public AbstractImmutableTri(final T left, final T middle, final T right) {
+    public AbstractImmutablePairIso(final T left, final T right) {
         super();
         this.left = left;
-        this.middle = middle;
         this.right = right;
     }
 
@@ -83,15 +78,27 @@ public abstract class AbstractImmutableTri<T> extends Tri<T> {
      * {@inheritDoc}
      */
     @Override
-    public T getMiddle() {
-        return this.middle;
+    public T getRight() {
+        return this.right;
     }
 
     /**
-     * {@inheritDoc}
+     * <p>
+     * Throws {@code UnsupportedOperationException}.
+     * </p>
+     * 
+     * <p>
+     * This pair is immutable, so this operation is not supported.
+     * </p>
+     *
+     * @param value
+     *            the value to set
+     * @return never
+     * @throws UnsupportedOperationException
+     *             as this operation is not supported
      */
     @Override
-    public T getRight() {
-        return this.right;
+    public T setValue(final T value) {
+        throw new UnsupportedOperationException();
     }
 }

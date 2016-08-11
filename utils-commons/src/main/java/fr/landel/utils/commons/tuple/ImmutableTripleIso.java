@@ -37,7 +37,7 @@ package fr.landel.utils.commons.tuple;
  * @author Gilles
  *
  */
-public final class ImmutableTri<T> extends AbstractImmutableTri<T> {
+public final class ImmutableTripleIso<T> extends AbstractImmutableTripleIso<T> {
 
     /**
      * serialVersionUID
@@ -54,7 +54,7 @@ public final class ImmutableTri<T> extends AbstractImmutableTri<T> {
      * @param right
      *            the right value, may be null
      */
-    public ImmutableTri(final T left, final T middle, final T right) {
+    public ImmutableTripleIso(final T left, final T middle, final T right) {
         super(left, middle, right);
     }
 }

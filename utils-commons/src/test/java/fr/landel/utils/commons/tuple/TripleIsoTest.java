@@ -21,17 +21,17 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * Check {@link Tri}
+ * Check {@link TripleIso}
  *
  * @since 2 août 2016
  * @author Gilles
  *
  */
-public class TriTest {
+public class TripleIsoTest {
 
     /**
-     * Test method for {@link Tri#getLeft()},{@link Tri#getMiddle()},
-     * {@link Tri#getRight()}.
+     * Test method for {@link TripleIso#getLeft()},{@link TripleIso#getMiddle()},
+     * {@link TripleIso#getRight()}.
      */
     @Test
     public void testGet() {
@@ -39,7 +39,7 @@ public class TriTest {
         String second = "second";
         String third = "third";
 
-        Tri<String> tri = Tri.of(first, second, third);
+        TripleIso<String> tri = TripleIso.of(first, second, third);
 
         assertNotNull(tri);
         assertEquals(first, tri.getLeft());
@@ -48,7 +48,7 @@ public class TriTest {
     }
 
     /**
-     * Test method for {@link Tri#equals(Object)}.
+     * Test method for {@link TripleIso#equals(Object)}.
      */
     @Test
     public void testEquals() {
@@ -56,23 +56,23 @@ public class TriTest {
         String second = "second";
         String third = "third";
 
-        Tri<String> tri = Tri.of(first, second, third);
+        TripleIso<String> tri = TripleIso.of(first, second, third);
 
         assertTrue(tri.equals(tri));
-        assertTrue(tri.equals(Tri.of(first, second, third)));
-        assertFalse(tri.equals(Tri.of(first, null, third)));
-        assertFalse(tri.equals(Tri.of(null, second, third)));
-        assertFalse(tri.equals(Tri.of(first, second, null)));
-        assertFalse(tri.equals(Tri.of(first, null, null)));
-        assertFalse(tri.equals(Tri.of(null, second, null)));
-        assertFalse(tri.equals(Tri.of(null, null, third)));
-        assertFalse(tri.equals(Tri.of(null, null, null)));
-        Tri<String> triNull = null;
+        assertTrue(tri.equals(TripleIso.of(first, second, third)));
+        assertFalse(tri.equals(TripleIso.of(first, null, third)));
+        assertFalse(tri.equals(TripleIso.of(null, second, third)));
+        assertFalse(tri.equals(TripleIso.of(first, second, null)));
+        assertFalse(tri.equals(TripleIso.of(first, null, null)));
+        assertFalse(tri.equals(TripleIso.of(null, second, null)));
+        assertFalse(tri.equals(TripleIso.of(null, null, third)));
+        assertFalse(tri.equals(TripleIso.of(null, null, null)));
+        TripleIso<String> triNull = null;
         assertFalse(tri.equals(triNull));
     }
 
     /**
-     * Test method for {@link Tri#hashCode()}.
+     * Test method for {@link TripleIso#hashCode()}.
      */
     @Test
     public void testHashCode() {
@@ -80,7 +80,7 @@ public class TriTest {
         String second = "second";
         String third = "third";
 
-        Tri<String> tri = Tri.of(first, second, third);
+        TripleIso<String> tri = TripleIso.of(first, second, third);
 
         assertFalse(tri.hashCode() == 0);
         assertNotEquals(first.hashCode(), tri.hashCode());
@@ -88,11 +88,11 @@ public class TriTest {
         assertNotEquals(third.hashCode(), tri.hashCode());
 
         // {@link Arrays#hashCode}
-        assertEquals(29_791, Tri.of(null, null, null).hashCode());
+        assertEquals(29_791, TripleIso.of(null, null, null).hashCode());
     }
 
     /**
-     * Test method for {@link Tri#compareTo(Tri)}.
+     * Test method for {@link TripleIso#compareTo(TripleIso)}.
      */
     @Test
     public void testCompareTo() {
@@ -100,22 +100,22 @@ public class TriTest {
         String second = "second";
         String third = "third";
 
-        Tri<String> tri = Tri.of(first, second, third);
+        TripleIso<String> tri = TripleIso.of(first, second, third);
 
         assertEquals(0, tri.compareTo(tri));
-        assertEquals(0, tri.compareTo(Tri.of(first, second, third)));
-        assertEquals(1, tri.compareTo(Tri.of(first, null, third)));
-        assertEquals(1, tri.compareTo(Tri.of(first, second, null)));
-        assertEquals(1, tri.compareTo(Tri.of(null, second, third)));
-        assertEquals(1, tri.compareTo(Tri.of(first, null, null)));
-        assertEquals(1, tri.compareTo(Tri.of(null, second, null)));
-        assertEquals(1, tri.compareTo(Tri.of(null, null, third)));
-        assertEquals(1, tri.compareTo(Tri.of(null, null, null)));
+        assertEquals(0, tri.compareTo(TripleIso.of(first, second, third)));
+        assertEquals(1, tri.compareTo(TripleIso.of(first, null, third)));
+        assertEquals(1, tri.compareTo(TripleIso.of(first, second, null)));
+        assertEquals(1, tri.compareTo(TripleIso.of(null, second, third)));
+        assertEquals(1, tri.compareTo(TripleIso.of(first, null, null)));
+        assertEquals(1, tri.compareTo(TripleIso.of(null, second, null)));
+        assertEquals(1, tri.compareTo(TripleIso.of(null, null, third)));
+        assertEquals(1, tri.compareTo(TripleIso.of(null, null, null)));
         assertEquals(Integer.MAX_VALUE, tri.compareTo(null));
     }
 
     /**
-     * Test method for {@link Tri#toString()}.
+     * Test method for {@link TripleIso#toString()}.
      */
     @Test
     public void testToString() {
@@ -123,13 +123,13 @@ public class TriTest {
         String second = "second";
         String third = "third";
 
-        Tri<String> tri = Tri.of(first, second, third);
+        TripleIso<String> tri = TripleIso.of(first, second, third);
 
         assertEquals("(first, second, third)", tri.toString());
     }
 
     /**
-     * Test method for {@link Tri#toString(java.lang.String)}.
+     * Test method for {@link TripleIso#toString(java.lang.String)}.
      */
     @Test
     public void testToStringString() {
@@ -137,14 +137,14 @@ public class TriTest {
         String second = "second";
         String third = "third";
 
-        Tri<String> tri = Tri.of(first, second, third);
+        TripleIso<String> tri = TripleIso.of(first, second, third);
 
         assertEquals("first, second, third", tri.toString("%s, %s, %s"));
     }
 
     /**
      * Test method for
-     * {@link Tri#ofMutable(java.lang.Object, java.lang.Object)}.
+     * {@link TripleIso#ofMutable(java.lang.Object, java.lang.Object)}.
      */
     @Test
     public void testOfMutable() {
@@ -153,7 +153,7 @@ public class TriTest {
         String third = "third";
         String value = "value";
 
-        MutableTri<String> tri = Tri.ofMutable(first, second, third);
+        MutableTripleIso<String> tri = TripleIso.ofMutable(first, second, third);
 
         assertEquals(first, tri.getLeft());
         tri.setLeft(value);

@@ -38,7 +38,7 @@ package fr.landel.utils.commons.tuple;
  * @author Gilles
  *
  */
-public final class ImmutableBi<T> extends AbstractImmutableBi<T> {
+public final class ImmutablePairIso<T> extends AbstractImmutablePairIso<T> {
 
     /**
      * serialVersionUID
@@ -53,7 +53,7 @@ public final class ImmutableBi<T> extends AbstractImmutableBi<T> {
      * @param right
      *            the right value, may be null
      */
-    public ImmutableBi(final T left, final T right) {
+    public ImmutablePairIso(final T left, final T right) {
         super(left, right);
     }
 }

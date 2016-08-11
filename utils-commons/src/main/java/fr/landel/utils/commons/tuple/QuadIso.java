@@ -36,7 +36,7 @@ package fr.landel.utils.commons.tuple;
  * @author Gilles
  *
  */
-public abstract class Quadri<T> extends AbstractQuad<T, T, T, T> {
+public abstract class QuadIso<T> extends AbstractQuad<T, T, T, T> {
 
     /**
      * serialVersionUID
@@ -66,8 +66,8 @@ public abstract class Quadri<T> extends AbstractQuad<T, T, T, T> {
      *            the fourth element, may be null
      * @return a quad formed from the four parameters, not null
      */
-    public static <T> Quadri<T> of(final T first, final T second, final T third, final T fourth) {
-        return new ImmutableQuadri<T>(first, second, third, fourth);
+    public static <T> QuadIso<T> of(final T first, final T second, final T third, final T fourth) {
+        return new ImmutableQuadIso<T>(first, second, third, fourth);
     }
 
     /**
@@ -92,7 +92,7 @@ public abstract class Quadri<T> extends AbstractQuad<T, T, T, T> {
      *            the fourth element, may be null
      * @return a quad formed from the four parameters, not null
      */
-    public static <T> MutableQuadri<T> ofMutable(final T first, final T second, final T third, final T fourth) {
-        return new MutableQuadri<T>(first, second, third, fourth);
+    public static <T> MutableQuadIso<T> ofMutable(final T first, final T second, final T third, final T fourth) {
+        return new MutableQuadIso<T>(first, second, third, fourth);
     }
 }

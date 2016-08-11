@@ -29,7 +29,7 @@ package fr.landel.utils.commons.tuple;
  * @param <T>
  *            the type of objects
  */
-public class MutableQuadri<T> extends Quadri<T> {
+public class MutableQuadIso<T> extends QuadIso<T> {
 
     /**
      * serialVersionUID
@@ -48,7 +48,7 @@ public class MutableQuadri<T> extends Quadri<T> {
     /**
      * Create a new triple instance of three nulls.
      */
-    public MutableQuadri() {
+    public MutableQuadIso() {
         super();
     }
 
@@ -64,7 +64,7 @@ public class MutableQuadri<T> extends Quadri<T> {
      * @param fourth
      *            the fourth element, may be null
      */
-    public MutableQuadri(final T first, final T second, final T third, final T fourth) {
+    public MutableQuadIso(final T first, final T second, final T third, final T fourth) {
         this();
         this.first = first;
         this.second = second;

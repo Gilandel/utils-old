@@ -22,9 +22,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import fr.landel.utils.commons.tuple.MutableSingle;
+import fr.landel.utils.commons.tuple.Single;
 
 /**
  * This class is used to:<br>
@@ -163,9 +169,7 @@ public final class FileSystemUtils {
             final File srcFile = new File(src);
             final File dstFile = new File(dest);
 
-            if (dstFile != null && FileSystemUtils.createDirectory(dstFile.getParentFile())) {
-                copyFile(srcFile, dstFile, removeSource);
-            }
+            copyFile(srcFile, dstFile, removeSource);
             return;
         }
         throw new FileNotFoundException(ERROR_PARAM_NULL);
@@ -207,18 +211,24 @@ public final class FileSystemUtils {
             target = dest;
         }
 
-        final BufferedInputStream bis = StreamUtils.createBufferedInputStream(src);
-        final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(target);
+        if (FileSystemUtils.createDirectory(target.getParentFile())) {
+            if (!src.getAbsolutePath().equals(dest.getAbsolutePath())) {
+                final BufferedInputStream bis = StreamUtils.createBufferedInputStream(src);
+                final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(target);
 
-        while ((bufferReadSize = bis.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-            bos.write(BUFFER, 0, bufferReadSize);
-        }
+                while ((bufferReadSize = bis.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
+                    bos.write(BUFFER, 0, bufferReadSize);
+                }
 
-        CloseableManager.close(target);
-        CloseableManager.close(src);
+                CloseableManager.close(target);
+                CloseableManager.close(src);
 
-        if (removeSource && !src.delete()) {
-            throw new IOException("Cannot remove the source file");
+                if (removeSource && !src.delete()) {
+                    throw new IOException("Cannot remove the source file");
+                }
+            }
+        } else {
+            throw new FileNotFoundException("destination directory doesn't exist and cannot be created");
         }
     }
 
@@ -481,16 +491,105 @@ public final class FileSystemUtils {
                         filesToCopy = src.listFiles();
                     }
 
-                    if (filesToCopy != null) {
+                    if (ArrayUtils.isNotEmpty(filesToCopy)) {
                         copy(filesToCopy, dest, fileFilter, filenameFilter, removeSource);
                     }
+                    if (removeSource && !src.delete()) {
+                        throw new IOException("Cannot delete the directory" + src.getAbsolutePath());
+                    }
                 }
-            } else if (src.isFile()) {
+            } else if (matchFilter(src, fileFilter, filenameFilter)) {
                 copyFile(src, dest, removeSource);
             }
             return;
         }
         throw new FileNotFoundException(ERROR_PARAM_NULL);
+    }
+
+    private static boolean matchFilter(final File file, final FileFilter fileFilter, final FilenameFilter filenameFilter) {
+        boolean ok = false;
+        if (file != null && file.isFile()) {
+            if (fileFilter != null && fileFilter.accept(file)) {
+                ok = true;
+            } else if (filenameFilter != null && filenameFilter.accept(file.getParentFile(), file.getName())) {
+                ok = true;
+            } else if (fileFilter == null && filenameFilter == null) {
+                ok = true;
+            }
+        }
+        return ok;
+    }
+
+    public static long getDirectorySize(final File src) throws IOException {
+        return FileSystemUtils.getDirectorySize(src, (FileFilter) null);
+    }
+
+    public static long getDirectorySize(final File src, final FileFilter fileFilter) throws IOException {
+        return FileSystemUtils.getDirectorySize(src, fileFilter, null);
+    }
+
+    public static long getDirectorySize(final File src, final FilenameFilter filenameFilter) throws IOException {
+        return FileSystemUtils.getDirectorySize(src, null, filenameFilter);
+    }
+
+    private static long getDirectorySize(final File src, final FileFilter fileFilter, final FilenameFilter filenameFilter)
+            throws IOException {
+        final MutableSingle<Long> size = Single.ofMutable(0L);
+        FileSystemUtils.listFiles(Optional.ofNullable(null), src, null, null, (file) -> {
+            if (file.isFile()) {
+                size.set(size.get() + file.length());
+            }
+        });
+        return size.get();
+    }
+
+    public static List<File> listFiles(final File src) throws IOException {
+        return FileSystemUtils.listFiles(src, (FileFilter) null);
+    }
+
+    public static List<File> listFiles(final File src, final FileFilter fileFilter) throws IOException {
+        return FileSystemUtils.listFiles(Optional.ofNullable(null), src, fileFilter, null, null);
+    }
+
+    public static List<File> listFiles(final File src, final FilenameFilter filenameFilter) throws IOException {
+        return FileSystemUtils.listFiles(Optional.ofNullable(null), src, null, filenameFilter, null);
+    }
+
+    private static List<File> listFiles(final Optional<List<File>> output, final File src, final FileFilter fileFilter,
+            final FilenameFilter filenameFilter, Consumer<File> actionOnEachFile) throws IOException {
+
+        final List<File> list = output.orElse(new ArrayList<>());
+
+        if (src != null) {
+            if (src.isDirectory()) {
+                // creation du repertoire si necessaire
+                // creation de la liste des fichiers et repertoires
+                File[] files;
+                if (fileFilter != null) {
+                    files = src.listFiles(fileFilter);
+                } else if (filenameFilter != null) {
+                    files = src.listFiles(filenameFilter);
+                } else {
+                    files = src.listFiles();
+                }
+
+                if (files != null) {
+                    list.addAll(Arrays.asList(files));
+
+                    for (File entry : files) {
+                        actionOnEachFile.accept(entry);
+
+                        if (entry.isDirectory()) {
+                            FileSystemUtils.listFiles(Optional.of(list), entry, fileFilter, filenameFilter, actionOnEachFile);
+                        }
+                    }
+                }
+            } else if (matchFilter(src, fileFilter, filenameFilter)) {
+                list.add(src);
+                actionOnEachFile.accept(src);
+            }
+        }
+        return list;
     }
 
     /**

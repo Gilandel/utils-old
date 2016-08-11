@@ -44,7 +44,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  * @author Gilles
  *
  */
-public abstract class Tri<T> implements Comparable<Tri<T>>, Serializable {
+public abstract class TripleIso<T> implements Comparable<TripleIso<T>>, Serializable {
 
     /**
      * serialVersionUID
@@ -90,7 +90,7 @@ public abstract class Tri<T> implements Comparable<Tri<T>>, Serializable {
      *         if other is {@code null}, returns {@link Integer#MAX_VALUE}
      */
     @Override
-    public int compareTo(final Tri<T> other) {
+    public int compareTo(final TripleIso<T> other) {
         if (other == null) {
             return Integer.MAX_VALUE;
         }
@@ -113,8 +113,8 @@ public abstract class Tri<T> implements Comparable<Tri<T>>, Serializable {
         if (obj == this) {
             return true;
         }
-        if (obj instanceof Tri<?>) {
-            final Tri<?> other = (Tri<?>) obj;
+        if (obj instanceof TripleIso<?>) {
+            final TripleIso<?> other = (TripleIso<?>) obj;
             return new EqualsBuilder().append(this.getLeft(), other.getLeft()).append(this.getMiddle(), other.getMiddle())
                     .append(this.getRight(), other.getRight()).isEquals();
         }
@@ -190,8 +190,8 @@ public abstract class Tri<T> implements Comparable<Tri<T>>, Serializable {
      *            the right element, may be null
      * @return a triple formed from the three parameters, not null
      */
-    public static <T> Tri<T> of(final T left, final T middle, final T right) {
-        return new ImmutableTri<T>(left, middle, right);
+    public static <T> TripleIso<T> of(final T left, final T middle, final T right) {
+        return new ImmutableTripleIso<T>(left, middle, right);
     }
 
     /**
@@ -215,7 +215,7 @@ public abstract class Tri<T> implements Comparable<Tri<T>>, Serializable {
      *            the right element, may be null
      * @return a triple formed from the three parameters, not null
      */
-    public static <T> MutableTri<T> ofMutable(final T left, final T middle, final T right) {
-        return new MutableTri<T>(left, middle, right);
+    public static <T> MutableTripleIso<T> ofMutable(final T left, final T middle, final T right) {
+        return new MutableTripleIso<T>(left, middle, right);
     }
 }

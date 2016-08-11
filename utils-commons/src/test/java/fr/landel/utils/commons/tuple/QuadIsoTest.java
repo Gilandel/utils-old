@@ -21,17 +21,17 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * Check {@link Quadri}
+ * Check {@link QuadIso}
  *
  * @since 2 août 2016
  * @author Gilles
  *
  */
-public class QuadriTest {
+public class QuadIsoTest {
 
     /**
-     * Test method for {@link Quadri#getLeft()},{@link Quadri#getMiddle()},
-     * {@link Quadri#getRight()}.
+     * Test method for {@link QuadIso#getLeft()},{@link QuadIso#getMiddle()},
+     * {@link QuadIso#getRight()}.
      */
     @Test
     public void testGet() {
@@ -40,7 +40,7 @@ public class QuadriTest {
         String third = "third";
         String fourth = "fourth";
 
-        Quadri<String> quad = Quadri.of(first, second, third, fourth);
+        QuadIso<String> quad = QuadIso.of(first, second, third, fourth);
 
         assertNotNull(quad);
         assertEquals(first, quad.getFirst());
@@ -50,7 +50,7 @@ public class QuadriTest {
     }
 
     /**
-     * Test method for {@link Quadri#equals(Object)}.
+     * Test method for {@link QuadIso#equals(Object)}.
      */
     @Test
     public void testEquals() {
@@ -59,24 +59,24 @@ public class QuadriTest {
         String third = "third";
         String fourth = "fourth";
 
-        Quadri<String> quad = Quadri.of(first, second, third, fourth);
+        QuadIso<String> quad = QuadIso.of(first, second, third, fourth);
 
         assertTrue(quad.equals(quad));
-        assertTrue(quad.equals(Quadri.of(first, second, third, fourth)));
-        assertFalse(quad.equals(Quadri.of(first, second, third, 2)));
-        assertFalse(quad.equals(Quadri.of(first, null, third, fourth)));
-        assertFalse(quad.equals(Quadri.of(null, second, third, fourth)));
-        assertFalse(quad.equals(Quadri.of(first, second, null, fourth)));
-        assertFalse(quad.equals(Quadri.of(first, null, null, fourth)));
-        assertFalse(quad.equals(Quadri.of(null, second, null, fourth)));
-        assertFalse(quad.equals(Quadri.of(null, null, third, fourth)));
-        assertFalse(quad.equals(Quadri.of(null, null, null, null)));
-        Quadri<String> quadNull = null;
+        assertTrue(quad.equals(QuadIso.of(first, second, third, fourth)));
+        assertFalse(quad.equals(QuadIso.of(first, second, third, 2)));
+        assertFalse(quad.equals(QuadIso.of(first, null, third, fourth)));
+        assertFalse(quad.equals(QuadIso.of(null, second, third, fourth)));
+        assertFalse(quad.equals(QuadIso.of(first, second, null, fourth)));
+        assertFalse(quad.equals(QuadIso.of(first, null, null, fourth)));
+        assertFalse(quad.equals(QuadIso.of(null, second, null, fourth)));
+        assertFalse(quad.equals(QuadIso.of(null, null, third, fourth)));
+        assertFalse(quad.equals(QuadIso.of(null, null, null, null)));
+        QuadIso<String> quadNull = null;
         assertFalse(quad.equals(quadNull));
     }
 
     /**
-     * Test method for {@link Quadri#hashCode()}.
+     * Test method for {@link QuadIso#hashCode()}.
      */
     @Test
     public void testHashCode() {
@@ -85,7 +85,7 @@ public class QuadriTest {
         String third = "third";
         String fourth = "fourth";
 
-        Quadri<String> quad = Quadri.of(first, second, third, fourth);
+        QuadIso<String> quad = QuadIso.of(first, second, third, fourth);
 
         assertFalse(quad.hashCode() == 0);
         assertNotEquals(first.hashCode(), quad.hashCode());
@@ -93,11 +93,11 @@ public class QuadriTest {
         assertNotEquals(third.hashCode(), quad.hashCode());
 
         // {@link Arrays#hashCode}
-        assertEquals(923_521, Quadri.of(null, null, null, null).hashCode());
+        assertEquals(923_521, QuadIso.of(null, null, null, null).hashCode());
     }
 
     /**
-     * Test method for {@link Quadri#compareTo(Quadri)}.
+     * Test method for {@link QuadIso#compareTo(QuadIso)}.
      */
     @Test
     public void testCompareTo() {
@@ -106,24 +106,24 @@ public class QuadriTest {
         String third = "third";
         String fourth = "fourth";
 
-        Quadri<String> quad = Quadri.of(first, second, third, fourth);
+        QuadIso<String> quad = QuadIso.of(first, second, third, fourth);
 
         assertEquals(0, quad.compareTo(quad));
-        assertEquals(0, quad.compareTo(Quadri.of(first, second, third, fourth)));
-        assertEquals(-1, quad.compareTo(Quadri.of(first, second, third, "fourti")));
-        assertEquals(1, quad.compareTo(Quadri.of(first, second, third, "fourtg")));
-        assertEquals(1, quad.compareTo(Quadri.of(first, null, third, fourth)));
-        assertEquals(1, quad.compareTo(Quadri.of(first, second, null, fourth)));
-        assertEquals(1, quad.compareTo(Quadri.of(null, second, third, fourth)));
-        assertEquals(1, quad.compareTo(Quadri.of(first, null, null, fourth)));
-        assertEquals(1, quad.compareTo(Quadri.of(null, second, null, fourth)));
-        assertEquals(1, quad.compareTo(Quadri.of(null, null, third, fourth)));
-        assertEquals(1, quad.compareTo(Quadri.of(null, null, null, null)));
+        assertEquals(0, quad.compareTo(QuadIso.of(first, second, third, fourth)));
+        assertEquals(-1, quad.compareTo(QuadIso.of(first, second, third, "fourti")));
+        assertEquals(1, quad.compareTo(QuadIso.of(first, second, third, "fourtg")));
+        assertEquals(1, quad.compareTo(QuadIso.of(first, null, third, fourth)));
+        assertEquals(1, quad.compareTo(QuadIso.of(first, second, null, fourth)));
+        assertEquals(1, quad.compareTo(QuadIso.of(null, second, third, fourth)));
+        assertEquals(1, quad.compareTo(QuadIso.of(first, null, null, fourth)));
+        assertEquals(1, quad.compareTo(QuadIso.of(null, second, null, fourth)));
+        assertEquals(1, quad.compareTo(QuadIso.of(null, null, third, fourth)));
+        assertEquals(1, quad.compareTo(QuadIso.of(null, null, null, null)));
         assertEquals(Integer.MAX_VALUE, quad.compareTo(null));
     }
 
     /**
-     * Test method for {@link Quadri#toString()}.
+     * Test method for {@link QuadIso#toString()}.
      */
     @Test
     public void testToString() {
@@ -132,13 +132,13 @@ public class QuadriTest {
         String third = "third";
         String fourth = "fourth";
 
-        Quadri<String> quad = Quadri.of(first, second, third, fourth);
+        QuadIso<String> quad = QuadIso.of(first, second, third, fourth);
 
         assertEquals("(first,second,third,fourth)", quad.toString());
     }
 
     /**
-     * Test method for {@link Quadri#toString(java.lang.String)}.
+     * Test method for {@link QuadIso#toString(java.lang.String)}.
      */
     @Test
     public void testToStringString() {
@@ -147,14 +147,14 @@ public class QuadriTest {
         String third = "third";
         String fourth = "fourth";
 
-        Quadri<String> quad = Quadri.of(first, second, third, fourth);
+        QuadIso<String> quad = QuadIso.of(first, second, third, fourth);
 
         assertEquals("first, second, third, fourth", quad.toString("%s, %s, %s, %s"));
     }
 
     /**
      * Test method for
-     * {@link Quadri#ofMutable(java.lang.Object, java.lang.Object)}.
+     * {@link QuadIso#ofMutable(java.lang.Object, java.lang.Object)}.
      */
     @Test
     public void testOfMutable() {
@@ -164,7 +164,7 @@ public class QuadriTest {
         String fourth = "fourth";
         String value = "value";
 
-        MutableQuadri<String> quad = Quadri.ofMutable(first, second, third, fourth);
+        MutableQuadIso<String> quad = QuadIso.ofMutable(first, second, third, fourth);
 
         assertEquals(first, quad.getFirst());
         quad.setFirst(value);
