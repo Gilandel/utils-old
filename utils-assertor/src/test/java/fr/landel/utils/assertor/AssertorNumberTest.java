@@ -39,7 +39,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorNumber#isEqual(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isEqual}.
      */
     @Test
     public void testIsEqualN() {
@@ -73,7 +73,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorNumber#isNotEqual(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isNotEqual}.
      */
     @Test
     public void testIsNotEqualN() {
@@ -103,7 +103,100 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorNumber#isGT(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isZero}.
+     */
+    @Test
+    public void testIsZero() {
+        assertTrue(Assertor.that(0).isZero().isOK());
+        assertFalse(Assertor.that(12).isZero().isOK());
+        assertFalse(Assertor.that(-1).isZero().isOK());
+
+        assertTrue(Assertor.that(0.00).isZero().isOK());
+        assertFalse(Assertor.that(0.0001).isZero().isOK());
+        assertFalse(Assertor.that(-0.0001).isZero().isOK());
+
+        assertFalse(Assertor.that((Integer) null).isZero().isOK());
+        assertTrue(Assertor.that((Integer) null).not().isZero().isOK());
+
+        assertEquals("error1", Assertor.that(2).isZero("error1").getErrors());
+
+        Expect.exception(() -> {
+            Assertor.that(2).isZero("error1 %1$s* %s", 0).toThrow();
+        }, IllegalArgumentException.class, "error1 2 0");
+
+        Expect.exception(() -> {
+            Assertor.that(-1).isZero("error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+
+        Expect.exception(() -> {
+            Assertor.that(0).not().isZero("error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+    }
+
+    /**
+     * Test method for {@link AssertorNumber#isPositive}.
+     */
+    @Test
+    public void testIsPositive() {
+        assertFalse(Assertor.that(0).isPositive().isOK());
+        assertTrue(Assertor.that(12).isPositive().isOK());
+        assertFalse(Assertor.that(-1).isPositive().isOK());
+
+        assertFalse(Assertor.that(0.00).isPositive().isOK());
+        assertTrue(Assertor.that(0.0001).isPositive().isOK());
+        assertFalse(Assertor.that(-0.0001).isPositive().isOK());
+
+        assertFalse(Assertor.that((Integer) null).isPositive().isOK());
+        assertTrue(Assertor.that((Integer) null).not().isPositive().isOK());
+
+        assertEquals("error1", Assertor.that(0).isPositive("error1").getErrors());
+
+        Expect.exception(() -> {
+            Assertor.that(0).isPositive("error1 %1$s* %s", 0).toThrow();
+        }, IllegalArgumentException.class, "error1 0 0");
+
+        Expect.exception(() -> {
+            Assertor.that(-1).isPositive("error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+
+        Expect.exception(() -> {
+            Assertor.that(0.0001d).not().isPositive("error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+    }
+
+    /**
+     * Test method for {@link AssertorNumber#isNegative}.
+     */
+    @Test
+    public void testIsNegative() {
+        assertFalse(Assertor.that(0).isNegative().isOK());
+        assertFalse(Assertor.that(12).isNegative().isOK());
+        assertTrue(Assertor.that(-1).isNegative().isOK());
+
+        assertFalse(Assertor.that(0.00).isNegative().isOK());
+        assertFalse(Assertor.that(0.0001).isNegative().isOK());
+        assertTrue(Assertor.that(-0.0001).isNegative().isOK());
+
+        assertFalse(Assertor.that((Integer) null).isNegative().isOK());
+        assertTrue(Assertor.that((Integer) null).not().isNegative().isOK());
+
+        assertEquals("error1", Assertor.that(0).isNegative("error1").getErrors());
+
+        Expect.exception(() -> {
+            Assertor.that(0).isNegative("error1 %1$s* %s", 0).toThrow();
+        }, IllegalArgumentException.class, "error1 0 0");
+
+        Expect.exception(() -> {
+            Assertor.that(1).isNegative("error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+
+        Expect.exception(() -> {
+            Assertor.that(-0.00001d).not().isNegative("error1").toThrow("error2");
+        }, IllegalArgumentException.class, "error2");
+    }
+
+    /**
+     * Test method for {@link AssertorNumber#isGT}.
      */
     @Test
     public void testIsGT() {
@@ -131,7 +224,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorNumber#isGTE(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isGTE}.
      */
     @Test
     public void testIsGTE() {
@@ -159,7 +252,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorNumber#isLT(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isLT}.
      */
     @Test
     public void testIsLT() {
@@ -186,7 +279,7 @@ public class AssertorNumberTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorNumber#isLTE(java.lang.Number)}.
+     * Test method for {@link AssertorNumber#isLTE}.
      */
     @Test
     public void testIsLTE() {

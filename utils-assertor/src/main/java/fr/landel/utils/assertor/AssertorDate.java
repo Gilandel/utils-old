@@ -79,55 +79,6 @@ public class AssertorDate extends Constants {
 
     /**
      * Prepare the next step to validate if the {@link Date} or {@link Calendar}
-     * is around to the specified date (same type)
-     * 
-     * <p>
-     * precondition: {@code calendarField} must be a valid field and
-     * {@code calendarAmount} cannot be equal to zero
-     * </p>
-     * 
-     * Valid calendar field:
-     * <ul>
-     * <li>{@link Calendar#ERA}</li>
-     * <li>{@link Calendar#YEAR}</li>
-     * <li>{@link Calendar#MONTH}</li>
-     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
-     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
-     * <li>{@link Calendar#DATE}</li>
-     * <li>{@link Calendar#DAY_OF_MONTH}</li>
-     * <li>{@link Calendar#DAY_OF_YEAR}</li>
-     * <li>{@link Calendar#DAY_OF_WEEK}</li>
-     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
-     * <li>{@link Calendar#AM_PM}</li>
-     * <li>{@link Calendar#HOUR}</li>
-     * <li>{@link Calendar#HOUR_OF_DAY}</li>
-     * <li>{@link Calendar#MINUTE}</li>
-     * <li>{@link Calendar#SECOND}</li>
-     * <li>{@link Calendar#MILLISECOND}</li>
-     * </ul>
-     * 
-     * @param step
-     *            the current step
-     * @param date
-     *            the date to compare
-     * @param message
-     *            the message if invalid
-     * @param calendarField
-     *            the calendar field
-     * @param calendarAmount
-     *            the calendar amount
-     * @param <T>
-     *            the date type
-     * @return the next step
-     */
-    protected static <T extends Comparable<T>> StepAssertor<T> isAround(final StepAssertor<T> step, final T date, final int calendarField,
-            final int calendarAmount, final Message message) {
-
-        return AssertorDate.isAround(step, date, calendarField, calendarAmount, false, message);
-    }
-
-    /**
-     * Prepare the next step to validate if the {@link Date} or {@link Calendar}
      * is NOT around to the specified date (same type)
      * 
      * <p>
@@ -173,6 +124,55 @@ public class AssertorDate extends Constants {
             final int calendarField, final int calendarAmount, final Message message) {
 
         return AssertorDate.isAround(step, date, calendarField, calendarAmount, true, message);
+    }
+
+    /**
+     * Prepare the next step to validate if the {@link Date} or {@link Calendar}
+     * is around to the specified date (same type)
+     * 
+     * <p>
+     * precondition: {@code calendarField} must be a valid field and
+     * {@code calendarAmount} cannot be equal to zero
+     * </p>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param step
+     *            the current step
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message if invalid
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param <T>
+     *            the date type
+     * @return the next step
+     */
+    protected static <T extends Comparable<T>> StepAssertor<T> isAround(final StepAssertor<T> step, final T date, final int calendarField,
+            final int calendarAmount, final Message message) {
+
+        return AssertorDate.isAround(step, date, calendarField, calendarAmount, false, message);
     }
 
     private static <T extends Comparable<T>> StepAssertor<T> isAround(final StepAssertor<T> step, final T date, final int calendarField,

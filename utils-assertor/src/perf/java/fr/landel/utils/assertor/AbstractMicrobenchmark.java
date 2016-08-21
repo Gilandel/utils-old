@@ -55,7 +55,7 @@ public abstract class AbstractMicrobenchmark {
 
     protected static final int WARMUP_ITERATIONS = 3;
     protected static final int MEASURE_ITERATIONS = 5;
-    protected static final int NUM_FORKS = 2;
+    protected static final int NUM_FORKS = 1;
 
     // Use the default JVM args
     protected static final String JVM_ARGS = "-server";

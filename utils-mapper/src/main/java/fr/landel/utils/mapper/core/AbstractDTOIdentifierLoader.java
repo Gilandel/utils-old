@@ -24,6 +24,7 @@ import fr.landel.utils.mapper.DTOIdentifierImpl;
  */
 public abstract class AbstractDTOIdentifierLoader {
 
+    // XXX @Autowired
     private DTOIdentifierManager dtoIdentifierManager;
 
     /**

@@ -14,6 +14,7 @@ package fr.landel.utils.commons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Utility class to manage strings.
@@ -281,5 +282,23 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
 
         return part1 + replacement + part2;
+    }
+
+    /**
+     * Converts the char sequence in char array
+     * 
+     * @param sequence
+     *            the input sequence
+     * @return the array
+     */
+    public static char[] toChars(final CharSequence sequence) {
+        Objects.requireNonNull(sequence);
+
+        final int length = sequence.length();
+        char[] chars = new char[length];
+        for (int i = 0; i < length; i++) {
+            chars[i] = sequence.charAt(i);
+        }
+        return chars;
     }
 }

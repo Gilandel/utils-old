@@ -22,7 +22,7 @@ import java.util.List;
  * @author Gilles
  *
  */
-public class QueryDTO extends AbstractQueryBuilder {
+public class QueryDTO extends AbstractQueryBuilder1 {
 
     /**
      * Serial

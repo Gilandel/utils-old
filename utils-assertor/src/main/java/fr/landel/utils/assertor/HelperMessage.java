@@ -12,7 +12,6 @@
  */
 package fr.landel.utils.assertor;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -61,7 +60,7 @@ public final class HelperMessage extends Constants {
     /**
      * Flags in regular expression (sorted for binarySearch)
      */
-    private static final byte[] FLAGS = " #(+,-0<\\".getBytes(StandardCharsets.UTF_8);
+    private static final char[] FLAGS = StringUtils.toChars(" #(+,-0<\\");
 
     private static final char PERCENT = '%';
     private static final char PREFIX = PERCENT;
@@ -130,7 +129,7 @@ public final class HelperMessage extends Constants {
     public static CharSequence prepare(final CharSequence text, final int nbParameters, final int startParameters, final int nbArguments,
             final int startArguments) {
 
-        final byte[] bytes = text.toString().getBytes(StandardCharsets.UTF_8);
+        final char[] chars = StringUtils.toChars(text);
 
         int start = -1;
         int state = 0;
@@ -140,46 +139,46 @@ public final class HelperMessage extends Constants {
         int i;
         Group group = null;
 
-        for (i = 0; i < bytes.length; i++) {
-            if (group == null && bytes[i] == PREFIX) {
+        for (i = 0; i < chars.length; i++) {
+            if (group == null && chars[i] == PREFIX) {
                 start = i;
                 group = new Group(start);
             } else if (group != null) {
-                if (state < 2 && bytes[i] > 47 && bytes[i] < 58) {
+                if (state < 2 && chars[i] > 47 && chars[i] < 58) {
                     // (\\d+\\$)? ; the number
                     if (state == 0) {
                         state = 1;
                         group.index = 0;
                     }
-                    group.index = group.index * 10 + bytes[i] - 48;
-                } else if (state < 2 && bytes[i] == INDEX_SUFFIX) {
+                    group.index = group.index * 10 + chars[i] - 48;
+                } else if (state < 2 && chars[i] == INDEX_SUFFIX) {
                     // (\\d+\\$)? ; the dollar
                     state |= 2;
-                } else if (state < 8 && Arrays.binarySearch(FLAGS, bytes[i]) > -1) {
+                } else if (state < 8 && Arrays.binarySearch(FLAGS, chars[i]) > -1) {
                     // ([-#+ 0,(\\<]*)?
                     state |= 4;
-                    group.flags.append((char) bytes[i]);
-                } else if (state < 16 && bytes[i] == '.') {
+                    group.flags.append((char) chars[i]);
+                } else if (state < 16 && chars[i] == '.') {
                     // (\\d+)?(\\.\\d+)? ; the dot
                     state |= 16;
-                    group.number.append((char) bytes[i]);
-                } else if (state < 64 && bytes[i] > 47 && bytes[i] < 58) {
+                    group.number.append((char) chars[i]);
+                } else if (state < 64 && chars[i] > 47 && chars[i] < 58) {
                     // (\\d+)?(\\.\\d+)? ; 8 for before dot and 32 after
                     if ((state & 16) == 16) {
                         state |= 32;
                     } else {
                         state |= 8;
                     }
-                    group.number.append((char) bytes[i]);
-                } else if (state < 64 && bytes[i] == TIME_UPPERCASE || bytes[i] == TIME_LOWERCASE) {
+                    group.number.append((char) chars[i]);
+                } else if (state < 64 && chars[i] == TIME_UPPERCASE || chars[i] == TIME_LOWERCASE) {
                     // [tT]
                     state |= 64;
-                    group.time = (char) bytes[i];
-                } else if (state < 128 && ((bytes[i] > 64 && bytes[i] < 91) || (bytes[i] > 96 && bytes[i] < 123) || bytes[i] == PERCENT)) {
+                    group.time = (char) chars[i];
+                } else if (state < 128 && ((chars[i] > 64 && chars[i] < 91) || (chars[i] > 96 && chars[i] < 123) || chars[i] == PERCENT)) {
                     // [a-zA-Z%]
                     state |= 128;
-                    group.type.append((char) bytes[i]);
-                } else if (state < 256 && bytes[i] == PARAM_SUFFIX) {
+                    group.type.append((char) chars[i]);
+                } else if (state < 256 && chars[i] == PARAM_SUFFIX) {
                     // to detect internal parameter form
                     state |= 256;
                     group.asterisk = true;
@@ -195,7 +194,7 @@ public final class HelperMessage extends Constants {
                         group.end = i;
                         groups.add(group);
                     }
-                    if (bytes[i] == PREFIX) {
+                    if (chars[i] == PREFIX) {
                         // prepare the next expression
                         start = i;
                         state = 0;

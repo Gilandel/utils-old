@@ -14,42 +14,36 @@ package fr.landel.utils.model.hibernate;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.proxy.HibernateProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import fr.landel.utils.commons.function.FunctionThrowable;
+import fr.landel.utils.commons.function.SupplierThrowable;
 import fr.landel.utils.model.exception.ModelException;
 
 /**
- * (Description)
+ * Hibernate utility class to force object loading
  *
  * @since 14 mai 2016
  * @author Gilles
  *
  */
 public class HibernateUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateUtils.class);
-
-    private static final String ERROR_MSG = "Loading failed";
+    private static final String ERROR_MSG = "Cannot force the initialization of the object";
 
     /**
      * Try to force the loading of lazy collections
      * 
      * @param object
      *            the object to initialize
+     * @param <T>
+     *            the object type
      * @return The object initialized (if an Hibernate object) or the object
      * @throws ModelException
      *             On force loading lazy collections failed
      */
-    public static Object forceLoadLazyObject(final Object object) throws ModelException {
-        if (object != null && HibernateProxy.class.isAssignableFrom(object.getClass())) {
-            try {
-                Hibernate.initialize(object);
-            } catch (HibernateException e) {
-                LOGGER.error("Cannot force hibernate loading", e);
-                throw new ModelException(ERROR_MSG, e);
-            }
+    public static <T> T forceLoadLazyObject(final T object) throws ModelException {
+        try {
+            Hibernate.initialize(object);
+        } catch (HibernateException e) {
+            throw new ModelException(ERROR_MSG, e);
         }
         return object;
     }
@@ -60,10 +54,12 @@ public class HibernateUtils {
      * @param object
      *            the object to initialize
      * @return The function that will initialize the object
+     * @param <T>
+     *            the object type
      * @throws ModelException
      *             On force loading lazy collections failed
      */
-    public static FunctionThrowable<Object, Object, ModelException> forceLoadLazyObjectFunction(final Object object) throws ModelException {
-        return (o -> forceLoadLazyObject(o));
+    public static <T> SupplierThrowable<T, ModelException> forceLoadLazyObjectFunction(final T object) throws ModelException {
+        return () -> forceLoadLazyObject(object);
     }
 }

@@ -332,6 +332,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
         assertTrue(Assertor.that("toto part en vacances").contains("toto").isOK());
         assertTrue(Assertor.that("toto").contains('t').isOK());
         assertTrue(Assertor.that("toto").contains("toto").isOK());
+        assertTrue(Assertor.that("toti et toto part en vacances").contains("toto").isOK());
+        assertFalse(Assertor.that("toti part en vacances en moto").contains("toto").isOK());
         assertFalse(Assertor.that("toto").contains("toto part en vacances").isOK());
         assertFalse(Assertor.that((String) null).contains("toto part en vacances").isOK());
         assertFalse(Assertor.that("toto").contains((CharSequence) null).isOK());

@@ -13,7 +13,9 @@
 package fr.landel.utils.commons;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -307,5 +309,27 @@ public class StringUtilsTest {
     public void testReplaceException5() {
         final String string = "I go to the beach this afternoon.";
         StringUtils.replace(string, "theater", 2, 1);
+    }
+
+    /**
+     * Test method for {@link StringUtils#toChars(CharSequence)} .
+     */
+    @Test
+    public void testToChars() {
+        final String string = "I go to the beach this afternoon.";
+        final char[] expectedChars = new char[] {'I', ' ', 'g', 'o', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'b', 'e', 'a', 'c', 'h', ' ',
+                't', 'h', 'i', 's', ' ', 'a', 'f', 't', 'e', 'r', 'n', 'o', 'o', 'n', '.'};
+        final char[] chars = StringUtils.toChars(string);
+        assertEquals(expectedChars.length, chars.length);
+        for (int i = 0; i < chars.length; i++) {
+            assertEquals(expectedChars[i], chars[i]);
+        }
+
+        try {
+            StringUtils.toChars(null);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
     }
 }
