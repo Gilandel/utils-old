@@ -48,6 +48,10 @@ public class FilterHelper {
      *
      * @param filters
      *            the filters
+     * @param <E>
+     *            The entity type
+     * @param <K>
+     *            The primary key type
      * @return The HQL condition
      */
     public final <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> String buildFilters(
@@ -86,6 +90,10 @@ public class FilterHelper {
      *            the query
      * @param filters
      *            The filters
+     * @param <E>
+     *            The entity type
+     * @param <K>
+     *            The primary key type
      */
     public final <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> void buildFilterParameters(final Query query,
             final List<FilterInfo<E, K>> filters) {
@@ -112,6 +120,10 @@ public class FilterHelper {
      *
      * @param filter
      *            The filter
+     * @param <E>
+     *            The entity type
+     * @param <K>
+     *            The primary key type
      * @return The hql condition
      */
     private <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> String buildFilter(final FilterInfo<E, K> filter) {
@@ -157,6 +169,10 @@ public class FilterHelper {
      *
      * @param filter
      *            The filter
+     * @param <E>
+     *            The entity type
+     * @param <K>
+     *            The primary key type
      * @return The hql condition
      */
     private <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> String buildSimpleFilterValue(
@@ -189,6 +205,10 @@ public class FilterHelper {
      *
      * @param filter
      *            The filter
+     * @param <E>
+     *            The entity type
+     * @param <K>
+     *            The primary key type
      * @return The hql condition
      */
     private <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> String buildListFilterValue(

@@ -15,6 +15,8 @@ package fr.landel.utils.model.query;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.landel.utils.commons.StringUtils;
+
 /**
  * Query DTO.
  *
@@ -43,7 +45,7 @@ public class QueryDTO extends AbstractQueryBuilder1 {
         add(NEW);
         add(dtoClass.getCanonicalName());
         add(PARENTHESIS_OPEN);
-        addAll(fields);
+        add(StringUtils.join(fields, StringUtils.JOIN_SEPARATOR));
         add(PARENTHESIS_CLOSE);
     }
 

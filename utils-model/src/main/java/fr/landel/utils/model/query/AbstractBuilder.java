@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-model
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
@@ -247,8 +259,8 @@ public abstract class AbstractBuilder<E extends AbstractEntity<E, K>, K extends 
     /**
      * Add a char sequence to the builder
      * 
-     * @param sequence
-     *            the sequence to add
+     * @param builder
+     *            the builder to add
      * @return true, if added
      */
     protected boolean add(final AbstractBuilder<?, ?> builder) {

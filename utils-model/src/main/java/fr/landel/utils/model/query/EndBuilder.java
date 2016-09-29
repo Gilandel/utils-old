@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-model
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
@@ -32,6 +44,8 @@ public class EndBuilder<E extends AbstractEntity<E, K>, K extends Serializable &
     /**
      * Constructor
      *
+     * @param parentBuilder
+     *            the parent builder
      * @param entityClass
      *            the entity class
      * @param alias
@@ -83,7 +97,7 @@ public class EndBuilder<E extends AbstractEntity<E, K>, K extends Serializable &
     /**
      * Order by builder.
      * 
-     * @param queryOrder
+     * @param queriesOrder
      *            The order queries
      * @return the current query builder
      */

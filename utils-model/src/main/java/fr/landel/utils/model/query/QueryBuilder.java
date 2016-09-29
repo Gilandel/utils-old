@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-model
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
@@ -99,9 +111,9 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
     public InsertBuilder<E, K> insert() {
         if (this.step == 0) {
             step |= OPERATION;
-            final InsertBuilder<E, K> delete = new InsertBuilder<>(this, this.getEntityClass(), this.getAlias());
-            this.operation = delete;
-            return delete;
+            final InsertBuilder<E, K> insert = new InsertBuilder<>(this, this.getEntityClass(), this.getAlias());
+            this.operation = insert;
+            return insert;
         }
         throw new IllegalOperationException("Another operation has already been declared");
     }

@@ -301,4 +301,31 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return chars;
     }
+
+    /**
+     * <p>
+     * Joins the elements of the provided {@code Iterable} into a single String
+     * containing the provided elements.
+     * </p>
+     *
+     * <p>
+     * No delimiter is added before or after the list. The comma followed by a
+     * space is used as separator (", ").
+     * </p>
+     *
+     * <p>
+     * See the examples here: {@link #join(Object[],String)}.
+     * </p>
+     *
+     * @param iterable
+     *            the {@code Iterable} providing the values to join together,
+     *            may be null
+     * @return the joined String, {@code null} if null iterator input
+     */
+    public static String joinComma(final Iterable<?> iterable) {
+        if (iterable == null) {
+            return null;
+        }
+        return join(iterable.iterator(), JOIN_SEPARATOR);
+    }
 }

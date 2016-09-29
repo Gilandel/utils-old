@@ -71,6 +71,8 @@ public class ArrayUtilsTest {
         assertTrue(ArrayUtils.containsAny(bytes1, bytes3));
         assertFalse(ArrayUtils.containsAny(bytes1, bytes4));
 
+        assertFalse(ArrayUtils.containsAny(new Byte[0], bytes2));
+
         try {
             ArrayUtils.containsAny(null, bytes2);
             fail();

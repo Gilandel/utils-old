@@ -145,6 +145,8 @@ public class FilterInfo<E extends AbstractEntity<E, K>, K extends Serializable &
     /**
      * Constructor for filter a value.
      *
+     * @param table
+     *            Table to filter
      * @param column
      *            Column to filter
      * @param value

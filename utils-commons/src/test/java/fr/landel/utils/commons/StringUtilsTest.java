@@ -17,6 +17,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Test;
 
 /**
@@ -331,5 +334,17 @@ public class StringUtilsTest {
         } catch (NullPointerException e) {
             assertNotNull(e);
         }
+    }
+
+    /**
+     * Test method for {@link StringUtils#joinComma(Iterable)} .
+     */
+    @Test
+    public void testJoinComma() {
+        assertNull(StringUtils.joinComma(null));
+        assertEquals("", StringUtils.joinComma(Collections.EMPTY_LIST));
+        assertEquals("test", StringUtils.joinComma(Arrays.asList("test")));
+        assertEquals("t1, t2", StringUtils.joinComma(Arrays.asList("t1", "t2")));
+        assertEquals("t1, ", StringUtils.joinComma(Arrays.asList("t1", null)));
     }
 }

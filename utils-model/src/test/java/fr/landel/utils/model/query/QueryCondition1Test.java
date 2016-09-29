@@ -14,7 +14,7 @@ package fr.landel.utils.model.query;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.Ignore;
 
 import fr.landel.utils.model.mappable.EntityParent;
 
@@ -30,7 +30,7 @@ public class QueryCondition1Test {
     /**
      * Test method for {@link QueryCondition1#toString()}.
      */
-    @Test
+    @Ignore
     public void testToString() {
         final String space = " ";
         final String param = "param";

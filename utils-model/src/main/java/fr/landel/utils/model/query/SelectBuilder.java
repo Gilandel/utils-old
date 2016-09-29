@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-model
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
@@ -122,6 +134,10 @@ public class SelectBuilder<E extends AbstractEntity<E, K>, K extends Serializabl
      *            The linked entity class
      * @param alias
      *            The alias of the entity
+     * @param <N>
+     *            The entity type
+     * @param <Y>
+     *            The primary key type
      * @return the current query builder
      */
     public <N extends AbstractEntity<N, Y>, Y extends Serializable & Comparable<Y>> FromBuilder<N, Y> from(final Class<N> entityClassLinked,
@@ -140,6 +156,10 @@ public class SelectBuilder<E extends AbstractEntity<E, K>, K extends Serializabl
      *            entity class
      * @param alias
      *            alias
+     * @param <N>
+     *            The entity type
+     * @param <Y>
+     *            The primary key type
      */
     private <N extends AbstractEntity<N, Y>, Y extends Serializable & Comparable<Y>> void addEntity(final Class<N> entityClassSub,
             final CharSequence alias) {

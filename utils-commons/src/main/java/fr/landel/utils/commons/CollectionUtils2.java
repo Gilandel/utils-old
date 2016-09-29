@@ -92,6 +92,8 @@ public final class CollectionUtils2 {
                 typeClass = Object.class;
             }
             return list.toArray((T[]) Array.newInstance(typeClass, list.size()));
+        } else if (iterable != null && type != null) {
+            return (T[]) Array.newInstance(type, 0);
         }
         return null;
     }
