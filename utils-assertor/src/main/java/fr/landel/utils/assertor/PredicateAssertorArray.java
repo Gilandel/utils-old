@@ -15,7 +15,16 @@ package fr.landel.utils.assertor;
 import java.util.Locale;
 
 /**
- * (Description)
+ * This class define methods that can be applied on the checked Array object. To
+ * provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepArray}. The chain looks like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorArray} &gt; {@link PredicateStepArray} &gt; {@link PredicateAssertorArray} &gt; {@link PredicateStepArray}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorArray} and ends with
+ * {@link PredicateStepArray}.
  *
  * @since 3 août 2016
  * @author Gilles

@@ -17,7 +17,7 @@ import java.util.Locale;
 import fr.landel.utils.commons.function.PredicateThrowable;
 
 /**
- * This class define methods that can be applied on the checked object type. To
+ * This class define methods that can be applied on the checked object. To
  * provide a result, it's also provide a chain builder by returning a
  * {@link PredicateStep}. The chain looks like:
  * 
@@ -25,8 +25,12 @@ import fr.landel.utils.commons.function.PredicateThrowable;
  * {@link PredicateAssertor} &gt; {@link PredicateStep} &gt; {@link PredicateAssertor} &gt; {@link PredicateStep}...
  * </pre>
  * 
- * This chain always starts with a {@link PredicateAssertor} and ends with
- * {@link PredicateStep}.
+ * This chain always starts with a {@link PredicateAssertor} and ends with {@link PredicateStep}.
+ * If multiple values are checked, following to their types, the chain can be (checked values: "text", 3):
+ *
+ * <pre>
+ * {@link PredicateAssertorCharSequence} &gt; {@link PredicateAssertorCharSequence} &gt; {@link PredicateAssertorNumber} &gt; {@link PredicateStepNumber}...
+ * </pre>
  *
  * @since Aug 7, 2016
  * @author Gilles

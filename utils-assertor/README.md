@@ -117,11 +117,11 @@ Three outputs are available:
 - getErrors: to get the error message.
 
 These three output methods are considerate as final.
-So a clear of intermediate conditions is done.
+So when these methods are called a clear of intermediate conditions is done.
 
 ### Reset explanations
 
-To avoid this, the parameter 'reset' can be set to 'false' (default: true).
+Like explain in the previous chapter, to avoid the clear of intermediate steps, the parameter 'reset' can be set to 'false' (default: true).
 A about the cleared, only the checked value is kept, any intermediate check is cleared.
 ```java
 AssertCharSequence<String> assertion = Assertor.that("text1");
@@ -139,10 +139,12 @@ In each method, that manages intermediate errors (isBlank, contains...) or final
 The locale can be used to manage number and date (see [String.format](http://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)).
 
 Also parameters and arguments can be injected.
-Parameters are the variables send to check or as method parameters.
+Parameters are all the variables and other parameters sent to be used during the check.
 Arguments are the message arguments.
 ```java
-Assertor.that("text").hasLength(5, "Bad length '%1$d' expected '%2$d*' for word '%1$s*'", 4).getErrors();
+String text = "text";
+...
+Assertor.that(text).hasLength(5, "Bad length: '%1$d', expected: '%2$d*', text: '%1$s*'", text.length()).getErrors();
 // "text" is the first parameter
 // 5 is the second parameter
 // 4 is the first argument
@@ -155,13 +157,17 @@ The syntax is exactly the same as default [String.format](http://docs.oracle.com
 ## Output details
 
 ### toThrow
-Throw an exception if the assertion is false. Two ways to personalize the exception exist:
+Throw an exception if the assertion is false. Thee ways to personalize the exception exist:
 - a message:
 	The message can be personalized via arguments injection and locale.
 	Back-side the method String.format will be called with these arguments.
 	Parameters can also be injected.
 - an exception:
 	An exception can be also used (default: IllegalArgumentException).
+- a function:
+	A bi-function (a function with two parameters) can be passed.
+	This function is only called if statement is false.
+	The two parameters received are the combined errors messages and all the parameters.
 
 * Signatures:
 	- toThrow()
@@ -188,6 +194,15 @@ Assertor.that("").isNotBlank("The first name is invalid").toThrow(Locale.FRANCE,
 
 Assertor.that("").isNotBlank().toThrow(new IOException("Invalid data")); // -> throw the personalized exception
 Assertor.that("").isNotBlank(The first name is invalid").toThrow(new IOException("Invalid data")); -> throw the personalized exception
+
+Assertor.that("text").isBlank().toThrow((errors, parameters) -> new MyException("text should be blank")); // -> throw a MyException with message: text should be blank
+// 'errors' contains: the char sequence 'text' should be null, empty or blank
+// 'parameters' contains: [{"text", EnumType.CHAR_SEQUENCE}]
+
+Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow((errors, parameters) -> new MyException(errors)); // -> throw a MyException
+// 'errors' contains: the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte12' should NOT start with 'text'" OR the char sequence 'texte12' should be null, empty or blank
+// 'parameters' contains: [{"texte11", EnumType.CHAR_SEQUENCE}, {"texte12", EnumType.CHAR_SEQUENCE}, {"text", EnumType.CHAR_SEQUENCE}]
+// to display the first parameter in MyException call: parameters.get(0).getKey()
 ```
 
 As explain at the end of the description section, the reset parameter can be set to 'false' through these methods.
