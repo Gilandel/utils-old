@@ -18,7 +18,14 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * (Description)
+ * The basis class to start an assertor chain. The 'that' method is defined here
+ * for all managed types.
+ * 
+ * <p>
+ * Global locale can also be defined here. The locale will be used for decimal
+ * conversion for example. This locale is used if no locale is defined for the
+ * error message.
+ * </p>
  *
  * @since 3 août 2016
  * @author Gilles
