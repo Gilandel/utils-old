@@ -152,6 +152,11 @@ public abstract class AbstractBuilder<E extends AbstractEntity<E, K>, K extends 
      * Count keyword (select)
      */
     protected static final String COUNT = "COUNT";
+    
+    /**
+     * DTO instance creation (select)
+     */
+    protected static final String NEW = "NEW";
 
     /**
      * List of authorized characters (sorted by their ASCII value for binary

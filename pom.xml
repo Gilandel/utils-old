@@ -99,7 +99,7 @@
 
 		<verifier.plugin.version>1.1</verifier.plugin.version>
 		<clean.plugin.version>3.0.0</clean.plugin.version>
-		<compiler.plugin.version>3.5.1</compiler.plugin.version>
+		<compiler.plugin.version>3.6.0</compiler.plugin.version>
 		<install.plugin.version>2.5.2</install.plugin.version>
 		<deploy.plugin.version>2.8.2</deploy.plugin.version>
 		<site.plugin.version>3.5.1</site.plugin.version>
@@ -109,7 +109,6 @@
 		<war.plugin.version>3.0.0</war.plugin.version>
 		<shade.plugin.version>2.4.3</shade.plugin.version>
 
-		<maven.scm.svn.version>2.1.2</maven.scm.svn.version>
 		<assembly.plugin.version>2.6</assembly.plugin.version>
 		<buildhelper.plugin.version>1.12</buildhelper.plugin.version>
 
@@ -122,13 +121,13 @@
 		<nexus.staging.plugin.version>1.6.7</nexus.staging.plugin.version>
 		<exec.plugin.version>1.5.0</exec.plugin.version>
 
-		<license.plugin.version>1.9</license.plugin.version>
+		<license.plugin.version>1.10</license.plugin.version>
 		<javadoc.plugin.version>2.10.4</javadoc.plugin.version>
 		<changelog.plugin.version>2.3</changelog.plugin.version>
-		<versioneye.plugin.version>3.10.2</versioneye.plugin.version>
+		<versioneye.plugin.version>3.11.0</versioneye.plugin.version>
 
 		<!-- Dependencies version -->
-		<commons.lang.version>3.4</commons.lang.version>
+		<commons.lang.version>3.5</commons.lang.version>
 		<commons.beanutils.version>1.9.3</commons.beanutils.version>
 		<commons.collections.version>4.1</commons.collections.version>
 
@@ -139,7 +138,7 @@
 			requires Hibernate 5 -->
 		<!-- For the others classes, Hibernate 4.3.11 can be used -->
 		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
-		<hibernate.version>5.2.2.Final</hibernate.version>
+		<hibernate.version>5.2.4.Final</hibernate.version>
 		<hibernate.validator.version>5.3.0.CR1</hibernate.validator.version>
 
 		<tomcat.version>8.5.4</tomcat.version>
@@ -149,14 +148,14 @@
 		<spring.data.version>1.12.2.RELEASE</spring.data.version>
 		<aspectj.version>1.8.9</aspectj.version>
 
-		<jackson.version>2.8.3</jackson.version>
+		<jackson.version>2.8.4</jackson.version>
 
 		<poi.version>3.15</poi.version>
 
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<cobertura.version>2.1.1</cobertura.version>
-		<jmh.version>1.14</jmh.version>
+		<jmh.version>1.15</jmh.version>
 	</properties>
 
 	<reporting>
@@ -356,14 +355,6 @@
 						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
 					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>com.google.code.maven-scm-provider-svnjava</groupId>
-							<artifactId>maven-scm-provider-svnjava</artifactId>
-							<version>${maven.scm.svn.version}</version>
-							<scope>compile</scope>
-						</dependency>
-					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

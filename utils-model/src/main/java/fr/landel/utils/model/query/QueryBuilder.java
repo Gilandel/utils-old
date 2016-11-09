@@ -81,8 +81,12 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
         return this.select(selection, null, null);
     }
 
-    public SelectBuilder<E, K> select(final QueryDTO queryDTO) {
-        return this.select(null, queryDTO, null);
+    public SelectBuilder<E, K> select(final Class<?> dtoClass, final String... fields) {
+        return this.select(null, new QueryDTO(dtoClass, fields), null);
+    }
+
+    public SelectBuilder<E, K> select(final Class<?> dtoClass, final List<String> fields) {
+        return this.select(null, new QueryDTO(dtoClass, fields), null);
     }
 
     public SelectBuilder<E, K> select(final QueryBuilder<?, ?> subQuery) {

@@ -28,8 +28,8 @@ public class QueryBuilderTest {
 
         query = new QueryBuilder<>(EntityParent.class, "p");
 
-        System.out.println(query.select(new QueryDTO(Point.class, "p.valInteger", "c.valInteger")).from().innerJoin("p.children", "c")
-                .where().isNotEmpty("c.name"));
+        System.out.println(
+                query.select(Point.class, "p.valInteger", "c.valInteger").from().innerJoin("p.children", "c").where().isNotEmpty("c.name"));
 
         query = new QueryBuilder<>(EntityParent.class, "p");
 
