@@ -12,3 +12,4 @@ buildNumber.properties
 .classpath
 /utils-io/*.log
 /utils-assertor/*.log
+.pmd
