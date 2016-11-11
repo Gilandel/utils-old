@@ -46,7 +46,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      *            Type of the char sequence
      * @return a char sequence or null
      */
-    public static <C extends CharSequence> C getNullIfEmpty(final C cs) {
+    public static <C extends CharSequence> C nullIfEmpty(final C cs) {
         if (isNotEmpty(cs)) {
             return cs;
         }
@@ -65,7 +65,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      *            Type of the char sequence
      * @return a char sequence
      */
-    public static <C extends CharSequence> C getDefaultIfEmpty(final C cs, final C defaultCS) {
+    public static <C extends CharSequence> C defaultIfEmpty(final C cs, final C defaultCS) {
         if (isNotEmpty(cs)) {
             return cs;
         }
@@ -83,7 +83,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      *            Type of the char sequence
      * @return a char sequence
      */
-    public static <C extends CharSequence> C getDefaultIfNull(final C cs, final C defaultCS) {
+    public static <C extends CharSequence> C defaultIfNull(final C cs, final C defaultCS) {
         if (cs != null) {
             return cs;
         }
@@ -99,7 +99,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      *            The default string
      * @return a string
      */
-    public static String getToStringOrDefaultIfNull(final Object obj, final String defaultStr) {
+    public static String toStringOrDefaultIfNull(final Object obj, final String defaultStr) {
         if (obj != null) {
             return obj.toString();
         }
@@ -304,6 +304,40 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * <p>
+     * Joins the elements of the provided array into a single String containing
+     * the provided list of elements. Each element is separated by a comma
+     * followed by a space.
+     * </p>
+     *
+     * <p>
+     * No delimiter is added before or after the list. A {@code null} separator
+     * is the same as an empty String (""). Null objects or empty strings within
+     * the array are represented by empty strings.
+     * </p>
+     *
+     * <pre>
+     * StringUtils.join(null)            = null
+     * StringUtils.join([])              = ""
+     * StringUtils.join([null])          = ""
+     * StringUtils.join(["a"])           = "a"
+     * StringUtils.join(["a", "b", "c"]) = "a, b, c"
+     * </pre>
+     *
+     * @param array
+     *            the array of values to join together, may be null
+     * @param separator
+     *            the separator character to use, null treated as ""
+     * @param <T>
+     *            the type of each element
+     * @return the joined String, {@code null} if null array input
+     */
+    @SafeVarargs
+    public static <T> String joinComma(final T... elements) {
+        return join(elements, JOIN_SEPARATOR);
+    }
+
+    /**
+     * <p>
      * Joins the elements of the provided {@code Iterable} into a single String
      * containing the provided elements.
      * </p>
@@ -320,9 +354,11 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param iterable
      *            the {@code Iterable} providing the values to join together,
      *            may be null
+     * @param <T>
+     *            the type of each element
      * @return the joined String, {@code null} if null iterator input
      */
-    public static String joinComma(final Iterable<?> iterable) {
+    public static <T> String joinComma(final Iterable<T> iterable) {
         if (iterable == null) {
             return null;
         }

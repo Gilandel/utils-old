@@ -33,61 +33,61 @@ public class StringUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getNullIfEmpty(java.lang.CharSequence)}
+     * {@link fr.landel.utils.commons.StringUtils#nullIfEmpty(java.lang.CharSequence)}
      * .
      */
     @Test
     public void testGetNullIfEmpty() {
         String expected = "value";
-        assertEquals(expected, StringUtils.getNullIfEmpty(expected));
+        assertEquals(expected, StringUtils.nullIfEmpty(expected));
 
-        assertNull(StringUtils.getNullIfEmpty(""));
-        assertNull(StringUtils.getNullIfEmpty(null));
+        assertNull(StringUtils.nullIfEmpty(""));
+        assertNull(StringUtils.nullIfEmpty(null));
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getDefaultIfEmpty(java.lang.CharSequence, java.lang.CharSequence)}
+     * {@link fr.landel.utils.commons.StringUtils#defaultIfEmpty(java.lang.CharSequence, java.lang.CharSequence)}
      * .
      */
     @Test
     public void testGetDefaultIfEmpty() {
         String expected = "value";
         String defaultValue = "def";
-        assertEquals(expected, StringUtils.getDefaultIfEmpty(expected, defaultValue));
+        assertEquals(expected, StringUtils.defaultIfEmpty(expected, defaultValue));
 
-        assertEquals(defaultValue, StringUtils.getDefaultIfEmpty("", defaultValue));
-        assertEquals(defaultValue, StringUtils.getDefaultIfEmpty(null, defaultValue));
+        assertEquals(defaultValue, StringUtils.defaultIfEmpty("", defaultValue));
+        assertEquals(defaultValue, StringUtils.defaultIfEmpty(null, defaultValue));
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getDefaultIfNull(java.lang.CharSequence, java.lang.CharSequence)}
+     * {@link fr.landel.utils.commons.StringUtils#defaultIfNull(java.lang.CharSequence, java.lang.CharSequence)}
      * .
      */
     @Test
     public void testGetDefaultIfNull() {
         String expected = "value";
         String defaultValue = "def";
-        assertEquals(expected, StringUtils.getDefaultIfNull(expected, defaultValue));
+        assertEquals(expected, StringUtils.defaultIfNull(expected, defaultValue));
 
-        assertEquals("", StringUtils.getDefaultIfNull("", defaultValue));
-        assertEquals(defaultValue, StringUtils.getDefaultIfNull(null, defaultValue));
+        assertEquals("", StringUtils.defaultIfNull("", defaultValue));
+        assertEquals(defaultValue, StringUtils.defaultIfNull(null, defaultValue));
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getToStringOrDefaultIfNull(java.lang.Object, java.lang.String)}
+     * {@link fr.landel.utils.commons.StringUtils#toStringOrDefaultIfNull(java.lang.Object, java.lang.String)}
      * .
      */
     @Test
     public void testGetToStringOrDefaultIfNull() {
         Long expected = 1L;
         String defaultValue = "def";
-        assertEquals(String.valueOf(expected), StringUtils.getToStringOrDefaultIfNull(expected, defaultValue));
+        assertEquals(String.valueOf(expected), StringUtils.toStringOrDefaultIfNull(expected, defaultValue));
 
-        assertEquals("", StringUtils.getToStringOrDefaultIfNull("", defaultValue));
-        assertEquals(defaultValue, StringUtils.getToStringOrDefaultIfNull(null, defaultValue));
+        assertEquals("", StringUtils.toStringOrDefaultIfNull("", defaultValue));
+        assertEquals(defaultValue, StringUtils.toStringOrDefaultIfNull(null, defaultValue));
     }
 
     /**
@@ -337,12 +337,18 @@ public class StringUtilsTest {
     }
 
     /**
-     * Test method for {@link StringUtils#joinComma(Iterable)} .
+     * Test method for {@link StringUtils#joinComma} .
      */
     @Test
     public void testJoinComma() {
-        assertNull(StringUtils.joinComma(null));
-        assertEquals("", StringUtils.joinComma(Collections.EMPTY_LIST));
+        assertNull(StringUtils.joinComma((Object[]) null));
+        assertEquals("", StringUtils.joinComma(new Object[0]));
+        assertEquals("test", StringUtils.joinComma("test"));
+        assertEquals("t1, t2", StringUtils.joinComma("t1", "t2"));
+        assertEquals("t1, ", StringUtils.joinComma("t1", null));
+
+        assertNull(StringUtils.joinComma((Iterable<?>) null));
+        assertEquals("", StringUtils.joinComma(Collections.emptyList()));
         assertEquals("test", StringUtils.joinComma(Arrays.asList("test")));
         assertEquals("t1, t2", StringUtils.joinComma(Arrays.asList("t1", "t2")));
         assertEquals("t1, ", StringUtils.joinComma(Arrays.asList("t1", null)));
