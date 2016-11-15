@@ -238,6 +238,65 @@ public class ComparatorsTest {
     }
 
     /**
+     * Check {@link Comparators#VERSION}
+     */
+    @Test
+    public void testVersion() {
+        Version v1 = new Version("1.2.0");
+        Version v2 = new Version("1.2.1");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("1.2");
+
+        assertEquals(0, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2");
+        v2 = new Version("1.2-SNAPSHOT");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2-alpha-6");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("1.2.1");
+        Version v3 = new Version("1.2.0-SNAPSHOT");
+
+        List<Version> versions = Arrays.asList(v1, v2, v3);
+        List<Version> versionSorted = versions.stream().sorted(Comparators.VERSION.asc()).collect(Collectors.toList());
+
+        assertEquals(v1, versionSorted.get(0));
+        assertEquals(v3, versionSorted.get(1));
+        assertEquals(v2, versionSorted.get(2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2-alpha-6");
+        v3 = new Version("1.2.0-SNAPSHOT");
+
+        versions = Arrays.asList(v1, v2, v3);
+        versionSorted = versions.stream().sorted(Comparators.VERSION.asc()).collect(Collectors.toList());
+
+        assertEquals(v2, versionSorted.get(0));
+        assertEquals(v1, versionSorted.get(1));
+        assertEquals(v3, versionSorted.get(2));
+
+        versionSorted = versions.stream().sorted(Comparators.VERSION.desc()).collect(Collectors.toList());
+
+        assertEquals(v3, versionSorted.get(0));
+        assertEquals(v1, versionSorted.get(1));
+        assertEquals(v2, versionSorted.get(2));
+    }
+
+    /**
      * Check {@link Comparators#compare}
      */
     @Test
