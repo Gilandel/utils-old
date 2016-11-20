@@ -20,21 +20,36 @@ import fr.landel.utils.model.mappable.EntityParent;
 
 public class QueryBuilderTest {
 
+    /*
+     * 
+     * select * from (select * from test) as t; select * from t where b in
+     * (select * from test)
+     * 
+     */
+
     @Test
     public void testSelect() {
         QueryBuilder<EntityParent, String> query = new QueryBuilder<>(EntityParent.class, "p");
 
-        System.out.println(query.select("1").from("p").join("p.children", "c").where().in("c.id", "p1"));
+        query.select("1").from("p").join("p.children", "c").where().in("c.id", "p1");
+        System.out.println(query);
 
         query = new QueryBuilder<>(EntityParent.class, "p");
 
-        System.out.println(
-                query.select(Point.class, "p.valInteger", "c.valInteger").from().innerJoin("p.children", "c").where().isNotEmpty("c.name"));
+        query.select(Point.class, "p.valInteger", "c.valInteger").from().innerJoin("p.children", "c").where().isNotEmpty("c.name");
+        System.out.println(query);
 
         query = new QueryBuilder<>(EntityParent.class, "p");
 
-        System.out.println(query.select("1").from("p").innerJoin("p.children", "c").groupBy("c.title").orderBy(QueryOrder.asc("c.id"))
-                .having().isGT("c.size", "pSize").orderBy(QueryOrder.desc("c.name")));
+        query.select("1").from("p").innerJoin("p.children", "c").groupBy("c.title").orderBy(QueryOrder.asc("c.id")).having()
+                .isGT("c.size", "pSize").orderBy(QueryOrder.desc("c.name"));
+        System.out.println(query);
+
+        query = new QueryBuilder<>(EntityParent.class, "p");
+        QueryBuilder<EntityParent, String> subquery = new QueryBuilder<>(EntityParent.class, "x");
+
+        query.select(Point.class, QueryFunction.max("p.valInteger"), subquery.select().from()).from().groupBy("p.children");
+        System.out.println(query);
     }
 
     @Test

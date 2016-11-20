@@ -1,5 +1,18 @@
+/*-
+ * #%L
+ * utils-commons
+ * %%
+ * Copyright (C) 2016 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.commons;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +33,8 @@ public class Version implements Comparable<Version> {
     private final String[] array;
 
     public Version(final String version) {
+        Objects.requireNonNull(version, "Version parameter cannot be null");
+
         this.version = version;
         this.array = this.getArray();
     }
@@ -41,12 +56,27 @@ public class Version implements Comparable<Version> {
                 if (!group1.equals(group2)) {
                     boolean digit1 = NumberUtils.isDigits(group1);
                     boolean digit2 = NumberUtils.isDigits(group2);
+                    boolean isSnapshot1 = !digit1 && SNAPSHOT.equals(group1);
+                    boolean isSnapshot2 = !digit2 && SNAPSHOT.equals(group2);
+
                     if (digit1 && digit2) {
                         return Integer.compare(Integer.parseInt(group1), Integer.parseInt(group2));
                     } else if (digit1) {
-                        return 1;
+                        if (!isSnapshot2 && Integer.parseInt(group1) == 0) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
                     } else if (digit2) {
+                        if (!isSnapshot1 && Integer.parseInt(group2) == 0) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    } else if (isSnapshot1) {
                         return -1;
+                    } else if (isSnapshot2) {
+                        return 1;
                     } else {
                         return group1.compareTo(group2);
                     }
@@ -55,7 +85,7 @@ public class Version implements Comparable<Version> {
                 String group1 = a1[i];
 
                 if (SNAPSHOT.equals(group1)) {
-                    return 1;
+                    return -1;
                 } else if (NumberUtils.isDigits(group1)) {
                     if (Integer.parseInt(group1) == 0) {
                         return 0;
@@ -64,11 +94,11 @@ public class Version implements Comparable<Version> {
                     return -1;
                 }
                 return 1;
-            } else if (i < a2.length) {
+            } else {
                 String group2 = a2[i];
 
                 if (SNAPSHOT.equals(group2)) {
-                    return -1;
+                    return 1;
                 } else if (NumberUtils.isDigits(group2)) {
                     if (Integer.parseInt(group2) == 0) {
                         return 0;
@@ -95,6 +125,6 @@ public class Version implements Comparable<Version> {
 
     @Override
     public String toString() {
-        return this.version;
+        return this.getVersion();
     }
 }

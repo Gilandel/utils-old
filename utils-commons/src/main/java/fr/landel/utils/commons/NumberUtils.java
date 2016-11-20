@@ -902,6 +902,8 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      * 
      * @param number
      *            the number to check
+     * @param <N>
+     *            The type of the number
      * @return 1 if number &gt; 0, -1 if number &lt; 0 and 0 otherwise, even if
      *         null
      */
@@ -946,6 +948,8 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
      * 
      * @param number
      *            the number to check
+     * @param <N>
+     *            The type of the number
      * @return true if number = 0, false otherwise
      */
     public static <N extends Number> boolean isZero(final N number) {

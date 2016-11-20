@@ -74,18 +74,40 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
     }
 
     public SelectBuilder<E, K> select() {
-        return this.select(null, null, null);
+        return this.select((CharSequence) null, null, null);
     }
 
     public SelectBuilder<E, K> select(final CharSequence selection) {
         return this.select(selection, null, null);
     }
 
-    public SelectBuilder<E, K> select(final Class<?> dtoClass, final String... fields) {
+    public SelectBuilder<E, K> select(final Class<?> dtoClass, final CharSequence... fields) {
         return this.select(null, new QueryDTO(dtoClass, fields), null);
     }
 
-    public SelectBuilder<E, K> select(final Class<?> dtoClass, final List<String> fields) {
+    public SelectBuilder<E, K> select(final Class<?> dtoClass, final Object... fields) {
+        final List<CharSequence> sequences = new ArrayList<>();
+
+        for (Object field : fields) {
+            if (field != null) {
+                if (field instanceof CharSequence) {
+                    sequences.add((CharSequence) field);
+                } else if (field instanceof AbstractBuilder) {
+                    sequences.add(new StringBuilder(PARENTHESIS_OPEN).append(field).append(PARENTHESIS_CLOSE));
+                } else if (field instanceof AbstractQueryBuilder1) {
+                    sequences.add(field.toString());
+                } else {
+                    throw new IllegalArgumentException("The type of a field is not supported: " + String.valueOf(field));
+                }
+            } else {
+                throw new IllegalArgumentException("A field cannot be null");
+            }
+        }
+
+        return this.select(null, new QueryDTO(dtoClass, sequences), null);
+    }
+
+    public SelectBuilder<E, K> select(final Class<?> dtoClass, final List<CharSequence> fields) {
         return this.select(null, new QueryDTO(dtoClass, fields), null);
     }
 
@@ -201,5 +223,10 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
             builder.add(this.end.build());
         }
         return StringUtils.join(builder, SPACE);
+    }
+
+    @Override
+    public String toString() {
+        return this.build();
     }
 }

@@ -170,6 +170,10 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      *            where to search array (required, not null)
      * @param object
      *            what to search
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element to search
      * @return the number of iterations
      */
     public static <T, U> int count(final T[] arrayToSearch, final U object) {
@@ -185,6 +189,10 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      *            what to search
      * @param checkType
      *            check if the type is identical from each array
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element to search
      * @return the number of iterations
      */
     public static <T, U> int count(final T[] arrayToSearch, final U object, final boolean checkType) {

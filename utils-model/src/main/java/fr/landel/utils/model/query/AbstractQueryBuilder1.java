@@ -57,6 +57,11 @@ public abstract class AbstractQueryBuilder1 extends ArrayList<CharSequence> {
     protected static final char COLON = EnumChar.COLON.getCharacter();
 
     /**
+     * The distinct key word
+     */
+    protected static final String DISTINCT = "DISTINCT";
+
+    /**
      * Serial
      */
     private static final long serialVersionUID = 629818342327662943L;

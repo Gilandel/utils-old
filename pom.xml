@@ -109,7 +109,7 @@
 		<war.plugin.version>3.0.0</war.plugin.version>
 		<shade.plugin.version>2.4.3</shade.plugin.version>
 
-		<assembly.plugin.version>2.6</assembly.plugin.version>
+		<assembly.plugin.version>3.0.0</assembly.plugin.version>
 		<buildhelper.plugin.version>1.12</buildhelper.plugin.version>
 
 		<failsafe.plugin.version>2.19.1</failsafe.plugin.version>
@@ -155,7 +155,7 @@
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<cobertura.version>2.1.1</cobertura.version>
-		<jmh.version>1.15</jmh.version>
+		<jmh.version>1.16</jmh.version>
 	</properties>
 
 	<reporting>

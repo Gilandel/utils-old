@@ -41,7 +41,7 @@ public class QueryDTO extends AbstractQueryBuilder1 {
      * @param fields
      *            The fields or columns
      */
-    public QueryDTO(final Class<?> dtoClass, final List<String> fields) {
+    public QueryDTO(final Class<?> dtoClass, final List<CharSequence> fields) {
         add(NEW);
         add(dtoClass.getCanonicalName());
         add(PARENTHESIS_OPEN);
@@ -57,7 +57,7 @@ public class QueryDTO extends AbstractQueryBuilder1 {
      * @param fields
      *            The fields or columns
      */
-    public QueryDTO(final Class<?> dtoClass, final String... fields) {
+    public QueryDTO(final Class<?> dtoClass, final CharSequence... fields) {
         this(dtoClass, Arrays.asList(fields));
     }
 }

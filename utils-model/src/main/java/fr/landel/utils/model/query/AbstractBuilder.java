@@ -152,7 +152,7 @@ public abstract class AbstractBuilder<E extends AbstractEntity<E, K>, K extends 
      * Count keyword (select)
      */
     protected static final String COUNT = "COUNT";
-    
+
     /**
      * DTO instance creation (select)
      */
@@ -323,6 +323,9 @@ public abstract class AbstractBuilder<E extends AbstractEntity<E, K>, K extends 
 
     @Override
     public String toString() {
-        return this.parentBuilder.build();
+        if (this.parentBuilder != null) {
+            return this.parentBuilder.build();
+        }
+        return this.build();
     }
 }

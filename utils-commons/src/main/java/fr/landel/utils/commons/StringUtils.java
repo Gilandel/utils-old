@@ -323,10 +323,8 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * StringUtils.join(["a", "b", "c"]) = "a, b, c"
      * </pre>
      *
-     * @param array
+     * @param elements
      *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use, null treated as ""
      * @param <T>
      *            the type of each element
      * @return the joined String, {@code null} if null array input
