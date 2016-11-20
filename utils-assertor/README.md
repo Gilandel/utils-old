@@ -121,8 +121,8 @@ So when these methods are called a clear of intermediate conditions is done.
 
 ### Reset explanations
 
-Like explain in the previous chapter, to avoid the clear of intermediate steps, the parameter 'reset' can be set to 'false' (default: true).
-A about the cleared, only the checked value is kept, any intermediate check is cleared.
+Like explain in the previous chapter, to avoid the clearing of intermediate steps, the parameter 'reset' can be set to 'false' (default: true).
+A about the clearing, only the checked value is kept, any intermediate checks are cleared.
 ```java
 AssertCharSequence<String> assertion = Assertor.that("text1");
 assertion.isBlank().and("text2").isNotEmpty().isOK(); // returns false
@@ -157,7 +157,7 @@ The syntax is exactly the same as default [String.format](http://docs.oracle.com
 ## Output details
 
 ### toThrow
-Throw an exception if the assertion is false. Thee ways to personalize the exception exist:
+Throw an exception if the assertion is false. Three ways to personalize the exception exist:
 - a message:
 	The message can be personalized via arguments injection and locale.
 	Back-side the method String.format will be called with these arguments.
@@ -217,7 +217,7 @@ Operator<AssertCharSequence<String>, String> operator = Assertor.that("").isNotB
 if (!operator.isOk(reset)) {
 	LOGGER.error(operator.getErrors(reset));
 	operator.toThrow(); // only here the assertion is cleared
-	// if we catch exception, and retry at this point 'operator.toThrow()', no exception will thrown
+	// if we catch exception, and retry at this point 'operator.toThrow()', no exception will be thrown
 }
 ```
 

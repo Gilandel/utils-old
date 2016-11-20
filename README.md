@@ -51,7 +51,7 @@ Assertor.that(paramInt).iGT(10).toThrow(() -> new MyException("invalid")); // ->
 Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
 ```
 
-[Link to the summary](./utils-assertor#summary)
+[Link to summary](./utils-assertor#summary)
 
 # utils-io
 - Closeable manager: A manager for closeable, to open X closeable and to close them (written before Java7 autocloseable)
