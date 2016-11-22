@@ -29,44 +29,46 @@ public class QueryBuilderTest {
 
     @Test
     public void testSelect() {
-        QueryBuilder<EntityParent, String> query = new QueryBuilder<>(EntityParent.class, "p");
+        QueryBuilder<EntityParent, String> query = QueryBuilder.of(EntityParent.class, "p");
 
         query.select("1").from("p").join("p.children", "c").where().in("c.id", "p1");
         System.out.println(query);
 
-        query = new QueryBuilder<>(EntityParent.class, "p");
+        query = QueryBuilder.of(EntityParent.class, "p");
 
         query.select(Point.class, "p.valInteger", "c.valInteger").from().innerJoin("p.children", "c").where().isNotEmpty("c.name");
         System.out.println(query);
 
-        query = new QueryBuilder<>(EntityParent.class, "p");
+        query = QueryBuilder.of(EntityParent.class, "p");
 
         query.select("1").from("p").innerJoin("p.children", "c").groupBy("c.title").orderBy(QueryOrder.asc("c.id")).having()
                 .isGT("c.size", "pSize").orderBy(QueryOrder.desc("c.name"));
         System.out.println(query);
 
-        query = new QueryBuilder<>(EntityParent.class, "p");
-        QueryBuilder<EntityParent, String> subquery = new QueryBuilder<>(EntityParent.class, "x");
+        query = QueryBuilder.of(EntityParent.class, "p");
+        QueryBuilder<EntityParent, String> subquery = QueryBuilder.of(EntityParent.class, "x");
 
-        query.select(Point.class, QueryFunction.max("p.valInteger"), subquery.select().from()).from().groupBy("p.children");
+        QueryDTO queryDTO = QueryDTOBuilder.of(Point.class).append(QueryFunction.max("p.valInteger")).append(subquery.select().from())
+                .build();
+        query.select(queryDTO).from().groupBy("p.children");
         System.out.println(query);
     }
 
     @Test
     public void testInsert() {
-        QueryBuilder<EntityParent, String> query = new QueryBuilder<>(EntityParent.class, "p");
+        QueryBuilder<EntityParent, String> query = QueryBuilder.of(EntityParent.class, "p");
         System.out.println(query.insert());
     }
 
     @Test
     public void testUpdate() {
-        QueryBuilder<EntityParent, String> query = new QueryBuilder<>(EntityParent.class, "p");
+        QueryBuilder<EntityParent, String> query = QueryBuilder.of(EntityParent.class, "p");
         System.out.println(query.update());
     }
 
     @Test
     public void testDelete() {
-        QueryBuilder<EntityParent, String> query = new QueryBuilder<>(EntityParent.class, "p");
+        QueryBuilder<EntityParent, String> query = QueryBuilder.of(EntityParent.class, "p");
         System.out.println(query.delete());
     }
 }

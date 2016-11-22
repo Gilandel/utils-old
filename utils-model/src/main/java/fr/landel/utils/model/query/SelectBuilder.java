@@ -134,14 +134,13 @@ public class SelectBuilder<E extends AbstractEntity<E, K>, K extends Serializabl
      *            The linked entity class
      * @param alias
      *            The alias of the entity
-     * @param <N>
+     * @param <E1>
      *            The entity type
-     * @param <Y>
+     * @param <K1>
      *            The primary key type
      * @return the current query builder
      */
-    public <N extends AbstractEntity<N, Y>, Y extends Serializable & Comparable<Y>> FromBuilder<N, Y> from(final Class<N> entityClassLinked,
-            final String alias) {
+    public FromBuilder<E, K> from(final Class<E> entityClassLinked, final String alias) {
         this.add(FROM);
         final CharSequence finalAlias = StringUtils.defaultIfEmpty(alias, this.getAlias());
         this.addEntity(entityClassLinked, finalAlias);

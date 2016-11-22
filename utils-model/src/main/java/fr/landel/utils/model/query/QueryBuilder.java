@@ -38,12 +38,14 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
      */
     private static final long serialVersionUID = 3752851217819190672L;
 
+    private static final String ERROR_ALREADY_USED = "Another operation has already been declared";
+
     private static final int OPERATION = 1;
 
     private int step = 0;
 
     // select, update, insert, delete
-    private AbstractBuilder<?, ?> operation;
+    private AbstractBuilder<E, K> operation;
     // from, join
     private FromBuilder<?, ?> from;
     // where
@@ -59,7 +61,7 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
      * @param alias
      *            the entity alias
      */
-    public QueryBuilder(final Class<E> entityClass, final CharSequence alias) {
+    private QueryBuilder(final Class<E> entityClass, final CharSequence alias) {
         super(entityClass, alias);
     }
 
@@ -69,8 +71,18 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
      * @param entityClass
      *            the class of the entity
      */
-    public QueryBuilder(final Class<E> entityClass) {
+    private QueryBuilder(final Class<E> entityClass) {
         this(entityClass, null);
+    }
+
+    public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryBuilder<E, K> of(
+            final Class<E> entityClass) {
+        return new QueryBuilder<>(entityClass);
+    }
+
+    public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryBuilder<E, K> of(final Class<E> entityClass,
+            final CharSequence alias) {
+        return new QueryBuilder<>(entityClass, alias);
     }
 
     public SelectBuilder<E, K> select() {
@@ -85,53 +97,36 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
         return this.select(null, new QueryDTO(dtoClass, fields), null);
     }
 
-    public SelectBuilder<E, K> select(final Class<?> dtoClass, final Object... fields) {
-        final List<CharSequence> sequences = new ArrayList<>();
-
-        for (Object field : fields) {
-            if (field != null) {
-                if (field instanceof CharSequence) {
-                    sequences.add((CharSequence) field);
-                } else if (field instanceof AbstractBuilder) {
-                    sequences.add(new StringBuilder(PARENTHESIS_OPEN).append(field).append(PARENTHESIS_CLOSE));
-                } else if (field instanceof AbstractQueryBuilder1) {
-                    sequences.add(field.toString());
-                } else {
-                    throw new IllegalArgumentException("The type of a field is not supported: " + String.valueOf(field));
-                }
-            } else {
-                throw new IllegalArgumentException("A field cannot be null");
-            }
-        }
-
-        return this.select(null, new QueryDTO(dtoClass, sequences), null);
-    }
-
     public SelectBuilder<E, K> select(final Class<?> dtoClass, final List<CharSequence> fields) {
         return this.select(null, new QueryDTO(dtoClass, fields), null);
+    }
+
+    public SelectBuilder<E, K> select(final QueryDTO queryDTO) {
+        return this.select(null, queryDTO, null);
     }
 
     public SelectBuilder<E, K> select(final QueryBuilder<?, ?> subQuery) {
         return this.select(null, null, subQuery);
     }
 
-    private SelectBuilder<E, K> select(final CharSequence selection, final QueryDTO queryDTO, final QueryBuilder<?, ?> subQuery) {
+    private <E1 extends AbstractEntity<E1, K1>, K1 extends Serializable & Comparable<K1>> SelectBuilder<E, K> select(
+            final CharSequence selection, final QueryDTO queryDTO, final QueryBuilder<E1, K1> subQuery) {
         if (this.step == 0) {
             step |= OPERATION;
             final SelectBuilder<E, K> select;
             if (selection != null) {
                 select = new SelectBuilder<>(this, this.getEntityClass(), this.getAlias(), selection);
-            } else if (queryDTO != null) {
-                select = new SelectBuilder<>(this, this.getEntityClass(), this.getAlias(), queryDTO);
             } else if (subQuery != null) {
                 select = new SelectBuilder<>(this, this.getEntityClass(), this.getAlias(), subQuery);
+            } else if (queryDTO != null) {
+                select = new SelectBuilder<>(this, this.getEntityClass(), this.getAlias(), queryDTO);
             } else {
                 select = new SelectBuilder<>(this, this.getEntityClass(), this.getAlias());
             }
             this.operation = select;
             return select;
         }
-        throw new IllegalOperationException("Another operation has already been declared");
+        throw new IllegalOperationException(ERROR_ALREADY_USED);
     }
 
     public InsertBuilder<E, K> insert() {
@@ -141,7 +136,7 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
             this.operation = insert;
             return insert;
         }
-        throw new IllegalOperationException("Another operation has already been declared");
+        throw new IllegalOperationException(ERROR_ALREADY_USED);
     }
 
     public UpdateBuilder<E, K> update() {
@@ -151,7 +146,7 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
             this.operation = update;
             return update;
         }
-        throw new IllegalOperationException("Another operation has already been declared");
+        throw new IllegalOperationException(ERROR_ALREADY_USED);
     }
 
     public DeleteBuilder<E, K> delete() {
@@ -161,7 +156,7 @@ public class QueryBuilder<E extends AbstractEntity<E, K>, K extends Serializable
             this.operation = delete;
             return delete;
         }
-        throw new IllegalOperationException("Another operation has already been declared");
+        throw new IllegalOperationException(ERROR_ALREADY_USED);
     }
 
     /**

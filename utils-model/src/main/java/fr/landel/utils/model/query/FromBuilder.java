@@ -149,7 +149,8 @@ public class FromBuilder<E extends AbstractEntity<E, K>, K extends Serializable 
      *            the clause builder
      * @return the query condition builder
      */
-    public EndBuilder<E, K> where(final ClauseBuilder<E, K> clauseBuilder) {
+    public <E1 extends AbstractEntity<E1, K1>, K1 extends Serializable & Comparable<K1>> EndBuilder<E, K> where(
+            final ClauseBuilder<E, K> clauseBuilder) {
         this.add(WHERE);
 
         this.getParentBuilder().setClause(clauseBuilder);
