@@ -16,6 +16,17 @@ import java.io.Serializable;
 
 import fr.landel.utils.model.AbstractEntity;
 
+/**
+ * From builder
+ *
+ * @since 28 nov. 2016
+ * @author Gilles
+ *
+ * @param <E>
+ *            Entity type
+ * @param <K>
+ *            Primary key type
+ */
 public class FromBuilder<E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> extends AbstractEndBuilder<E, K> {
 
     /**
@@ -147,6 +158,10 @@ public class FromBuilder<E extends AbstractEntity<E, K>, K extends Serializable 
      * 
      * @param clauseBuilder
      *            the clause builder
+     * @param <E1>
+     *            Entity type
+     * @param <K1>
+     *            Primary key type
      * @return the query condition builder
      */
     public <E1 extends AbstractEntity<E1, K1>, K1 extends Serializable & Comparable<K1>> EndBuilder<E, K> where(

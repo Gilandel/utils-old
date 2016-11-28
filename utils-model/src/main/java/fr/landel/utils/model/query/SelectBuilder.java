@@ -17,6 +17,18 @@ import java.io.Serializable;
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.model.AbstractEntity;
 
+/**
+ * Select builder
+ *
+ * @since 28 nov. 2016
+ * @author Gilles
+ *
+ * 
+ * @param <E>
+ *            Entity type
+ * @param <K>
+ *            Primary key type
+ */
 public class SelectBuilder<E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> extends AbstractBuilder<E, K> {
 
     /**
@@ -134,10 +146,6 @@ public class SelectBuilder<E extends AbstractEntity<E, K>, K extends Serializabl
      *            The linked entity class
      * @param alias
      *            The alias of the entity
-     * @param <E1>
-     *            The entity type
-     * @param <K1>
-     *            The primary key type
      * @return the current query builder
      */
     public FromBuilder<E, K> from(final Class<E> entityClassLinked, final String alias) {

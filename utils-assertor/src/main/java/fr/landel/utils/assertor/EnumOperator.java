@@ -37,14 +37,21 @@ public enum EnumOperator {
      */
     XOR("operator.xor");
 
-    private final String text;
+    private final String key;
 
-    private EnumOperator(final String text) {
-        this.text = text;
+    private EnumOperator(final String key) {
+        this.key = key;
+    }
+
+    /**
+     * @return the operator message key
+     */
+    public String getKey() {
+        return this.key;
     }
 
     @Override
     public String toString() {
-        return Constants.getProperty(this.text).toString();
+        return Constants.getProperty(this.key).toString();
     }
 }

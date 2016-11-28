@@ -131,8 +131,8 @@ public class AssertorDate extends Constants {
      * is around to the specified date (same type)
      * 
      * <p>
-     * precondition: {@code calendarField} must be a valid field and
-     * {@code calendarAmount} cannot be equal to zero
+     * precondition: neither dates cannot be null, {@code calendarField} must be
+     * a valid field and {@code calendarAmount} cannot be equal to zero
      * </p>
      * 
      * Valid calendar field:
@@ -178,18 +178,7 @@ public class AssertorDate extends Constants {
     private static <T extends Comparable<T>> StepAssertor<T> isAround(final StepAssertor<T> step, final T date, final int calendarField,
             final int calendarAmount, final boolean reverse, final Message message) {
 
-        final Predicate<T> preChecker = (date1) -> {
-            final boolean prerequisites;
-            final boolean calendarFieldOk = calendarField == -1 || (CALENDAR_FIELDS.containsKey(calendarField) && calendarAmount != 0);
-
-            if (calendarField != -1) {
-                prerequisites = date1 != null && date != null;
-            } else {
-                prerequisites = true;
-            }
-
-            return prerequisites && calendarFieldOk;
-        };
+        final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> {
             boolean around = false;
@@ -213,7 +202,6 @@ public class AssertorDate extends Constants {
     }
 
     private static <T> boolean isAround(final T date1, final T date, final int calendarField, final int calendarAmount, final int compare) {
-
         Calendar calendar1;
         Calendar calendar2;
         final Class<?> clazz = date1.getClass();
@@ -235,7 +223,22 @@ public class AssertorDate extends Constants {
             calendar2.add(calendarField, calendarAmount);
             return !calendar2.before(calendar1);
         }
-        return true; // normally not used (equals)
+        return true; // normally, not used (equals)
+    }
+
+    private static <T extends Comparable<T>> Predicate<T> preChecker(final T date, final int calendarField, final int calendarAmount) {
+        return (date1) -> {
+            final boolean prerequisites;
+            final boolean calendarFieldOk = calendarField == -1 || (CALENDAR_FIELDS.containsKey(calendarField) && calendarAmount != 0);
+
+            if (calendarField != -1) {
+                prerequisites = date1 != null && date != null;
+            } else {
+                prerequisites = true;
+            }
+
+            return prerequisites && calendarFieldOk;
+        };
     }
 
     /**
@@ -261,6 +264,70 @@ public class AssertorDate extends Constants {
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) > 0;
 
         return AssertorDate.is(step, date, MSG.DATE.AFTER, checker, message);
+    }
+
+    /**
+     * Prepare the next step to validate if the {@link Date} or {@link Calendar}
+     * is after the specified date (same type)
+     * 
+     * <p>
+     * precondition: neither date cannot be null, {@code calendarField} must be
+     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * </p>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param step
+     *            the current step
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the date type
+     * @return the next step
+     */
+    protected static <T extends Comparable<T>> StepAssertor<T> isAfter(final StepAssertor<T> step, final T date, final int calendarField,
+            final int calendarAmount, final Message message) {
+
+        final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
+
+        final BiPredicate<T, Boolean> checker = (date1, not) -> {
+            boolean around = false;
+            final int compare = Comparators.compare(date1, date);
+            if (compare > 0) {
+                if (calendarField == -1) {
+                    around = true;
+                } else {
+                    around = AssertorDate.isAround(date1, date, calendarField, calendarAmount, compare);
+                }
+            }
+            return around;
+        };
+
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER, false, Pair.of(date, EnumType.getType(date)));
     }
 
     /**
@@ -312,6 +379,70 @@ public class AssertorDate extends Constants {
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) < 0;
 
         return AssertorDate.is(step, date, MSG.DATE.BEFORE, checker, message);
+    }
+
+    /**
+     * Prepare the next step to validate if the {@link Date} or {@link Calendar}
+     * is before the specified date (same type)
+     * 
+     * <p>
+     * precondition: neither date cannot be null, {@code calendarField} must be
+     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * </p>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param step
+     *            the current step
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the date type
+     * @return the next step
+     */
+    protected static <T extends Comparable<T>> StepAssertor<T> isBefore(final StepAssertor<T> step, final T date, final int calendarField,
+            final int calendarAmount, final Message message) {
+
+        final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
+
+        final BiPredicate<T, Boolean> checker = (date1, not) -> {
+            boolean around = false;
+            final int compare = Comparators.compare(date1, date);
+            if (compare < 0) {
+                if (calendarField == -1) {
+                    around = true;
+                } else {
+                    around = AssertorDate.isAround(date1, date, calendarField, calendarAmount, compare);
+                }
+            }
+            return around;
+        };
+
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE, false, Pair.of(date, EnumType.getType(date)));
     }
 
     /**

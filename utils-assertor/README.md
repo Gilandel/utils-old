@@ -754,16 +754,309 @@ Assertor.that("text").not().contains("", "Param '%1$s*' not blank").toThrow(); /
 ```
 
 #### startsWith
+Assert that char sequence starts with the substring.
+* Signatures:
+	- startsWith(CharSequence substring)
+	- startsWith(CharSequence substring, CharSequence message, Object[] arguments)
+	- startsWith(CharSequence substring, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- substring NOT null and NOT empty
+
+* Examples:
+```java
+Assertor.that("text").startsWith("t").toThrow(); // -> OK
+Assertor.that("text").startsWith("T").toThrow(); // -> throw an exception
+Assertor.that("text").startsWith("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").startsWith("text").toThrow(); // -> OK
+Assertor.that("text").startsWith("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().startsWith("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).startsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").startsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").startsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().startsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().startsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().startsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### startsWithIgnoreCase
+Assert that char sequence starts with the substring (case insensitive).
+* Signatures:
+	- startsWithIgnoreCase(CharSequence substring)
+	- startsWithIgnoreCase(CharSequence substring, CharSequence message, Object[] arguments)
+	- startsWithIgnoreCase(CharSequence substring, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- substring NOT null and NOT empty
+
+* Examples:
+```java
+Assertor.that("text").startsWithIgnoreCase("t").toThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("T").toThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").startsWithIgnoreCase("text").toThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().startsWithIgnoreCase("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).startsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").startsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").startsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().startsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().startsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().startsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### endsWith
+Assert that char sequence ends with the substring.
+* Signatures:
+	- endsWith(CharSequence substring)
+	- endsWith(CharSequence substring, CharSequence message, Object[] arguments)
+	- endsWith(CharSequence substring, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- substring NOT null and NOT empty
+
+* Examples:
+```java
+Assertor.that("text").endsWith("t").toThrow(); // -> OK
+Assertor.that("text").endsWith("T").toThrow(); // -> throw an exception
+Assertor.that("text").endsWith("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").endsWith("text").toThrow(); // -> OK
+Assertor.that("text").endsWith("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().endsWith("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).endsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").endsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").endsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().endsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().endsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().endsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### endsWithIgnoreCase
+Assert that char sequence ends with the substring (case insensitive).
+* Signatures:
+	- endsWithIgnoreCase(CharSequence substring)
+	- endsWithIgnoreCase(CharSequence substring, CharSequence message, Object[] arguments)
+	- endsWithIgnoreCase(CharSequence substring, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- substring NOT null and NOT empty
+
+* Examples:
+```java
+Assertor.that("text").endsWithIgnoreCase("t").toThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("T").toThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").endsWithIgnoreCase("text").toThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().endsWithIgnoreCase("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).endsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").endsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").endsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().endsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().endsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().endsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### matches
+Assert that char sequence matches the specified pattern / regex.
+* Signatures:
+	- matches(CharSequence regex)
+	- matches(CharSequence regex, CharSequence message, Object[] arguments)
+	- matches(CharSequence regex, Locale locale, CharSequence message, Object[] arguments)
+	- matches(Pattern pattern)
+	- matches(Pattern pattern, CharSequence message, Object[] arguments)
+	- matches(Pattern pattern, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- pattern / regex NOT null
+
+* Examples:
+```java
+Assertor.that("text").matches("[xet]{4}").toThrow(); // -> OK
+Assertor.that("text").matches("[xet]{3}").toThrow(); // -> throw an exception
+Assertor.that("text").matches("\\w+").toThrow(); // -> OK
+Assertor.that("text").matches("xt").toThrow(); // -> throw an exception
+Assertor.that("text").matches("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").matches("text").toThrow(); // -> OK
+Assertor.that("text").matches("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().matches("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).matches("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").matches(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().matches("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().matches(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
 #### find
+Assert that char sequence contains the specified pattern / regex.
+* Signatures:
+	- find(CharSequence regex)
+	- find(CharSequence regex, CharSequence message, Object[] arguments)
+	- find(CharSequence regex, Locale locale, CharSequence message, Object[] arguments)
+	- find(Pattern pattern)
+	- find(Pattern pattern, CharSequence message, Object[] arguments)
+	- find(Pattern pattern, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- char sequence NOT null
+	- pattern / regex NOT null
+
+* Examples:
+```java
+Assertor.that("text").find("[xet]{4}").toThrow(); // -> OK
+Assertor.that("text").find("[xet]{3}").toThrow(); // -> OK
+Assertor.that("text").find("\\w+").toThrow(); // -> OK
+Assertor.that("text").find("xt").toThrow(); // -> OK
+Assertor.that("text").find("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").find("text").toThrow(); // -> OK
+Assertor.that("text").find("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().find("y").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).find("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").find(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().find("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().find(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
 
 ### Date & Calendar
 #### isAround
+Assert that date1 is around the date2.
+* Signatures:
+	- isAround(Calendar date, int calendarField, int calendarAmount)
+	- isAround(Calendar date, int calendarField, int calendarAmount, CharSequence message, Object[] arguments)
+	- isAround(Calendar date, int calendarField, int calendarAmount, Locale locale, CharSequence message, Object[] arguments)
+	- isAround(Date date, int calendarField, int calendarAmount)
+	- isAround(Date date, int calendarField, int calendarAmount, CharSequence message, Object[] arguments)
+	- isAround(Date date, int calendarField, int calendarAmount, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- dates NOT null
+	- calendarField valid (see calendar field, ex: Calendar.ERA, Calendar.YEAR...)
+	- calendarAmount NOT equal to zero
+
+* Examples:
+```java
+final Calendar date1 = Calendar.getInstance();
+final Calendar date2 = Calendar.getInstance();
+
+date1.set(2016, 05, 29, 5, 5, 6);
+date2.set(2016, 05, 29, 5, 5, 5);
+
+Assertor.that(date1).isAround(date2, Calendar.SECOND, 5).toThrow(); // -> OK
+Assertor.that(date1).isAround(date2, Calendar.HOUR, 5).toThrow(); // -> OK
+Assertor.that(date1).isAround(date2, Calendar.MILLISECOND, 5).toThrow(); // -> throw an exception
+Assertor.that(date1).not().isAround(date2, Calendar.MILLISECOND, 5).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).not().isAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+```
+
 #### isNotAround
+Assert that date1 is not around the date2.
+* Signatures:
+	- isNotAround(Calendar date, int calendarField, int calendarAmount)
+	- isNotAround(Calendar date, int calendarField, int calendarAmount, CharSequence message, Object[] arguments)
+	- isNotAround(Calendar date, int calendarField, int calendarAmount, Locale locale, CharSequence message, Object[] arguments)
+	- isNotAround(Date date, int calendarField, int calendarAmount)
+	- isNotAround(Date date, int calendarField, int calendarAmount, CharSequence message, Object[] arguments)
+	- isNotAround(Date date, int calendarField, int calendarAmount, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- dates NOT null
+	- calendarField valid (see calendar field, ex: Calendar.ERA, Calendar.YEAR...)
+	- calendarAmount NOT equal to zero
+
+* Examples:
+```java
+final Calendar date1 = Calendar.getInstance();
+final Calendar date2 = Calendar.getInstance();
+
+date1.set(2016, 05, 29, 5, 5, 5);
+date2.set(2016, 05, 29, 6, 5, 5);
+
+Assertor.that(date1).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).toThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> throw an exception
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).not().isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+```
+
 #### isAfter
+Assert that date1 is after the date2.
+* Signatures:
+	- isAfter(Calendar date, int calendarField, int calendarAmount)
+	- isAfter(Calendar date, int calendarField, int calendarAmount, CharSequence message, Object[] arguments)
+	- isAfter(Calendar date, int calendarField, int calendarAmount, Locale locale, CharSequence message, Object[] arguments)
+	- isAfter(Date date, int calendarField, int calendarAmount)
+	- isAfter(Date date, int calendarField, int calendarAmount, CharSequence message, Object[] arguments)
+	- isAfter(Date date, int calendarField, int calendarAmount, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- dates NOT null
+	- calendarField valid (see calendar field, ex: Calendar.ERA, Calendar.YEAR...)
+	- calendarAmount NOT equal to zero
+
+* Examples:
+```java
+final Calendar date1 = Calendar.getInstance();
+final Calendar date2 = Calendar.getInstance();
+
+date1.set(2016, 05, 29, 5, 5, 5);
+date2.set(2016, 05, 29, 6, 5, 5);
+
+Assertor.that(date1).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).toThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> throw an exception
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).not().isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+```
+
 #### isAfterOrEquals
 #### isBefore
 #### isBeforeOrEquals

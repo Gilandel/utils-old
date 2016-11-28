@@ -136,6 +136,7 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
             calendar2.set(2016, 05, 29, 5, 5, 5);
 
             Assertor.that(calendar1).isAround(calendar2, Calendar.SECOND, 5).toThrow();
+            Assertor.that(calendar1).not().isAround(calendar2, Calendar.MILLISECOND, 5).toThrow();
 
             calendar1.set(2016, 05, 29, 5, 5, 1);
 
@@ -357,9 +358,14 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     public void testIsAfterOK() {
         try {
             Date date1 = new Date(1464475553641L);
-            Date date2 = new Date(1464475553640L);
+            Date date2 = new Date(1464474553641L);
 
             Assertor.that(date1).isAfter(date2).toThrow();
+
+            Assertor.that(date1).isAfter(date2, -1, -1).toThrow();
+            Assertor.that(date1).isAfter(date2, Calendar.HOUR, 1).toThrow();
+            Assertor.that(date1).not().isAfter(date2, Calendar.HOUR, -1).toThrow();
+            Assertor.that(date2).not().isAfter(date1, Calendar.HOUR, 1).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -478,6 +484,11 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
 
         assertTrue(Assertor.that(date2).isBefore(date1).isOK());
         assertTrue(Assertor.that(DateUtils.getCalendar(date2)).isBefore(DateUtils.getCalendar(date1)).isOK());
+
+        Assertor.that(date2).isBefore(date1, -1, -1).toThrow();
+        Assertor.that(date2).isBefore(date1, Calendar.HOUR, 1).toThrow();
+        Assertor.that(date2).not().isBefore(date1, Calendar.HOUR, -1).toThrow();
+        Assertor.that(date1).not().isBefore(date2, Calendar.HOUR, 1).toThrow();
 
         Expect.exception(() -> {
             Assertor.that(date1).isBefore(date2).toThrow();
