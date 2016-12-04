@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
@@ -357,15 +358,21 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
     @Test
     public void testIsAfterOK() {
         try {
-            Date date1 = new Date(1464475553641L);
-            Date date2 = new Date(1464474553641L);
+            final Calendar cal1 = new GregorianCalendar(2016, 0, 1, 2, 1, 1);
+            final Calendar cal2 = new GregorianCalendar(2016, 0, 1, 1, 1, 1);
+            final Date date1 = cal1.getTime();
+            final Date date2 = cal2.getTime();
 
             Assertor.that(date1).isAfter(date2).toThrow();
 
             Assertor.that(date1).isAfter(date2, -1, -1).toThrow();
+            Assertor.that(cal1).isAfter(cal2, -1, -1).toThrow();
             Assertor.that(date1).isAfter(date2, Calendar.HOUR, 1).toThrow();
+            Assertor.that(cal1).isAfter(cal2, Calendar.HOUR, 1).toThrow();
             Assertor.that(date1).not().isAfter(date2, Calendar.HOUR, -1).toThrow();
+            Assertor.that(cal1).not().isAfter(cal2, Calendar.HOUR, -1).toThrow();
             Assertor.that(date2).not().isAfter(date1, Calendar.HOUR, 1).toThrow();
+            Assertor.that(cal2).not().isAfter(cal1, Calendar.HOUR, 1).toThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -426,17 +433,26 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
      * Test method for {@link AssertorDate#isAfterOrEqual}.
      */
     @Test
-    public void testIsAfterOrEqualOK() {
+    public void testIsAfterOrEqualsOK() {
         try {
-            Date date1 = new Date(1464475553641L);
-            final Date date2 = new Date(1464475553640L);
+            final Calendar cal1 = new GregorianCalendar(2016, 0, 1, 2, 1, 1);
+            final Calendar cal2 = new GregorianCalendar(2016, 0, 1, 1, 1, 1);
+            Date date1 = cal1.getTime();
+            final Date date2 = cal2.getTime();
 
             Assertor.that(date1).isAfterOrEquals(date2).toThrow();
-            Assertor.that(DateUtils.getCalendar(date1)).isAfterOrEquals(DateUtils.getCalendar(date2)).toThrow();
+            Assertor.that(cal1).isAfterOrEquals(cal2).toThrow();
 
-            date1 = new Date(1464475553640L);
+            assertTrue(Assertor.that(date1).isAfterOrEquals(date2, Calendar.HOUR, 1).isOK());
+            assertTrue(Assertor.that(cal1).isAfterOrEquals(cal2, Calendar.HOUR, 1).isOK());
+
+            date1 = new GregorianCalendar(2016, 0, 1, 1, 1, 1).getTime();
 
             Assertor.that(date1).isAfterOrEquals(date2).toThrow();
+            assertTrue(Assertor.that(date1).isAfterOrEquals(date2, -1, -1).isOK());
+            assertTrue(Assertor.that(cal1).isAfterOrEquals(cal2, -1, -1).isOK());
+            assertTrue(Assertor.that(date1).isAfterOrEquals(date2, Calendar.HOUR, 1).isOK());
+            assertTrue(Assertor.that(cal1).isAfterOrEquals(cal2, Calendar.HOUR, 1).isOK());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -446,12 +462,14 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
      * Test method for {@link AssertorDate#isAfterOrEqual}.
      */
     @Test
-    public void testIsAfterOrEqualKO() {
-        Date date1 = new Date(1464475553640L);
-        Date date2 = new Date(1464475553641L);
+    public void testIsAfterOrEqualsKO() {
+        final Calendar cal1 = new GregorianCalendar(2016, 0, 1, 1, 1, 1);
+        final Calendar cal2 = new GregorianCalendar(2016, 0, 1, 2, 1, 1);
+        final Date date1 = cal1.getTime();
+        final Date date2 = cal2.getTime();
 
         assertFalse(Assertor.that(date1).isAfterOrEquals(date2).isOK());
-        assertFalse(Assertor.that(DateUtils.getCalendar(date1)).isAfterOrEquals(DateUtils.getCalendar(date2)).isOK());
+        assertFalse(Assertor.that(cal1).isAfterOrEquals(cal2).isOK());
 
         Expect.exception(() -> {
             Assertor.that((Date) null).isAfterOrEquals(date2).toThrow();
@@ -479,16 +497,19 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
      */
     @Test
     public void testIsBefore() {
-        final Date date1 = new Date(1464475553641L);
-        final Date date2 = new Date(1464475553640L);
+        final Calendar cal1 = new GregorianCalendar(2016, 0, 1, 2, 1, 1);
+        final Calendar cal2 = new GregorianCalendar(2016, 0, 1, 1, 1, 1);
+        final Date date1 = cal1.getTime();
+        final Date date2 = cal2.getTime();
 
         assertTrue(Assertor.that(date2).isBefore(date1).isOK());
-        assertTrue(Assertor.that(DateUtils.getCalendar(date2)).isBefore(DateUtils.getCalendar(date1)).isOK());
+        assertTrue(Assertor.that(cal2).isBefore(cal1).isOK());
 
         Assertor.that(date2).isBefore(date1, -1, -1).toThrow();
+        Assertor.that(cal2).isBefore(cal1, Calendar.HOUR, 1).toThrow();
         Assertor.that(date2).isBefore(date1, Calendar.HOUR, 1).toThrow();
         Assertor.that(date2).not().isBefore(date1, Calendar.HOUR, -1).toThrow();
-        Assertor.that(date1).not().isBefore(date2, Calendar.HOUR, 1).toThrow();
+        Assertor.that(cal1).not().isBefore(cal2, Calendar.HOUR, 1).toThrow();
 
         Expect.exception(() -> {
             Assertor.that(date1).isBefore(date2).toThrow();
@@ -525,16 +546,26 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
      * Test method for {@link AssertorDate#isBeforeOrEqual}.
      */
     @Test
-    public void testIsBeforeOrEqual() {
-        Date date1 = new Date(1464475553640L);
-        final Date date2 = new Date(1464475553641L);
+    public void testIsBeforeOrEquals() {
+        final Calendar cal1 = new GregorianCalendar(2016, 0, 1, 1, 1, 1);
+        final Calendar cal2 = new GregorianCalendar(2016, 0, 1, 2, 1, 1);
+        Date date1 = cal1.getTime();
+        final Date date2 = cal2.getTime();
 
         assertTrue(Assertor.that(date1).isBeforeOrEquals(date2).isOK());
-        assertTrue(Assertor.that(DateUtils.getCalendar(date1)).isBeforeOrEquals(DateUtils.getCalendar(date2)).isOK());
+        assertTrue(Assertor.that(cal1).isBeforeOrEquals(cal2).isOK());
 
-        date1 = new Date(1464475553641L);
+        assertTrue(Assertor.that(date1).isBeforeOrEquals(date2, -1, -1).isOK());
+        assertTrue(Assertor.that(cal1).isBeforeOrEquals(cal2, -1, -1).isOK());
+        assertTrue(Assertor.that(date1).isBeforeOrEquals(date2, Calendar.HOUR, 1).isOK());
+        assertTrue(Assertor.that(cal1).isBeforeOrEquals(cal2, Calendar.HOUR, 1).isOK());
+        assertFalse(Assertor.that(cal1).isBeforeOrEquals(cal2, Calendar.MINUTE, 1).isOK());
+
+        date1 = new GregorianCalendar(2016, 0, 1, 2, 1, 1).getTime();
 
         assertTrue(Assertor.that(date1).isBeforeOrEquals(date2).isOK());
+        assertTrue(Assertor.that(date1).isBeforeOrEquals(date2, -1, -1).isOK());
+        assertTrue(Assertor.that(date1).isBeforeOrEquals(date2, Calendar.HOUR, 1).isOK());
 
         final Date date3 = new Date(1464475553641L);
         final Date date4 = new Date(1464475553640L);

@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.junit.Test;
 
@@ -38,6 +39,15 @@ public class AssertorBooleanTest extends AbstractTest {
     @Test
     public void testConstructor() {
         assertNotNull(new AssertorBoolean());
+    }
+
+    /**
+     * Test method for {@link AssertorBoolean} .
+     */
+    @Test
+    public void testPredicateGet() {
+        assertFalse(Assertor.that(true).hasHashCode(0).isOK());
+        assertTrue(Assertor.that(true).hasHashCode(Objects.hashCode(true)).isOK());
     }
 
     /**

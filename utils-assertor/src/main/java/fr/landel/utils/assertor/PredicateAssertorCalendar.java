@@ -127,6 +127,21 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
         return () -> AssertorDate.isAfterOrEquals(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
+    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final int calendarField, final int calendarAmount) {
+        return this.isAfterOrEquals(date, calendarField, calendarAmount, null);
+    }
+
+    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+            final CharSequence message, final Object... arguments) {
+        return this.isAfterOrEquals(date, calendarField, calendarAmount, null, message, arguments);
+    }
+
+    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+            final Locale locale, final CharSequence message, final Object... arguments) {
+        return () -> AssertorDate.isAfterOrEquals(this.getStep(), date, calendarField, calendarAmount,
+                Message.of(locale, message, arguments));
+    }
+
     default PredicateStepCalendar isBefore(final Calendar date) {
         return this.isBefore(date, null);
     }
@@ -165,5 +180,20 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
     default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorDate.isBeforeOrEquals(this.getStep(), date, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final int calendarField, final int calendarAmount) {
+        return this.isBeforeOrEquals(date, calendarField, calendarAmount, null);
+    }
+
+    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+            final CharSequence message, final Object... arguments) {
+        return this.isBeforeOrEquals(date, calendarField, calendarAmount, null, message, arguments);
+    }
+
+    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+            final Locale locale, final CharSequence message, final Object... arguments) {
+        return () -> AssertorDate.isBeforeOrEquals(this.getStep(), date, calendarField, calendarAmount,
+                Message.of(locale, message, arguments));
     }
 }

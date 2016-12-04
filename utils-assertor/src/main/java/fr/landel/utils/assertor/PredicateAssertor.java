@@ -25,8 +25,9 @@ import fr.landel.utils.commons.function.PredicateThrowable;
  * {@link PredicateAssertor} &gt; {@link PredicateStep} &gt; {@link PredicateAssertor} &gt; {@link PredicateStep}...
  * </pre>
  * 
- * This chain always starts with a {@link PredicateAssertor} and ends with {@link PredicateStep}.
- * If multiple values are checked, following to their types, the chain can be (checked values: "text", 3):
+ * This chain always starts with a {@link PredicateAssertor} and ends with
+ * {@link PredicateStep}. If multiple values are checked, following to their
+ * types, the chain can be (checked values: "text", 3):
  *
  * <pre>
  * {@link PredicateAssertorCharSequence} &gt; {@link PredicateAssertorCharSequence} &gt; {@link PredicateAssertorNumber} &gt; {@link PredicateStepNumber}...
@@ -43,6 +44,11 @@ import fr.landel.utils.commons.function.PredicateThrowable;
 @FunctionalInterface
 public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
 
+    /**
+     * Get the net step.
+     * 
+     * @return the assertor step
+     */
     StepAssertor<T> getStep();
 
     /**
@@ -69,99 +75,446 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
         return () -> HelperAssertor.not(this.getStep());
     }
 
+    /**
+     * Checks if the checked object is {@code null}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @return the assetor step
+     */
     default S isNull() {
         return this.isNull(null);
     }
 
+    /**
+     * Checks if the checked object is {@code null}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isNull(final CharSequence message, final Object... arguments) {
         return this.isNull(null, message, arguments);
     }
 
+    /**
+     * Checks if the checked object is {@code null}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isNull(final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isNull(this.getStep(), Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Checks if the checked object is NOT {@code null}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @return the assetor step
+     */
     default S isNotNull() {
         return this.isNotNull(null);
     }
 
+    /**
+     * Checks if the checked object is NOT {@code null}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isNotNull(final CharSequence message, final Object... arguments) {
         return this.isNotNull(null, message, arguments);
     }
 
+    /**
+     * Checks if the checked object is NOT {@code null}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isNotNull(final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isNotNull(this.getStep(), Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Checks if the checked object is equal to the specified {@code object}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param object
+     *            the object to compare
+     * @return the assetor step
+     */
     default S isEqual(final Object object) {
         return this.isEqual(object, null);
     }
 
+    /**
+     * Checks if the checked object is equal to the specified {@code object}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param object
+     *            the object to compare
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isEqual(final Object object, final CharSequence message, final Object... arguments) {
         return this.isEqual(object, null, message, arguments);
     }
 
+    /**
+     * Checks if the checked object is equal to the specified {@code object}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param object
+     *            the object to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isEqual(this.getStep(), object, Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Checks if the checked object is NOT equal to the specified
+     * {@code object}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param object
+     *            the object to compare
+     * @return the assetor step
+     */
     default S isNotEqual(final Object object) {
         return this.isNotEqual(object, null);
     }
 
+    /**
+     * Checks if the checked object is NOT equal to the specified
+     * {@code object}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param object
+     *            the object to compare
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isNotEqual(final Object object, final CharSequence message, final Object... arguments) {
         return this.isNotEqual(object, null, message, arguments);
     }
 
+    /**
+     * Checks if the checked object is NOT equal to the specified
+     * {@code object}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param object
+     *            the object to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isNotEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isNotEqual(this.getStep(), object, Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Checks if the checked object is an instance of the specified
+     * {@code clazz}.
+     * 
+     * <p>
+     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param clazz
+     *            the instance class
+     * @return the assetor step
+     */
     default S isInstanceOf(final Class<?> clazz) {
         return this.isInstanceOf(clazz, null);
     }
 
+    /**
+     * Checks if the checked object is an instance of the specified
+     * {@code clazz}.
+     * 
+     * <p>
+     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param clazz
+     *            the instance class
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isInstanceOf(final Class<?> clazz, final CharSequence message, final Object... arguments) {
         return this.isInstanceOf(clazz, null, message, arguments);
     }
 
+    /**
+     * Checks if the checked object is an instance of the specified
+     * {@code clazz}.
+     * 
+     * <p>
+     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param clazz
+     *            the instance class
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isInstanceOf(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isInstanceOf(this.getStep(), clazz, Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Checks if the checked object is assignable from the specified
+     * {@code clazz}.
+     * 
+     * <p>
+     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param clazz
+     *            the class (super class or interface)
+     * @return the assetor step
+     */
     default S isAssignableFrom(final Class<?> clazz) {
         return this.isAssignableFrom(clazz, null);
     }
 
+    /**
+     * Checks if the checked object is assignable from the specified
+     * {@code clazz}.
+     * 
+     * <p>
+     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param clazz
+     *            the class (super class or interface)
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isAssignableFrom(final Class<?> clazz, final CharSequence message, final Object... arguments) {
         return this.isAssignableFrom(clazz, null, message, arguments);
     }
 
+    /**
+     * Checks if the checked object is assignable from the specified
+     * {@code clazz}.
+     * 
+     * <p>
+     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * {@code null}
+     * </p>
+     * 
+     * @param clazz
+     *            the class (super class or interface)
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assetor step
+     */
     default S isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isAssignableFrom(this.getStep(), clazz, Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Checks if the checked value matches the specified {@code hashCode}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param hashCode
+     *            the expected hash code
+     * @return the assertor step
+     */
     default S hasHashCode(final int hashCode) {
         return this.hasHashCode(hashCode, null);
     }
 
+    /**
+     * Checks if the checked value matches the specified {@code hashCode}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param hashCode
+     *            the expected hash code
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default S hasHashCode(final int hashCode, final CharSequence message, final Object... arguments) {
         return this.hasHashCode(hashCode, null, message, arguments);
     }
 
+    /**
+     * Checks if the checked value matches the specified {@code hashCode}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param hashCode
+     *            the expected hash code
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default S hasHashCode(final int hashCode, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.hasHashCode(this.getStep(), hashCode, Message.of(locale, message, arguments)));
     }
 
+    /**
+     * Validates that the checked object matches the {@code predicate}.
+     * 
+     * <p>
+     * precondition: {@code predicate} cannot be {@code null}
+     * </p>
+     * 
+     * @param predicate
+     *            the predicate that validates the object
+     * @return the assertor step
+     */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate) {
         return this.validates(predicate, null);
     }
 
+    /**
+     * Validates that the checked object matches the {@code predicate}.
+     * 
+     * <p>
+     * precondition: {@code predicate} cannot be {@code null}
+     * </p>
+     * 
+     * @param predicate
+     *            the predicate that validates the object
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate, final CharSequence message,
             final Object... arguments) {
         return this.validates(predicate, null, message, arguments);
     }
 
+    /**
+     * Validates that the checked object matches the {@code predicate}.
+     * 
+     * <p>
+     * precondition: {@code predicate} cannot be {@code null}
+     * </p>
+     * 
+     * @param predicate
+     *            the predicate that validates the object
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on hash code not equal
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return this.get(AssertorObject.validates(this.getStep(), predicate, Message.of(locale, message, arguments)));
