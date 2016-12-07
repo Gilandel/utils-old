@@ -14,6 +14,7 @@ package fr.landel.utils.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -146,13 +147,18 @@ public final class FileUtils {
         Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
 
         int bufferReadSize;
-        final StringBuilder buffer = new StringBuilder();
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        final StringBuilder builder = new StringBuilder();
 
         while ((bufferReadSize = inputStream.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-            buffer.append(new String(BUFFER, 0, bufferReadSize, charset));
+            buffer.write(BUFFER, 0, bufferReadSize);
         }
 
-        return buffer;
+        // convert into the specified charset after loading all data to avoid
+        // the cutting of encoded character at the end of the buffer size
+        builder.append(new String(buffer.toByteArray(), 0, buffer.size(), charset));
+
+        return builder;
     }
 
     /**
