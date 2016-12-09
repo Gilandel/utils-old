@@ -254,10 +254,10 @@ public class StringUtilsTest {
      */
     @Test
     public void testReplace() {
-        String string = "I go to the beach this afternoon.";
-        assertEquals("I go to the theater this afternoon.", StringUtils.replace(string, "theater", 12, 17));
-        assertEquals("I will go to the beach this afternoon.", StringUtils.replace(string, "I will", 0, 1));
-        assertEquals("I go to the beach this morning.", StringUtils.replace(string, "morning", 23, 32));
+        String string = "I'll go to the beach this afternoon.";
+        assertEquals("I'll go to the theater this afternoon.", StringUtils.replace(string, "theater", 15, 20));
+        assertEquals("I will go to the beach this afternoon.", StringUtils.replace(string, "I will", 0, 4));
+        assertEquals("I'll go to the beach this morning.", StringUtils.replace(string, "morning", 26, 35));
     }
 
     /**
@@ -267,7 +267,7 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException() {
-        final String string = "I go to the beach this afternoon.";
+        final String string = "I'll go to the beach this afternoon.";
         StringUtils.replace(string, "theater", -1, 1);
     }
 
@@ -278,8 +278,8 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException2() {
-        final String string = "I go to the beach this afternoon.";
-        StringUtils.replace(string, "theater", 0, 34);
+        final String string = "I'll go to the beach this afternoon.";
+        StringUtils.replace(string, "theater", 0, 37);
     }
 
     /**
@@ -289,7 +289,7 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException3() {
-        final String string = "I go to the beach this afternoon.";
+        final String string = "I'll go to the beach this afternoon.";
         StringUtils.replace(string, null, 0, 1);
     }
 
@@ -310,7 +310,7 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException5() {
-        final String string = "I go to the beach this afternoon.";
+        final String string = "I'll go to the beach this afternoon.";
         StringUtils.replace(string, "theater", 2, 1);
     }
 
@@ -319,9 +319,9 @@ public class StringUtilsTest {
      */
     @Test
     public void testToChars() {
-        final String string = "I go to the beach this afternoon.";
-        final char[] expectedChars = new char[] {'I', ' ', 'g', 'o', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'b', 'e', 'a', 'c', 'h', ' ',
-                't', 'h', 'i', 's', ' ', 'a', 'f', 't', 'e', 'r', 'n', 'o', 'o', 'n', '.'};
+        final String string = "I'll go to the beach this afternoon.";
+        final char[] expectedChars = new char[] {'I', '\'', 'l', 'l', ' ', 'g', 'o', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'b', 'e', 'a',
+                'c', 'h', ' ', 't', 'h', 'i', 's', ' ', 'a', 'f', 't', 'e', 'r', 'n', 'o', 'o', 'n', '.'};
         final char[] chars = StringUtils.toChars(string);
         assertEquals(expectedChars.length, chars.length);
         for (int i = 0; i < chars.length; i++) {
@@ -352,5 +352,36 @@ public class StringUtilsTest {
         assertEquals("test", StringUtils.joinComma(Arrays.asList("test")));
         assertEquals("t1, t2", StringUtils.joinComma(Arrays.asList("t1", "t2")));
         assertEquals("t1, ", StringUtils.joinComma(Arrays.asList("t1", null)));
+    }
+
+    /**
+     * Test method for
+     * {@link StringUtils#inject(java.lang.String, java.lang.Object...)} .
+     */
+    @Test
+    public void testInject() {
+        assertEquals("", StringUtils.inject("", "test"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {} this {}", "beach", "afternoon"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {1} this {0}", "afternoon", "beach"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {1} this {}", "afternoon", "beach"));
+        assertEquals("I'll go to the beach this afternoon",
+                StringUtils.inject("I'll go to {} {3} {} {2}", "the", "this", "afternoon", "beach"));
+
+        assertEquals("I'll go to the beach this {}", StringUtils.inject("I'll go to the {} this {}", "beach"));
+        assertEquals("I'll go to the beach this {1}", StringUtils.inject("I'll go to the {0} this {1}", "beach"));
+        assertEquals("I'll go to the beach this afternoon afternoon",
+                StringUtils.inject("I'll go to the {1} this {0} {0}", "afternoon", "beach"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {} this afternoon", "beach", "noon"));
+
+        assertEquals("Test", StringUtils.inject("Test"));
+        assertEquals("Test", StringUtils.inject("Test", "test"));
+        assertEquals("Test", StringUtils.inject("Test", (Object[]) null));
+
+        try {
+            StringUtils.inject(null, "test");
+            fail("An exception is expected");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
     }
 }

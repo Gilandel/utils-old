@@ -30,6 +30,11 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static final String JOIN_SEPARATOR = ", ";
 
+    private static final String BRACE_OPEN = "{";
+    private static final String BRACE_CLOSE = "}";
+    private static final String BRACES = "{}";
+    private static final int BRACES_LENGTH = 2;
+
     /**
      * Hidden constructor.
      */
@@ -241,8 +246,8 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * Replace the part of a string between two bounds
      * 
      * <pre>
-     * StringUtils.replace("I go to the beach this afternoon.", "theater", 12, 17)
-     * // =&gt; "I go to the theater this afternoon."
+     * StringUtils.replace("I'll go to the beach this afternoon.", "theater", 15, 20)
+     * // =&gt; "I'll go to the theater this afternoon."
      * </pre>
      * 
      * @param string
@@ -361,5 +366,76 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
             return null;
         }
         return join(iterable.iterator(), JOIN_SEPARATOR);
+    }
+
+    /**
+     * Injects all arguments in the specified char sequence. The arguments are
+     * injected by replacement of the braces. If no index is specified between
+     * braces, an internal index is created and the index is automatically
+     * incremented. The index starts from 0.
+     * 
+     * <p>
+     * precondition: {@code charSequence} cannot be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * StringUtils.inject("", "test"); // =&gt; ""
+     * 
+     * StringUtils.inject("I'll go to the {} this {}", "beach", "afternoon");
+     * // =&gt; "I'll go to the beach this afternoon"
+     * 
+     * StringUtils.inject("I'll go to the {1} this {0}", "afternoon", "beach");
+     * // =&gt; "I'll go to the beach this afternoon"
+     * 
+     * StringUtils.inject("I'll go to the {1} this {}", "afternoon", "beach");
+     * // =&gt; "I'll go to the beach this afternoon"
+     * 
+     * StringUtils.inject("I'll go to {} {3} {} {2}", "the", "this", "afternoon", "beach");
+     * // =&gt; "I'll go to the beach this afternoon"
+     * </pre>
+     * 
+     * @param charSequence
+     *            the input char sequence
+     * @param arguments
+     *            the arguments to inject
+     * @return the result with replacements
+     */
+    public static String inject(final CharSequence charSequence, final Object... arguments) {
+        if (charSequence == null) {
+            throw new IllegalArgumentException("The input char sequence cannot be null");
+        } else if (isEmpty(charSequence) || arguments == null || arguments.length == 0) {
+            return charSequence.toString();
+        }
+
+        final StringBuilder output = new StringBuilder(charSequence);
+
+        if (output.indexOf(BRACE_OPEN) < 0) {
+            return output.toString();
+        }
+
+        int i = 0;
+        int index = 0;
+        String param = BRACES;
+        int len = BRACES_LENGTH;
+        String value;
+
+        while ((index = output.indexOf(param, index)) > -1 && i < arguments.length) {
+            output.replace(index, index + len, String.valueOf(arguments[i++]));
+            index += len;
+        }
+
+        index = 0;
+
+        for (i = 0; i < arguments.length; ++i) {
+            param = new StringBuilder(BRACE_OPEN).append(i).append(BRACE_CLOSE).toString();
+            len = param.length();
+            value = String.valueOf(arguments[i]);
+            while ((index = output.indexOf(param, index)) > -1) {
+                output.replace(index, index + len, value);
+                index += len;
+            }
+        }
+
+        return output.toString();
     }
 }
