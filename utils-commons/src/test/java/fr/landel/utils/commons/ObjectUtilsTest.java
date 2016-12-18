@@ -53,4 +53,80 @@ public class ObjectUtilsTest {
     public void testDefaultIfNullTSupplierOfTNull() {
         ObjectUtils.defaultIfNull(true, null);
     }
+
+    /**
+     * Test method for {@link ObjectUtils#allNull(java.lang.Object...)}.
+     */
+    @Test
+    public void testAllNull() {
+        assertFalse(ObjectUtils.allNull(15));
+        assertFalse(ObjectUtils.allNull(15, null));
+        assertTrue(ObjectUtils.allNull(null, null));
+        assertTrue(ObjectUtils.allNull((Object) null));
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#allNull(java.lang.Object...)}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testAllNullKO() {
+        ObjectUtils.allNull((Object[]) null);
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#anyNull(java.lang.Object...)}.
+     */
+    @Test
+    public void testAnyNull() {
+        assertFalse(ObjectUtils.anyNull(15));
+        assertTrue(ObjectUtils.anyNull(15, null));
+        assertTrue(ObjectUtils.anyNull(null, null));
+        assertTrue(ObjectUtils.anyNull((Object) null));
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#anyNull(java.lang.Object...)}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testAnyNullKO() {
+        ObjectUtils.anyNull((Object[]) null);
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#allNull(java.lang.Object...)}.
+     */
+    @Test
+    public void testAllNotNull() {
+        assertTrue(ObjectUtils.allNotNull(15));
+        assertFalse(ObjectUtils.allNotNull(15, null));
+        assertFalse(ObjectUtils.allNotNull(null, null));
+        assertFalse(ObjectUtils.allNotNull((Object) null));
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#allNotNull(java.lang.Object...)}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testAllNotNullKO() {
+        ObjectUtils.allNotNull((Object[]) null);
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#anyNotNull(java.lang.Object...)}.
+     */
+    @Test
+    public void testAnyNotNull() {
+        assertTrue(ObjectUtils.anyNotNull(15));
+        assertTrue(ObjectUtils.anyNotNull(15, null));
+        assertFalse(ObjectUtils.anyNotNull(null, null));
+        assertFalse(ObjectUtils.anyNotNull((Object) null));
+    }
+
+    /**
+     * Test method for {@link ObjectUtils#anyNull(java.lang.Object...)}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testAnyNotNullKO() {
+        ObjectUtils.anyNotNull((Object[]) null);
+    }
 }
