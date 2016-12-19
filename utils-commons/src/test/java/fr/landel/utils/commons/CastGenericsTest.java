@@ -171,6 +171,7 @@ public class CastGenericsTest {
         map.put(null, "value2");
 
         assertTrue(MapUtils.isEmpty(CastGenerics.getHashMap(null, String.class, String.class)));
+        assertTrue(MapUtils.isEmpty(CastGenerics.getLinkedHashMap(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getHashtable(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class, COMPARATOR)));
@@ -341,6 +342,7 @@ public class CastGenericsTest {
         Class<Map<Exception, Integer>> clazz = CastGenerics.getTypedMapClass(Exception.class, Integer.class);
         assertNotNull(clazz);
         assertNotNull(CastGenerics.getTypedMapClass(List.class, Integer.class));
+        assertNotNull(CastGenerics.getTypedMapClass(String.class, String.class));
         assertNotNull(CastGenerics.getTypedMapClass(null, null));
         assertTrue(Map.class.isAssignableFrom(clazz));
     }

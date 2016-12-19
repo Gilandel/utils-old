@@ -238,6 +238,148 @@ public class ComparatorsTest {
     }
 
     /**
+     * Check {@link Comparators#VERSION}
+     */
+    @Test
+    public void testVersion() {
+        Version v1 = new Version("");
+        Version v2 = new Version("1.2.1");
+
+        assertEquals("", v1.toString());
+        assertEquals("1.2.1", v2.toString());
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("");
+        v2 = new Version("");
+
+        assertEquals(0, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("1.2.1");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("1.2");
+
+        assertEquals(0, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2");
+        v2 = new Version("1.2.0");
+
+        assertEquals(0, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2");
+        v2 = new Version("1.2.1");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2");
+        v2 = new Version("1.2-SNAPSHOT");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("1.2-SNAPSHOT");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-SNAPSHOT");
+        v2 = new Version("1.2.0");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2");
+        v2 = new Version("1.2-beta-2");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2.1");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2-SNAPSHOT");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-SNAPSHOT");
+        v2 = new Version("1.2-beta-2");
+
+        assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2-alpha-6");
+
+        assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+
+        v1 = new Version("1.2.0");
+        v2 = new Version("1.2.1");
+        Version v3 = new Version("1.2.0-SNAPSHOT");
+
+        List<Version> versions = Arrays.asList(v1, v2, v3);
+        List<Version> versionSorted = versions.stream().sorted(Comparators.VERSION.asc()).collect(Collectors.toList());
+
+        assertEquals(v3, versionSorted.get(0));
+        assertEquals(v1, versionSorted.get(1));
+        assertEquals(v2, versionSorted.get(2));
+
+        v1 = new Version("1.2-beta-2");
+        v2 = new Version("1.2-alpha-6");
+        v3 = new Version("1.2.0-SNAPSHOT");
+
+        versions = Arrays.asList(v1, v2, v3);
+        versionSorted = versions.stream().sorted(Comparators.VERSION.asc()).collect(Collectors.toList());
+
+        assertEquals(v3, versionSorted.get(0));
+        assertEquals(v2, versionSorted.get(1));
+        assertEquals(v1, versionSorted.get(2));
+
+        versionSorted = versions.stream().sorted(Comparators.VERSION.desc()).collect(Collectors.toList());
+
+        assertEquals(v1, versionSorted.get(0));
+        assertEquals(v2, versionSorted.get(1));
+        assertEquals(v3, versionSorted.get(2));
+
+        v1 = new Version("1.2");
+        v2 = new Version("1.2-beta-2");
+        v3 = new Version("1.2-alpha-6");
+        Version v4 = new Version("1.2.0-SNAPSHOT");
+        Version v5 = new Version("1.2.0");
+        Version v6 = new Version("1.2.1");
+
+        versions = Arrays.asList(v1, v2, v3, v4, v5, v6);
+        versionSorted = versions.stream().sorted(Comparators.VERSION.asc()).collect(Collectors.toList());
+
+        assertEquals(v4, versionSorted.get(0));
+        assertEquals(v5, versionSorted.get(1));
+        assertEquals(v3, versionSorted.get(2));
+        assertEquals(v2, versionSorted.get(3));
+        assertEquals(v1, versionSorted.get(4));
+        assertEquals(v6, versionSorted.get(5));
+    }
+
+    /**
+     * Check {@link Comparators#VERSION}
+     */
+    @Test(expected = NullPointerException.class)
+    public void testVersionNull() {
+        new Version(null);
+    }
+
+    /**
      * Check {@link Comparators#compare}
      */
     @Test

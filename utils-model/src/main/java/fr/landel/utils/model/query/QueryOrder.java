@@ -24,12 +24,12 @@ public final class QueryOrder {
     /**
      * Ascendant order
      */
-    public static final String ORDER_ASC = "ASC";
+    protected static final String ORDER_ASC = "ASC";
 
     /**
      * Descendant order
      */
-    public static final String ORDER_DESC = "DESC";
+    protected static final String ORDER_DESC = "DESC";
 
     /**
      * Order
@@ -56,7 +56,7 @@ public final class QueryOrder {
 
     @Override
     public String toString() {
-        return this.column + " " + this.order;
+        return this.column + QueryBuilder.SPACE + this.order;
     }
 
     /**

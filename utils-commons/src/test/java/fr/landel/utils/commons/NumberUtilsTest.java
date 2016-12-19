@@ -19,6 +19,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
@@ -97,8 +99,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#round(java.lang.Double)}.
+     * Test method for {@link NumberUtils#round(java.lang.Double)}.
      */
     @Test
     public void testRound() {
@@ -110,8 +111,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseInt(java.lang.String)}.
+     * Test method for {@link NumberUtils#parseInt(java.lang.String)}.
      */
     @Test
     public void testParseIntString() {
@@ -133,8 +133,7 @@ public class NumberUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseInt(java.lang.String, java.lang.Integer)}
-     * .
+     * {@link NumberUtils#parseInt(java.lang.String, java.lang.Integer)} .
      */
     @Test
     public void testParseIntStringInteger() {
@@ -157,8 +156,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseFloat(java.lang.String)}.
+     * Test method for {@link NumberUtils#parseFloat(java.lang.String)}.
      */
     @Test
     public void testParseFloatString() {
@@ -180,8 +178,7 @@ public class NumberUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseFloat(java.lang.String, java.lang.Float)}
-     * .
+     * {@link NumberUtils#parseFloat(java.lang.String, java.lang.Float)} .
      */
     @Test
     public void testParseFloatStringFloat() {
@@ -205,8 +202,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseLong(java.lang.String)}.
+     * Test method for {@link NumberUtils#parseLong(java.lang.String)}.
      */
     @Test
     public void testParseLongString() {
@@ -227,8 +223,7 @@ public class NumberUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseLong(java.lang.String, java.lang.Long)}
-     * .
+     * {@link NumberUtils#parseLong(java.lang.String, java.lang.Long)} .
      */
     @Test
     public void testParseLongStringLong() {
@@ -251,8 +246,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseDouble(java.lang.String)}.
+     * Test method for {@link NumberUtils#parseDouble(java.lang.String)}.
      */
     @Test
     public void testParseDoubleString() {
@@ -274,8 +268,7 @@ public class NumberUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseDouble(java.lang.String, java.lang.Double)}
-     * .
+     * {@link NumberUtils#parseDouble(java.lang.String, java.lang.Double)} .
      */
     @Test
     public void testParseDoubleStringDouble() {
@@ -298,8 +291,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseShort(java.lang.String)}.
+     * Test method for {@link NumberUtils#parseShort(java.lang.String)}.
      */
     @Test
     public void testParseShortString() {
@@ -320,8 +312,7 @@ public class NumberUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseShort(java.lang.String, java.lang.Short)}
-     * .
+     * {@link NumberUtils#parseShort(java.lang.String, java.lang.Short)} .
      */
     @Test
     public void testParseShortStringShort() {
@@ -347,8 +338,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseByte(java.lang.String)}.
+     * Test method for {@link NumberUtils#parseByte(java.lang.String)}.
      */
     @Test
     public void testParseByteString() {
@@ -369,8 +359,7 @@ public class NumberUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#parseByte(java.lang.String, java.lang.Byte)}
-     * .
+     * {@link NumberUtils#parseByte(java.lang.String, java.lang.Byte)} .
      */
     @Test
     public void testParseByteStringByte() {
@@ -396,8 +385,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#isByte(java.lang.Number)} .
+     * Test method for {@link NumberUtils#isByte(java.lang.Number)} .
      */
     @Test
     public void testNumber() {
@@ -410,6 +398,8 @@ public class NumberUtilsTest {
         Number numBigInteger = BigInteger.valueOf(12L);
         Number numBigDecimal = BigDecimal.valueOf(12.0d);
         Number numNull = null;
+        Number numAInteger = new AtomicInteger(12);
+        Number numALong = new AtomicLong(12L);
 
         assertTrue(NumberUtils.isByte(numByte));
         assertFalse(NumberUtils.isShort(numByte));
@@ -419,6 +409,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numByte));
         assertFalse(NumberUtils.isBigInteger(numByte));
         assertFalse(NumberUtils.isBigDecimal(numByte));
+        assertFalse(NumberUtils.isAtomicInteger(numByte));
+        assertFalse(NumberUtils.isAtomicLong(numByte));
 
         assertFalse(NumberUtils.isByte(numShort));
         assertTrue(NumberUtils.isShort(numShort));
@@ -428,6 +420,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numShort));
         assertFalse(NumberUtils.isBigInteger(numShort));
         assertFalse(NumberUtils.isBigDecimal(numShort));
+        assertFalse(NumberUtils.isAtomicInteger(numShort));
+        assertFalse(NumberUtils.isAtomicLong(numShort));
 
         assertFalse(NumberUtils.isByte(numInteger));
         assertFalse(NumberUtils.isShort(numInteger));
@@ -437,6 +431,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numInteger));
         assertFalse(NumberUtils.isBigInteger(numInteger));
         assertFalse(NumberUtils.isBigDecimal(numInteger));
+        assertFalse(NumberUtils.isAtomicInteger(numInteger));
+        assertFalse(NumberUtils.isAtomicLong(numInteger));
 
         assertFalse(NumberUtils.isByte(numLong));
         assertFalse(NumberUtils.isShort(numLong));
@@ -446,6 +442,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numLong));
         assertFalse(NumberUtils.isBigInteger(numLong));
         assertFalse(NumberUtils.isBigDecimal(numLong));
+        assertFalse(NumberUtils.isAtomicInteger(numLong));
+        assertFalse(NumberUtils.isAtomicLong(numLong));
 
         assertFalse(NumberUtils.isByte(numFloat));
         assertFalse(NumberUtils.isShort(numFloat));
@@ -455,6 +453,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numFloat));
         assertFalse(NumberUtils.isBigInteger(numFloat));
         assertFalse(NumberUtils.isBigDecimal(numFloat));
+        assertFalse(NumberUtils.isAtomicInteger(numFloat));
+        assertFalse(NumberUtils.isAtomicLong(numFloat));
 
         assertFalse(NumberUtils.isByte(numDouble));
         assertFalse(NumberUtils.isShort(numDouble));
@@ -464,6 +464,8 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.isDouble(numDouble));
         assertFalse(NumberUtils.isBigInteger(numDouble));
         assertFalse(NumberUtils.isBigDecimal(numDouble));
+        assertFalse(NumberUtils.isAtomicInteger(numDouble));
+        assertFalse(NumberUtils.isAtomicLong(numDouble));
 
         assertFalse(NumberUtils.isByte(numBigInteger));
         assertFalse(NumberUtils.isShort(numBigInteger));
@@ -473,6 +475,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numBigInteger));
         assertTrue(NumberUtils.isBigInteger(numBigInteger));
         assertFalse(NumberUtils.isBigDecimal(numBigInteger));
+        assertFalse(NumberUtils.isAtomicInteger(numBigInteger));
+        assertFalse(NumberUtils.isAtomicLong(numBigInteger));
 
         assertFalse(NumberUtils.isByte(numBigDecimal));
         assertFalse(NumberUtils.isShort(numBigDecimal));
@@ -482,6 +486,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numBigDecimal));
         assertFalse(NumberUtils.isBigInteger(numBigDecimal));
         assertTrue(NumberUtils.isBigDecimal(numBigDecimal));
+        assertFalse(NumberUtils.isAtomicInteger(numBigDecimal));
+        assertFalse(NumberUtils.isAtomicLong(numBigDecimal));
 
         assertFalse(NumberUtils.isByte(numNull));
         assertFalse(NumberUtils.isShort(numNull));
@@ -491,11 +497,34 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isDouble(numNull));
         assertFalse(NumberUtils.isBigInteger(numNull));
         assertFalse(NumberUtils.isBigDecimal(numNull));
+        assertFalse(NumberUtils.isAtomicInteger(numNull));
+        assertFalse(NumberUtils.isAtomicLong(numNull));
+
+        assertFalse(NumberUtils.isByte(numAInteger));
+        assertFalse(NumberUtils.isShort(numAInteger));
+        assertFalse(NumberUtils.isInteger(numAInteger));
+        assertFalse(NumberUtils.isLong(numAInteger));
+        assertFalse(NumberUtils.isFloat(numAInteger));
+        assertFalse(NumberUtils.isDouble(numAInteger));
+        assertFalse(NumberUtils.isBigInteger(numAInteger));
+        assertFalse(NumberUtils.isBigDecimal(numAInteger));
+        assertTrue(NumberUtils.isAtomicInteger(numAInteger));
+        assertFalse(NumberUtils.isAtomicLong(numAInteger));
+
+        assertFalse(NumberUtils.isByte(numALong));
+        assertFalse(NumberUtils.isShort(numALong));
+        assertFalse(NumberUtils.isInteger(numALong));
+        assertFalse(NumberUtils.isLong(numALong));
+        assertFalse(NumberUtils.isFloat(numALong));
+        assertFalse(NumberUtils.isDouble(numALong));
+        assertFalse(NumberUtils.isBigInteger(numALong));
+        assertFalse(NumberUtils.isBigDecimal(numALong));
+        assertFalse(NumberUtils.isAtomicInteger(numALong));
+        assertTrue(NumberUtils.isAtomicLong(numALong));
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#isNumberInteger} .
+     * Test method for {@link NumberUtils#isNumberInteger} .
      */
     @Test
     public void testIsNumberInteger() {
@@ -566,6 +595,8 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isNumberInteger(BigDecimal.class));
         assertFalse(NumberUtils.isNumberInteger(String.class));
         assertFalse(NumberUtils.isNumberInteger((Class<Number>) null));
+        assertTrue(NumberUtils.isNumberInteger(AtomicInteger.class));
+        assertTrue(NumberUtils.isNumberInteger(AtomicLong.class));
 
         // Object
 
@@ -582,8 +613,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#isNumberDecimal} .
+     * Test method for {@link NumberUtils#isNumberDecimal} .
      */
     @Test
     public void testIsNumberDecimal() {
@@ -654,8 +684,7 @@ public class NumberUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.NumberUtils#isNumberDecimal} .
+     * Test method for {@link NumberUtils#isNumberDecimal} .
      */
     @Test
     public void testIsNumberDecimal2() {
@@ -701,9 +730,12 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.isNumberDecimal(BigDecimal.class));
         assertFalse(NumberUtils.isNumberDecimal(String.class));
         assertFalse(NumberUtils.isNumberDecimal((Class<Number>) null));
+        assertFalse(NumberUtils.isNumberDecimal(AtomicInteger.class));
+        assertFalse(NumberUtils.isNumberDecimal(AtomicLong.class));
 
         // Object
 
+        assertTrue(NumberUtils.isNumberDecimal((Object) 12F));
         assertFalse(NumberUtils.isNumberDecimal((byte) 12));
         assertFalse(NumberUtils.isNumberDecimal((short) 12));
         assertFalse(NumberUtils.isNumberDecimal(12));
@@ -714,5 +746,91 @@ public class NumberUtilsTest {
         assertTrue(NumberUtils.isNumberDecimal(BigDecimal.TEN));
         assertFalse(NumberUtils.isNumberDecimal((Object) ""));
         assertFalse(NumberUtils.isNumberDecimal((Object) null));
+    }
+
+    /**
+     * Test method for {@link NumberUtils#signum} .
+     */
+    @Test
+    public void testSignum() {
+        assertEquals(-1, NumberUtils.signum((byte) -10));
+        assertEquals(0, NumberUtils.signum((byte) 0));
+        assertEquals(1, NumberUtils.signum((byte) 10));
+
+        assertEquals(-1, NumberUtils.signum((short) -10));
+        assertEquals(0, NumberUtils.signum((short) 0));
+        assertEquals(1, NumberUtils.signum((short) 10));
+
+        assertEquals(-1, NumberUtils.signum(-10));
+        assertEquals(0, NumberUtils.signum(0));
+        assertEquals(1, NumberUtils.signum(10));
+
+        assertEquals(-1, NumberUtils.signum(-10L));
+        assertEquals(0, NumberUtils.signum(0L));
+        assertEquals(1, NumberUtils.signum(10L));
+
+        assertEquals(-1, NumberUtils.signum(-10F));
+        assertEquals(0, NumberUtils.signum(0F));
+        assertEquals(1, NumberUtils.signum(10F));
+
+        assertEquals(-1, NumberUtils.signum(-10D));
+        assertEquals(0, NumberUtils.signum(0D));
+        assertEquals(1, NumberUtils.signum(10D));
+
+        assertEquals(-1, NumberUtils.signum(BigInteger.valueOf(-12L)));
+        assertEquals(0, NumberUtils.signum(BigInteger.valueOf(0L)));
+        assertEquals(1, NumberUtils.signum(BigInteger.valueOf(12L)));
+
+        assertEquals(-1, NumberUtils.signum(BigDecimal.valueOf(-12L)));
+        assertEquals(0, NumberUtils.signum(BigDecimal.valueOf(0L)));
+        assertEquals(1, NumberUtils.signum(BigDecimal.valueOf(12L)));
+
+        assertEquals(-1, NumberUtils.signum(new AtomicInteger(-12)));
+        assertEquals(0, NumberUtils.signum(new AtomicInteger(0)));
+        assertEquals(1, NumberUtils.signum(new AtomicInteger(12)));
+
+        assertEquals(-1, NumberUtils.signum(new AtomicLong(-12L)));
+        assertEquals(0, NumberUtils.signum(new AtomicLong(0L)));
+        assertEquals(1, NumberUtils.signum(new AtomicLong(12L)));
+
+        assertEquals(0, NumberUtils.signum((Integer) null));
+    }
+
+    /**
+     * Test method for {@link NumberUtils#isZero} .
+     */
+    @Test
+    public void testIsZero() {
+        assertTrue(NumberUtils.isZero((byte) 0));
+        assertFalse(NumberUtils.isZero((byte) 1));
+
+        assertTrue(NumberUtils.isZero((short) 0));
+        assertFalse(NumberUtils.isZero((short) 1));
+
+        assertTrue(NumberUtils.isZero(0));
+        assertFalse(NumberUtils.isZero(1));
+
+        assertTrue(NumberUtils.isZero(0L));
+        assertFalse(NumberUtils.isZero(1L));
+
+        assertTrue(NumberUtils.isZero(0F));
+        assertFalse(NumberUtils.isZero(1F));
+
+        assertTrue(NumberUtils.isZero(0D));
+        assertFalse(NumberUtils.isZero(1D));
+
+        assertTrue(NumberUtils.isZero(BigInteger.valueOf(0L)));
+        assertFalse(NumberUtils.isZero(BigInteger.valueOf(1L)));
+
+        assertTrue(NumberUtils.isZero(BigDecimal.valueOf(0L)));
+        assertFalse(NumberUtils.isZero(BigDecimal.valueOf(1L)));
+
+        assertTrue(NumberUtils.isZero(new AtomicInteger(0)));
+        assertFalse(NumberUtils.isZero(new AtomicInteger(1)));
+
+        assertTrue(NumberUtils.isZero(new AtomicLong(0)));
+        assertFalse(NumberUtils.isZero(new AtomicLong(1)));
+
+        assertFalse(NumberUtils.isZero((Integer) null));
     }
 }

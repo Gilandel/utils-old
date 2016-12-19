@@ -7,8 +7,9 @@
       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
 	<!-- Init mapper -->
-	<bean id="reflectionUtil" class="fr.landel.utils.model.mapper.ReflectionUtil" />
-	<bean id="reflectiveMapper" class="fr.landel.utils.model.mapper.ReflectiveMapper" />
-	<bean id="reflectiveMapperIDO" class="fr.landel.utils.model.mapper.ReflectiveMapperIDO" />
-    <bean id="dtoIdentifierManager" class="fr.landel.utils.model.mapper.DTOIdentifierManager"/>
+	<bean id="reflectionUtil" class="fr.landel.utils.mapper.utils.ReflectUtils" />
+	<bean id="reflectiveMapper" class="fr.landel.utils.mapper.core.ReflectiveMapper" />
+    <bean id="dtoIdentifierManager" class="fr.landel.utils.mapper.core.DTOIdentifierManager"/>
+    
+    <!-- <bean id="reflectiveMapperIDO" class="fr.landel.utils.model.mapper.ReflectiveMapperIDO" /> -->
 </beans>

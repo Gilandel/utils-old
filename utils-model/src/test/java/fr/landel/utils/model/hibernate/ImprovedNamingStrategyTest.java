@@ -12,8 +12,10 @@
  */
 package fr.landel.utils.model.hibernate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.hibernate.boot.model.naming.Identifier;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -26,16 +28,63 @@ import org.junit.Test;
 public class ImprovedNamingStrategyTest {
 
     /**
-     * Test method for
-     * {@link ImprovedNamingStrategy#toPhysicalTableName(org.hibernate.boot.model.naming.Identifier, org.hibernate.engine.jdbc.env.spi.JdbcEnvironment)}
-     * .
+     * Test method for {@link ImprovedNamingStrategy#toPhysicalTableName} .
      */
     @Test
     public void testToPhysicalTableName() {
         ImprovedNamingStrategy ins = new ImprovedNamingStrategy();
 
         Identifier identifier = ins.toPhysicalTableName(Identifier.toIdentifier("testIDENTIFIER"), null);
+        assertEquals("test_identifier", identifier.getText());
 
-        Assert.assertEquals("test_identifier", identifier.getText());
+        identifier = ins.toPhysicalTableName(new Identifier("  \t", false), null);
+        assertEquals("  \t", identifier.getText());
+
+        identifier = ins.toPhysicalTableName(Identifier.toIdentifier(null), null);
+        assertNull(identifier);
+    }
+
+    /**
+     * Test method for {@link ImprovedNamingStrategy#toPhysicalCatalogName} .
+     */
+    @Test
+    public void testToPhysicalCatalogName() {
+        ImprovedNamingStrategy ins = new ImprovedNamingStrategy();
+
+        Identifier identifier = ins.toPhysicalCatalogName(Identifier.toIdentifier("testIDENTIFIER"), null);
+        assertEquals("test_identifier", identifier.getText());
+    }
+
+    /**
+     * Test method for {@link ImprovedNamingStrategy#toPhysicalColumnName} .
+     */
+    @Test
+    public void testToPhysicalColumnName() {
+        ImprovedNamingStrategy ins = new ImprovedNamingStrategy();
+
+        Identifier identifier = ins.toPhysicalColumnName(Identifier.toIdentifier("testIDENTIFIER"), null);
+        assertEquals("test_identifier", identifier.getText());
+    }
+
+    /**
+     * Test method for {@link ImprovedNamingStrategy#toPhysicalSchemaName} .
+     */
+    @Test
+    public void testToPhysicalSchemaName() {
+        ImprovedNamingStrategy ins = new ImprovedNamingStrategy();
+
+        Identifier identifier = ins.toPhysicalSchemaName(Identifier.toIdentifier("testIDENTIFIER"), null);
+        assertEquals("test_identifier", identifier.getText());
+    }
+
+    /**
+     * Test method for {@link ImprovedNamingStrategy#toPhysicalSequenceName} .
+     */
+    @Test
+    public void testToPhysicalSequenceName() {
+        ImprovedNamingStrategy ins = new ImprovedNamingStrategy();
+
+        Identifier identifier = ins.toPhysicalSequenceName(Identifier.toIdentifier("testIDENTIFIER"), null);
+        assertEquals("test_identifier", identifier.getText());
     }
 }

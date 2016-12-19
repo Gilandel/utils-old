@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
@@ -70,6 +71,17 @@ public class PredicateStepEndPointsTest extends AbstractTest {
                 JUNIT_ERROR);
 
         Expect.exception(() -> {
+            Assertor.that((CharSequence) null).hasLength(-1).toThrow((Exception) null, true);
+            fail();
+        }, IllegalArgumentException.class, "the length has to be greater than or equal to 0 and the char sequence cannot be null",
+                JUNIT_ERROR);
+
+        Expect.exception(() -> {
+            Assertor.that((CharSequence) null).hasLength(-1).toThrow((Supplier<Throwable>) null);
+            fail();
+        }, NullPointerException.class);
+
+        Expect.exception(() -> {
             Assertor.that((CharSequence) null).hasLength(-1).toThrow((error, parameters) -> new IOException(String.valueOf(error)));
             fail();
         }, IOException.class, "the length has to be greater than or equal to 0 and the char sequence cannot be null", JUNIT_ERROR);
@@ -93,6 +105,16 @@ public class PredicateStepEndPointsTest extends AbstractTest {
             Assertor.that("text").isEmpty().and("").isEmpty().toThrow("%s %2$s test: '%1$s*', '%s*', '%1$s*'.%s*.%2$s*.", "this is", "a");
             fail();
         }, IllegalArgumentException.class, "this is a test: 'text', 'text', 'text'...");
+
+        Expect.exception(() -> {
+            Assertor.that("text").isEmpty().toThrow(() -> new IOException());
+            fail();
+        }, IOException.class);
+
+        Expect.exception(() -> {
+            Assertor.that((String) null).hasLength(1).toThrow(() -> new IOException());
+            fail();
+        }, IOException.class);
 
         Expect.exception(() -> {
             Assertor.that("text").isEmpty().toThrow(new IOException(), false);

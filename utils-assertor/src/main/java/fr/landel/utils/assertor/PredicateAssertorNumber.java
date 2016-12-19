@@ -58,6 +58,42 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
         return () -> AssertorNumber.isNotEqual(this.getStep(), number, Message.of(locale, message, arguments));
     }
 
+    default PredicateStepNumber<N> isZero() {
+        return this.isZero(null);
+    }
+
+    default PredicateStepNumber<N> isZero(final CharSequence message, final Object... arguments) {
+        return this.isZero(null, message, arguments);
+    }
+
+    default PredicateStepNumber<N> isZero(final Locale locale, final CharSequence message, final Object... arguments) {
+        return () -> AssertorNumber.isZero(this.getStep(), Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepNumber<N> isPositive() {
+        return this.isPositive(null);
+    }
+
+    default PredicateStepNumber<N> isPositive(final CharSequence message, final Object... arguments) {
+        return this.isPositive(null, message, arguments);
+    }
+
+    default PredicateStepNumber<N> isPositive(final Locale locale, final CharSequence message, final Object... arguments) {
+        return () -> AssertorNumber.isPositive(this.getStep(), Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepNumber<N> isNegative() {
+        return this.isNegative(null);
+    }
+
+    default PredicateStepNumber<N> isNegative(final CharSequence message, final Object... arguments) {
+        return this.isNegative(null, message, arguments);
+    }
+
+    default PredicateStepNumber<N> isNegative(final Locale locale, final CharSequence message, final Object... arguments) {
+        return () -> AssertorNumber.isNegative(this.getStep(), Message.of(locale, message, arguments));
+    }
+
     default PredicateStepNumber<N> isGT(final N number) {
         return this.isGT(number, null);
     }

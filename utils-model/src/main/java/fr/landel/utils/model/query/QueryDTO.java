@@ -15,6 +15,8 @@ package fr.landel.utils.model.query;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.landel.utils.commons.StringUtils;
+
 /**
  * Query DTO.
  *
@@ -22,7 +24,7 @@ import java.util.List;
  * @author Gilles
  *
  */
-public class QueryDTO extends AbstractQueryBuilder {
+public class QueryDTO extends AbstractQueryBuilder1 {
 
     /**
      * Serial
@@ -39,11 +41,11 @@ public class QueryDTO extends AbstractQueryBuilder {
      * @param fields
      *            The fields or columns
      */
-    public QueryDTO(final Class<?> dtoClass, final List<String> fields) {
+    public QueryDTO(final Class<?> dtoClass, final List<CharSequence> fields) {
         add(NEW);
         add(dtoClass.getCanonicalName());
         add(PARENTHESIS_OPEN);
-        addAll(fields);
+        add(StringUtils.join(fields, StringUtils.JOIN_SEPARATOR));
         add(PARENTHESIS_CLOSE);
     }
 
@@ -55,7 +57,7 @@ public class QueryDTO extends AbstractQueryBuilder {
      * @param fields
      *            The fields or columns
      */
-    public QueryDTO(final Class<?> dtoClass, final String... fields) {
+    public QueryDTO(final Class<?> dtoClass, final CharSequence... fields) {
         this(dtoClass, Arrays.asList(fields));
     }
 }

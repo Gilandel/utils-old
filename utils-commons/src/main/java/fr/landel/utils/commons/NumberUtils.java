@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -261,7 +263,8 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
 
     /**
      * Check if the class is an integer number class ({@link Byte},
-     * {@link Short}, {@link Integer}, {@link Long} or {@link BigInteger})
+     * {@link Short}, {@link Integer}, {@link Long}, {@link BigInteger},
+     * {@link AtomicInteger} or {@link AtomicLong})
      * 
      * @param clazz
      *            the input class
@@ -279,6 +282,10 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
             } else if (Short.class.isAssignableFrom(clazz)) {
                 result = true;
             } else if (BigInteger.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (AtomicInteger.class.isAssignableFrom(clazz)) {
+                result = true;
+            } else if (AtomicLong.class.isAssignableFrom(clazz)) {
                 result = true;
             }
         }
@@ -757,7 +764,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>Byte</code>
+     * Check if the number is a {@link Byte}
      * 
      * @param number
      *            The number to check
@@ -770,7 +777,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>Short</code>
+     * Check if the number is a {@link Short}
      * 
      * @param number
      *            The number to check
@@ -783,7 +790,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>Integer</code>
+     * Check if the number is an {@link Integer}
      * 
      * @param number
      *            The number to check
@@ -796,7 +803,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>Long</code>
+     * Check if the number is a {@link Long}
      * 
      * @param number
      *            The number to check
@@ -809,7 +816,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>Float</code>
+     * Check if the number is a {@link Float}
      * 
      * @param number
      *            The number to check
@@ -822,7 +829,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>Double</code>
+     * Check if the number is a {@link Double}
      * 
      * @param number
      *            The number to check
@@ -835,7 +842,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>BigInteger</code>
+     * Check if the number is a {@link BigInteger}
      * 
      * @param number
      *            The number to check
@@ -848,7 +855,7 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
     }
 
     /**
-     * Check if the number is a <code>BigDecimal</code>
+     * Check if the number is a {@link BigDecimal}
      * 
      * @param number
      *            The number to check
@@ -860,7 +867,124 @@ public final class NumberUtils extends org.apache.commons.lang3.math.NumberUtils
         return isNumberType(number, BigDecimal.class);
     }
 
+    /**
+     * Check if the number is an {@link AtomicInteger}
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isAtomicInteger(final N number) {
+        return isNumberType(number, AtomicInteger.class);
+    }
+
+    /**
+     * Check if the number is an {@link AtomicLong}
+     * 
+     * @param number
+     *            The number to check
+     * @param <N>
+     *            The type of the number
+     * @return true, if matches
+     */
+    public static <N extends Number> boolean isAtomicLong(final N number) {
+        return isNumberType(number, AtomicLong.class);
+    }
+
     private static <N extends Number> boolean isNumberType(final N number, final Class<? extends Number> classNumber) {
         return number != null && classNumber.isAssignableFrom(number.getClass());
+    }
+
+    /**
+     * Get the sign of the number
+     * 
+     * @param number
+     *            the number to check
+     * @param <N>
+     *            The type of the number
+     * @return 1 if number &gt; 0, -1 if number &lt; 0 and 0 otherwise, even if
+     *         null
+     */
+    public static <N extends Number> int signum(final N number) {
+        int result = 0;
+        if (number != null) {
+            if (NumberUtils.isInteger(number)) {
+                final Integer n = (Integer) number;
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isLong(number)) {
+                final Long n = (Long) number;
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isFloat(number)) {
+                final Float n = (Float) number;
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isDouble(number)) {
+                final Double n = (Double) number;
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isByte(number)) {
+                final Byte n = (Byte) number;
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isShort(number)) {
+                final Short n = (Short) number;
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isBigInteger(number)) {
+                result = ((BigInteger) number).signum();
+            } else if (NumberUtils.isAtomicInteger(number)) {
+                final int n = ((AtomicInteger) number).get();
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isAtomicLong(number)) {
+                final long n = ((AtomicLong) number).get();
+                result = n > 0 ? 1 : n < 0 ? -1 : 0;
+            } else if (NumberUtils.isBigDecimal(number)) {
+                result = ((BigDecimal) number).signum();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Check if the number is equal to zero
+     * 
+     * @param number
+     *            the number to check
+     * @param <N>
+     *            The type of the number
+     * @return true if number = 0, false otherwise
+     */
+    public static <N extends Number> boolean isZero(final N number) {
+        boolean result = false;
+        if (number != null) {
+            if (NumberUtils.isInteger(number)) {
+                final Integer n = (Integer) number;
+                result = n == 0;
+            } else if (NumberUtils.isLong(number)) {
+                final Long n = (Long) number;
+                result = n == 0;
+            } else if (NumberUtils.isFloat(number)) {
+                final Float n = (Float) number;
+                result = n == 0;
+            } else if (NumberUtils.isDouble(number)) {
+                final Double n = (Double) number;
+                result = n == 0;
+            } else if (NumberUtils.isByte(number)) {
+                final Byte n = (Byte) number;
+                result = n == 0;
+            } else if (NumberUtils.isShort(number)) {
+                final Short n = (Short) number;
+                result = n == 0;
+            } else if (NumberUtils.isBigInteger(number)) {
+                result = ((BigInteger) number).signum() == 0;
+            } else if (NumberUtils.isAtomicInteger(number)) {
+                final int n = ((AtomicInteger) number).get();
+                result = n == 0;
+            } else if (NumberUtils.isAtomicLong(number)) {
+                final long n = ((AtomicLong) number).get();
+                result = n == 0;
+            } else if (NumberUtils.isBigDecimal(number)) {
+                result = ((BigDecimal) number).signum() == 0;
+            }
+        }
+        return result;
     }
 }

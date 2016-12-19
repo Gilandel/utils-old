@@ -144,6 +144,15 @@ public class HelperMessageTest extends AbstractTest {
                         + " OR the char sequence 'texte12' should be null, empty or blank",
                 JUNIT_ERROR);
 
+        Expect.exception(() -> {
+            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank()
+                    .toThrow((errors, parameters) -> new IllegalArgumentException(errors));
+            fail("Expect an exception");
+        }, IllegalArgumentException.class,
+                "the char sequence 'texte11' should be null, empty or blank"
+                        + " OR the char sequence 'texte12' should NOT start with 'text'"
+                        + " OR the char sequence 'texte12' should be null, empty or blank",
+                JUNIT_ERROR);
         // previous assertion is invalid (prerequisites == false), only first
         // prerequisite error set as message
         assertEquals("the char sequence cannot be null and the searched substring cannot be null or empty",

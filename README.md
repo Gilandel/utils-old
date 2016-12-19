@@ -1,3 +1,8 @@
+# TODO
+fichiers AUB (queries)  et LOKI (xls) a supprimer
+ecrire d'autres TU
+ecrire mapper + include converter or supplier/consumer
+
 # utils
 Utility classes
 
@@ -10,6 +15,7 @@ Utility classes
 [![codecov.io sunburst](https://codecov.io/gh/Gilandel/utils/branch/develop/graphs/sunburst.svg)](https://codecov.io/gh/Gilandel/utils/branch/develop)
 
 # utils-commons
+
 ##Commons:
 - Cast generics: To cast map / list / object (avoid the use of @SuppressWarnings
 - Class utils: To get super classes or to get common super classes
@@ -21,36 +27,43 @@ Utility classes
 - Number utils: Extend NumberUtils from Apache project, add methods to check number equality
 - String utils: Extend NumberUtils from Apache project, add methods to get default string if empty or null
 
-##Assetor:
-An improved version of Assert provided by the Spring Team.
+##Over:
+- AbstractOverComparable: Class to force the implementation of compareTo method
+- AbstractOverObject: Class to force implementation of toString, equals and hashCode 
+
+##Listener:
+Base classes to manage events (listenable / event / listener)
+
+##Function:
+-
+
+##Tuple:
+- 
+
+# utils-assetor
+A module to validate method parameters.
+Based on the version of Assert provided by the Spring Team.
 
 Examples:
 ```java
-Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(); // -> if conditions are false, an IllegalArgumentException is thrown
-Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow(new MyException("invalid")); // -> if conditions are false, a MyException is thrown
-Assertor.that(paramInt).iGT(10).xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
+Assertor.that(file).isNotNull().and().validates((f) -> f.isDirectory(), "not a directory").toThrow(); // -> if file is not a directory, an IllegalArgumentException is thrown
+Assertor.that(paramInt).iGT(10).toThrow(() -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
+Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
 ```
 
-[Link to the summary](./utils-assertor#summary)
+[Link to summary](./utils-assertor#summary)
 
-##IO:
+# utils-io
 - Closeable manager: A manager for closeable, to open X closeable and to close them (written before Java7 autocloseable)
 - Encoding utils: All encoding (BOM, String and Charset)
 - File CRC32 utils: To get CRC32 from a file
 - File size utils: List all file sizes from octects to exabioctets
 - File system utils: All methods to manage files and directories
 - File utils: To read, write and compare files
-- Stream utils: To manage stream files (unrelated with Java 8 Stream)
+- Stream utils: To manage stream files (related to Input/OutputStream)
 
-##Listener:
-Base classes to manage events (listenable / event / listener)
-
-##MDCMT:
-To add easily MDC in your application in multi-threaded context
-
-##Over:
-- AbstractOverComparable: Class to force the implementation of compareTo method
-- AbstractOverObject: Class to force implementation of toString, equals and hashCode
+# utils-log
+- MDCMT: To add easily MDC in your application in multi-threaded context
 
 # utils-aop
 - AbstractAspect: Base to include AOP (logging and profiling) in an application

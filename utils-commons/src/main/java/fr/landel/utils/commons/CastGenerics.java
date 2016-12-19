@@ -668,9 +668,9 @@ public final class CastGenerics {
             result = (T) constructor.newInstance(objects);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             if (logLevelInfo) {
-                LOGGER.info("Cannot instantiate {} with argurments {}", constructor.getName(), StringUtils.join(objects, ", "));
+                LOGGER.info("Cannot instantiate {} with argurments {}", constructor.getName(), StringUtils.joinComma(objects));
             } else {
-                LOGGER.error("Cannot instantiate {} with argurments {}", constructor.getName(), StringUtils.join(objects, ", "));
+                LOGGER.error("Cannot instantiate {} with argurments {}", constructor.getName(), StringUtils.joinComma(objects));
             }
         }
         return result;
@@ -739,17 +739,13 @@ public final class CastGenerics {
     protected static <T> T instantiateConstructor(final Class<T> instantiableClass, final Class<?>[] classes, final Object[] objects) {
         T result = null;
 
-        try {
-            final Constructor<T> typedConstructor = getConstructor(instantiableClass, classes);
+        final Constructor<T> typedConstructor = getConstructor(instantiableClass, classes);
 
-            if (typedConstructor != null) {
-                result = instantiate(true, typedConstructor, objects);
-            } else {
-                LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName()
-                        + ", constructor signature not found ");
-            }
-        } catch (SecurityException e) {
-            LOGGER.info("Cannot map [" + StringUtils.join(objects, ", ") + "] into " + instantiableClass.getName(), e);
+        if (typedConstructor != null) {
+            result = instantiate(true, typedConstructor, objects);
+        } else {
+            LOGGER.info("Cannot map [{}] into {}, constructor signature not found", StringUtils.joinComma(objects),
+                    instantiableClass.getName());
         }
 
         return result;
@@ -875,7 +871,7 @@ public final class CastGenerics {
             try {
                 map.put(instantiableKeyClass.newInstance(), instantiableValueClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Errors occurred in CastGenerics#getTypedQueueClass()", e);
+                LOGGER.error("Errors occurred in CastGenerics#getTypedMapClass()", e);
             }
         }
 

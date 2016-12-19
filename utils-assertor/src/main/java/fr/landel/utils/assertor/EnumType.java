@@ -92,11 +92,6 @@ public enum EnumType {
     MAP,
 
     /**
-     * Comparable type
-     */
-    COMPARABLE,
-
-    /**
      * Calendar field (only used by converter)
      */
     CALENDAR_FIELD;
@@ -138,8 +133,6 @@ public enum EnumType {
                 type = CALENDAR;
             } else if (Class.class.isInstance(object)) {
                 type = CLASS;
-            } else if (Comparable.class.isAssignableFrom(clazz)) {
-                type = COMPARABLE;
             }
         }
         return type;

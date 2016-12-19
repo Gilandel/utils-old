@@ -57,10 +57,30 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * @return true, if all elements were found
      */
     public static <T, U> boolean containsAll(final T[] arrayToSearch, final U[] arraySearched) {
+        return containsAll(arrayToSearch, arraySearched, true);
+    }
+
+    /**
+     * Search if {@code arrayToSearch} contains all {@code arraySearched}
+     * entries.
+     * 
+     * @param arrayToSearch
+     *            where to search array (required, not null)
+     * @param arraySearched
+     *            what to search array (required, not null)
+     * @param checkType
+     *            check if the type is identical from each array
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element in searched array
+     * @return true, if all elements were found
+     */
+    public static <T, U> boolean containsAll(final T[] arrayToSearch, final U[] arraySearched, final boolean checkType) {
         Objects.requireNonNull(arrayToSearch, "Array to search cannot be null");
         Objects.requireNonNull(arraySearched, "Searched array cannot be null");
 
-        return has(arrayToSearch, arraySearched, true);
+        return has(arrayToSearch, arraySearched, true, checkType);
     }
 
     /**
@@ -78,43 +98,172 @@ public final class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
      * @return true, if at least one element was found
      */
     public static <T, U> boolean containsAny(final T[] arrayToSearch, final U[] arraySearched) {
+        return containsAny(arrayToSearch, arraySearched, true);
+    }
+
+    /**
+     * Search if {@code arrayToSearch} contains any {@code arraySearched}
+     * entries.
+     * 
+     * @param arrayToSearch
+     *            where to search array (required, not null)
+     * @param arraySearched
+     *            what to search array (required, not null)
+     * @param checkType
+     *            check if the type is identical from each array
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element in searched array
+     * @return true, if at least one element was found
+     */
+    public static <T, U> boolean containsAny(final T[] arrayToSearch, final U[] arraySearched, final boolean checkType) {
         Objects.requireNonNull(arrayToSearch, "Array to search cannot be null");
         Objects.requireNonNull(arraySearched, "Searched array cannot be null");
 
-        return has(arrayToSearch, arraySearched, false);
+        return has(arrayToSearch, arraySearched, false, checkType);
     }
 
-    private static <T, U> boolean has(final T[] array, final U object) {
-        boolean found = false;
-        if (object != null) {
-            for (T objectArray : array) {
-                if (object.equals(objectArray)) {
-                    found = true;
-                    break;
+    /**
+     * Count the number of {@code arraySearched} in {@code arrayToSearch}.
+     * 
+     * @param arrayToSearch
+     *            where to search array (required, not null)
+     * @param arraySearched
+     *            what to search array (required, not null)
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element in searched array
+     * @return number, the count of elements found
+     */
+    public static <T, U> int count(final T[] arrayToSearch, final U[] arraySearched) {
+        return count(arrayToSearch, arraySearched, true);
+    }
+
+    /**
+     * Count the number of {@code arraySearched} in {@code arrayToSearch}.
+     * 
+     * @param arrayToSearch
+     *            where to search array (required, not null)
+     * @param arraySearched
+     *            what to search array (required, not null)
+     * @param checkType
+     *            check if the type is identical from each array
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element in searched array
+     * @return number, the count of elements found
+     */
+    public static <T, U> int count(final T[] arrayToSearch, final U[] arraySearched, final boolean checkType) {
+        Objects.requireNonNull(arrayToSearch, "Array to search cannot be null");
+        Objects.requireNonNull(arraySearched, "Searched array cannot be null");
+
+        return count(arrayToSearch, arraySearched, checkType, false);
+    }
+
+    /**
+     * Count the number of object in {@code arrayToSearch}.
+     * 
+     * @param arrayToSearch
+     *            where to search array (required, not null)
+     * @param object
+     *            what to search
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element to search
+     * @return the number of iterations
+     */
+    public static <T, U> int count(final T[] arrayToSearch, final U object) {
+        return count(arrayToSearch, object, true);
+    }
+
+    /**
+     * Count the number of object in {@code arrayToSearch}.
+     * 
+     * @param arrayToSearch
+     *            where to search array (required, not null)
+     * @param object
+     *            what to search
+     * @param checkType
+     *            check if the type is identical from each array
+     * @param <T>
+     *            The type of element in array to search
+     * @param <U>
+     *            The type of element to search
+     * @return the number of iterations
+     */
+    public static <T, U> int count(final T[] arrayToSearch, final U object, final boolean checkType) {
+        Objects.requireNonNull(arrayToSearch, "Array to search cannot be null");
+
+        int found = 0;
+        if (object == null) {
+            for (T objectArray : arrayToSearch) {
+                if (objectArray == null) {
+                    ++found;
                 }
             }
-        } else {
-            for (T objectArray : array) {
-                if (objectArray == null) {
-                    found = true;
-                    break;
+        } else if (!checkType || arrayToSearch.getClass().getComponentType().isInstance(object)) {
+            for (T objectArray : arrayToSearch) {
+                if (object.equals(objectArray)) {
+                    ++found;
                 }
             }
         }
         return found;
     }
 
-    private static <T, U> boolean has(final T[] array1, final U[] array2, final boolean all) {
-        int found = 0;
-        for (U objectArray : array2) {
-            if (has(array1, objectArray)) {
-                found++;
+    private static <T, U> int count(final T[] arrayToSearch, final U[] arraySearched, final boolean checkType, final boolean stopOnFirst) {
+        if (checkType && !arrayToSearch.getClass().getComponentType().isAssignableFrom(arraySearched.getClass().getComponentType())) {
+            return 0;
+        }
+
+        if (stopOnFirst) {
+            for (U objectArray : arraySearched) {
+                if (has(arrayToSearch, objectArray)) {
+                    return 1;
+                }
+            }
+            return 0;
+        } else {
+            int found = 0;
+            for (U objectArray : arraySearched) {
+                if (has(arrayToSearch, objectArray)) {
+                    ++found;
+                }
+            }
+            return found;
+        }
+    }
+
+    private static <T, U> boolean has(final T[] array, final U object) {
+        if (object == null) {
+            for (T objectArray : array) {
+                if (objectArray == null) {
+                    return true;
+                }
+            }
+        } else {
+            for (T objectArray : array) {
+                if (object.equals(objectArray)) {
+                    return true;
+                }
             }
         }
+        return false;
+    }
+
+    private static <T, U> boolean has(final T[] arrayToSearch, final U[] arraySearched, final boolean all, final boolean checkType) {
+        if (checkType && !arrayToSearch.getClass().getComponentType().isAssignableFrom(arraySearched.getClass().getComponentType())) {
+            return false;
+        }
+
         if (all) {
-            return found == array2.length;
+            return count(arrayToSearch, arraySearched, false, false) == arraySearched.length;
         } else {
-            return found > 0;
+            return count(arrayToSearch, arraySearched, false, true) > 0;
         }
     }
 }

@@ -13,7 +13,12 @@
 package fr.landel.utils.commons;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -28,61 +33,61 @@ public class StringUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getNullIfEmpty(java.lang.CharSequence)}
+     * {@link fr.landel.utils.commons.StringUtils#nullIfEmpty(java.lang.CharSequence)}
      * .
      */
     @Test
     public void testGetNullIfEmpty() {
         String expected = "value";
-        assertEquals(expected, StringUtils.getNullIfEmpty(expected));
+        assertEquals(expected, StringUtils.nullIfEmpty(expected));
 
-        assertNull(StringUtils.getNullIfEmpty(""));
-        assertNull(StringUtils.getNullIfEmpty(null));
+        assertNull(StringUtils.nullIfEmpty(""));
+        assertNull(StringUtils.nullIfEmpty(null));
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getDefaultIfEmpty(java.lang.CharSequence, java.lang.CharSequence)}
+     * {@link fr.landel.utils.commons.StringUtils#defaultIfEmpty(java.lang.CharSequence, java.lang.CharSequence)}
      * .
      */
     @Test
     public void testGetDefaultIfEmpty() {
         String expected = "value";
         String defaultValue = "def";
-        assertEquals(expected, StringUtils.getDefaultIfEmpty(expected, defaultValue));
+        assertEquals(expected, StringUtils.defaultIfEmpty(expected, defaultValue));
 
-        assertEquals(defaultValue, StringUtils.getDefaultIfEmpty("", defaultValue));
-        assertEquals(defaultValue, StringUtils.getDefaultIfEmpty(null, defaultValue));
+        assertEquals(defaultValue, StringUtils.defaultIfEmpty("", defaultValue));
+        assertEquals(defaultValue, StringUtils.defaultIfEmpty(null, defaultValue));
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getDefaultIfNull(java.lang.CharSequence, java.lang.CharSequence)}
+     * {@link fr.landel.utils.commons.StringUtils#defaultIfNull(java.lang.CharSequence, java.lang.CharSequence)}
      * .
      */
     @Test
     public void testGetDefaultIfNull() {
         String expected = "value";
         String defaultValue = "def";
-        assertEquals(expected, StringUtils.getDefaultIfNull(expected, defaultValue));
+        assertEquals(expected, StringUtils.defaultIfNull(expected, defaultValue));
 
-        assertEquals("", StringUtils.getDefaultIfNull("", defaultValue));
-        assertEquals(defaultValue, StringUtils.getDefaultIfNull(null, defaultValue));
+        assertEquals("", StringUtils.defaultIfNull("", defaultValue));
+        assertEquals(defaultValue, StringUtils.defaultIfNull(null, defaultValue));
     }
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.StringUtils#getToStringOrDefaultIfNull(java.lang.Object, java.lang.String)}
+     * {@link fr.landel.utils.commons.StringUtils#toStringOrDefaultIfNull(java.lang.Object, java.lang.String)}
      * .
      */
     @Test
     public void testGetToStringOrDefaultIfNull() {
         Long expected = 1L;
         String defaultValue = "def";
-        assertEquals(String.valueOf(expected), StringUtils.getToStringOrDefaultIfNull(expected, defaultValue));
+        assertEquals(String.valueOf(expected), StringUtils.toStringOrDefaultIfNull(expected, defaultValue));
 
-        assertEquals("", StringUtils.getToStringOrDefaultIfNull("", defaultValue));
-        assertEquals(defaultValue, StringUtils.getToStringOrDefaultIfNull(null, defaultValue));
+        assertEquals("", StringUtils.toStringOrDefaultIfNull("", defaultValue));
+        assertEquals(defaultValue, StringUtils.toStringOrDefaultIfNull(null, defaultValue));
     }
 
     /**
@@ -249,10 +254,10 @@ public class StringUtilsTest {
      */
     @Test
     public void testReplace() {
-        String string = "I go to the beach this afternoon.";
-        assertEquals("I go to the theater this afternoon.", StringUtils.replace(string, "theater", 12, 17));
-        assertEquals("I will go to the beach this afternoon.", StringUtils.replace(string, "I will", 0, 1));
-        assertEquals("I go to the beach this morning.", StringUtils.replace(string, "morning", 23, 32));
+        String string = "I'll go to the beach this afternoon.";
+        assertEquals("I'll go to the theater this afternoon.", StringUtils.replace(string, "theater", 15, 20));
+        assertEquals("I will go to the beach this afternoon.", StringUtils.replace(string, "I will", 0, 4));
+        assertEquals("I'll go to the beach this morning.", StringUtils.replace(string, "morning", 26, 35));
     }
 
     /**
@@ -262,7 +267,7 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException() {
-        final String string = "I go to the beach this afternoon.";
+        final String string = "I'll go to the beach this afternoon.";
         StringUtils.replace(string, "theater", -1, 1);
     }
 
@@ -273,8 +278,8 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException2() {
-        final String string = "I go to the beach this afternoon.";
-        StringUtils.replace(string, "theater", 0, 34);
+        final String string = "I'll go to the beach this afternoon.";
+        StringUtils.replace(string, "theater", 0, 37);
     }
 
     /**
@@ -284,7 +289,7 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException3() {
-        final String string = "I go to the beach this afternoon.";
+        final String string = "I'll go to the beach this afternoon.";
         StringUtils.replace(string, null, 0, 1);
     }
 
@@ -305,7 +310,78 @@ public class StringUtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testReplaceException5() {
-        final String string = "I go to the beach this afternoon.";
+        final String string = "I'll go to the beach this afternoon.";
         StringUtils.replace(string, "theater", 2, 1);
+    }
+
+    /**
+     * Test method for {@link StringUtils#toChars(CharSequence)} .
+     */
+    @Test
+    public void testToChars() {
+        final String string = "I'll go to the beach this afternoon.";
+        final char[] expectedChars = new char[] {'I', '\'', 'l', 'l', ' ', 'g', 'o', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'b', 'e', 'a',
+                'c', 'h', ' ', 't', 'h', 'i', 's', ' ', 'a', 'f', 't', 'e', 'r', 'n', 'o', 'o', 'n', '.'};
+        final char[] chars = StringUtils.toChars(string);
+        assertEquals(expectedChars.length, chars.length);
+        for (int i = 0; i < chars.length; i++) {
+            assertEquals(expectedChars[i], chars[i]);
+        }
+
+        try {
+            StringUtils.toChars(null);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
+    }
+
+    /**
+     * Test method for {@link StringUtils#joinComma} .
+     */
+    @Test
+    public void testJoinComma() {
+        assertNull(StringUtils.joinComma((Object[]) null));
+        assertEquals("", StringUtils.joinComma(new Object[0]));
+        assertEquals("test", StringUtils.joinComma("test"));
+        assertEquals("t1, t2", StringUtils.joinComma("t1", "t2"));
+        assertEquals("t1, ", StringUtils.joinComma("t1", null));
+
+        assertNull(StringUtils.joinComma((Iterable<?>) null));
+        assertEquals("", StringUtils.joinComma(Collections.emptyList()));
+        assertEquals("test", StringUtils.joinComma(Arrays.asList("test")));
+        assertEquals("t1, t2", StringUtils.joinComma(Arrays.asList("t1", "t2")));
+        assertEquals("t1, ", StringUtils.joinComma(Arrays.asList("t1", null)));
+    }
+
+    /**
+     * Test method for
+     * {@link StringUtils#inject(java.lang.String, java.lang.Object...)} .
+     */
+    @Test
+    public void testInject() {
+        assertEquals("", StringUtils.inject("", "test"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {} this {}", "beach", "afternoon"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {1} this {0}", "afternoon", "beach"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {1} this {}", "afternoon", "beach"));
+        assertEquals("I'll go to the beach this afternoon",
+                StringUtils.inject("I'll go to {} {3} {} {2}", "the", "this", "afternoon", "beach"));
+
+        assertEquals("I'll go to the beach this {}", StringUtils.inject("I'll go to the {} this {}", "beach"));
+        assertEquals("I'll go to the beach this {1}", StringUtils.inject("I'll go to the {0} this {1}", "beach"));
+        assertEquals("I'll go to the beach this afternoon afternoon",
+                StringUtils.inject("I'll go to the {1} this {0} {0}", "afternoon", "beach"));
+        assertEquals("I'll go to the beach this afternoon", StringUtils.inject("I'll go to the {} this afternoon", "beach", "noon"));
+
+        assertEquals("Test", StringUtils.inject("Test"));
+        assertEquals("Test", StringUtils.inject("Test", "test"));
+        assertEquals("Test", StringUtils.inject("Test", (Object[]) null));
+
+        try {
+            StringUtils.inject(null, "test");
+            fail("An exception is expected");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
     }
 }

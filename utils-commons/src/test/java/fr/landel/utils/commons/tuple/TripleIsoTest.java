@@ -30,7 +30,8 @@ import org.junit.Test;
 public class TripleIsoTest {
 
     /**
-     * Test method for {@link TripleIso#getLeft()},{@link TripleIso#getMiddle()},
+     * Test method for
+     * {@link TripleIso#getLeft()},{@link TripleIso#getMiddle()},
      * {@link TripleIso#getRight()}.
      */
     @Test

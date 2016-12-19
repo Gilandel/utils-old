@@ -369,7 +369,7 @@ public class StepAssertor<T> implements Serializable {
         } else if (EnumStep.ASSERTION.equals(this.stepType)) {
             sb.append(", key: ").append(this.messageKey);
             sb.append(", key not: ").append(this.messageKeyNot);
-            sb.append(", parameters: ").append(StringUtils.join(this.parameters, StringUtils.JOIN_SEPARATOR));
+            sb.append(", parameters: ").append(StringUtils.joinComma(this.parameters));
             sb.append(", message: ").append(this.message);
         } else if (EnumStep.SUB.equals(this.stepType)) {
             sb.append(", operator: ").append(this.operator);

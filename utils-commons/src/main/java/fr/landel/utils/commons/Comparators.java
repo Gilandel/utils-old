@@ -137,6 +137,11 @@ public class Comparators {
     public static final BiComparator<ChronoZonedDateTime<?>> ZONED_DATETIME = new BiComparator<ChronoZonedDateTime<?>>();
 
     /**
+     * Version comparator (handle null)
+     */
+    public static final BiComparator<Version> VERSION = new BiComparator<>();
+
+    /**
      * Compare two comparables
      * 
      * @param o1

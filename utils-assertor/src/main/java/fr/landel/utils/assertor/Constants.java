@@ -250,6 +250,21 @@ public class Constants {
             String EQUALS = "number.equals";
 
             /**
+             * Message key for number zero
+             */
+            String ZERO = "number.zero";
+
+            /**
+             * Message key for positive number
+             */
+            String POSITIVE = "number.positive";
+
+            /**
+             * Message key for negative number
+             */
+            String NEGATIVE = "number.negative";
+
+            /**
              * Message key for number greater than
              */
             String GT = "number.gt";
@@ -358,36 +373,6 @@ public class Constants {
              * Message key for date before or equals
              */
             String BEFORE_OR_EQUALS = "date.beforeOrEquals";
-        }
-
-        /**
-         * Comparable constants
-         *
-         * @since Aug 10, 2016
-         * @author Gilles
-         *
-         */
-        static interface COMPARABLE {
-
-            /**
-             * Message key for comparable after
-             */
-            String AFTER = "comparable.after";
-
-            /**
-             * Message key for comparable after or equals
-             */
-            String AFTER_OR_EQUALS = "comparable.afterOrEquals";
-
-            /**
-             * Message key for comparable before
-             */
-            String BEFORE = "comparable.before";
-
-            /**
-             * Message key for comparable before or equals
-             */
-            String BEFORE_OR_EQUALS = "comparable.beforeOrEquals";
         }
 
         /**

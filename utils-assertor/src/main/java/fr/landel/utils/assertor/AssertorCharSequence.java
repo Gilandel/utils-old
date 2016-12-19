@@ -16,8 +16,9 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+
+import fr.landel.utils.commons.StringUtils;
 
 /**
  * Utility class to prepare the check of {@link CharSequence}
@@ -208,27 +209,6 @@ public class AssertorCharSequence extends Constants {
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.CONTAINS, false,
                 Pair.of(substring, EnumType.CHAR_SEQUENCE));
-    }
-
-    /**
-     * Searches in char sequence, if the specified sub sequence exists in.
-     * {@code null} values have to be checked first.
-     * 
-     * @param textToSearch
-     *            where to search
-     * @param substring
-     *            chat to search
-     * @return {@code true} if found, {@code false} otherwise
-     */
-    private static boolean containsCharSequence(final CharSequence textToSearch, final CharSequence substring) {
-        int p = 0;
-        int l = substring.length();
-        for (int i = 0; i < textToSearch.length() & p < l; i++) {
-            if (textToSearch.charAt(i) == substring.charAt(p)) {
-                p++;
-            }
-        }
-        return p == l;
     }
 
     /**
@@ -466,5 +446,28 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> Pattern.compile(regex.toString()).matcher(object).find();
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false, Pair.of(regex, EnumType.CHAR_SEQUENCE));
+    }
+
+    /**
+     * Searches in char sequence, if the specified sub sequence exists in.
+     * {@code null} values have to be checked first.
+     * 
+     * @param textToSearch
+     *            where to search
+     * @param substring
+     *            chat to search
+     * @return {@code true} if found, {@code false} otherwise
+     */
+    private static boolean containsCharSequence(final CharSequence textToSearch, final CharSequence substring) {
+        int p = 0;
+        int l = substring.length();
+        for (int i = 0; i < textToSearch.length() && p < l; i++) {
+            if (textToSearch.charAt(i) == substring.charAt(p)) {
+                p++;
+            } else {
+                p = 0;
+            }
+        }
+        return p == l;
     }
 }

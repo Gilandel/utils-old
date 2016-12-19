@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -203,6 +204,20 @@ public class CollectionUtils2Test {
             points.clear();
 
             assertNull(CollectionUtils2.toArray(points));
+
+            List<Object> objects = new ArrayList<>();
+            objects.add(12);
+            objects.add("text");
+            assertThat(CollectionUtils2.toArray(objects), Matchers.arrayContaining(objects.get(0), objects.get(1)));
+
+            String[] emptyArray = CollectionUtils2.toArray(Collections.<String> emptyList());
+            assertNull(emptyArray);
+
+            emptyArray = CollectionUtils2.toArray(Collections.<String> emptyList(), String.class);
+            assertNotNull(emptyArray);
+            assertTrue(ArrayUtils.isEmpty(emptyArray));
+            assertTrue(emptyArray.getClass().isArray());
+
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }

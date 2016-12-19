@@ -17,6 +17,7 @@ import java.util.function.BiPredicate;
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.Comparators;
+import fr.landel.utils.commons.NumberUtils;
 
 /**
  * Utility class to prepare the check of {@link Number}
@@ -77,6 +78,74 @@ public class AssertorNumber extends Constants {
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) != 0;
 
         return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, true, Pair.of(number, EnumType.getType(number)));
+    }
+
+    /**
+     * Prepare the next step to validate if {@link Number} is zero
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isZero(final StepAssertor<N> step, final Message message) {
+
+        final BiPredicate<N, Boolean> checker = (object, not) -> NumberUtils.isZero(object);
+
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.POSITIVE, false);
+    }
+
+    /**
+     * Prepare the next step to validate if {@link Number} is positive (number
+     * &gt; 0). 0 and {@code null} return false.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isPositive(final StepAssertor<N> step, final Message message) {
+
+        final BiPredicate<N, Boolean> checker = (object, not) -> NumberUtils.signum(object) > 0;
+
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.POSITIVE, false);
+    }
+
+    /**
+     * Prepare the next step to validate if {@link Number} is negative (number
+     * &lt; 0). 0 and {@code null} return false.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the previous step
+     * @param message
+     *            the message if invalid
+     * @param <N>
+     *            The number type
+     * @return the next step
+     */
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isNegative(final StepAssertor<N> step, final Message message) {
+
+        final BiPredicate<N, Boolean> checker = (object, not) -> NumberUtils.signum(object) < 0;
+
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.NEGATIVE, false);
     }
 
     /**

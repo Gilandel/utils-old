@@ -160,30 +160,27 @@ public class AssertorArray extends Constants {
     }
 
     private static <T> boolean has(final T[] array, final T object) {
-        boolean found = false;
         if (object != null) {
             for (T objectArray : array) {
                 if (object.equals(objectArray)) {
-                    found = true;
-                    break;
+                    return true;
                 }
             }
         } else {
             for (T objectArray : array) {
                 if (objectArray == null) {
-                    found = true;
-                    break;
+                    return true;
                 }
             }
         }
-        return found;
+        return false;
     }
 
     private static <T> boolean has(final T[] array1, final T[] array2, final boolean all, final boolean not) {
         int found = 0;
         for (T objectArray : array2) {
             if (AssertorArray.has(array1, objectArray)) {
-                found++;
+                ++found;
             }
         }
 

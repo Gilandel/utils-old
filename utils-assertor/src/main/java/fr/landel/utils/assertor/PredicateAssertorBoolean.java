@@ -15,8 +15,16 @@ package fr.landel.utils.assertor;
 import java.util.Locale;
 
 /**
+ * This class define methods that can be applied on the checked {@link Boolean} object. To
+ * provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepBoolean}. The chain looks like:
  * 
- * (Description)
+ * <pre>
+ * {@link PredicateAssertorBoolean} &gt; {@link PredicateStepBoolean} &gt; {@link PredicateAssertorBoolean} &gt; {@link PredicateStepBoolean}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorBoolean} and ends with
+ * {@link PredicateStepBoolean}.
  *
  * @since Aug 7, 2016
  * @author Gilles

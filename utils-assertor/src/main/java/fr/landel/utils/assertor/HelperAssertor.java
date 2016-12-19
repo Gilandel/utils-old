@@ -268,17 +268,17 @@ public class HelperAssertor extends Constants {
     }
 
     protected static boolean isValid(final boolean previousOK, final boolean currentOK, final EnumOperator operator) {
-        boolean OK = false;
+        boolean ok = false;
         if (EnumOperator.AND.equals(operator)) {
-            OK = previousOK & currentOK;
+            ok = previousOK & currentOK;
         } else if (EnumOperator.OR.equals(operator)) {
-            OK = previousOK | currentOK;
+            ok = previousOK | currentOK;
         } else if (EnumOperator.XOR.equals(operator)) {
-            OK = previousOK ^ currentOK;
+            ok = previousOK ^ currentOK;
         } else {
-            OK = previousOK & currentOK;
+            ok = previousOK & currentOK;
         }
-        return OK;
+        return ok;
     }
 
     protected static boolean isValid(final boolean all, final boolean not, final int found, final int size) {

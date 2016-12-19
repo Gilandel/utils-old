@@ -17,6 +17,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Objects;
+
 import org.junit.Test;
 
 import fr.landel.utils.assertor.expect.Expect;
@@ -36,6 +38,17 @@ public class AssertorArrayTest extends AbstractTest {
     @Test
     public void testConstructor() {
         assertNotNull(new AssertorArray());
+    }
+
+    /**
+     * Test method for {@link AssertorArray} .
+     */
+    @Test
+    public void testPredicateGet() {
+        String[] array = new String[] {null, "2"};
+
+        assertFalse(Assertor.that(array).hasHashCode(0).isOK());
+        assertTrue(Assertor.that(array).hasHashCode(Objects.hashCode((Object[]) array)).isOK());
     }
 
     /**
