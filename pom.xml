@@ -51,7 +51,6 @@
 		<url>https://github.com/Gilandel/utils.git</url>
 		<connection>scm:git:git://github.com/Gilandel/utils.git</connection>
 		<developerConnection>scm:git:git@github.com:Gilandel/utils.git</developerConnection>
-		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
