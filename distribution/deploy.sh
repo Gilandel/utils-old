@@ -8,6 +8,7 @@ elif [ "${#TRAVIS_TAG}" -gt 0 ]; then
 	echo "Build and deploy RELEASE"
 	git config --global user.email "$GIT_EMAIL"
 	git config --global user.name "$GIT_USER"
+	git fetch upstream
 	git rebase origin/master
 	mvn release:prepare release:perform --batch-mode -DcheckModificationExcludeList=distribution/prepare.sh,distribution/deploy.sh -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
 	exit $?
