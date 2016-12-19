@@ -333,7 +333,6 @@
 					<artifactId>maven-release-plugin</artifactId>
 					<version>${release.plugin.version}</version>
 					<configuration>
-						<arguments>-s ${MAVEN_SETTINGS}</arguments>
 						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
 					</configuration>
