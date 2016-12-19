@@ -15,7 +15,7 @@
 		<name>${application.org.name}</name>
 		<url>${application.org.url}</url>
 	</organization>
-	
+
 	<developers>
 		<developer>
 			<id>Gilandel</id>
@@ -51,6 +51,7 @@
 		<url>https://github.com/Gilandel/utils.git</url>
 		<connection>scm:git:git://github.com/Gilandel/utils.git</connection>
 		<developerConnection>scm:git:git@github.com:Gilandel/utils.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
@@ -334,6 +335,9 @@
 					<configuration>
 						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
+						<checkModificationExcludes>
+							<checkModificationExclude>distribution/*.sh</checkModificationExclude>
+						</checkModificationExcludes>
 					</configuration>
 				</plugin>
 				<plugin>

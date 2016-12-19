@@ -8,7 +8,10 @@ elif [ "${#TRAVIS_TAG}" -gt 0 ]; then
     echo "Build and deploy RELEASE"
     git config --global user.email "$GIT_EMAIL"
     git config --global user.name "$GIT_USER"
-    mvn release:clean release:prepare release:perform --batch-mode -DcheckModificationExcludeList=distribution/prepare.sh,distribution/deploy.sh -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
+	echo "ref: refs/heads/master" > .git/HEAD
+	git fetch upstream
+	git rebase origin/master
+    mvn release:clean release:prepare release:perform --batch-mode -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
     exit $?
 else
     echo "Only build"
