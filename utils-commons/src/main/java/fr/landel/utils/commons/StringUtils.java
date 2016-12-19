@@ -355,7 +355,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * </p>
      *
      * @param iterable
-     *            the {@code Iterable} providing the values to join together,
+     *            the {@link Iterable} providing the values to join together,
      *            may be null
      * @param <T>
      *            the type of each element
@@ -417,7 +417,6 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         int index = 0;
         String param = BRACES;
         int len = BRACES_LENGTH;
-        String value;
 
         while ((index = output.indexOf(param, index)) > -1 && i < arguments.length) {
             output.replace(index, index + len, String.valueOf(arguments[i++]));
@@ -429,9 +428,8 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         for (i = 0; i < arguments.length; ++i) {
             param = new StringBuilder(BRACE_OPEN).append(i).append(BRACE_CLOSE).toString();
             len = param.length();
-            value = String.valueOf(arguments[i]);
             while ((index = output.indexOf(param, index)) > -1) {
-                output.replace(index, index + len, value);
+                output.replace(index, index + len, String.valueOf(arguments[i]));
                 index += len;
             }
         }
