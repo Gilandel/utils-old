@@ -105,7 +105,7 @@
 		<assembly.plugin.version>3.0.0</assembly.plugin.version>
 		<dependency.plugin.version>2.10</dependency.plugin.version>
 		<buildhelper.plugin.version>1.10</buildhelper.plugin.version>
-		<site.plugin.version>3.6.0</site.plugin.version>
+		<site.plugin.version>3.6</site.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
 		<cobertura.plugin.version>2.7</cobertura.plugin.version>
 		<sonar.plugin.version>3.2</sonar.plugin.version>
