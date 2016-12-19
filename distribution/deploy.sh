@@ -6,7 +6,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" = 'false' ]; then
 	exit $?;
 elif [ "${#TRAVIS_TAG}" -gt 0 ]; then
 	echo "Build and deploy RELEASE"
-	mvn release:prepare release:perform -DcheckModificationExcludeList=distribution/prepare.sh,distribution/deploy.sh -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
+	mvn release:prepare release:perform --batch-mode -DcheckModificationExcludeList=distribution/prepare.sh,distribution/deploy.sh -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
 	exit $?;
 else
 	echo "Only build"
