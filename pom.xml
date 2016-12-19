@@ -340,7 +340,6 @@
 							<checkModificationExclude>distribution/*.sh</checkModificationExclude>
 						</checkModificationExcludes>
 						<pushChanges>false</pushChanges>
-						<localCheckout>true</localCheckout>
 					</configuration>
 					<dependencies>
 						<dependency>
