@@ -15,6 +15,14 @@
 		<name>${application.org.name}</name>
 		<url>${application.org.url}</url>
 	</organization>
+	
+	<developers>
+		<developer>
+			<id>Gilandel</id>
+			<name>Gilles Landel</name>
+			<email>gilles@landel.fr</email>
+		</developer>
+	</developers>
 
 	<licenses>
 		<license>
