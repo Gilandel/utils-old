@@ -360,8 +360,6 @@
 					<configuration>
 						<goals>deploy</goals>
 						<pushChanges>false</pushChanges>
-						<localCheckout>true</localCheckout>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<checkModificationExcludes>
 							<checkModificationExclude>distribution/*.sh</checkModificationExclude>
 						</checkModificationExcludes>
