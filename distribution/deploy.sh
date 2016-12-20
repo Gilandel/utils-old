@@ -2,7 +2,12 @@
 
 set -ev
 
-MVN_SETTINGS=${HOME}/build/Gilandel/utils/distribution/settings.xml
+GPG_HOME=${HOME}/.gnupg
+DISTRIBUTION_HOME=${HOME}/build/Gilandel/utils/distribution
+MVN_SETTINGS=${DISTRIBUTION_HOME}/settings.xml
+
+mkdir -p ${GPG_HOME}
+cp ${DISTRIBUTION_HOME}/*.gpg ${GPG_HOME}
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" = 'false' ]; then
 	echo "Build and deploy SNAPSHOT"
