@@ -359,7 +359,6 @@
 					<version>${release.plugin.version}</version>
 					<configuration>
 						<goals>deploy</goals>
-						<localCheckout>true</localCheckout>
 						<checkModificationExcludes>
 							<checkModificationExclude>distribution/*.sh</checkModificationExclude>
 						</checkModificationExcludes>
