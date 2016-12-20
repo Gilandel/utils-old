@@ -9,7 +9,6 @@ elif [ "$TRAVIS_BRANCH" = 'release' ]; then
     git config --global user.email "$GIT_EMAIL"
     git config --global user.name "$GIT_USER"
     mvn release:clean release:prepare release:perform -X -B -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
-    git ls-remote .
     exit $?
 else
     echo "Only build"
