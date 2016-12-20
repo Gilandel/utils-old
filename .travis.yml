@@ -1,11 +1,12 @@
 language: java
 
+sudo: false
+
 jdk:
   - oraclejdk8
   
 before_install:
   - pip install --user codecov
-  - distribution/prepare.sh
 
 script: mvn clean compile test cobertura:cobertura
 

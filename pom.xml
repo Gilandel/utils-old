@@ -422,6 +422,14 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
 					<version>${gpg.plugin.version}</version>
+					<configuration>
+						<executable>gpg</executable>
+						<keyname>${GPG_KEYNAME}</keyname>
+						<passphraseServerId>gpg</passphraseServerId>
+						<homedir>${project.basedir}/distribution/</homedir>
+						<secretKeyring>secring.gpg</secretKeyring>
+						<publicKeyring>pubring.gpg</publicKeyring>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
