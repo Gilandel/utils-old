@@ -5,7 +5,6 @@ jdk:
   
 before_install:
   - pip install --user codecov
-  - "chmod u+x distribution/*.sh"
   - distribution/prepare.sh
 
 script: mvn clean compile test cobertura:cobertura
