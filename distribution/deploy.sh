@@ -2,10 +2,12 @@
 
 set -ev
 
+MVN_SETTINGS=${HOME}/build/Gilandel/utils/distribution/settings.xml
+
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" = 'false' ]; then
 	echo "Build and deploy SNAPSHOT"
 	
-	mvn deploy -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
+	mvn deploy -DskipTests=true -P sign,build-extras --settings ${MVN_SETTINGS}
 elif [ "$TRAVIS_BRANCH" = 'release' ]; then
 	if [[ `git log --format=%B -n 1` == *"[maven-release-plugin]"* ]]; then
 		echo "Do not release commits created by maven release plugin"
@@ -22,7 +24,7 @@ elif [ "$TRAVIS_BRANCH" = 'release' ]; then
 		git checkout release
 		
 		# Prepare and release
-		mvn release:clean release:prepare release:perform -B -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
+		mvn release:clean release:prepare release:perform -B -DskipTests=true -P sign,build-extras --settings ${MVN_SETTINGS} -Darguments="--settings ${MVN_SETTINGS}"
 		
 		# Merge the release branch with master
 		git fetch origin +master:master

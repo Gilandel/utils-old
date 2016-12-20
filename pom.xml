@@ -3,12 +3,13 @@
 
 	<groupId>fr.landel</groupId>
 	<artifactId>utils</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>utils</name>
 	<description>Utility project</description>
 	<inceptionYear>2016</inceptionYear>
+	<url>https://github.com/Gilandel/utils.git</url>
 
 	<organization>
 		<name>${application.org.name}</name>
