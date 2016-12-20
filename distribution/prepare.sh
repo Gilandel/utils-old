@@ -9,8 +9,8 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
 	    openssl aes-256-cbc -K $ENCPRYPTED_KEY -iv $ENCPRYPTED_IV -in distribution/signingkey.asc.enc -out target/gpg/signingkey.asc -d
 	    gpg --batch --fast-import target/gpg/signingkey.asc
 	    
-	    # decrypt SSH key so we can push release to GitHub
-	    openssl aes-256-cbc -K $ENCPRYPTED_KEY -iv $ENCPRYPTED_IV -in distribution/pushingkey.asc.enc -out ${HOME}/.ssh/id_rsa -d
+	    # Decrypt SSH key so we can push release to GitHub
+	    openssl aes-256-cbc -K $ENCPRYPTED_KEY -iv $ENCPRYPTED_IV -in distribution/pushingkey.enc -out ${HOME}/.ssh/id_rsa -d
 		chmod 600 ${HOME}/.ssh/id_rsa
 	fi
 else
