@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.landel</groupId>
 	<artifactId>utils</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>utils</name>
@@ -99,22 +100,22 @@
 		<!-- Plugins version -->
 		<clean.plugin.version>3.0.0</clean.plugin.version>
 		<install.plugin.version>2.5.2</install.plugin.version>
-		<source.plugin.version>3.0.0</source.plugin.version>
+		<source.plugin.version>3.0.1</source.plugin.version>
 		<deploy.plugin.version>2.8.2</deploy.plugin.version>
-		<resources.plugin.version>3.0.0</resources.plugin.version>
+		<resources.plugin.version>3.0.2</resources.plugin.version>
 		<compiler.plugin.version>3.6.0</compiler.plugin.version>
-		<jar.plugin.version>3.0.0</jar.plugin.version>
+		<jar.plugin.version>3.0.2</jar.plugin.version>
 		<war.plugin.version>3.0.0</war.plugin.version>
 		<release.plugin.version>2.5.3</release.plugin.version>
 		<assembly.plugin.version>3.0.0</assembly.plugin.version>
 		<dependency.plugin.version>2.10</dependency.plugin.version>
-		<buildhelper.plugin.version>1.10</buildhelper.plugin.version>
+		<buildhelper.plugin.version>1.12</buildhelper.plugin.version>
 		<site.plugin.version>3.6</site.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
 		<cobertura.plugin.version>2.7</cobertura.plugin.version>
 		<sonar.plugin.version>3.2</sonar.plugin.version>
 		<license.plugin.version>1.10</license.plugin.version>
-		<javadoc.plugin.version>2.10.3</javadoc.plugin.version>
+		<javadoc.plugin.version>2.10.4</javadoc.plugin.version>
 		<versioneye.plugin.version>3.11.0</versioneye.plugin.version>
 		<gpg.plugin.version>1.6</gpg.plugin.version>
 		<nexus.staging.plugin.version>1.6.7</nexus.staging.plugin.version>
@@ -128,7 +129,7 @@
 		<commons.beanutils.version>1.9.3</commons.beanutils.version>
 		<commons.collections.version>4.1</commons.collections.version>
 
-		<logback.version>1.1.7</logback.version>
+		<logback.version>1.1.8</logback.version>
 		<slf4j.version>1.7.21</slf4j.version>
 
 		<!-- Only the class 'org.gl.utils.model.hibernate.ImprovedNamingStrategy' 
@@ -136,7 +137,7 @@
 		<!-- For the others classes, Hibernate 4.3.11 can be used -->
 		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
 		<hibernate.version>5.2.5.Final</hibernate.version>
-		<hibernate.validator.version>5.3.3.Final</hibernate.validator.version>
+		<hibernate.validator.version>5.3.4.Final</hibernate.validator.version>
 
 		<spring.version>4.3.4.RELEASE</spring.version>
 		<aspectj.version>1.8.9</aspectj.version>
@@ -148,7 +149,7 @@
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<cobertura.version>2.1.1</cobertura.version>
-		<jmh.version>1.17.1</jmh.version>
+		<jmh.version>1.17.2</jmh.version>
 	</properties>
 
 	<reporting>
@@ -363,6 +364,8 @@
 					<version>${release.plugin.version}</version>
 					<configuration>
 						<goals>deploy</goals>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
 						<tagNameFormat>@{project.version}</tagNameFormat>
 					</configuration>
 					<dependencies>

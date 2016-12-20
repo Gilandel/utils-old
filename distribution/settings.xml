@@ -9,11 +9,15 @@
 			<username>${env.OSSRH_JIRA_USERNAME}</username>
 			<password>${env.OSSRH_JIRA_PASSWORD}</password>
 		</server>
+		<server>
+			<id>gpg.passphrase</id>
+			<passphrase>${env.GPG_PASSPHRASE}</passphrase>
+		</server>
 	</servers>
 
 	<profiles>
 		<profile>
-			<id>ossrh</id>
+			<id>gpg</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
