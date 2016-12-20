@@ -17,7 +17,7 @@ elif [ "$TRAVIS_BRANCH" = 'release' ]; then
     git checkout release
     
     # Prepare and release
-    mvn release:clean release:prepare release:perform -X -B -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
+    mvn release:clean release:prepare release:perform -B -DskipTests=true -P sign,build-extras --settings distribution/settings.xml
     
     # Merge the release branch with master
     git fetch origin +master:master
