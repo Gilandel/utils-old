@@ -79,6 +79,7 @@
 
 	<properties>
 		<scm.name>utils</scm.name>
+		<github.user></github.user>
 
 		<!-- Application information -->
 		<application.version>${project.version}</application.version>
@@ -424,9 +425,8 @@
 					<version>${gpg.plugin.version}</version>
 					<configuration>
 						<executable>gpg</executable>
-						<keyname>${GPG_KEYNAME}</keyname>
 						<passphraseServerId>gpg</passphraseServerId>
-						<homedir>${project.basedir}/distribution/</homedir>
+						<homedir>${env.HOME}/build/Gilandel/utils/distribution/</homedir>
 						<secretKeyring>secring.gpg</secretKeyring>
 						<publicKeyring>pubring.gpg</publicKeyring>
 					</configuration>
