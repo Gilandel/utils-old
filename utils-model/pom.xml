@@ -4,7 +4,7 @@
   <parent>
     <groupId>fr.landel</groupId>
     <artifactId>utils</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
   
   <groupId>fr.landel.utils</groupId>
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-mapper</artifactId>
-			<version>0.0.3-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Unit testing -->

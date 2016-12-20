@@ -3,7 +3,7 @@
 
 	<groupId>fr.landel</groupId>
 	<artifactId>utils</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>utils</name>
@@ -79,7 +79,6 @@
 
 	<properties>
 		<scm.name>utils</scm.name>
-		<github.user />
 
 		<!-- Application information -->
 		<application.version>${project.version}</application.version>
@@ -96,6 +95,9 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.resourcesEncoding>UTF-8</project.build.resourcesEncoding>
+
+		<!-- others -->
+		<gpg.home>${env.HOME}/build/Gilandel/utils/distribution</gpg.home>
 
 		<!-- Plugins version -->
 		<clean.plugin.version>3.0.0</clean.plugin.version>
@@ -551,7 +553,14 @@
 						</executions>
 						<configuration>
 							<executable>gpg</executable>
-							<passphraseServerId>gpg</passphraseServerId>
+							<keyname>${env.GPG_KEYNAME}</keyname>
+							<passphrase>${env.GPG_PASSPHRASE}</passphrase>
+							<defaultKeyring>false</defaultKeyring>
+							<homedir>${gpg.home}</homedir>
+							<secretKeyring>${gpg.home}/secring.gpg</secretKeyring>
+							<publicKeyring>${gpg.home}/pubring.gpg</publicKeyring>
+							<useAgent>true</useAgent>
+							<lockMode>never</lockMode>
 						</configuration>
 					</plugin>
 				</plugins>
