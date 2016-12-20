@@ -117,6 +117,7 @@
 		<exec.plugin.version>1.5.0</exec.plugin.version>
 		<shade.plugin.version>2.4.3</shade.plugin.version>
 		<maven.scm.git.plugin.version>1.9.5</maven.scm.git.plugin.version>
+		<project.reports.plugin.version>2.9</project.reports.plugin.version>
 
 		<!-- Dependencies version -->
 		<commons.lang.version>3.5</commons.lang.version>
@@ -160,6 +161,29 @@
 					<show>package</show>
 					<aggregate>true</aggregate>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>cim</report>
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>dependency-info</report>
+							<report>dependency-management</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>plugin-management</report>
+							<report>plugins</report>
+							<report>project-team</report>
+							<report>scm</report>
+							<report>summary</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
@@ -334,12 +358,13 @@
 					<artifactId>maven-release-plugin</artifactId>
 					<version>${release.plugin.version}</version>
 					<configuration>
-						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
+						<pushChanges>false</pushChanges>
+						<localCheckout>true</localCheckout>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<checkModificationExcludes>
 							<checkModificationExclude>distribution/*.sh</checkModificationExclude>
 						</checkModificationExcludes>
-						<pushChanges>false</pushChanges>
 					</configuration>
 					<dependencies>
 						<dependency>
@@ -401,6 +426,11 @@
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>${nexus.staging.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>${project.reports.plugin.version}</version>
 				</plugin>
 
 				<!-- Write java header file and generate thrid-party file -->
