@@ -5,6 +5,7 @@ Utility classes
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/e34c82e78aaf45a797721e62a7a31a0a)](https://www.codacy.com/app/gilles/utils)
 [![Dependency Status](https://www.versioneye.com/user/projects/5859538481ffdc0035806c58/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5859538481ffdc0035806c58)
 [![codecov.io](https://codecov.io/github/Gilandel/utils/coverage.svg?branch=develop)](https://codecov.io/github/Gilandel/utils?branch=develop)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/fr.landel/utils/badge.svg)](https://maven-badges.herokuapp.com/maven-central/fr.landel/utils)
 
 # utils-commons
 ##Commons:
