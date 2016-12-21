@@ -37,13 +37,6 @@ import java.util.function.Supplier;
 public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
 
     /**
-     * {@inheritDoc}
-     */
-    public ObjectUtils() {
-        super();
-    }
-
-    /**
      * <p>
      * Returns a default value if the object passed is {@code null}.
      * </p>

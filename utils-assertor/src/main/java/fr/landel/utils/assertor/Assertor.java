@@ -195,7 +195,7 @@ public class Assertor {
      *            The locale
      * @return the locale if not null otherwise the default one
      */
-    static final Locale getLocale(final Locale locale) {
+    public static final Locale getLocale(final Locale locale) {
         if (locale != null) {
             return locale;
         }

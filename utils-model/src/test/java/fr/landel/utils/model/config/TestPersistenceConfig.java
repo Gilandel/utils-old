@@ -42,14 +42,6 @@ public class TestPersistenceConfig extends AbstractPersistenceConfig {
     private Environment env;
 
     /**
-     * Constructor
-     *
-     */
-    public TestPersistenceConfig() {
-        super();
-    }
-
-    /**
      * Initialize the persistence configuration
      */
     @PostConstruct

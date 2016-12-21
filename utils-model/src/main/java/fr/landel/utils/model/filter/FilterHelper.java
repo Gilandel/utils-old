@@ -38,12 +38,6 @@ import fr.landel.utils.model.query.QueryBuilder1;
 public class FilterHelper {
 
     /**
-     * Constructor
-     */
-    public FilterHelper() {
-    }
-
-    /**
      * Build a hql condition with the filters.
      *
      * @param filters

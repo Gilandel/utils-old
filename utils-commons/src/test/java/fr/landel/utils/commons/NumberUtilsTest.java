@@ -388,18 +388,13 @@ public class NumberUtilsTest {
      * Test method for {@link NumberUtils#isByte(java.lang.Number)} .
      */
     @Test
-    public void testNumber() {
+    public void testNumber1() {
         Number numByte = (byte) 12;
         Number numShort = (short) 12;
         Number numInteger = (int) 12;
         Number numLong = 12L;
         Number numFloat = 12.0f;
         Number numDouble = 12.0d;
-        Number numBigInteger = BigInteger.valueOf(12L);
-        Number numBigDecimal = BigDecimal.valueOf(12.0d);
-        Number numNull = null;
-        Number numAInteger = new AtomicInteger(12);
-        Number numALong = new AtomicLong(12L);
 
         assertTrue(NumberUtils.isByte(numByte));
         assertFalse(NumberUtils.isShort(numByte));
@@ -466,6 +461,18 @@ public class NumberUtilsTest {
         assertFalse(NumberUtils.isBigDecimal(numDouble));
         assertFalse(NumberUtils.isAtomicInteger(numDouble));
         assertFalse(NumberUtils.isAtomicLong(numDouble));
+    }
+
+    /**
+     * Test method for {@link NumberUtils#isByte(java.lang.Number)} .
+     */
+    @Test
+    public void testNumber2() {
+        Number numBigInteger = BigInteger.valueOf(12L);
+        Number numBigDecimal = BigDecimal.valueOf(12.0d);
+        Number numNull = null;
+        Number numAInteger = new AtomicInteger(12);
+        Number numALong = new AtomicLong(12L);
 
         assertFalse(NumberUtils.isByte(numBigInteger));
         assertFalse(NumberUtils.isShort(numBigInteger));

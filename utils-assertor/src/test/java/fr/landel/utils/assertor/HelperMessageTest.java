@@ -54,7 +54,7 @@ public class HelperMessageTest extends AbstractTest {
      * Test method for {@link HelperMessage#getMessage} .
      */
     @Test
-    public void testGetMessage() {
+    public void testGetMessage1() {
         // TEST GET MESSAGE
 
         assertEquals("default", HelperMessage.getMessage("default", null, null, null, null));
@@ -79,7 +79,13 @@ public class HelperMessageTest extends AbstractTest {
             Assertor.that("texte11").isEqual(true).toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
             fail();
         }, IllegalArgumentException.class, "texte 'true' is not equal to 'texte11', args");
+    }
 
+    /**
+     * Test method for {@link HelperMessage#getMessage} .
+     */
+    @Test
+    public void testGetMessage2() {
         try {
             Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
             fail("Expect an exception");
@@ -124,7 +130,13 @@ public class HelperMessageTest extends AbstractTest {
             assertEquals("the char sequence 'texte11' should be null, empty or blank OR the object 'texte12' should be equal to 'texte12'",
                     e.getMessage());
         }
+    }
 
+    /**
+     * Test method for {@link HelperMessage#getMessage} .
+     */
+    @Test
+    public void testGetMessage3() {
         Expect.exception(() -> {
             Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
             fail("Expect an exception");

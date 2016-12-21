@@ -117,83 +117,44 @@ public class ReflectiveMapperIDOTest extends AbstractModelTest {
         this.entityParent1.getChildren2().add(child22);
         this.entityParent1.getChildren2().add(child23);
 
-        child1.setPk("child 1");
-        child1.setValByte((byte) 1);
-        child1.setValBoolean(Boolean.TRUE);
-        child1.setValCharacter('c');
-        child1.setValShort((short) 11);
-        child1.setValInteger(12);
-        child1.setValLong(13L);
-        child1.setValFloat(14.1f);
-        child1.setValDouble(15.2d);
-        child1.setName("child 1 name");
-        child1.setDate(currentDate);
-        child1.setLocale(null);
+        this.setChild(child1, "child 1", (byte) 1, Boolean.TRUE, 'c', (short) 11, 12);
+        this.setChild(child1, 13L, 14.1f, 15.2d, "child 1 name", currentDate, null);
 
-        child11.setPk("child 11");
-        child11.setValByte((byte) 11);
-        child11.setValBoolean(Boolean.FALSE);
-        child11.setValCharacter('d');
-        child11.setValShort((short) 111);
-        child11.setValInteger(112);
-        child11.setValLong(113L);
-        child11.setValFloat(114.1f);
-        child11.setValDouble(115.2d);
-        child11.setName("child 11 name");
-        child11.setDate(currentDate);
-        child11.setLocale(EnumLocale.en);
+        this.setChild(child11, "child 11", (byte) 11, Boolean.FALSE, 'd', (short) 111, 112);
+        this.setChild(child11, 113L, 114.1f, 115.2d, "child 11 name", currentDate, EnumLocale.en);
 
-        child12.setPk("child 12");
-        child12.setValByte((byte) 12);
-        child12.setValBoolean(Boolean.TRUE);
-        child12.setValCharacter('e');
-        child12.setValShort((short) 121);
-        child12.setValInteger(122);
-        child12.setValLong(123L);
-        child12.setValFloat(124.1f);
-        child12.setValDouble(125.2d);
-        child12.setName("child 12 name");
-        child12.setDate(tomorrowDate);
-        child12.setLocale(EnumLocale.en);
+        this.setChild(child12, "child 12", (byte) 12, Boolean.TRUE, 'e', (short) 121, 122);
+        this.setChild(child12, 123L, 124.1f, 125.2d, "child 12 name", tomorrowDate, EnumLocale.en);
 
-        child21.setPk("child 21");
-        child21.setValByte((byte) 21);
-        child21.setValBoolean(Boolean.FALSE);
-        child21.setValCharacter('f');
-        child21.setValShort((short) 211);
-        child21.setValInteger(212);
-        child21.setValLong(213L);
-        child21.setValFloat(214.1f);
-        child21.setValDouble(215.2d);
-        child21.setName("child 21 name");
-        child21.setDate(currentDate);
-        child21.setLocale(EnumLocale.fr);
+        this.setChild(child21, "child 21", (byte) 21, Boolean.FALSE, 'f', (short) 211, 212);
+        this.setChild(child21, 213L, 214.1f, 215.2d, "child 21 name", currentDate, EnumLocale.fr);
 
-        child22.setPk("child 22");
-        child22.setValByte((byte) 22);
-        child22.setValBoolean(Boolean.TRUE);
-        child22.setValCharacter('g');
-        child22.setValShort((short) 221);
-        child22.setValInteger(222);
-        child22.setValLong(223L);
-        child22.setValFloat(224.1f);
-        child22.setValDouble(225.2d);
-        child22.setName("child 22 name");
-        child22.setDate(currentDate);
-        child22.setLocale(EnumLocale.fr);
+        this.setChild(child22, "child 22", (byte) 22, Boolean.TRUE, 'g', (short) 221, 222);
+        this.setChild(child22, 223L, 224.1f, 225.2d, "child 22 name", currentDate, EnumLocale.fr);
 
-        child23.setPk("child 23");
-        child23.setValByte((byte) 23);
-        child23.setValBoolean(Boolean.FALSE);
-        child23.setValCharacter('h');
-        child23.setValShort((short) 231);
-        child23.setValInteger(232);
-        child23.setValLong(234L);
-        child23.setValFloat(235.1f);
-        child23.setValDouble(236.2d);
-        child23.setName("child 23 name");
-        child23.setDate(tomorrowDate);
-        child23.setLocale(EnumLocale.fr);
+        this.setChild(child23, "child 23", (byte) 23, Boolean.FALSE, 'h', (short) 231, 232);
+        this.setChild(child23, 234L, 235.1f, 236.2d, "child 23 name", tomorrowDate, EnumLocale.fr);
+    }
+
+    private void setChild(final EntityChild child, final String pk, final byte valByte, final Boolean valBoolean,
+            final Character valCharacter, final Short valShort, final Integer valInteger) {
+
+        child.setPk(pk);
+        child.setValByte(valByte);
+        child.setValBoolean(valBoolean);
+        child.setValCharacter(valCharacter);
+        child.setValShort(valShort);
+        child.setValInteger(valInteger);
+    }
+
+    private void setChild(final EntityChild child, final Long valLong, final Float valFloat, final Double valDouble, final String name,
+            final Date date, final EnumLocale locale) {
+        child.setValLong(valLong);
+        child.setValFloat(valFloat);
+        child.setValDouble(valDouble);
+        child.setName(name);
+        child.setDate(date);
+        child.setLocale(locale);
     }
 
     /**

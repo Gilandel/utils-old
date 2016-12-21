@@ -241,7 +241,7 @@ public class ComparatorsTest {
      * Check {@link Comparators#VERSION}
      */
     @Test
-    public void testVersion() {
+    public void testVersion1() {
         Version v1 = new Version("");
         Version v2 = new Version("1.2.1");
 
@@ -289,9 +289,15 @@ public class ComparatorsTest {
         v2 = new Version("1.2-SNAPSHOT");
 
         assertEquals(1, Comparators.VERSION.asc().compare(v1, v2));
+    }
 
-        v1 = new Version("1.2-SNAPSHOT");
-        v2 = new Version("1.2.0");
+    /**
+     * Check {@link Comparators#VERSION}
+     */
+    @Test
+    public void testVersion2() {
+        Version v1 = new Version("1.2-SNAPSHOT");
+        Version v2 = new Version("1.2.0");
 
         assertEquals(-1, Comparators.VERSION.asc().compare(v1, v2));
 

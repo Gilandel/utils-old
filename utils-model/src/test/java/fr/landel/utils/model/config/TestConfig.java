@@ -33,14 +33,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 public class TestConfig {
 
     /**
-     * 
-     * Constructor
-     *
-     */
-    public TestConfig() {
-    }
-
-    /**
      * To explain to Spring how to handle ${}
      * 
      * @return The property source configurer

@@ -69,13 +69,6 @@ public abstract class AbstractPersistenceConfig {
     private Environment env;
 
     /**
-     * Constructor
-     *
-     */
-    public AbstractPersistenceConfig() {
-    }
-
-    /**
      * Creates the transaction manager
      * 
      * @param emf
