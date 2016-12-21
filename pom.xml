@@ -1,20 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.landel</groupId>
 	<artifactId>utils</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>utils</name>
 	<description>Utility project</description>
 	<inceptionYear>2016</inceptionYear>
+	<url>https://github.com/Gilandel/utils.git</url>
 
 	<organization>
 		<name>${application.org.name}</name>
 		<url>${application.org.url}</url>
 	</organization>
+
+	<developers>
+		<developer>
+			<id>Gilandel</id>
+			<name>Gilles Landel</name>
+			<email>gilles@landel.fr</email>
+		</developer>
+	</developers>
 
 	<licenses>
 		<license>
@@ -37,6 +45,10 @@
 			<id>ossrh</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
+		<site>
+			<id>github</id>
+			<url>scm:git:git@github.com:Gilandel/utils.git</url>
+		</site>
 	</distributionManagement>
 
 	<scm>
@@ -92,6 +104,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.resourcesEncoding>UTF-8</project.build.resourcesEncoding>
 
+		<!-- others -->
+		<gpg.home>${env.HOME}/build/Gilandel/utils/distribution</gpg.home>
+
 		<!-- Plugins version -->
 		<dependency.plugin.version>2.10</dependency.plugin.version>
 		<source.plugin.version>3.0.1</source.plugin.version>
@@ -131,31 +146,30 @@
 		<commons.beanutils.version>1.9.3</commons.beanutils.version>
 		<commons.collections.version>4.1</commons.collections.version>
 
-		<logback.version>1.1.7</logback.version>
+		<logback.version>1.1.8</logback.version>
 		<slf4j.version>1.7.21</slf4j.version>
 
 		<!-- Only the class 'org.gl.utils.model.hibernate.ImprovedNamingStrategy' 
 			requires Hibernate 5 -->
 		<!-- For the others classes, Hibernate 4.3.11 can be used -->
 		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
-		<hibernate.version>5.2.4.Final</hibernate.version>
-		<hibernate.validator.version>5.3.0.CR1</hibernate.validator.version>
+		<hibernate.version>5.2.5.Final</hibernate.version>
+		<hibernate.validator.version>5.3.4.Final</hibernate.validator.version>
 
 		<tomcat.version>8.5.4</tomcat.version>
 		<h2.version>1.4.192</h2.version>
-
-		<spring.version>4.3.3.RELEASE</spring.version>
 		<spring.data.version>1.12.2.RELEASE</spring.data.version>
+		<spring.version>4.3.4.RELEASE</spring.version>
 		<aspectj.version>1.8.9</aspectj.version>
 
-		<jackson.version>2.8.4</jackson.version>
+		<jackson.version>2.8.5</jackson.version>
 
 		<poi.version>3.15</poi.version>
 
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<cobertura.version>2.1.1</cobertura.version>
-		<jmh.version>1.16</jmh.version>
+		<jmh.version>1.17.2</jmh.version>
 	</properties>
 
 	<reporting>
@@ -177,6 +191,29 @@
 					<show>package</show>
 					<aggregate>true</aggregate>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>cim</report>
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>dependency-info</report>
+							<report>dependency-management</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>plugin-management</report>
+							<report>plugins</report>
+							<report>project-team</report>
+							<report>scm</report>
+							<report>summary</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
@@ -351,9 +388,10 @@
 					<artifactId>maven-release-plugin</artifactId>
 					<version>${release.plugin.version}</version>
 					<configuration>
-						<arguments>-s ${MAVEN_SETTINGS}</arguments>
-						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
+						<tagNameFormat>@{project.version}</tagNameFormat>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -434,6 +472,11 @@
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>${nexus.staging.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>${project.reports.plugin.version}</version>
 				</plugin>
 
 				<!-- Write java header file and generate thrid-party file -->
@@ -551,6 +594,17 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<executable>gpg2</executable>
+							<keyname>${env.GPG_KEYNAME}</keyname>
+							<passphrase>${env.GPG_PASSPHRASE}</passphrase>
+							<defaultKeyring>false</defaultKeyring>
+							<homedir>${gpg.home}</homedir>
+							<secretKeyring>${gpg.home}/secring.gpg</secretKeyring>
+							<publicKeyring>${gpg.home}/pubring.gpg</publicKeyring>
+							<useAgent>true</useAgent>
+							<lockMode>never</lockMode>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

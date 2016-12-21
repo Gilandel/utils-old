@@ -1,20 +1,19 @@
 language: java
 
+sudo: false
+
 jdk:
   - oraclejdk8
 
-# to get the latest version of java 8
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+    - gnupg2
   
 before_install:
   - pip install --user codecov
   - curl http://www.jpm4j.org/install/script | sudo sh
   - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
-  - "chmod u+x distribution/*.sh"
-  - distribution/prepare.sh
 
 script: mvn clean compile test cobertura:cobertura
 
@@ -29,3 +28,8 @@ before_cache:
 cache:
   directories:
   - $HOME/.m2
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change

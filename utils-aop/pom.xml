@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>fr.landel</groupId>
-		<artifactId>utils</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+	<groupId>fr.landel</groupId>
+	<artifactId>utils</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.landel.utils</groupId>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-commons</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Unit testing -->

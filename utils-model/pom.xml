@@ -1,19 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>fr.landel</groupId>
-		<artifactId>utils</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-
-	<groupId>fr.landel.utils</groupId>
-	<artifactId>utils-model</artifactId>
-	<name>utils-model</name>
-	<description>Model utils (Entity, DTO, Query, Native SQL, Dialect)</description>
-
-	<build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>fr.landel</groupId>
+    <artifactId>utils</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>fr.landel.utils</groupId>
+  <artifactId>utils-model</artifactId>
+  <name>utils-model</name>
+  <description>Model utils (Entity, DTO, Query, Native SQL, Dialect)</description>
+  
+  <build>
 		<plugins>
 			<!-- Add license header and generate third-party text file -->
 			<plugin>
@@ -50,7 +49,7 @@
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-mapper</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Commons -->

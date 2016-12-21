@@ -333,11 +333,11 @@ public abstract class AbstractAspect {
                 }
             }
         } else {
-            try {
-                return call.proceed();
-            } catch (final Throwable t) {
-                throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
-            }
-        }
+			try {
+				return call.proceed();
+			} catch (final Throwable t) {
+				 throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
+			}
+		}
     }
 }
