@@ -57,7 +57,7 @@ public class SystemUtilsTest {
      */
     @Test
     public void testIsUnix() {
-        assertEquals(OS_LC.indexOf("nix") > -1 || OS_LC.indexOf("nux") > -1 || OS_LC.indexOf("aix") > -1, SystemUtils.isMac());
+        assertEquals(OS_LC.indexOf("nix") > -1 || OS_LC.indexOf("nux") > -1 || OS_LC.indexOf("aix") > -1, SystemUtils.isUnix());
     }
 
     /**
@@ -65,6 +65,6 @@ public class SystemUtilsTest {
      */
     @Test
     public void testIsSolaris() {
-        assertEquals(OS_LC.indexOf("sunos") > -1, SystemUtils.isMac());
+        assertEquals(OS_LC.indexOf("sunos") > -1, SystemUtils.isSolaris());
     }
 }
