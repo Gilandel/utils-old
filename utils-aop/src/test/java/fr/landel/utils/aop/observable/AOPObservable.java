@@ -24,7 +24,7 @@ import fr.landel.utils.commons.DateUtils;
 /**
  * AOP observable for tests
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */

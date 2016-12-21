@@ -40,7 +40,7 @@ import org.junit.Test;
 /**
  * Check utility class (generic cast).
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */

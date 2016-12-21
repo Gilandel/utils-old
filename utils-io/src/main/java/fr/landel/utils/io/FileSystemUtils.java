@@ -31,7 +31,7 @@ import fr.landel.utils.assertor.Assertor;
  * - move or copy a file or a directory,<br>
  * - delete a directory from disk
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */

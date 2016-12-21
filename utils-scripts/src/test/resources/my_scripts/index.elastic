@@ -48,7 +48,7 @@
 								// If the first group version is unspecified, the content is removed
 								, {
 									"terms" : {
-										"app_version" : [
+										"app_verDsion" : [
 											"<apps_first_group_ios_version>"
 										]
 									}
@@ -107,6 +107,7 @@
 					}
 					
 					>
+					,
 					<second_group_by_os ??
 					// If the second group is a parent application (app with 2 OS) or an application for a specific OS
 					

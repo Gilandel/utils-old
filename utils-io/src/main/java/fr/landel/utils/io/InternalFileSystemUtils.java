@@ -39,11 +39,11 @@ import fr.landel.utils.commons.tuple.Single;
  * - move or copy a file or a directory,<br>
  * - delete a directory from disk
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
-public class InternalFileSystemUtils {
+class InternalFileSystemUtils {
 
     /**
      * The line separator string (windows = \r\n, unix = \n, macOS = \r)
@@ -56,7 +56,6 @@ public class InternalFileSystemUtils {
     protected static final String ERROR_PARAM_NULL = "At least one parameter is null";
 
     private static final int BUFFER_SIZE = 10240;
-    private static final byte[] BUFFER = new byte[BUFFER_SIZE];
 
     /**
      * Constructor.
@@ -95,6 +94,7 @@ public class InternalFileSystemUtils {
      */
     protected static void copyFile(final File src, final File dest, final boolean removeSource) throws IOException {
         int bufferReadSize;
+        final byte[] buffer = new byte[BUFFER_SIZE];
 
         final File target;
         if (dest.isDirectory()) {
@@ -108,8 +108,8 @@ public class InternalFileSystemUtils {
                 final BufferedInputStream bis = StreamUtils.createBufferedInputStream(src);
                 final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(target);
 
-                while ((bufferReadSize = bis.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-                    bos.write(BUFFER, 0, bufferReadSize);
+                while ((bufferReadSize = bis.read(buffer, 0, BUFFER_SIZE)) >= 0) {
+                    bos.write(buffer, 0, bufferReadSize);
                 }
 
                 CloseableManager.close(target);

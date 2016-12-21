@@ -16,7 +16,7 @@ package fr.landel.utils.assertor;
  * 
  * List of operators
  *
- * @since 7 août 2016
+ * @since Aug 7, 2016
  * @author Gilles
  *
  */

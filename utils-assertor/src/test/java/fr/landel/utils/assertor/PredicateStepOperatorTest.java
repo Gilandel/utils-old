@@ -27,7 +27,7 @@ import fr.landel.utils.commons.DateUtils;
 /**
  * Test operator class
  *
- * @since 17 juil. 2016
+ * @since Jul 17, 2016
  * @author Gilles
  *
  */

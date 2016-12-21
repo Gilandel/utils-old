@@ -25,7 +25,7 @@ import fr.landel.utils.model.AbstractEntity;
  * todo: hibernate 3 methods: size, elements, indices, minindex, maxindex,
  * minelement, maxelement(Description)
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  * @param <E>

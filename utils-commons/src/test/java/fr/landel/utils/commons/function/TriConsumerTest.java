@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * Check {@link TriConsumer}
  *
- * @since 30 mai 2016
+ * @since May 30, 2016
  * @author Gilles
  *
  */

@@ -17,7 +17,7 @@ import fr.landel.utils.commons.exception.AbstractException;
 /**
  * The mapper exception
  *
- * @since 24 nov. 2015
+ * @since Nov 24, 2015
  * @author Gilles
  *
  */

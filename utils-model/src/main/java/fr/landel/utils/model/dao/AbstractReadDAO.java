@@ -38,7 +38,7 @@ import fr.landel.utils.model.query.QueryOrder;
  * @see <a href="http://martinfowler.com/bliki/CQRS.html">Command Query
  *      Responsibility Segregation</a>
  *
- * @since 13 juil. 2015
+ * @since Jul 13, 2015
  * @author Erwan Ropartz
  * @author Gilles
  * @param <E>

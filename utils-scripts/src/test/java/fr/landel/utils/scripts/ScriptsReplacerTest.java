@@ -31,7 +31,7 @@ import fr.landel.utils.assertor.expect.Expect;
 /**
  * Check scripts replacer
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

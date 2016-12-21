@@ -29,7 +29,7 @@ import fr.landel.utils.model.query.QueryBuilder1;
 /**
  * Helper class to build hql request filter.
  *
- * @since 24 nov. 2015
+ * @since Nov 24, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  *

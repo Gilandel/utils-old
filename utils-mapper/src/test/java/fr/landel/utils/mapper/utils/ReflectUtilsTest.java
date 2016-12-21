@@ -52,7 +52,7 @@ import fr.landel.utils.mapper.MapperException;
 /**
  * Check reflection util classes
  *
- * @since 14 mai 2016
+ * @since May 14, 2016
  * @author Gilles
  *
  */

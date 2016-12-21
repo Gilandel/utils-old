@@ -37,7 +37,7 @@ import fr.landel.utils.mapper.utils.ReflectUtils;
 /**
  * Reflective mapper (DTO 1 &lt;-&gt; DTO 2)
  *
- * @since 29 juil. 2015
+ * @since Jul 29, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  *

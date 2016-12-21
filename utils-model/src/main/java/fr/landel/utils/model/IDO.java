@@ -17,7 +17,7 @@ import java.io.Serializable;
 /**
  * Identifiable Data Object
  *
- * @since 15 sept. 2015
+ * @since Sep 15, 2015
  * @author Gilles
  *
  * @param <D>

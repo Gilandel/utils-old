@@ -34,6 +34,7 @@ import org.apache.poi.hssf.usermodel.HSSFSimpleShape;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is used to check XLS files comparator
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */
@@ -238,12 +239,12 @@ public final class AssertXLS {
             isNotNull(style, "Style" + cellPosition);
 
             isEqual(styleExpected.getDataFormatString(), style.getDataFormatString(), "Style data format string" + cellPosition);
-            isEqual(styleExpected.getAlignment(), style.getAlignment(), "Style alignment" + cellPosition);
-            isEqual(styleExpected.getVerticalAlignment(), style.getVerticalAlignment(), "Style vertical algnment" + cellPosition);
-            isEqual(styleExpected.getBorderBottom(), style.getBorderBottom(), "Style border bottom" + cellPosition);
-            isEqual(styleExpected.getBorderLeft(), style.getBorderLeft(), "Style border left" + cellPosition);
-            isEqual(styleExpected.getBorderRight(), style.getBorderRight(), "Style border right" + cellPosition);
-            isEqual(styleExpected.getBorderTop(), style.getBorderTop(), "Style border top" + cellPosition);
+            isEqual(styleExpected.getAlignmentEnum(), style.getAlignmentEnum(), "Style alignment" + cellPosition);
+            isEqual(styleExpected.getVerticalAlignmentEnum(), style.getVerticalAlignmentEnum(), "Style vertical algnment" + cellPosition);
+            isEqual(styleExpected.getBorderBottomEnum(), style.getBorderBottomEnum(), "Style border bottom" + cellPosition);
+            isEqual(styleExpected.getBorderLeftEnum(), style.getBorderLeftEnum(), "Style border left" + cellPosition);
+            isEqual(styleExpected.getBorderRightEnum(), style.getBorderRightEnum(), "Style border right" + cellPosition);
+            isEqual(styleExpected.getBorderTopEnum(), style.getBorderTopEnum(), "Style border top" + cellPosition);
             isEqual(styleExpected.getBottomBorderColor(), style.getBottomBorderColor(), "Style bottom border color" + cellPosition);
             isEqual(styleExpected.getLeftBorderColor(), style.getLeftBorderColor(), "Style left border color" + cellPosition);
             isEqual(styleExpected.getRightBorderColor(), style.getRightBorderColor(), "Style right border color" + cellPosition);
@@ -251,7 +252,7 @@ public final class AssertXLS {
             isEqual(styleExpected.getDataFormat(), style.getDataFormat(), "Style data format" + cellPosition);
             isEqual(styleExpected.getFillBackgroundColor(), style.getFillBackgroundColor(), "Style fill background color" + cellPosition);
             isEqual(styleExpected.getFillForegroundColor(), style.getFillForegroundColor(), "Style fill foreground color" + cellPosition);
-            isEqual(styleExpected.getFillPattern(), style.getFillPattern(), "Style fill pattern" + cellPosition);
+            isEqual(styleExpected.getFillPatternEnum(), style.getFillPatternEnum(), "Style fill pattern" + cellPosition);
             isEqual(styleExpected.getFontIndex(), style.getFontIndex(), "Style font index" + cellPosition);
             isEqual(styleExpected.getHidden(), style.getHidden(), "Style hidden" + cellPosition);
             isEqual(styleExpected.getIndention(), style.getIndention(), "Style indentation" + cellPosition);
@@ -266,20 +267,20 @@ public final class AssertXLS {
     private void checkCellType(final Cell cellExpected, final Cell cell, final int rowIndex, final int columnIndex) {
         final String cellPosition = String.format(CELL_POSITION, rowIndex, columnIndex);
 
-        switch (cell.getCellType()) {
-        case Cell.CELL_TYPE_NUMERIC:
+        switch (cell.getCellTypeEnum()) {
+        case NUMERIC:
             isEqual((Double) cellExpected.getNumericCellValue(), (Double) cell.getNumericCellValue(), "Cell type numeric" + cellPosition);
             break;
-        case Cell.CELL_TYPE_STRING:
+        case STRING:
             isEqual(cellExpected.getRichStringCellValue(), cell.getRichStringCellValue(), "Cell type string" + cellPosition);
             break;
-        case Cell.CELL_TYPE_FORMULA:
+        case FORMULA:
             isEqual(cellExpected.getCellFormula(), cell.getCellFormula(), "Cell type formula" + cellPosition);
             break;
-        case Cell.CELL_TYPE_BOOLEAN:
+        case BOOLEAN:
             isEqual(cellExpected.getBooleanCellValue(), cell.getBooleanCellValue(), "Cell type boolean" + cellPosition);
             break;
-        case Cell.CELL_TYPE_ERROR:
+        case ERROR:
             isEqual(cellExpected.getErrorCellValue(), cell.getErrorCellValue(), "Cell type error" + cellPosition);
             break;
         default: // Cell.CELL_TYPE_BLANK or DATE or Hyperlink

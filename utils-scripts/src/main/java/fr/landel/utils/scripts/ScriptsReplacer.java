@@ -29,7 +29,7 @@ import fr.landel.utils.assertor.PredicateAssertorCharSequence;
  * Scripts replacer (parse, execute and replace all scripts). Default
  * expressions and operator are configured for scripts like SQL.
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

@@ -23,16 +23,13 @@ import java.util.zip.CRC32;
 /**
  * This class is used to get the CRC32 of a file or a directory.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
 public final class FileCRC32Utils {
 
-    private static final CRC32 CRC32 = new CRC32();
-
     private static final int BUFFER_SIZE = 10240;
-    private static final byte[] BUFFER = new byte[BUFFER_SIZE];
 
     /**
      * Constructor.
@@ -114,11 +111,11 @@ public final class FileCRC32Utils {
      *             specified path
      */
     public static Long getCRC32(final File file, final FileFilter filter) throws IOException {
-        CRC32.reset();
+        final CRC32 crc32 = new CRC32();
 
-        recurisiveCRC32(file, filter, null);
+        recurisiveCRC32(crc32, file, filter, null);
 
-        return CRC32.getValue();
+        return crc32.getValue();
     }
 
     /**
@@ -134,22 +131,22 @@ public final class FileCRC32Utils {
      *             specified path
      */
     public static Long getCRC32(final File file, final FilenameFilter filter) throws IOException {
-        CRC32.reset();
+        final CRC32 crc32 = new CRC32();
 
-        recurisiveCRC32(file, null, filter);
+        recurisiveCRC32(crc32, file, null, filter);
 
-        return CRC32.getValue();
+        return crc32.getValue();
     }
 
-    private static void recurisiveCRC32(final File file, final FileFilter fileFilter, final FilenameFilter filenameFilter)
-            throws IOException {
+    private static void recurisiveCRC32(final CRC32 crc32, final File file, final FileFilter fileFilter,
+            final FilenameFilter filenameFilter) throws IOException {
         if (file.isFile()) {
-            getCRC32File(file);
+            getCRC32File(crc32, file);
         } else if (file.isDirectory()) {
             File[] files = FileSystemUtils.listFiles(file, fileFilter, filenameFilter);
             if (files != null) {
                 for (File subFile : files) {
-                    recurisiveCRC32(subFile.getAbsoluteFile(), fileFilter, filenameFilter);
+                    recurisiveCRC32(crc32, subFile.getAbsoluteFile(), fileFilter, filenameFilter);
                 }
             }
         }
@@ -166,39 +163,43 @@ public final class FileCRC32Utils {
      * @return The generated CRC32
      */
     public static Long getCRC32(final InputStream inputStream) throws IOException {
-        CRC32.reset();
+        final CRC32 crc32 = new CRC32();
+        final byte[] buffer = new byte[BUFFER_SIZE];
 
         int bufferReadSize;
 
         CloseableManager.addCloseable(inputStream.hashCode(), inputStream);
 
-        while ((bufferReadSize = inputStream.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-            CRC32.update(BUFFER, 0, bufferReadSize);
+        while ((bufferReadSize = inputStream.read(buffer, 0, BUFFER_SIZE)) >= 0) {
+            crc32.update(buffer, 0, bufferReadSize);
         }
 
         CloseableManager.close(inputStream.hashCode());
 
-        return CRC32.getValue();
+        return crc32.getValue();
     }
 
     /**
      * Get the CRC32 of a file.
      * 
+     * @param crc32
+     *            The current crc32 buffer
      * @param file
      *            The path of the file
      * @throws IOException
      *             Exception thrown if problems occurs during accessing to the
      *             specified path
      */
-    private static void getCRC32File(final File file) throws IOException {
+    private static void getCRC32File(final CRC32 crc32, final File file) throws IOException {
         int bufferReadSize;
+        final byte[] buffer = new byte[BUFFER_SIZE];
 
         // Internal: The CRC object isn't reset
 
         final BufferedInputStream bis = StreamUtils.createBufferedInputStream(file);
 
-        while ((bufferReadSize = bis.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-            CRC32.update(BUFFER, 0, bufferReadSize);
+        while ((bufferReadSize = bis.read(buffer, 0, BUFFER_SIZE)) >= 0) {
+            crc32.update(buffer, 0, bufferReadSize);
         }
 
         CloseableManager.close(file);

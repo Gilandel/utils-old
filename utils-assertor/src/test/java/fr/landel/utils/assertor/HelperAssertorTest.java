@@ -26,7 +26,7 @@ import org.junit.Test;
 /**
  * Check {@link HelperAssertor}
  *
- * @since 3 août 2016
+ * @since Aug 3, 2016
  * @author Gilles
  *
  */

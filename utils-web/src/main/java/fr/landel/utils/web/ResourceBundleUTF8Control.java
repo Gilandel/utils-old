@@ -30,7 +30,7 @@ import fr.landel.utils.io.EncodingUtils;
  * @see <a href="https://gist.github.com/DemkaAge/8999236">https://gist.github.
  *      com/DemkaAge/8999236</a>
  * 
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

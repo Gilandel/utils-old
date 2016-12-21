@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * Check ImprovedNamingStrategy
  *
- * @since 7 janv. 2016
+ * @since Jan 7, 2016
  * @author Gilles
  *
  */

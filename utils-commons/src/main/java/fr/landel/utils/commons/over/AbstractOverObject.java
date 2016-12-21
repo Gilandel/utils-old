@@ -24,7 +24,7 @@ import fr.landel.utils.commons.CastGenerics;
 /**
  * Abstract class to force implementation of Object methods.
  *
- * @since 14 juil. 2015
+ * @since Jul 14, 2015
  * @author Gilles Landel
  * 
  * @param <O>

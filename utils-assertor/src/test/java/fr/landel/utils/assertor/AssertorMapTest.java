@@ -31,7 +31,7 @@ import fr.landel.utils.assertor.expect.Expect;
 /**
  * Check {@link AssertorMap}
  *
- * @since 5 juin 2016
+ * @since Jun 5, 2016
  * @author Gilles
  *
  */

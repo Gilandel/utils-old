@@ -23,7 +23,7 @@ import fr.landel.utils.model.AbstractEntity;
 /**
  * Interface for a pageable request.
  *
- * @since 5 aout 2015
+ * @since Aug 5, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  *

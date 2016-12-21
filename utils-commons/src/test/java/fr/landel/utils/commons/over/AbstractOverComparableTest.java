@@ -25,7 +25,7 @@ import org.junit.Test;
 /**
  * Check methods from over comparable and over object classes
  *
- * @since 23 avr. 2016
+ * @since Apr 23, 2016
  * @author Gilles
  *
  */
@@ -34,7 +34,7 @@ public class AbstractOverComparableTest {
     /**
      * The comparable implementation
      *
-     * @since 23 avr. 2016
+     * @since Apr 23, 2016
      * @author Gilles
      *
      */

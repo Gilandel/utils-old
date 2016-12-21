@@ -34,7 +34,7 @@ import fr.landel.utils.io.EncodingUtils;
 /**
  * Check logging aspect methods.
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */

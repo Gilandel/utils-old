@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * Abstract DTO.
  *
- * @since 14 juil. 2015
+ * @since Jul 14, 2015
  * @author Gilles
  * 
  * @param <D>

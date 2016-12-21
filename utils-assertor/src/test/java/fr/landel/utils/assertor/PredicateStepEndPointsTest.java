@@ -32,7 +32,7 @@ import fr.landel.utils.assertor.expect.ExpectException;
 /**
  * Test end points class
  *
- * @since 2 août 2016
+ * @since Aug 2, 2016
  * @author Gilles
  *
  */

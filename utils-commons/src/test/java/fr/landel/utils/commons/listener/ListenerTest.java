@@ -19,7 +19,7 @@ import org.junit.Test;
 /**
  * Class to check the listenable design pattern
  *
- * @since 23 avr. 2016
+ * @since Apr 23, 2016
  * @author Gilles
  *
  */
@@ -30,7 +30,7 @@ public class ListenerTest {
     /**
      * The object to listen
      *
-     * @since 23 avr. 2016
+     * @since Apr 23, 2016
      * @author Gilles
      *
      */
@@ -41,7 +41,7 @@ public class ListenerTest {
     /**
      * An object which listens the listenable
      *
-     * @since 23 avr. 2016
+     * @since Apr 23, 2016
      * @author Gilles
      *
      */

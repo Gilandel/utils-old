@@ -16,6 +16,13 @@ import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.commons.function.ConsumerThrowable;
 
+/**
+ * Script templates
+ *
+ * @since Dec 21, 2016
+ * @author Gilles
+ *
+ */
 public interface ScriptsTemplate {
 
     /**

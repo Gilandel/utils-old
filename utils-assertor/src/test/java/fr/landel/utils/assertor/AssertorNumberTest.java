@@ -24,7 +24,7 @@ import fr.landel.utils.assertor.expect.Expect;
 /**
  * Check {@link AssertorNumber}
  *
- * @since 16 juil. 2016
+ * @since Jul 16, 2016
  * @author Gilles
  *
  */

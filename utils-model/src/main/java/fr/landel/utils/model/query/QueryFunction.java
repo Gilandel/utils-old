@@ -19,7 +19,7 @@ import fr.landel.utils.model.AbstractEntity;
 /**
  * (Description)
  *
- * @since 19 nov. 2016
+ * @since Nov 19, 2016
  * @author Gilles
  *
  */

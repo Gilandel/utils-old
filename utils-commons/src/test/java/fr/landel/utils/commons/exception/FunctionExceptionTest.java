@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * Check function exception
  *
- * @since 23 avr. 2016
+ * @since Apr 23, 2016
  * @author Gilles
  *
  */

@@ -28,7 +28,7 @@ import fr.landel.utils.io.FileUtils;
 /**
  * HTC loader tests.
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */

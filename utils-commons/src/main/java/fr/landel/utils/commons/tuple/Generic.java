@@ -48,7 +48,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  * @param <T>
  *            the element type
  *
- * @since 27 juil. 2016
+ * @since Jul 27, 2016
  * @author Gilles
  *
  */

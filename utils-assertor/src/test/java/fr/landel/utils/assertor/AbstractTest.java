@@ -19,7 +19,7 @@ import fr.landel.utils.commons.function.TriFunction;
 /**
  * Abstract for tests
  *
- * @since 31 juil. 2016
+ * @since Jul 31, 2016
  * @author Gilles
  *
  */

@@ -31,7 +31,7 @@ import fr.landel.utils.assertor.expect.Expect;
 /**
  * Check {@link AssertorIterable}
  *
- * @since 4 juin 2016
+ * @since Jun 4, 2016
  * @author Gilles
  *
  */

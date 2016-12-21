@@ -26,7 +26,7 @@ import fr.landel.utils.io.FileSystemUtils;
 /**
  * Check the XLS comparison
  *
- * @since 10 déc. 2015
+ * @since Dec 10, 2015
  * @author Gilles
  *
  */

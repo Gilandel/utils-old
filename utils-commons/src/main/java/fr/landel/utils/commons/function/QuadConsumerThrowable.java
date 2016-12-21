@@ -27,7 +27,7 @@ import fr.landel.utils.commons.exception.FunctionException;
  * This is a <a href="package-summary.html">functional interface</a> whose
  * functional method is {@link #accept(Object, Object, Object, Object)}.
  *
- * @since 14 mai 2016
+ * @since May 14, 2016
  * @author Gilles
  *
  * @param <T>

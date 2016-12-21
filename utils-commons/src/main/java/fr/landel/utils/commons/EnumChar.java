@@ -15,7 +15,7 @@ package fr.landel.utils.commons;
 /**
  * Characters utility class.
  *
- * @since 1 dec. 2015
+ * @since Dec 1, 2015
  * @author Gilles Landel
  *
  */

@@ -24,7 +24,7 @@ import java.util.function.Function;
  * functional method is {@link #apply(Object, Object, Object, Object)}.
  * </p>
  *
- * @since 31 juil. 2016
+ * @since Jul 31, 2016
  * @author Gilles
  *
  * @param <T>

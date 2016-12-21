@@ -30,7 +30,7 @@ import org.apache.commons.collections4.Transformer;
 /**
  * Utility class to manage collections.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */

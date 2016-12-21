@@ -26,7 +26,7 @@ import fr.landel.utils.commons.StringUtils;
  * scripts, and multi-statements in one query (ex: insert in temporary table
  * (create view like) and select))
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  * @param <T>

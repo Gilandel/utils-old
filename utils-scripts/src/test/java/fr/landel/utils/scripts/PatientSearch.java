@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * Search bean.
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */
@@ -241,7 +241,7 @@ public class PatientSearch {
     /**
      * Status enum
      *
-     * @since 1 déc. 2015
+     * @since Dec 1, 2015
      * @author Gilles
      *
      */
@@ -266,7 +266,7 @@ public class PatientSearch {
     /**
      * Health status
      *
-     * @since 1 déc. 2015
+     * @since Dec 1, 2015
      * @author Gilles
      *
      */
@@ -290,7 +290,7 @@ public class PatientSearch {
     /**
      * Distance status
      *
-     * @since 1 déc. 2015
+     * @since Dec 1, 2015
      * @author Gilles
      *
      */
@@ -345,7 +345,7 @@ public class PatientSearch {
     /**
      * Attendance search
      *
-     * @since 1 déc. 2015
+     * @since Dec 1, 2015
      * @author Gilles
      *
      */

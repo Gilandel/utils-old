@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * Check {@link Constants}
  *
- * @since 3 août 2016
+ * @since Aug 3, 2016
  * @author Gilles
  *
  */

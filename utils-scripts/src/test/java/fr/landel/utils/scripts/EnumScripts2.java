@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Enumeration of scripts
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

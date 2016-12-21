@@ -15,7 +15,7 @@ package fr.landel.utils.assertor.expect;
 /**
  * Expect exception
  *
- * @since 19 juil. 2016
+ * @since Jul 19, 2016
  * @author Gilles
  */
 public class ExpectException extends RuntimeException {

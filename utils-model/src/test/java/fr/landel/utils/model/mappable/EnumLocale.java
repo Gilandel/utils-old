@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Enumeration of supported locales.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

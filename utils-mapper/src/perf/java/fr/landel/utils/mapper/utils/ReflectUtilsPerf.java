@@ -21,7 +21,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 /**
  * (Description)
  *
- * @since 15 mai 2016
+ * @since May 15, 2016
  * @author Gilles
  *
  */

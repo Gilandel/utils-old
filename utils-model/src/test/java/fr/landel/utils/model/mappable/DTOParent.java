@@ -27,7 +27,7 @@ import fr.landel.utils.model.AbstractDTO;
 /**
  * DTO parent to test mapper
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

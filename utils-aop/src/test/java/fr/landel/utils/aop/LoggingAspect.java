@@ -20,7 +20,7 @@ import org.aspectj.lang.annotation.Pointcut;
 /**
  * Log aspect
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */

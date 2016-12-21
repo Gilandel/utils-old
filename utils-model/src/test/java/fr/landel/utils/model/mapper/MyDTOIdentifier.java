@@ -19,7 +19,7 @@ import fr.landel.utils.mapper.MapperException;
 /**
  * DTO identifiers for tests.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

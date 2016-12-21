@@ -36,7 +36,7 @@ package fr.landel.utils.commons.tuple;
  * 
  * @see org.apache.commons.lang3.tuple.Triple
  *
- * @since 26 juil. 2016
+ * @since Jul 26, 2016
  * @author Gilles
  *
  */

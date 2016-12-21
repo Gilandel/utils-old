@@ -21,7 +21,7 @@ import fr.landel.utils.mapper.MapperException;
 /**
  * Reflective mapper (DTO &lt;-&gt; DTO)
  *
- * @since 29 juil. 2015
+ * @since Jul 29, 2015
  * @author Gilles
  *
  */

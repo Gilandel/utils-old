@@ -30,7 +30,7 @@ import java.util.Date;
  * Comparators list (byte, short, integer, long, float, double, big integer, big
  * decimal, character and string)
  *
- * @since 26 juin 2016
+ * @since Jun 26, 2016
  * @author Gilles
  *
  */
@@ -198,7 +198,7 @@ public class Comparators {
     /**
      * Implementation of comparator
      *
-     * @since 2 juil. 2016
+     * @since Jul 2, 2016
      * @author Gilles
      *
      * @param <T>
@@ -214,7 +214,7 @@ public class Comparators {
     /**
      * Implementation of reverse comparator
      *
-     * @since 2 juil. 2016
+     * @since Jul 2, 2016
      * @author Gilles
      *
      * @param <T>
@@ -230,7 +230,7 @@ public class Comparators {
     /**
      * Class to create bi-directional comparators
      *
-     * @since 2 juil. 2016
+     * @since Jul 2, 2016
      * @author Gilles
      *
      * @param <T>

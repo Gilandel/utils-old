@@ -15,7 +15,7 @@ package fr.landel.utils.model;
 /**
  * Abstract class to force implementation of Comparable methods.
  *
- * @since 14 juil. 2015
+ * @since Jul 14, 2015
  * @author Gilles
  * 
  * @param <O>

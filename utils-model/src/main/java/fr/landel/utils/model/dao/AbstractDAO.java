@@ -40,7 +40,7 @@ import fr.landel.utils.model.query.QueryOrder;
 /**
  * Abstract DAO.
  *
- * @since 13 juil. 2015
+ * @since Jul 13, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  * @param <E>

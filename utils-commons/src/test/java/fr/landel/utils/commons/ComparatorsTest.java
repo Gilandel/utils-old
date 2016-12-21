@@ -25,7 +25,7 @@ import org.junit.Test;
 /**
  * Check comparators
  *
- * @since 28 juin 2016
+ * @since Jun 28, 2016
  * @author Gilles
  *
  */

@@ -23,7 +23,7 @@ import fr.landel.utils.model.AbstractEntity;
 /**
  * The project DTO for tests.
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */

@@ -22,7 +22,7 @@ import fr.landel.utils.mapper.core.AbstractDTOIdentifierLoader;
 /**
  * DTO identifiers loader for tests.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

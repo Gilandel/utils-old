@@ -29,7 +29,7 @@ import fr.landel.utils.commons.exception.FunctionException;
  * functional method is {@link #get()}.
  * </p>
  *
- * @since 14 mai 2016
+ * @since May 14, 2016
  * @author Gilles
  *
  * @param <L>

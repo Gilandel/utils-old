@@ -44,7 +44,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  * @param <D>
  *            the fourth element type
  *
- * @since 26 juil. 2016
+ * @since Jul 26, 2016
  * @author Gilles
  *
  */

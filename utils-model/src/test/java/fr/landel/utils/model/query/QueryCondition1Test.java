@@ -21,7 +21,7 @@ import fr.landel.utils.model.mappable.EntityParent;
 /**
  * Check query condition.
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */

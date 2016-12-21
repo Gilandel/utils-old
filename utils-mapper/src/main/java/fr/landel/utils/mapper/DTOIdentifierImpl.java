@@ -22,7 +22,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 /**
  * Abstract DTO identifier.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

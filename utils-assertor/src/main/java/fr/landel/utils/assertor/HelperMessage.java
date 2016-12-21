@@ -44,6 +44,7 @@ import fr.landel.utils.commons.StringUtils;
 public final class HelperMessage extends Constants {
 
     // The regular expression from String#format
+    // (just for info, the original regular expression)
     // "%(\\d+\\$)?([-#+ 0,(\\<]*)?(\\d+)?(\\.\\d+)?([tT])?([a-zA-Z%])"
 
     /**
@@ -388,7 +389,9 @@ public final class HelperMessage extends Constants {
 
                 msg = HelperMessage.prepare(message, params.length, 1, args.length, 1).toString();
 
-                msg = String.format(Assertor.getLocale(locale), msg, ArrayUtils.addAll(params, args));
+                if (msg.indexOf('%') > -1) {
+                    msg = String.format(Assertor.getLocale(locale), msg, ArrayUtils.addAll(params, args));
+                }
             } else {
                 msg = message.toString();
             }

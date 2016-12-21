@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 /**
- * (Description)
+ * Test exception
  *
  * @since Aug 12, 2016
  * @author Gilles

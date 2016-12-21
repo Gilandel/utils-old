@@ -26,7 +26,7 @@ import fr.landel.utils.io.FileUtils;
  * Scripts loader (load scripts from classpath, and remove comments and blank
  * lines)
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

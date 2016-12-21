@@ -21,7 +21,7 @@ import fr.landel.utils.commons.over.AbstractOverObject;
  * Abstract class to force implementation of Object methods (replace
  * StringBuilder from overToString by a map).
  *
- * @since 14 juil. 2015
+ * @since Jul 14, 2015
  * @author Gilles
  * 
  * @param <O>

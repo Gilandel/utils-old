@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.io.FileUtils;
 import fr.landel.utils.scripts.PatientSearch.Attendance;
@@ -40,7 +41,7 @@ import fr.landel.utils.scripts.PatientSearch.Status;
 /**
  * Check scripts loader
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */
@@ -116,8 +117,10 @@ public class ScriptsLoaderTest {
 
         loader.init(EnumScripts.INDEX_AGGS);
 
-        assertEquals(FileUtils.getFileContent(PATH + "index.expected.elastic").toString(),
-                loader.get(EnumScripts.INDEX_AGGS, "apps", "my_app_id").toString());
+        StringBuilder builder = loader.get(EnumScripts.INDEX_AGGS, "apps", "my_app_id");
+        StringBuilder expected = FileUtils.getFileContent(PATH + "index.expected.elastic");
+
+        assertTrue(Assertor.that(builder).isEqual(expected).isOK());
     }
 
     /**

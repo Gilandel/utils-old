@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * DTO identifier.
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

@@ -40,7 +40,7 @@ package fr.landel.utils.commons.tuple;
  * @param <D>
  *            the fourth element type
  *
- * @since 26 juil. 2016
+ * @since Jul 26, 2016
  * @author Gilles
  *
  */

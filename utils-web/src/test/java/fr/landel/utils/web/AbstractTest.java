@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Abstract test class to initialize the Spring context
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */

@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * Check {@link TriPredicate}
  *
- * @since 30 mai 2016
+ * @since May 30, 2016
  * @author Gilles
  *
  */

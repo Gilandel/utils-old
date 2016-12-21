@@ -23,7 +23,7 @@ import fr.landel.utils.commons.exception.FunctionException;
 /**
  * Check {@link BooleanSupplierThrowable}
  *
- * @since 30 mai 2016
+ * @since May 30, 2016
  * @author Gilles
  *
  */

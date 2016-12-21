@@ -15,7 +15,7 @@ package fr.landel.utils.commons.exception;
 /**
  * Function exception is the exception thrown by throwable function
  *
- * @since 2 août 2016
+ * @since Aug 2, 2016
  * @author Gilles
  *
  */

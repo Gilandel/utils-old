@@ -22,7 +22,7 @@ import fr.landel.utils.mapper.mappable.Mappable;
 /**
  * Mappable test class 1.
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */

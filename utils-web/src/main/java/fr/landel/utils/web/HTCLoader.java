@@ -25,7 +25,7 @@ import fr.landel.utils.io.FileUtils;
 /**
  * PIE HTC loader.
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */

@@ -22,7 +22,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 /**
  * Abstract context class initializer for tests
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

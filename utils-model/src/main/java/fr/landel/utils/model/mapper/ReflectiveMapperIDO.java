@@ -30,7 +30,7 @@ import fr.landel.utils.model.AbstractEntity;
 /**
  * Reflective mapper (entity &lt;-&gt; DTO)
  *
- * @since 29 juil. 2015
+ * @since Jul 29, 2015
  * @author Gilles
  *
  */

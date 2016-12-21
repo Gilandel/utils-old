@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * Utility class to manage strings.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */

@@ -26,7 +26,7 @@ import java.util.Locale;
  * This chain always starts with a {@link PredicateAssertorArray} and ends with
  * {@link PredicateStepArray}.
  *
- * @since 3 août 2016
+ * @since Aug 3, 2016
  * @author Gilles
  *
  */

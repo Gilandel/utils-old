@@ -29,7 +29,7 @@ import fr.landel.utils.assertor.expect.Expect;
 /**
  * Check assert matcher
  *
- * @since 10 dec. 2015
+ * @since Dec 10, 2015
  * @author Gilles Landel
  *
  */

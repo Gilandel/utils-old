@@ -15,7 +15,7 @@ package fr.landel.utils.commons.listener;
 /**
  * Interface to manage listen events
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */

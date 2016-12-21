@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Asbtract listenable
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */

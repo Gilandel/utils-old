@@ -23,7 +23,7 @@ import fr.landel.utils.log.mdc.MDCMT;
 /**
  * Runnable to test MDC thread safe
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */

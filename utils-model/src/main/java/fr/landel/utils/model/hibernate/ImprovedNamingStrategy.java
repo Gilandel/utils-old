@@ -23,7 +23,7 @@ import fr.landel.utils.commons.StringUtils;
 /**
  * Improve naming strategy for JPA 2.1 and Hibernate 5
  *
- * @since 25 nov. 2015
+ * @since Nov 25, 2015
  * @author Gilles
  *
  */

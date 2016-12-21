@@ -26,7 +26,7 @@ import fr.landel.utils.commons.EnumChar;
 /**
  * Check {@link AssertorEnum}
  *
- * @since 18 juil. 2016
+ * @since Jul 18, 2016
  * @author Gilles
  *
  */

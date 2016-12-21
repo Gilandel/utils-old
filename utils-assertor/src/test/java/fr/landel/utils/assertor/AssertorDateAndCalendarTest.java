@@ -30,7 +30,7 @@ import fr.landel.utils.commons.DateUtils;
 /**
  * Test {@link AssertorDate}
  *
- * @since 29 mai 2016
+ * @since May 29, 2016
  * @author Gilles
  *
  */

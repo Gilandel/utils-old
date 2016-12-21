@@ -15,9 +15,9 @@ package fr.landel.utils.scripts;
 import fr.landel.utils.commons.function.ConsumerThrowable;
 
 /**
- * Scripts template
+ * Scripts template base
  *
- * @since 29 juin 2016
+ * @since Jun 29, 2016
  * @author Gilles
  *
  */

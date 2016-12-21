@@ -32,14 +32,13 @@ import fr.landel.utils.assertor.Assertor;
 /**
  * This class is used to read and write files.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
 public final class FileUtils {
 
     private static final int BUFFER_SIZE = 10240;
-    private static final byte[] BUFFER = new byte[BUFFER_SIZE];
 
     /**
      * Constructor.
@@ -146,19 +145,11 @@ public final class FileUtils {
         Assertor.that(inputStream).isNotNull().toThrow("The 'inputStream' parameter cannot be null");
         Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
 
-        int bufferReadSize;
-        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder content = new StringBuilder();
 
-        while ((bufferReadSize = inputStream.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-            buffer.write(BUFFER, 0, bufferReadSize);
-        }
+        loadContent(content, inputStream, charset);
 
-        // convert into the specified charset after loading all data to avoid
-        // the cutting of encoded character at the end of the buffer size
-        builder.append(new String(buffer.toByteArray(), 0, buffer.size(), charset));
-
-        return builder;
+        return content;
     }
 
     /**
@@ -181,22 +172,36 @@ public final class FileUtils {
         Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
 
         ClassLoader loader = classLoader;
-        int bufferReadSize;
-        final StringBuilder buffer = new StringBuilder();
+
+        final StringBuilder content = new StringBuilder();
 
         if (loader == null) {
             loader = Thread.currentThread().getContextClassLoader();
         }
 
-        try (InputStream is = loader.getResourceAsStream(path)) {
-            Assertor.that(is).isNotNull().toThrow("The 'inputStream' from the classpath cannot be null");
-
-            while ((bufferReadSize = is.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-                buffer.append(new String(BUFFER, 0, bufferReadSize, charset));
-            }
+        try (InputStream inputStream = loader.getResourceAsStream(path)) {
+            loadContent(content, inputStream, charset);
         }
 
-        return buffer;
+        return content;
+    }
+
+    private static void loadContent(final StringBuilder content, final InputStream inputStream, final Charset charset) throws IOException {
+        Assertor.that(inputStream).isNotNull().toThrow("The 'inputStream' from the classpath cannot be null");
+
+        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            int bufferReadSize;
+            final byte[] buffer = new byte[BUFFER_SIZE];
+
+            while ((bufferReadSize = inputStream.read(buffer, 0, BUFFER_SIZE)) >= 0) {
+                baos.write(buffer, 0, bufferReadSize);
+            }
+
+            // convert into the specified charset after loading all data to
+            // avoid the cutting of encoded character at the end of the buffer
+            // size
+            content.append(new String(baos.toByteArray(), 0, baos.size(), charset));
+        }
     }
 
     /**
@@ -297,9 +302,10 @@ public final class FileUtils {
         Assertor.that(outputStream).isNotNull().toThrow("The 'outputStream' parameter cannot be null");
 
         int bufferReadSize;
+        final byte[] buffer = new byte[BUFFER_SIZE];
 
-        while ((bufferReadSize = inputStream.read(BUFFER, 0, BUFFER_SIZE)) >= 0) {
-            outputStream.write(BUFFER, 0, bufferReadSize);
+        while ((bufferReadSize = inputStream.read(buffer, 0, BUFFER_SIZE)) >= 0) {
+            outputStream.write(buffer, 0, bufferReadSize);
         }
 
         outputStream.flush();

@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
 /**
  * The list of scripts loaded
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  * 
  * @param <E>

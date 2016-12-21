@@ -47,7 +47,7 @@ import fr.landel.utils.commons.StringUtils;
 /**
  * MDC multi-thread helper test
  * 
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */

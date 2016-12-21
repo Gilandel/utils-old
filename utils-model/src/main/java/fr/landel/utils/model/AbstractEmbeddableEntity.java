@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 /**
  * Abstract embeddable entity.
  *
- * @since 13 juil. 2015
+ * @since Jul 13, 2015
  * @author Gilles
  * 
  * @param <E>

@@ -29,7 +29,7 @@ import java.util.Objects;
  * #ThreadSafe#
  * </p>
  *
- * @since 2 août 2016
+ * @since Aug 2, 2016
  * @author Gilles
  *
  */

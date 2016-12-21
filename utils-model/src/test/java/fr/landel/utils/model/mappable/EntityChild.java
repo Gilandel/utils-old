@@ -32,7 +32,7 @@ import fr.landel.utils.model.AbstractEntity;
 /**
  * Entity child to test mapper.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

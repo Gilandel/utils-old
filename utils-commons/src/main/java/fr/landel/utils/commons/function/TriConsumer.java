@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * This is a <a href="package-summary.html">functional interface</a> whose
  * functional method is {@link #accept(Object, Object, Object)}.
  *
- * @since 31 juil. 2016
+ * @since Jul 31, 2016
  * @author Gilles
  *
  * @param <T>

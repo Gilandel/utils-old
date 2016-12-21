@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * Check the generic class
  *
- * @since 27 juil. 2016
+ * @since Jul 27, 2016
  * @author Gilles
  *
  */

@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * Check {@link EnumStep}
  *
- * @since 27 nov. 2016
+ * @since Nov 27, 2016
  * @author Gilles
  *
  */

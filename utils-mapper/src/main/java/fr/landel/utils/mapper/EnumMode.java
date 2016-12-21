@@ -15,7 +15,7 @@ package fr.landel.utils.mapper;
 /**
  * Mapping mode
  *
- * @since 17 mars 2016
+ * @since Mar 17, 2016
  * @author Gilles
  *
  */

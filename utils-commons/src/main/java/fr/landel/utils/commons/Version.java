@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * compare version like Maven but also manages other formats (ex: 1.0.5.3.4.41 ;
  * it's managed by Maven as a {@link String} not by this class).
  *
- * @since 15 nov. 2016
+ * @since Nov 15, 2016
  * @author Gilles
  *
  */

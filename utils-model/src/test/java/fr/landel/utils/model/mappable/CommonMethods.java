@@ -19,7 +19,7 @@ import fr.landel.utils.model.mapper.MyDTOIdentifier;
 /**
  * Common methods (Parent vs Child and DTO vs Entity)
  *
- * @since 1 déc. 2015
+ * @since Dec 1, 2015
  * @author Gilles
  *
  */

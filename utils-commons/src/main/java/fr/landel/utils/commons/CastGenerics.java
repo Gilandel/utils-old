@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class to cast classes.
  *
- * @since 23 nov. 2015
+ * @since Nov 23, 2015
  * @author Gilles Landel
  *
  */

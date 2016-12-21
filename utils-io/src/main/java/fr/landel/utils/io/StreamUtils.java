@@ -34,7 +34,7 @@ import fr.landel.utils.assertor.Assertor;
 /**
  * Utility class to manage streams.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */

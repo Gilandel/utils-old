@@ -15,7 +15,7 @@ package fr.landel.utils.aop.observable;
 /**
  * A simple enum to test AOP parameters
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */

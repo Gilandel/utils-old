@@ -18,7 +18,7 @@ import fr.landel.utils.mapper.DTOIdentifierImpl;
 /**
  * The abstract DTO identifier loader (to load in the manager all identifiers).
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */

@@ -37,7 +37,7 @@ import fr.landel.utils.assertor.expect.Expect;
 /**
  * Check file utils
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */
@@ -84,7 +84,7 @@ public class FileUtilsTest {
      */
     @Test
     public void testGetFileContentInputStreamCharset() {
-        String test = "texte accentu\u00e9";
+        final String test = "texte accentu\u00e9";
 
         try (ByteArrayInputStream bais = new ByteArrayInputStream(test.getBytes(EncodingUtils.CHARSET_UTF_8))) {
             StringBuilder sb = FileUtils.getFileContent(bais, EncodingUtils.CHARSET_UTF_8);
@@ -285,7 +285,7 @@ public class FileUtilsTest {
         assertNotNull(referenceContent);
         assertNotNull(content);
 
-        Assertor.that(content).isEqual(referenceContent);
+        assertTrue(Assertor.that(content).isEqual(referenceContent).isOK());
 
         content = FileUtils.getFileContent(new File("src/test/resources/io/", CHECK_CRC32_FILE));
 

@@ -44,7 +44,7 @@ import org.slf4j.MDC;
  * &nbsp;&nbsp;}<br>
  * }
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */

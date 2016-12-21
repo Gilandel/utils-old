@@ -21,7 +21,7 @@ import fr.landel.utils.model.exception.ModelException;
 /**
  * Hibernate utility class to force object loading
  *
- * @since 14 mai 2016
+ * @since May 14, 2016
  * @author Gilles
  *
  */

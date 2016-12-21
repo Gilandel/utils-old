@@ -19,7 +19,7 @@ import org.junit.Test;
 /**
  * Check {@link EnumChar}
  *
- * @since 31 mai 2016
+ * @since May 31, 2016
  * @author Gilles
  *
  */

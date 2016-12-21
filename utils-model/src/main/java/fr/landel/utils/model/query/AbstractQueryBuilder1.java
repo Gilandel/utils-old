@@ -20,7 +20,7 @@ import fr.landel.utils.commons.StringUtils;
 /**
  * The abstract query builder
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */

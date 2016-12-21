@@ -15,7 +15,7 @@ package fr.landel.utils.commons.listener;
 /**
  * Event listener
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */

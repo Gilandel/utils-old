@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * Check {@link PairIso}
  *
- * @since 2 août 2016
+ * @since Aug 2, 2016
  * @author Gilles
  *
  */

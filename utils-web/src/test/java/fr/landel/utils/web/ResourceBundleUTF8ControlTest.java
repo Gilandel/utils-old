@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * Check the resources bundle loader (in UTF-8)
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */

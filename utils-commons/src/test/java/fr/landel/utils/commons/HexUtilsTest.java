@@ -24,7 +24,7 @@ import fr.landel.utils.commons.HexUtils;
 /**
  * Check hexadecimal utils
  *
- * @since 11 dec. 2015
+ * @since Dec 11, 2015
  * @author Gilles Landel
  *
  */
