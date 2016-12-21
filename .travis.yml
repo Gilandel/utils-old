@@ -1,12 +1,17 @@
 language: java
 
+sudo: false
+
 jdk:
   - oraclejdk8
+
+addons:
+  apt:
+    packages:
+    - gnupg2
   
 before_install:
   - pip install --user codecov
-  - "chmod u+x distribution/*.sh"
-  - distribution/prepare.sh
 
 script: mvn clean compile test cobertura:cobertura
 
