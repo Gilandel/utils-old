@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.landel</groupId>
 		<artifactId>utils</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.landel.utils</groupId>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-commons</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

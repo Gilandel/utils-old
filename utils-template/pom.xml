@@ -4,13 +4,13 @@
   <parent>
     <groupId>fr.landel</groupId>
     <artifactId>utils</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   
   <groupId>fr.landel.utils</groupId>
-  <artifactId>utils-scripts</artifactId>
+  <artifactId>utils-template</artifactId>
   <name>utils-scripts</name>
-  <description>Scripts utilities to load scripts like SQL, JSON query with conditions</description>
+  <description>Template tool to load scripts like SQL, JSON following specific conditions</description>
   
   <build>
 		<plugins>
@@ -49,12 +49,12 @@
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-io</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-assertor</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

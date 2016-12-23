@@ -38,7 +38,7 @@ Base classes to manage events (listenable / event / listener)
 ##Tuple:
 - 
 
-# utils-assetor
+# utils-assertor
 A module to validate method parameters.
 Based on the version of Assert provided by the Spring Team.
 

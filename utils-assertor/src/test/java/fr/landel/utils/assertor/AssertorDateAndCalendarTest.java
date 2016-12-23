@@ -81,13 +81,15 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
             fail("The test isn't correct");
         }
 
+        final Date date3 = new Date(1464475553641L);
+
         Expect.exception(() -> {
-            Assertor.that(date1).isEqual(calendar2).toThrow();
+            Assertor.that(date1).isEqual(date3).toThrow();
             fail();
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            Assertor.that(calendar1).isEqual(date2).toThrow();
+            Assertor.that(date3).isEqual(date1).toThrow();
             fail();
         }, IllegalArgumentException.class);
     }

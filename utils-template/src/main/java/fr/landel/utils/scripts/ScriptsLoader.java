@@ -95,7 +95,7 @@ public class ScriptsLoader {
             final StringBuilder sb = new StringBuilder();
             this.scripts.put(value, sb);
 
-            try (final InputStream is = loader.getResourceAsStream(this.path + value.getName())) {
+            try (final InputStream is = loader.getResourceAsStream(new StringBuilder(this.path).append(value.getName()).toString())) {
                 sb.append(FileUtils.getFileContent(is, value.getCharset()));
             }
         }
