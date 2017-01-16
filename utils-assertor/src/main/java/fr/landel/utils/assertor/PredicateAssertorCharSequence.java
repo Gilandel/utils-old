@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * @author Gilles
  *
  * @param <T>
- *            the type of assertor result
+ *            The type of checked object
  */
 @FunctionalInterface
 public interface PredicateAssertorCharSequence<T extends CharSequence> extends PredicateAssertor<PredicateStepCharSequence<T>, T> {
@@ -36,9 +36,12 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorCharSequence<T> not() {
-        return () -> HelperAssertor.not(getStep());
+        return () -> HelperAssertor.not(this.getStep());
     }
 
     /**
@@ -52,7 +55,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * 
      * @param length
      *            The length (cannot be lower than 0)
-     * @return the operator
+     * @return The operator
      */
     default PredicateStepCharSequence<T> hasLength(final int length) {
         return this.hasLength(length, null);
@@ -73,7 +76,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      *            The message on mismatch
      * @param arguments
      *            The arguments of the message, use {@link String#format}
-     * @return the operator
+     * @return The operator
      */
     default PredicateStepCharSequence<T> hasLength(final int length, final CharSequence message, final Object... arguments) {
         return this.hasLength(length, null, message, arguments);
@@ -97,7 +100,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      *            The message on mismatch
      * @param arguments
      *            The arguments of the message, use {@link String#format}
-     * @return the operator
+     * @return The operator
      */
     default PredicateStepCharSequence<T> hasLength(final int length, final Locale locale, final CharSequence message,
             final Object... arguments) {

@@ -13,6 +13,8 @@
 package fr.landel.utils.model.query;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.function.Consumer;
 
 import fr.landel.utils.model.AbstractEntity;
 
@@ -92,19 +94,33 @@ public class QueryFunction<E extends AbstractEntity<E, K>, K extends Serializabl
 
     private static final String INDEX = "INDEX";
 
-    private QueryFunction(final String function, final boolean distinct, final CharSequence field) {
+    private static final String COMMA = ",";
+
+    private QueryFunction(final String function, final boolean distinct, final Consumer<List<CharSequence>> injector,
+            final CharSequence field) {
         add(function);
         add(PARENTHESIS_OPEN);
         if (distinct) {
             add(DISTINCT);
         }
+        if (injector != null) {
+            injector.accept(this);
+        }
         add(field);
         add(PARENTHESIS_CLOSE);
     }
 
+    private QueryFunction(final String function, final CharSequence field) {
+        this(function, false, null, field);
+    }
+
+    private QueryFunction(final String function, final Consumer<List<CharSequence>> injector, final CharSequence field) {
+        this(function, false, injector, field);
+    }
+
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> max(
             final CharSequence field) {
-        return new QueryFunction<>(MAX, false, field);
+        return new QueryFunction<>(MAX, field);
     }
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> max(
@@ -114,7 +130,7 @@ public class QueryFunction<E extends AbstractEntity<E, K>, K extends Serializabl
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> min(
             final CharSequence field) {
-        return new QueryFunction<>(MIN, false, field);
+        return new QueryFunction<>(MIN, field);
     }
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> min(
@@ -124,7 +140,7 @@ public class QueryFunction<E extends AbstractEntity<E, K>, K extends Serializabl
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> avg(
             final CharSequence field) {
-        return new QueryFunction<>(AVG, false, field);
+        return new QueryFunction<>(AVG, field);
     }
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> avg(
@@ -134,7 +150,7 @@ public class QueryFunction<E extends AbstractEntity<E, K>, K extends Serializabl
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> sum(
             final CharSequence field) {
-        return new QueryFunction<>(SUM, false, field);
+        return new QueryFunction<>(SUM, field);
     }
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> sum(
@@ -144,7 +160,7 @@ public class QueryFunction<E extends AbstractEntity<E, K>, K extends Serializabl
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> count(
             final CharSequence field) {
-        return count(field, false);
+        return count(field);
     }
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> count(
@@ -154,11 +170,34 @@ public class QueryFunction<E extends AbstractEntity<E, K>, K extends Serializabl
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> count(
             final CharSequence field, final boolean distinct) {
-        return new QueryFunction<>(COUNT, distinct, field);
+        return new QueryFunction<>(COUNT, distinct, null, field);
     }
 
     public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> upper(
             final CharSequence field) {
-        return new QueryFunction<>(UPPER, false, field);
+        return new QueryFunction<>(UPPER, field);
+    }
+
+    public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> lower(
+            final CharSequence field) {
+        return new QueryFunction<>(LOWER, field);
+    }
+
+    public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> substring(
+            final CharSequence field, final CharSequence startField) {
+        return new QueryFunction<>(SUBSTRING, l -> {
+            l.add(COMMA);
+            l.add(startField);
+        }, field);
+    }
+
+    public static <E extends AbstractEntity<E, K>, K extends Serializable & Comparable<K>> QueryFunction<E, K> substring(
+            final CharSequence field, final CharSequence startField, final CharSequence lengthField) {
+        return new QueryFunction<>(SUBSTRING, l -> {
+            l.add(COMMA);
+            l.add(startField);
+            l.add(COMMA);
+            l.add(lengthField);
+        }, field);
     }
 }
