@@ -120,7 +120,7 @@ public class ScriptsLoaderTest {
         StringBuilder builder = loader.get(EnumScripts.INDEX_AGGS, "apps", "my_app_id");
         StringBuilder expected = FileUtils.getFileContent(PATH + "index.expected.elastic");
 
-        assertTrue(Assertor.that(builder).isEqual(expected).isOK());
+        assertTrue(Assertor.that(builder).isEqualIgnoreLineReturns(expected).isOK());
     }
 
     /**
@@ -158,13 +158,14 @@ public class ScriptsLoaderTest {
 
         LOGGER.info("Call queriesLoader for patientSearch");
 
-        StringBuilder builder = this.queriesLoader.get(EnumScripts.PATIENTS_SEARCH, replacements);
+        StringBuilder builder = FileUtils.convertToUnix(this.queriesLoader.get(EnumScripts.PATIENTS_SEARCH, replacements));
 
         LOGGER.info("QueriesLoader for patientSearch done");
 
         assertNotNull(builder);
         try {
-            StringBuilder expected = FileUtils.getFileContent(PATH + "patientsSearch.expected.sql", StandardCharsets.UTF_8);
+            StringBuilder expected = FileUtils
+                    .convertToUnix(FileUtils.getFileContent(PATH + "patientsSearch.expected.sql", StandardCharsets.UTF_8));
 
             assertEquals(expected.length(), builder.length());
             assertEquals(expected.toString(), builder.toString());

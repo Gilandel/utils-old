@@ -291,4 +291,37 @@ public class FileUtilsTest {
 
         assertNotNull(content);
     }
+
+    /**
+     * Test method for {@link FileUtils#convertToWindows(StringBuilder)} .
+     */
+    @Test
+    public void testConvertToWindows() {
+        final StringBuilder input = new StringBuilder("\ntest\r\nNew line\r\n\n\r\nend\r");
+        final StringBuilder expected = new StringBuilder("\r\ntest\r\nNew line\r\n\r\n\r\nend\r\n");
+
+        assertEquals(expected.toString(), FileUtils.convertToWindows(input).toString());
+    }
+
+    /**
+     * Test method for {@link FileUtils#convertToUnix(StringBuilder)} .
+     */
+    @Test
+    public void testConvertToUnix() {
+        final StringBuilder input = new StringBuilder("\ntest\r\nNew line\r\n\n\r\nend\r");
+        final StringBuilder expected = new StringBuilder("\ntest\nNew line\n\n\nend\n");
+
+        assertEquals(expected.toString(), FileUtils.convertToUnix(input).toString());
+    }
+
+    /**
+     * Test method for {@link FileUtils#convertToMacOS(StringBuilder)} .
+     */
+    @Test
+    public void testConvertToMacOS() {
+        final StringBuilder input = new StringBuilder("\ntest\r\nNew line\r\n\n\r\nend\r");
+        final StringBuilder expected = new StringBuilder("\n\rtest\n\rNew line\n\r\n\r\n\rend\n\r");
+
+        assertEquals(expected.toString(), FileUtils.convertToMacOS(input).toString());
+    }
 }

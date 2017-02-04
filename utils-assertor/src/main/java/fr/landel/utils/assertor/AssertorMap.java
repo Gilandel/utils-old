@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Utility class to prepare the check of {@link Map}
@@ -56,7 +55,8 @@ public class AssertorMap extends Constants {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> map.size() == size;
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.SIZE, false, Pair.of(size, EnumType.NUMBER_INTEGER));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.SIZE, false,
+                new Parameter<>(size, EnumType.NUMBER_INTEGER));
     }
 
     /**
@@ -241,8 +241,7 @@ public class AssertorMap extends Constants {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> map.containsKey(key);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false,
-                Pair.of(key, EnumType.getType(key)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false, new Parameter<>(key));
     }
 
     /**
@@ -274,8 +273,8 @@ public class AssertorMap extends Constants {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> AssertorMap.contains(map, key, value);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false,
-                Pair.of(key, EnumType.getType(key)), Pair.of(value, EnumType.getType(value)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false, new Parameter<>(key),
+                new Parameter<>(value));
     }
 
     private static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
@@ -285,7 +284,7 @@ public class AssertorMap extends Constants {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> AssertorMap.contains(map, keys, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(keys, EnumType.ITERABLE));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(keys, EnumType.ITERABLE));
     }
 
     private static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final Map<K, V> map, final CharSequence key,
@@ -295,7 +294,7 @@ public class AssertorMap extends Constants {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map1, not) -> AssertorMap.contains(map1, map, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(map, EnumType.MAP));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(map, EnumType.MAP));
     }
 
     private static <K, V> boolean contains(final Map<K, V> map, final Iterable<K> keys, final boolean all, final boolean not) {

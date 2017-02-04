@@ -25,7 +25,6 @@ import java.util.TreeSet;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import fr.landel.utils.commons.CollectionUtils2;
 import fr.landel.utils.commons.EnumChar;
@@ -279,30 +278,30 @@ public final class HelperMessage extends Constants {
      *            the input list
      * @return the output array
      */
-    public static Object[] convertParams(final List<Pair<Object, EnumType>> parameters) {
+    public static Object[] convertParams(final List<Parameter<?>> parameters) {
         if (CollectionUtils.isNotEmpty(parameters)) {
             final List<Object> convertedParams = CollectionUtils2.transformIntoList(parameters, HelperAssertor.PARAM_TRANSFORMER);
             // The object, the type and if it's a checked object
-            Pair<Object, EnumType> pair;
+            Parameter<?> param;
             int calendarField = -1;
 
             // in order for binary search
             final EnumType[] surroundable = new EnumType[] {EnumType.ARRAY, EnumType.ITERABLE, EnumType.MAP};
 
             for (int i = 0; i < parameters.size(); i++) {
-                pair = parameters.get(i);
-                if (pair.getLeft() != null) {
-                    if (EnumType.DATE.equals(pair.getValue()) && Calendar.class.isAssignableFrom(pair.getLeft().getClass())) {
-                        convertedParams.set(i, ((Calendar) pair.getLeft()).getTime());
-                    } else if (EnumType.CALENDAR_FIELD.equals(pair.getValue())) {
-                        calendarField = (Integer) pair.getLeft();
+                param = parameters.get(i);
+                if (param.getObject() != null) {
+                    if (EnumType.DATE.equals(param.getType()) && Calendar.class.isAssignableFrom(param.getObject().getClass())) {
+                        convertedParams.set(i, ((Calendar) param.getObject()).getTime());
+                    } else if (EnumType.CALENDAR_FIELD.equals(param.getType())) {
+                        calendarField = (Integer) param.getObject();
                         if (CALENDAR_FIELDS.containsKey(calendarField)) {
                             convertedParams.set(i, CALENDAR_FIELDS.get(calendarField));
                         }
-                    } else if (EnumType.CLASS.equals(pair.getValue())) {
-                        convertedParams.set(i, ((Class<?>) pair.getLeft()).getSimpleName());
-                    } else if (Arrays.binarySearch(surroundable, pair.getValue()) > -1) {
-                        convertedParams.set(i, HelperMessage.surroundByBrackets(pair.getLeft(), pair.getValue()));
+                    } else if (EnumType.CLASS.equals(param.getType())) {
+                        convertedParams.set(i, ((Class<?>) param.getObject()).getSimpleName());
+                    } else if (Arrays.binarySearch(surroundable, param.getType()) > -1) {
+                        convertedParams.set(i, HelperMessage.surroundByBrackets(param.getObject(), param.getType()));
                     }
                 }
             }
@@ -339,7 +338,7 @@ public final class HelperMessage extends Constants {
      * @return The message formatted
      */
     protected static String getMessage(final Message message, final CharSequence defaultKey, final boolean not,
-            final List<Pair<Object, EnumType>> parameters) {
+            final List<Parameter<?>> parameters) {
 
         final Locale locale;
         final String currentMessage;
@@ -378,7 +377,7 @@ public final class HelperMessage extends Constants {
      * @return The message formatted
      */
     public static String getMessage(final CharSequence defaultString, final Locale locale, final CharSequence message,
-            final List<Pair<Object, EnumType>> parameters, final Object[] arguments) {
+            final List<Parameter<?>> parameters, final Object[] arguments) {
 
         String msg;
 
@@ -416,7 +415,7 @@ public final class HelperMessage extends Constants {
      * @return The loaded property
      */
     protected static String getDefaultMessage(final CharSequence key, final boolean precondition, final boolean not,
-            final List<Pair<Object, EnumType>> parameters) {
+            final List<Parameter<?>> parameters) {
         Objects.requireNonNull(key);
 
         final StringBuilder keyProperty = new StringBuilder(key);
@@ -431,7 +430,7 @@ public final class HelperMessage extends Constants {
 
         final CharSequence[] arguments = new CharSequence[parameters.size()];
         for (int i = 0; i < parameters.size(); i++) {
-            arguments[i] = HelperMessage.getParam(i + 1, parameters.get(i).getValue());
+            arguments[i] = HelperMessage.getParam(i + 1, parameters.get(i).getType());
         }
 
         return getProperty(keyProperty, arguments);

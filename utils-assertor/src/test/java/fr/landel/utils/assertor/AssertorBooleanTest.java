@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -90,13 +91,15 @@ public class AssertorBooleanTest extends AbstractTest {
     @Test
     public void testIsTrue() {
         try {
-            Assertor.that(true).isTrue().toThrow();
-            Assertor.that(true).isTrue().and(false).not().isTrue().toThrow("not true");
-            Assertor.that(true).isTrue().toThrow(new IllegalArgumentException(), true);
+            assertTrue(Assertor.that(true).isTrue().toThrow());
+            assertFalse(Assertor.that(true).isTrue().and(false).not().isTrue().toThrow("not true"));
+            assertTrue(Assertor.that(true).isTrue().toThrow(new IllegalArgumentException(), true));
 
-            Assertor.that(true).isTrue().and().not().isFalse().toThrow();
-            Assertor.that(true).isTrue().or().isFalse().toThrow();
-            Assertor.that(true).isTrue().xor().isFalse().toThrow();
+            assertEquals("", Assertor.that(true).isTrue().and("").isEmpty().toThrow());
+
+            assertTrue(Assertor.that(true).isTrue().and().not().isFalse().toThrow());
+            assertTrue(Assertor.that(true).isTrue().or().isFalse().toThrow());
+            assertTrue(Assertor.that(true).isTrue().xor().isFalse().toThrow());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }

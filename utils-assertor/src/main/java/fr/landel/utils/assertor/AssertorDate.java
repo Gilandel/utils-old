@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import fr.landel.utils.commons.Comparators;
 import fr.landel.utils.commons.DateUtils;
 
@@ -192,12 +190,10 @@ public class AssertorDate extends Constants {
         };
 
         if (calendarField == -1) {
-            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.EQUALS, reverse,
-                    Pair.of(date, EnumType.getType(date)));
+            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.EQUALS, reverse, new Parameter<>(date));
         } else {
-            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AROUND, reverse,
-                    Pair.of(date, EnumType.getType(date)), Pair.of(calendarField, EnumType.CALENDAR_FIELD),
-                    Pair.of(calendarAmount, EnumType.NUMBER_INTEGER));
+            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AROUND, reverse, new Parameter<>(date),
+                    new Parameter<>(calendarField, EnumType.CALENDAR_FIELD), new Parameter<>(calendarAmount, EnumType.NUMBER_INTEGER));
         }
     }
 
@@ -301,7 +297,7 @@ public class AssertorDate extends Constants {
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c > 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER, false, Pair.of(date, EnumType.getType(date)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER, false, new Parameter<>(date));
     }
 
     /**
@@ -380,8 +376,7 @@ public class AssertorDate extends Constants {
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c >= 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER_OR_EQUALS, false,
-                Pair.of(date, EnumType.getType(date)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER_OR_EQUALS, false, new Parameter<>(date));
     }
 
     /**
@@ -459,7 +454,7 @@ public class AssertorDate extends Constants {
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c < 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE, false, Pair.of(date, EnumType.getType(date)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE, false, new Parameter<>(date));
     }
 
     /**
@@ -538,8 +533,7 @@ public class AssertorDate extends Constants {
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c <= 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE_OR_EQUALS, false,
-                Pair.of(date, EnumType.getType(date)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE_OR_EQUALS, false, new Parameter<>(date));
     }
 
     private static <T extends Comparable<T>> StepAssertor<T> is(final StepAssertor<T> step, final T date, final CharSequence key,
@@ -547,7 +541,7 @@ public class AssertorDate extends Constants {
 
         final Predicate<T> preChecker = (date1) -> date1 != null && date != null;
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, Pair.of(date, EnumType.getType(date)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new Parameter<>(date));
     }
 
     private static <T extends Comparable<T>> Predicate<T> preChecker(final T date, final int calendarField, final int calendarAmount) {

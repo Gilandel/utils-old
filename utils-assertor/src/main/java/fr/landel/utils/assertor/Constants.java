@@ -310,6 +310,11 @@ public class Constants {
             String BLANK = "csq.blank";
 
             /**
+             * Message key for char sequence equals
+             */
+            String EQUALS = "csq.equals";
+
+            /**
              * Message key for char sequence contains substring
              */
             String CONTAINS = "csq.contains";

@@ -16,8 +16,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import fr.landel.utils.commons.StringUtils;
 
 /**
@@ -28,6 +26,9 @@ import fr.landel.utils.commons.StringUtils;
  *
  */
 public class AssertorCharSequence extends Constants {
+
+    private static final String CR = "\r";
+    private static final String LF = "\n";
 
     /**
      * Prepare the next step to validate if the {@link CharSequence} has the
@@ -56,7 +57,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> object.length() == length;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.LENGTH, false,
-                Pair.of(length, EnumType.NUMBER_INTEGER));
+                new Parameter<>(length, EnumType.NUMBER_INTEGER));
     }
 
     /**
@@ -152,6 +153,109 @@ public class AssertorCharSequence extends Constants {
     }
 
     /**
+     * Prepare the next step to validate if the {@link CharSequence} is equal to
+     * {@code CharSequence}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the string to compare
+     * @param ignoreCase
+     *            {@code true} to ignore the case
+     * @param ignoreLineReturns
+     *            {@code true} to ignore the line return characters
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> isEqual(final StepAssertor<T> step, final CharSequence substring,
+            final boolean ignoreCase, final boolean ignoreLineReturns, final Message message) {
+
+        final BiPredicate<T, Boolean> checker = (object, not) -> isEqualInternal(substring, object, ignoreCase, ignoreLineReturns);
+
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, false, new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
+    }
+
+    /**
+     * Prepare the next step to validate if the {@link CharSequence} is NOT
+     * equal to {@code CharSequence}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * @param step
+     *            the current step
+     * @param substring
+     *            the string to compare
+     * @param ignoreCase
+     *            {@code true} to ignore the case
+     * @param ignoreLineReturns
+     *            {@code true} to ignore the line return characters
+     * @param message
+     *            the message if invalid
+     * @param <T>
+     *            the char sequence type
+     * @return the next step
+     */
+    protected static <T extends CharSequence> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final CharSequence substring,
+            final boolean ignoreCase, final boolean ignoreLineReturns, final Message message) {
+
+        final BiPredicate<T, Boolean> checker = (object, not) -> !isEqualInternal(substring, object, ignoreCase, ignoreLineReturns);
+
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, true, new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
+    }
+
+    private static <T extends CharSequence> boolean isEqualInternal(final T object1, final CharSequence object2, final boolean ignoreCase,
+            final boolean ignoreLineReturns) {
+        boolean step = false;
+        if (object1 == object2) {
+            step = true;
+        } else if (object1 != null && object2 != null) {
+            final String s1;
+            final String s2;
+
+            if (ignoreLineReturns) {
+                final StringBuilder sb1 = new StringBuilder(object1);
+                final StringBuilder sb2 = new StringBuilder(object2);
+
+                deleteLineReturns(sb1);
+                deleteLineReturns(sb2);
+
+                s1 = sb1.toString();
+                s2 = sb2.toString();
+            } else {
+                s1 = object1.toString();
+                s2 = object2.toString();
+            }
+
+            if (ignoreCase) {
+                step = s1.equalsIgnoreCase(s2);
+            } else {
+                step = s1.equals(s2);
+            }
+        }
+        return step;
+    }
+
+    private static void deleteLineReturns(final StringBuilder sb) {
+        int pos = 0;
+        while ((pos = sb.indexOf(CR, pos)) > -1) {
+            sb.deleteCharAt(pos);
+        }
+        pos = 0;
+        while ((pos = sb.indexOf(LF, pos)) > -1) {
+            sb.deleteCharAt(pos);
+        }
+    }
+
+    /**
      * Prepare the next step to validate if the {@link CharSequence} contains
      * the specified character
      * 
@@ -178,7 +282,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> object.toString().indexOf(character) > -1;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.CONTAINS, false,
-                Pair.of(character, EnumType.CHARACTER));
+                new Parameter<>(character, EnumType.CHARACTER));
     }
 
     /**
@@ -208,7 +312,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> containsCharSequence(object, substring);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.CONTAINS, false,
-                Pair.of(substring, EnumType.CHAR_SEQUENCE));
+                new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -238,7 +342,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.startsWith(object, substring);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.STARTS, false,
-                Pair.of(substring, EnumType.CHAR_SEQUENCE));
+                new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -268,7 +372,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.startsWithIgnoreCase(object, substring);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.STARTS, false,
-                Pair.of(substring, EnumType.CHAR_SEQUENCE));
+                new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -298,7 +402,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.endsWith(object, substring);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.ENDS, false,
-                Pair.of(substring, EnumType.CHAR_SEQUENCE));
+                new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -328,7 +432,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> StringUtils.endsWithIgnoreCase(object, substring);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.ENDS, false,
-                Pair.of(substring, EnumType.CHAR_SEQUENCE));
+                new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -357,7 +461,8 @@ public class AssertorCharSequence extends Constants {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> pattern.matcher(object).matches();
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.MATCHES, false, Pair.of(pattern, EnumType.UNKNOWN));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.MATCHES, false,
+                new Parameter<>(pattern, EnumType.UNKNOWN));
     }
 
     /**
@@ -387,7 +492,7 @@ public class AssertorCharSequence extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> Pattern.matches(regex.toString(), object);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.MATCHES, false,
-                Pair.of(regex, EnumType.CHAR_SEQUENCE));
+                new Parameter<>(regex, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -416,7 +521,8 @@ public class AssertorCharSequence extends Constants {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> pattern.matcher(object).find();
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false, Pair.of(pattern, EnumType.UNKNOWN));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false,
+                new Parameter<>(pattern, EnumType.UNKNOWN));
     }
 
     /**
@@ -445,7 +551,8 @@ public class AssertorCharSequence extends Constants {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> Pattern.compile(regex.toString()).matcher(object).find();
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false, Pair.of(regex, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CSQ.FIND, false,
+                new Parameter<>(regex, EnumType.CHAR_SEQUENCE));
     }
 
     /**

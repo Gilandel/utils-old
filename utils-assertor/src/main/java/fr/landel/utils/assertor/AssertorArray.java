@@ -15,8 +15,6 @@ package fr.landel.utils.assertor;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import fr.landel.utils.commons.ArrayUtils;
 
 /**
@@ -48,7 +46,7 @@ public class AssertorArray extends Constants {
         final BiPredicate<T[], Boolean> checker = (object, not) -> object.length == length;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ARRAY.LENGTH, false,
-                Pair.of(length, EnumType.NUMBER_INTEGER));
+                new Parameter<>(length, EnumType.NUMBER_INTEGER));
     }
 
     /**
@@ -108,7 +106,7 @@ public class AssertorArray extends Constants {
         final BiPredicate<T[], Boolean> checker = (object, not) -> AssertorArray.has(object, element);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ARRAY.CONTAINS_OBJECT, false,
-                Pair.of(element, EnumType.UNKNOWN));
+                new Parameter<>(element, EnumType.UNKNOWN));
     }
 
     private static <T> StepAssertor<T[]> contains(final StepAssertor<T[]> step, final T[] array, final boolean all, final CharSequence key,
@@ -118,7 +116,7 @@ public class AssertorArray extends Constants {
 
         final BiPredicate<T[], Boolean> checker = (object, not) -> AssertorArray.has(object, array, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(array, EnumType.ARRAY));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(array, EnumType.ARRAY));
     }
 
     /**

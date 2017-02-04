@@ -16,7 +16,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Utility class to prepare the check of {@link Enum}
@@ -84,7 +83,7 @@ public class AssertorEnum extends Constants {
 
         final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(name);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, Pair.of(name, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new Parameter<>(name, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -112,6 +111,6 @@ public class AssertorEnum extends Constants {
         final BiPredicate<T, Boolean> checker = (object, not) -> object.ordinal() == ordinal;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ENUM.ORDINAL, false,
-                Pair.of(ordinal, EnumType.NUMBER_INTEGER));
+                new Parameter<>(ordinal, EnumType.NUMBER_INTEGER));
     }
 }

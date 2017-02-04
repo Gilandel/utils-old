@@ -155,6 +155,116 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
         return () -> AssertorCharSequence.isNotBlank(this.getStep(), Message.of(locale, message, arguments));
     }
 
+    default PredicateStepCharSequence<T> isEqual(final CharSequence substring) {
+        return this.isEqual(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isEqual(final CharSequence substring, final CharSequence message, final Object... arguments) {
+        return this.isEqual(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isEqual(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, false, false, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence substring) {
+        return this.isEqualIgnoreCase(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.isEqualIgnoreCase(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, true, false, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence substring) {
+        return this.isEqualIgnoreLineReturns(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.isEqualIgnoreLineReturns(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence substring, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, false, true, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence substring) {
+        return this.isEqualIgnoreCaseAndLineReturns(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.isEqualIgnoreCaseAndLineReturns(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence substring, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, true, true, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isNotEqual(final CharSequence substring) {
+        return this.isNotEqual(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqual(final CharSequence substring, final CharSequence message, final Object... arguments) {
+        return this.isNotEqual(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqual(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, false, false, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence substring) {
+        return this.isNotEqualIgnoreCase(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.isNotEqualIgnoreCase(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
+            final Object... arguments) {
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, true, false, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence substring) {
+        return this.isNotEqualIgnoreLineReturns(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.isNotEqualIgnoreLineReturns(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence substring, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, false, true, Message.of(locale, message, arguments));
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence substring) {
+        return this.isNotEqualIgnoreCaseAndLineReturns(substring, null);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence substring, final CharSequence message,
+            final Object... arguments) {
+        return this.isNotEqualIgnoreCaseAndLineReturns(substring, null, message, arguments);
+    }
+
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence substring, final Locale locale,
+            final CharSequence message, final Object... arguments) {
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, true, true, Message.of(locale, message, arguments));
+    }
+
     default PredicateStepCharSequence<T> contains(final Character character) {
         return this.contains(character, null);
     }

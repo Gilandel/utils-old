@@ -472,6 +472,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * 
      * @param predicate
      *            the predicate that validates the object
+     * @param <E>
+     *            The type of the exception
      * @return the assertor step
      */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate) {
@@ -491,6 +493,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
+     * @param <E>
+     *            The type of the exception
      * @return the assertor step
      */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate, final CharSequence message,
@@ -513,6 +517,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
+     * @param <E>
+     *            The type of the exception
      * @return the assertor step
      */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate, final Locale locale, final CharSequence message,

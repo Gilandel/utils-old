@@ -16,7 +16,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Utility class to prepare the check of {@link Class}
@@ -53,7 +52,7 @@ public class AssertorClass extends Constants {
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> superType.isAssignableFrom(type);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CLASS.ASSIGNABLE, false,
-                Pair.of(superType, EnumType.CLASS));
+                new Parameter<>(superType, EnumType.CLASS));
     }
 
     /**
@@ -195,6 +194,6 @@ public class AssertorClass extends Constants {
 
         final Predicate<Class<T>> preChecker = (type) -> type != null && StringUtils.isNotEmpty(name);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, Pair.of(name, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new Parameter<>(name, EnumType.CHAR_SEQUENCE));
     }
 }

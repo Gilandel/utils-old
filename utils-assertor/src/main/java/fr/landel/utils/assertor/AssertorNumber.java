@@ -14,8 +14,6 @@ package fr.landel.utils.assertor;
 
 import java.util.function.BiPredicate;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import fr.landel.utils.commons.Comparators;
 import fr.landel.utils.commons.NumberUtils;
 
@@ -51,7 +49,7 @@ public class AssertorNumber extends Constants {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) == 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, false, new Parameter<>(number));
     }
 
     /**
@@ -77,7 +75,7 @@ public class AssertorNumber extends Constants {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) != 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, true, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, true, new Parameter<>(number));
     }
 
     /**
@@ -171,7 +169,7 @@ public class AssertorNumber extends Constants {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) > 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GT, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GT, false, new Parameter<>(number));
     }
 
     /**
@@ -197,7 +195,7 @@ public class AssertorNumber extends Constants {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) >= 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GTE, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GTE, false, new Parameter<>(number));
     }
 
     /**
@@ -223,7 +221,7 @@ public class AssertorNumber extends Constants {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) < 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LT, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LT, false, new Parameter<>(number));
     }
 
     /**
@@ -249,6 +247,6 @@ public class AssertorNumber extends Constants {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) <= 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LTE, false, Pair.of(number, EnumType.getType(number)));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LTE, false, new Parameter<>(number));
     }
 }

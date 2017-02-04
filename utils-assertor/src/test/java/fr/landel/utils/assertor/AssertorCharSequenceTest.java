@@ -274,6 +274,142 @@ public class AssertorCharSequenceTest extends AbstractTest {
 
     /**
      * Test method for
+     * {@link AssertorCharSequence#isEqual(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsEqual() {
+        assertTrue(Assertor.that("test").isEqual("test").isOK());
+        assertFalse(Assertor.that("test").isEqual("Test").isOK());
+        assertFalse(Assertor.that("te\r\nst").isEqual("tes\nt").isOK());
+        assertFalse(Assertor.that("te\r\nst").isEqual("Tes\nt").isOK());
+        assertTrue(Assertor.that("test").isEqual(new StringBuilder("test")).isOK());
+        assertTrue(Assertor.that((String) null).isEqual(null).isOK());
+        assertFalse(Assertor.that((String) null).isEqual("test").isOK());
+        assertFalse(Assertor.that("test").isEqual(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isNotEqual(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsNotEqual() {
+        assertFalse(Assertor.that("test").isNotEqual("test").isOK());
+        assertTrue(Assertor.that("test").isNotEqual("Test").isOK());
+        assertTrue(Assertor.that("te\r\nst").isNotEqual("tes\nt").isOK());
+        assertTrue(Assertor.that("te\r\nst").isNotEqual("Tes\nt").isOK());
+        assertFalse(Assertor.that("test").isNotEqual(new StringBuilder("test")).isOK());
+        assertFalse(Assertor.that((String) null).isNotEqual(null).isOK());
+        assertTrue(Assertor.that((String) null).isNotEqual("test").isOK());
+        assertTrue(Assertor.that("test").isNotEqual(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isEqualIgnoreCase(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsEqualIgnoreCase() {
+        assertTrue(Assertor.that("test").isEqualIgnoreCase("test").isOK());
+        assertTrue(Assertor.that("test").isEqualIgnoreCase("Test").isOK());
+        assertFalse(Assertor.that("te\r\nst").isEqualIgnoreCase("tes\nt").isOK());
+        assertFalse(Assertor.that("te\r\nst").isEqualIgnoreCase("Tes\nt").isOK());
+        assertTrue(Assertor.that("test").isEqualIgnoreCase(new StringBuilder("test")).isOK());
+        assertTrue(Assertor.that((String) null).isEqualIgnoreCase(null).isOK());
+        assertFalse(Assertor.that((String) null).isEqualIgnoreCase("test").isOK());
+        assertFalse(Assertor.that("test").isEqualIgnoreCase(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isNotEqualIgnoreCase(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsNotEqualIgnoreCase() {
+        assertFalse(Assertor.that("test").isNotEqualIgnoreCase("test").isOK());
+        assertFalse(Assertor.that("test").isNotEqualIgnoreCase("Test").isOK());
+        assertTrue(Assertor.that("te\r\nst").isNotEqualIgnoreCase("tes\nt").isOK());
+        assertTrue(Assertor.that("te\r\nst").isNotEqualIgnoreCase("Tes\nt").isOK());
+        assertFalse(Assertor.that("test").isNotEqualIgnoreCase(new StringBuilder("test")).isOK());
+        assertFalse(Assertor.that((String) null).isNotEqualIgnoreCase(null).isOK());
+        assertTrue(Assertor.that((String) null).isNotEqualIgnoreCase("test").isOK());
+        assertTrue(Assertor.that("test").isNotEqualIgnoreCase(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isEqualIgnoreLineReturns(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsEqualIgnoreLineReturns() {
+        assertTrue(Assertor.that("test").isEqualIgnoreLineReturns("test").isOK());
+        assertFalse(Assertor.that("test").isEqualIgnoreLineReturns("Test").isOK());
+        assertTrue(Assertor.that("te\r\nst").isEqualIgnoreLineReturns("tes\nt").isOK());
+        assertFalse(Assertor.that("te\r\nst").isEqualIgnoreLineReturns("Tes\nt").isOK());
+        assertTrue(Assertor.that("test").isEqualIgnoreLineReturns(new StringBuilder("test")).isOK());
+        assertTrue(Assertor.that((String) null).isEqualIgnoreLineReturns(null).isOK());
+        assertFalse(Assertor.that((String) null).isEqualIgnoreLineReturns("test").isOK());
+        assertFalse(Assertor.that("test").isEqualIgnoreLineReturns(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isNotEqualIgnoreLineReturns(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsNotEqualIgnoreLineReturns() {
+        assertFalse(Assertor.that("test").isNotEqualIgnoreLineReturns("test").isOK());
+        assertTrue(Assertor.that("test").isNotEqualIgnoreLineReturns("Test").isOK());
+        assertFalse(Assertor.that("te\r\nst").isNotEqualIgnoreLineReturns("tes\nt").isOK());
+        assertTrue(Assertor.that("te\r\nst").isNotEqualIgnoreLineReturns("Tes\nt").isOK());
+        assertFalse(Assertor.that("test").isNotEqualIgnoreLineReturns(new StringBuilder("test")).isOK());
+        assertFalse(Assertor.that((String) null).isNotEqualIgnoreLineReturns(null).isOK());
+        assertTrue(Assertor.that((String) null).isNotEqualIgnoreLineReturns("test").isOK());
+        assertTrue(Assertor.that("test").isNotEqualIgnoreLineReturns(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isEqualIgnoreCaseAndLineReturns(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsEqualIgnoreCaseAndLineReturns() {
+        assertTrue(Assertor.that("test").isEqualIgnoreCaseAndLineReturns("test").isOK());
+        assertTrue(Assertor.that("test").isEqualIgnoreCaseAndLineReturns("Test").isOK());
+        assertTrue(Assertor.that("te\r\nst").isEqualIgnoreCaseAndLineReturns("tes\nt").isOK());
+        assertTrue(Assertor.that("te\r\nst").isEqualIgnoreCaseAndLineReturns("Tes\nt").isOK());
+        assertTrue(Assertor.that("test").isEqualIgnoreCaseAndLineReturns(new StringBuilder("test")).isOK());
+        assertTrue(Assertor.that((String) null).isEqualIgnoreCaseAndLineReturns(null).isOK());
+        assertFalse(Assertor.that((String) null).isEqualIgnoreCaseAndLineReturns("test").isOK());
+        assertFalse(Assertor.that("test").isEqualIgnoreCaseAndLineReturns(null).isOK());
+    }
+
+    /**
+     * Test method for
+     * {@link AssertorCharSequence#isNotEqual(StepAssertor, CharSequence, boolean, boolean, Message)}
+     * .
+     */
+    @Test
+    public void testIsNotEqualIgnoreCaseAndLineReturns() {
+        assertFalse(Assertor.that("test").isNotEqualIgnoreCaseAndLineReturns("test").isOK());
+        assertFalse(Assertor.that("test").isNotEqualIgnoreCaseAndLineReturns("Test").isOK());
+        assertFalse(Assertor.that("te\r\nst").isNotEqualIgnoreCaseAndLineReturns("tes\nt").isOK());
+        assertFalse(Assertor.that("te\r\nst").isNotEqualIgnoreCaseAndLineReturns("Tes\nt").isOK());
+        assertFalse(Assertor.that("test").isNotEqualIgnoreCaseAndLineReturns(new StringBuilder("test")).isOK());
+        assertFalse(Assertor.that((String) null).isNotEqualIgnoreCaseAndLineReturns(null).isOK());
+        assertTrue(Assertor.that((String) null).isNotEqualIgnoreCaseAndLineReturns("test").isOK());
+        assertTrue(Assertor.that("test").isNotEqualIgnoreCaseAndLineReturns(null).isOK());
+    }
+
+    /**
+     * Test method for
      * {@link AssertorCharSequence#contains(String, String, String, Object...)}
      * .
      */

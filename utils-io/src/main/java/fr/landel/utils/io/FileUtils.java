@@ -38,6 +38,43 @@ import fr.landel.utils.assertor.Assertor;
  */
 public final class FileUtils {
 
+    /**
+     * Character to create a chariot return
+     */
+    public static final char CR = '\r';
+
+    /**
+     * Character to create a newline under Unix
+     */
+    public static final char LF = '\n';
+
+    /**
+     * Characters to create a newline under Windows
+     */
+    public static final String CRLF = "\r\n";
+
+    /**
+     * Characters to create a newline under MacOS
+     */
+    public static final String LFCR = "\n\r";
+
+    /**
+     * Characters to create a newline under Windows
+     */
+    public static final String NEWLINE_WINDOWS = CRLF;
+
+    /**
+     * Characters to create a newline under Unix
+     */
+    public static final String NEWLINE_UNIX = String.valueOf(LF);
+
+    /**
+     * Characters to create a newline under MacOS
+     */
+    public static final String NEWLINE_MACOS = LFCR;
+
+    private static final String C = String.valueOf(CR);
+    private static final String L = String.valueOf(LF);
     private static final int BUFFER_SIZE = 10240;
 
     /**
@@ -374,5 +411,102 @@ public final class FileUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Convert all newline characters into Windows newlines.
+     * 
+     * @param input
+     *            The text to convert
+     * @return The text converted
+     */
+    public static StringBuilder convertToWindows(final StringBuilder input) {
+        final StringBuilder output = new StringBuilder(input);
+
+        int pos = 0;
+        while ((pos = output.indexOf(LFCR, pos)) > -1) {
+            output.replace(pos, pos + 2, CRLF);
+            pos++;
+        }
+        pos = 0;
+        while ((pos = output.indexOf(L, pos)) > -1) {
+            if (pos == 0 || output.charAt(pos - 1) != CR) {
+                output.replace(pos, pos + 1, CRLF);
+            }
+            pos++;
+        }
+        pos = 0;
+        final int len = output.length();
+        while ((pos = output.indexOf(C, pos)) > -1) {
+            if (pos == len - 1 || output.charAt(pos + 1) != LF) {
+                output.replace(pos, pos + 1, CRLF);
+            }
+            pos++;
+        }
+
+        return output;
+    }
+
+    /**
+     * Convert all newline characters into Unix newlines.
+     * 
+     * @param input
+     *            The text to convert
+     * @return The text converted
+     */
+    public static StringBuilder convertToUnix(final StringBuilder input) {
+        final StringBuilder output = new StringBuilder(input);
+
+        int pos = 0;
+        while ((pos = output.indexOf(LFCR, pos)) > -1) {
+            output.replace(pos, pos + 2, L);
+            pos++;
+        }
+        pos = 0;
+        while ((pos = output.indexOf(CRLF, pos)) > -1) {
+            output.replace(pos, pos + 2, L);
+            pos++;
+        }
+        pos = 0;
+        while ((pos = output.indexOf(C, pos)) > -1) {
+            output.replace(pos, pos + 1, L);
+            pos++;
+        }
+
+        return output;
+    }
+
+    /**
+     * Convert all newline characters into Mac OS newlines.
+     * 
+     * @param input
+     *            The text to convert
+     * @return The text converted
+     */
+    public static StringBuilder convertToMacOS(final StringBuilder input) {
+        final StringBuilder output = new StringBuilder(input);
+
+        int pos = 0;
+        while ((pos = output.indexOf(CRLF, pos)) > -1) {
+            output.replace(pos, pos + 2, LFCR);
+            pos++;
+        }
+        pos = 0;
+        while ((pos = output.indexOf(C, pos)) > -1) {
+            if (pos == 0 || output.charAt(pos - 1) != LF) {
+                output.replace(pos, pos + 1, LFCR);
+            }
+            pos++;
+        }
+        pos = 0;
+        final int len = output.length();
+        while ((pos = output.indexOf(L, pos)) > -1) {
+            if (pos == len - 1 || output.charAt(pos + 1) != CR) {
+                output.replace(pos, pos + 1, LFCR);
+            }
+            pos++;
+        }
+
+        return output;
     }
 }

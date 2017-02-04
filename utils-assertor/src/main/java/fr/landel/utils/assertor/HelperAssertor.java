@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.collections4.Transformer;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import fr.landel.utils.commons.EnumChar;
@@ -37,10 +36,10 @@ public class HelperAssertor extends Constants {
      */
     protected static final CharSequence EMPTY_STRING = "";
 
-    protected static final Transformer<Pair<Object, EnumType>, Object> PARAM_TRANSFORMER = new Transformer<Pair<Object, EnumType>, Object>() {
+    protected static final Transformer<Parameter<?>, Object> PARAM_TRANSFORMER = new Transformer<Parameter<?>, Object>() {
         @Override
-        public Object transform(final Pair<Object, EnumType> input) {
-            return input.getKey();
+        public Object transform(final Parameter<?> input) {
+            return input.getObject();
         }
     };
 
@@ -103,19 +102,21 @@ public class HelperAssertor extends Constants {
         EnumOperator operator = null;
         final StringBuilder message = new StringBuilder();
         Object object = null;
+        boolean checked = false;
         EnumType type = null;
-        Pair<Object, EnumType> pair = null;
+        Parameter<?> param = null;
 
-        final List<Pair<Object, EnumType>> parameters = new ArrayList<>();
+        final List<Parameter<?>> parameters = new ArrayList<>();
 
         for (StepAssertor<?> s : steps) {
             if (EnumStep.CREATION.equals(s.getStepType())) {
 
                 object = s.getObject();
                 type = s.getType();
-                pair = Pair.of(object, type);
+                checked = s.isChecked();
+                param = new Parameter<>(object, type, checked);
 
-                parameters.add(pair);
+                parameters.add(param);
 
             } else if (EnumStep.ASSERTION.equals(s.getStepType())) {
 
@@ -124,10 +125,10 @@ public class HelperAssertor extends Constants {
                 if (!EnumOperator.AND.equals(operator) || valid) {
                     // if precondition returns false, we end all treatments
                     if (!HelperAssertor.preCheck(s, object)) {
-                        return HelperAssertor.getPreconditionMessage(s, pair, parameters, loadMessage);
+                        return HelperAssertor.getPreconditionMessage(s, param, parameters, loadMessage);
 
                     } else {
-                        valid = HelperAssertor.validatesAndGetMessage(s, pair, object, valid, not, operator, message, loadMessage);
+                        valid = HelperAssertor.validatesAndGetMessage(s, param, object, valid, not, operator, message, loadMessage);
                     }
                 }
 
@@ -145,10 +146,10 @@ public class HelperAssertor extends Constants {
 
                 operator = s.getOperator();
                 object = s.getObject();
-                type = s.getType();
-                pair = Pair.of(object, type);
+                checked = s.isChecked();
+                param = new Parameter<>(object, type, checked);
 
-                parameters.add(pair);
+                parameters.add(param);
 
             } else if (EnumStep.SUB.equals(s.getStepType()) && s.getSubStep() != null) {
                 final Triple<Boolean, EnumOperator, ResultAssertor> output = HelperAssertor.managesSub(s, parameters, valid, operator,
@@ -166,11 +167,11 @@ public class HelperAssertor extends Constants {
         return new ResultAssertor(true, valid, message.toString(), parameters);
     }
 
-    private static <T> ResultAssertor getPreconditionMessage(final StepAssertor<T> step, final Pair<Object, EnumType> pair,
-            final List<Pair<Object, EnumType>> parameters, final boolean loadMessage) {
+    private static <T> ResultAssertor getPreconditionMessage(final StepAssertor<T> step, final Parameter<?> param,
+            final List<Parameter<?>> parameters, final boolean loadMessage) {
 
-        final List<Pair<Object, EnumType>> assertParameters = new ArrayList<>();
-        assertParameters.add(pair);
+        final List<Parameter<?>> assertParameters = new ArrayList<>();
+        assertParameters.add(param);
         assertParameters.addAll(step.getParameters());
 
         final String error;
@@ -184,7 +185,7 @@ public class HelperAssertor extends Constants {
         return new ResultAssertor(false, false, error, parameters);
     }
 
-    private static <T> boolean validatesAndGetMessage(final StepAssertor<T> step, final Pair<Object, EnumType> pair, final Object object,
+    private static <T> boolean validatesAndGetMessage(final StepAssertor<T> step, final Parameter<?> param, final Object object,
             final boolean valid, final boolean not, final EnumOperator operator, final StringBuilder message, final boolean loadMessage) {
 
         boolean nextValid = HelperAssertor.isValid(valid, HelperAssertor.check(step, object, not), operator);
@@ -194,8 +195,8 @@ public class HelperAssertor extends Constants {
                 message.append(operator);
             }
 
-            final List<Pair<Object, EnumType>> assertParameters = new ArrayList<>();
-            assertParameters.add(pair);
+            final List<Parameter<?>> assertParameters = new ArrayList<>();
+            assertParameters.add(param);
             assertParameters.addAll(step.getParameters());
 
             message.append(
@@ -207,7 +208,7 @@ public class HelperAssertor extends Constants {
     }
 
     private static <T> Triple<Boolean, EnumOperator, ResultAssertor> managesSub(final StepAssertor<T> step,
-            final List<Pair<Object, EnumType>> parameters, final boolean valid, final EnumOperator operator, final StringBuilder message,
+            final List<Parameter<?>> parameters, final boolean valid, final EnumOperator operator, final StringBuilder message,
             final boolean loadMessage) {
 
         final StepAssertor<?> subStep = step.getSubStep();
@@ -293,5 +294,18 @@ public class HelperAssertor extends Constants {
         } else { // ANY
             return found > 0;
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <T> T getLastChecked(final List<Parameter<?>> parameters) {
+        final int size = parameters.size();
+        T object = null;
+        for (int i = size - 1; i >= 0; i--) {
+            if (parameters.get(i).isChecked()) {
+                object = (T) parameters.get(i).getObject();
+                break;
+            }
+        }
+        return object;
     }
 }

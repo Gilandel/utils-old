@@ -15,8 +15,6 @@ package fr.landel.utils.assertor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 /**
  * To store the assertor result
  *
@@ -29,7 +27,7 @@ public class ResultAssertor {
     private final boolean precondition;
     private final boolean valid;
     private final String message;
-    private final List<Pair<Object, EnumType>> parameters;
+    private final List<Parameter<?>> parameters;
 
     /**
      * Constructor
@@ -43,7 +41,7 @@ public class ResultAssertor {
      * @param parameters
      *            the complete list of parameters
      */
-    public ResultAssertor(boolean precondition, boolean valid, String message, final List<Pair<Object, EnumType>> parameters) {
+    public ResultAssertor(boolean precondition, boolean valid, String message, final List<Parameter<?>> parameters) {
         this.precondition = precondition;
         this.valid = valid;
         this.message = message;
@@ -74,7 +72,7 @@ public class ResultAssertor {
     /**
      * @return the parameters
      */
-    public List<Pair<Object, EnumType>> getParameters() {
+    public List<Parameter<?>> getParameters() {
         return this.parameters;
     }
 }

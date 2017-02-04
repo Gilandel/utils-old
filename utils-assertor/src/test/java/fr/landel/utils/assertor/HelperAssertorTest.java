@@ -16,8 +16,11 @@ package fr.landel.utils.assertor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -121,5 +124,23 @@ public class HelperAssertorTest extends AbstractTest {
 
         PredicateStepCharSequence<CharSequence> step5 = () -> (StepAssertor<CharSequence>) null;
         assertTrue(Assertor.that("test").isNotBlank().and(step5).isOK());
+    }
+
+    /**
+     * Test method for {@link HelperAssertor#getLastChecked} .
+     */
+    @Test
+    public void testGetLastChecked() {
+        final List<Parameter<?>> params = new ArrayList<>();
+
+        assertNull(HelperAssertor.getLastChecked(params));
+
+        params.add(new Parameter<>(true, EnumType.BOOLEAN));
+
+        assertNull(HelperAssertor.getLastChecked(params));
+
+        params.add(new Parameter<>(true, EnumType.BOOLEAN, true));
+
+        assertTrue(HelperAssertor.getLastChecked(params));
     }
 }

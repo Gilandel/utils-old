@@ -16,7 +16,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import org.apache.commons.collections4.IterableUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Utility class to prepare the check of {@link Iterable}
@@ -52,7 +51,7 @@ public class AssertorIterable extends Constants {
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> IterableUtils.size(iterable) == size;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.SIZE, false,
-                Pair.of(size, EnumType.NUMBER_INTEGER));
+                new Parameter<>(size, EnumType.NUMBER_INTEGER, false));
     }
 
     /**
@@ -173,8 +172,7 @@ public class AssertorIterable extends Constants {
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> AssertorIterable.has(iterable, value);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.CONTAINS_OBJECT, false,
-                Pair.of(value, EnumType.getType(value)));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.CONTAINS_OBJECT, false, new Parameter<>(value));
     }
 
     private static <T> StepAssertor<Iterable<T>> contains(final StepAssertor<Iterable<T>> step, final Iterable<T> iterable,
@@ -184,7 +182,7 @@ public class AssertorIterable extends Constants {
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable1, not) -> AssertorIterable.has(iterable1, iterable, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, Pair.of(iterable, EnumType.ITERABLE));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(iterable, EnumType.ITERABLE));
     }
 
     private static <T> boolean has(final Iterable<T> iterable, final T object) {

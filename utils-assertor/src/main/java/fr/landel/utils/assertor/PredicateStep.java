@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
+import fr.landel.utils.commons.Result;
 
 /**
  * This class is an intermediate or final link in chain, see
@@ -120,9 +120,11 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * Assertor.that("text").isBlank().toThrow(); // throw an exception
      * Assertor.that("text").isNotBlank().toThrow(); // do nothing
      * </pre>
+     * 
+     * @return the last checked object
      */
-    default void toThrow() {
-        this.toThrow((CharSequence) null);
+    default T toThrow() {
+        return this.toThrow((CharSequence) null);
     }
 
     /**
@@ -147,9 +149,10 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      *            the message to thrown
      * @param arguments
      *            the messages arguments
+     * @return the last checked object
      */
-    default void toThrow(final CharSequence message, final Object... arguments) {
-        this.toThrow(null, message, arguments);
+    default T toThrow(final CharSequence message, final Object... arguments) {
+        return this.toThrow(null, message, arguments);
     }
 
     /**
@@ -181,8 +184,9 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      *            the message to thrown
      * @param arguments
      *            the messages arguments
+     * @return the last checked object
      */
-    default void toThrow(final Locale locale, final CharSequence message, final Object... arguments) {
+    default T toThrow(final Locale locale, final CharSequence message, final Object... arguments) {
         final ResultAssertor result = HelperAssertor.combine(this.getStep(), message == null);
 
         if (!result.isPrecondition() || !result.isValid()) {
@@ -194,6 +198,8 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
             }
             throw new IllegalArgumentException(error);
         }
+
+        return HelperAssertor.getLastChecked(result.getParameters());
     }
 
     /**
@@ -201,7 +207,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * wrong. The function provide two data:
      * <ul>
      * <li>first: the current error message</li>
-     * <li>second: the list of parameters as {@link Triple} of:
+     * <li>second: the list of parameters as {@link Parameter} of:
      * <ul>
      * <li>object to check</li>
      * <li>the type of object</li>
@@ -229,12 +235,13 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @param function
      *            the function to apply if assertion is wrong (required, cannot
      *            be {@code null}, throw a {@link NullPointerException})
+     * @return the last checked object
      * @param <E>
      *            the generic exception type
      * @throws E
      *             The type of exception to throw
      */
-    default <E extends Throwable> void toThrow(final BiFunction<String, List<Pair<Object, EnumType>>, E> function) throws E {
+    default <E extends Throwable> T toThrow(final BiFunction<String, List<Parameter<?>>, E> function) throws E {
         Objects.requireNonNull(function);
 
         final ResultAssertor result = HelperAssertor.combine(this.getStep(), true);
@@ -245,6 +252,8 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
 
             throw exception;
         }
+
+        return HelperAssertor.getLastChecked(result.getParameters());
     }
 
     /**
@@ -263,12 +272,13 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @param supplier
      *            the supplier to call if assertion is wrong (required, cannot
      *            be {@code null}, throw a {@link NullPointerException})
+     * @return the last checked object
      * @param <E>
      *            the generic exception type
      * @throws E
      *             The type of exception to throw
      */
-    default <E extends Throwable> void toThrow(final Supplier<E> supplier) throws E {
+    default <E extends Throwable> T toThrow(final Supplier<E> supplier) throws E {
         Objects.requireNonNull(supplier);
 
         final ResultAssertor result = HelperAssertor.combine(this.getStep(), false);
@@ -276,6 +286,8 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
         if (!result.isPrecondition() || !result.isValid()) {
             throw supplier.get();
         }
+
+        return HelperAssertor.getLastChecked(result.getParameters());
     }
 
     /**
@@ -294,12 +306,13 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @param injectSuppressed
      *            if internal exception is added to the specific exception as
      *            suppressed
+     * @return the last checked object
      * @param <E>
      *            the generic exception type
      * @throws E
      *             the type of exception to throw
      */
-    default <E extends Throwable> void toThrow(final E exception, final boolean injectSuppressed) throws E {
+    default <E extends Throwable> T toThrow(final E exception, final boolean injectSuppressed) throws E {
         final ResultAssertor result = HelperAssertor.combine(this.getStep(), exception == null || injectSuppressed);
 
         if (!result.isPrecondition() || !result.isValid()) {
@@ -312,6 +325,86 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
                 this.toThrow();
             }
         }
+
+        return HelperAssertor.getLastChecked(result.getParameters());
+    }
+
+    /**
+     * Get the object as {@link Result}. This method is similar to
+     * {@link #get()}. The difference is even if the result is {@code null} it's
+     * not considered as empty.
+     * 
+     * <pre>
+     * Assertor.that("text").isBlank().result().isPresent();
+     * // = false
+     * Assertor.that("text").isBlank().result().get();
+     * // =&gt; throw a NoSuchElementException exception
+     * Assertor.that("text").isBlank().result().orElse("default");
+     * // = "default"
+     * 
+     * Assertor.that("text").isNotBlank().result().isPresent();
+     * // = true
+     * Assertor.that("text").isNotBlank().result().get();
+     * // = "text"
+     * Assertor.that("text").isNotBlank().result().orElse("default");
+     * // = "text"
+     * 
+     * // Difference with get() method which returns an Optional object
+     * Assertor.that((String) null).isBlank().result().orElse("default");
+     * // = null
+     * Assertor.that((String) null).isNotBlank().result().orElse("default");
+     * // = "default"
+     * </pre>
+     * 
+     * @return The result
+     */
+    default Result<T> result() {
+        final ResultAssertor result = HelperAssertor.combine(this.getStep(), false);
+
+        if (!result.isPrecondition() || !result.isValid()) {
+            return Result.empty();
+        }
+
+        return Result.ofNullable(HelperAssertor.getLastChecked(result.getParameters()));
+    }
+
+    /**
+     * Get the object as {@link Optional}. This method is similar to
+     * {@link #result()}. The difference is if the result is {@code null} it's
+     * considered as empty.
+     * 
+     * <pre>
+     * Assertor.that("text").isBlank().get().isPresent();
+     * // = false
+     * Assertor.that("text").isBlank().get().get();
+     * // =&gt; throw a NoSuchElementException exception
+     * Assertor.that("text").isBlank().get().orElse("default");
+     * // = "default"
+     * 
+     * Assertor.that("text").isNotBlank().get().isPresent();
+     * // = true
+     * Assertor.that("text").isNotBlank().get().get();
+     * // = "text"
+     * Assertor.that("text").isNotBlank().get().orElse("default");
+     * // = "text"
+     * 
+     * // Difference with result() method which returns a Result object
+     * Assertor.that((String) null).isBlank().get().orElse("default");
+     * // = "default"
+     * Assertor.that((String) null).isNotBlank().get().orElse("default");
+     * // = "default"
+     * </pre>
+     * 
+     * @return The optional
+     */
+    default Optional<T> get() {
+        final ResultAssertor result = HelperAssertor.combine(this.getStep(), false);
+
+        if (!result.isPrecondition() || !result.isValid()) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(HelperAssertor.getLastChecked(result.getParameters()));
     }
 
     /**

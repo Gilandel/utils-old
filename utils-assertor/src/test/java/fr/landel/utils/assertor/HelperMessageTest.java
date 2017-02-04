@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
 import fr.landel.utils.assertor.expect.Expect;
@@ -104,14 +103,14 @@ public class HelperMessageTest extends AbstractTest {
             Assertor.that("texte11").isBlank().or().isNotEqual("texte11").toThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
-                "the char sequence 'texte11' should be null, empty or blank OR the object 'texte11' should NOT be equal to 'texte11'",
+                "the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte11' should NOT be equal to 'texte11'",
                 JUNIT_ERROR);
 
         try {
             Assertor.that("texte11").isNotBlank().and().isNotEqual("texte11").toThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals("the object 'texte11' should NOT be equal to 'texte11'", e.getMessage());
+            assertEquals("the char sequence 'texte11' should NOT be equal to 'texte11'", e.getMessage());
         }
 
         try {
@@ -119,7 +118,7 @@ public class HelperMessageTest extends AbstractTest {
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals(
-                    "the char sequence 'texte11' should be null, empty or blank OR the object 'texte11' should NOT be equal to 'texte11'",
+                    "the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte11' should NOT be equal to 'texte11'",
                     e.getMessage());
         }
 
@@ -127,7 +126,8 @@ public class HelperMessageTest extends AbstractTest {
             Assertor.that("texte11").isBlank().or("texte12").isEqual("texte13").toThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
-            assertEquals("the char sequence 'texte11' should be null, empty or blank OR the object 'texte12' should be equal to 'texte12'",
+            assertEquals(
+                    "the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte12' should be equal to 'texte13'",
                     e.getMessage());
         }
     }
@@ -220,7 +220,7 @@ public class HelperMessageTest extends AbstractTest {
      */
     @Test
     public void testConvertParams() {
-        List<Pair<Object, EnumType>> parameters = new ArrayList<>();
+        final List<Parameter<?>> parameters = new ArrayList<>();
 
         final Date date1 = new Date(1464475553640L);
         final Calendar calendar1 = DateUtils.getCalendar(date1);
@@ -230,20 +230,20 @@ public class HelperMessageTest extends AbstractTest {
         map.put("key1", "value1");
         map.put("key2", "value2");
 
-        parameters.add(Pair.of(true, EnumType.BOOLEAN));
-        parameters.add(Pair.of(integers, EnumType.ARRAY));
-        parameters.add(Pair.of(Calendar.YEAR, EnumType.CALENDAR_FIELD));
-        parameters.add(Pair.of(Calendar.ZONE_OFFSET, EnumType.CALENDAR_FIELD));
-        parameters.add(Pair.of("text", EnumType.CHAR_SEQUENCE));
-        parameters.add(Pair.of(HelperMessage.class, EnumType.CLASS));
-        parameters.add(Pair.of(date1, EnumType.DATE));
-        parameters.add(Pair.of(calendar1, EnumType.DATE));
-        parameters.add(Pair.of(EnumOperator.AND, EnumType.ENUMERATION));
-        parameters.add(Pair.of(texts, EnumType.ITERABLE));
-        parameters.add(Pair.of(map, EnumType.MAP));
-        parameters.add(Pair.of(3.25f, EnumType.NUMBER_DECIMAL));
-        parameters.add(Pair.of(12, EnumType.NUMBER_INTEGER));
-        parameters.add(Pair.of(Color.BLACK, EnumType.UNKNOWN));
+        parameters.add(new Parameter<>(true, EnumType.BOOLEAN));
+        parameters.add(new Parameter<>(integers, EnumType.ARRAY));
+        parameters.add(new Parameter<>(Calendar.YEAR, EnumType.CALENDAR_FIELD));
+        parameters.add(new Parameter<>(Calendar.ZONE_OFFSET, EnumType.CALENDAR_FIELD));
+        parameters.add(new Parameter<>("text", EnumType.CHAR_SEQUENCE));
+        parameters.add(new Parameter<>(HelperMessage.class, EnumType.CLASS));
+        parameters.add(new Parameter<>(date1, EnumType.DATE));
+        parameters.add(new Parameter<>(calendar1, EnumType.DATE));
+        parameters.add(new Parameter<>(EnumOperator.AND, EnumType.ENUMERATION));
+        parameters.add(new Parameter<>(texts, EnumType.ITERABLE));
+        parameters.add(new Parameter<>(map, EnumType.MAP));
+        parameters.add(new Parameter<>(3.25f, EnumType.NUMBER_DECIMAL));
+        parameters.add(new Parameter<>(12, EnumType.NUMBER_INTEGER));
+        parameters.add(new Parameter<>(Color.BLACK, EnumType.UNKNOWN));
 
         Object[] convertedParams = HelperMessage.convertParams(parameters);
 
@@ -277,5 +277,13 @@ public class HelperMessageTest extends AbstractTest {
         assertEquals(12, convertedParams[i]);
         i++;
         assertEquals(Color.BLACK, convertedParams[i]);
+    }
+
+    /**
+     * Test method for {@link Parameter#toString()}.
+     */
+    @Test
+    public void testParameterToString() {
+        assertEquals("Parameter[object=true,type=BOOLEAN,checked=false]", new Parameter<>(true, EnumType.BOOLEAN).toString());
     }
 }
