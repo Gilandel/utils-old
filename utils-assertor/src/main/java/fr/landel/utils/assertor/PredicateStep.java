@@ -464,8 +464,6 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * 
      * @param other
      *            the other or next checked {@link Boolean} to check
-     * @param <X>
-     *            the {@link Boolean} type
      * @return the predicate assertor
      */
     default PredicateAssertorBoolean and(final Boolean other) {
@@ -658,8 +656,6 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * 
      * @param other
      *            the other or next checked {@link Boolean} to check
-     * @param <X>
-     *            the {@link Boolean} type
      * @return the predicate assertor
      */
     default PredicateAssertorBoolean or(final Boolean other) {
@@ -850,8 +846,6 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * 
      * @param other
      *            the other or next checked {@link Boolean} to check
-     * @param <X>
-     *            the {@link Boolean} type
      * @return the predicate assertor
      */
     default PredicateAssertorBoolean xor(final Boolean other) {
