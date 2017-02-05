@@ -3,7 +3,7 @@
  * #%L
  * utils-assertor
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
