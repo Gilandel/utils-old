@@ -134,8 +134,8 @@ public class PredicateStepEndPointsTest extends AbstractTest {
             fail();
         }, IllegalArgumentException.class, "test", JUNIT_ERROR);
 
-        Assertor.that("text").isNotEmpty().toThrow(() -> new IllegalArgumentException());
-        Assertor.that("text").isNotEmpty().toThrow(DEFAULT_EXCEPTION_BUILDER);
+        assertEquals("text", Assertor.that("text").isNotEmpty().toThrow(() -> new IllegalArgumentException()));
+        assertEquals("text", Assertor.that("text").isNotEmpty().toThrow(DEFAULT_EXCEPTION_BUILDER));
 
         Expect.exception(() -> {
             Assertor.that("text").isEmpty().toThrow(DEFAULT_EXCEPTION_BUILDER);
@@ -154,6 +154,10 @@ public class PredicateStepEndPointsTest extends AbstractTest {
             Assertor.that("text").isEmpty().toThrow(() -> new IOException("error"));
             fail();
         }, IOException.class, "error", JUNIT_ERROR);
+
+        // Check if the checked instance is correctly returned
+        final Exception exception = new IllegalArgumentException();
+        assertEquals(exception, Assertor.that(exception).isNotNull().toThrow());
     }
 
     /**

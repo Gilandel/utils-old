@@ -18,13 +18,13 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * The basis class to start an assertor chain. The 'that' method is defined here
+ * The base class to start an assertor chain. The 'that' method is defined here
  * for all managed types.
  * 
  * <p>
  * Global locale can also be defined here. The locale will be used for decimal
- * conversion for example. This locale is used if no locale is defined for the
- * error message.
+ * conversion for example (see {@link String#format}). This locale is used if no
+ * locale is defined for the error message.
  * </p>
  *
  * @since Aug 3, 2016
@@ -54,50 +54,50 @@ public class Assertor {
     }
 
     /**
-     * First step to check a class.
+     * First step to check a {@link Class}.
      * 
      * @param clazz
-     *            the class to check
+     *            the {@link Class} to check
      * @param <T>
-     *            the type of class under checking
-     * @return the predicate class assertor
+     *            the type of {@link Class} under checking
+     * @return the predicate {@link Class} assertor
      */
     public static <T> PredicateAssertorClass<T> that(final Class<T> clazz) {
         return () -> new StepAssertor<>(clazz, EnumType.CLASS);
     }
 
     /**
-     * First step to check a boolean.
+     * First step to check a {@link Boolean}.
      * 
      * @param bool
-     *            the boolean to check
-     * @return the predicate boolean assertor
+     *            the {@link Boolean} to check
+     * @return the predicate {@link Boolean} assertor
      */
     public static PredicateAssertorBoolean that(final Boolean bool) {
         return () -> new StepAssertor<>(bool, EnumType.BOOLEAN);
     }
 
     /**
-     * First step to check a number.
+     * First step to check a {@link Number}.
      * 
      * @param number
-     *            the number to check
+     *            the {@link Number} to check
      * @param <N>
-     *            the type of number under checking
-     * @return the predicate number assertor
+     *            the type of {@link Number} under checking
+     * @return the predicate {@link Number} assertor
      */
     public static <N extends Number & Comparable<N>> PredicateAssertorNumber<N> that(final N number) {
         return () -> new StepAssertor<>(number, EnumType.getType(number));
     }
 
     /**
-     * First step to check a char sequence.
+     * First step to check a {@link CharSequence}.
      * 
      * @param charSequence
-     *            the char sequence to check
+     *            the {@link CharSequence} to check
      * @param <T>
-     *            the type of char sequence under checking
-     * @return the predicate char sequence assertor
+     *            the type of {@link CharSequence} under checking
+     * @return the predicate {@link CharSequence} assertor
      */
     public static <T extends CharSequence> PredicateAssertorCharSequence<T> that(final T charSequence) {
         return () -> new StepAssertor<>(charSequence, EnumType.CHAR_SEQUENCE);
@@ -117,83 +117,83 @@ public class Assertor {
     }
 
     /**
-     * First step to check an iterable.
+     * First step to check an {@link Iterable}.
      * 
      * @param iterable
-     *            the iterable to check
+     *            the {@link Iterable} to check
      * @param <T>
-     *            the type of iterable under checking
-     * @return the predicate iterable assertor
+     *            the type of {@link Iterable} under checking
+     * @return the predicate {@link Iterable} assertor
      */
     public static <T> PredicateAssertorIterable<T> that(final Iterable<T> iterable) {
         return () -> new StepAssertor<>(iterable, EnumType.ITERABLE);
     }
 
     /**
-     * First step to check a map.
+     * First step to check a {@link Map}.
      * 
      * @param map
-     *            the map to check
+     *            the {@link Map} to check
      * @param <K>
      *            the type of map's key under checking
      * @param <V>
      *            the type of map's value under checking
-     * @return the predicate map assertor
+     * @return the predicate {@link Map} assertor
      */
     public static <K, V> PredicateAssertorMap<K, V> that(final Map<K, V> map) {
         return () -> new StepAssertor<>(map, EnumType.MAP);
     }
 
     /**
-     * First step to check an enumeration.
+     * First step to check an {@link Enum}.
      * 
      * @param enumeration
-     *            the enumeration to check
+     *            the {@link Enum} to check
      * @param <T>
-     *            the type of enumeration under checking
-     * @return the predicate enumeration assertor
+     *            the type of {@link Enum} under checking
+     * @return the predicate {@link Enum} assertor
      */
     public static <T extends Enum<T>> PredicateAssertorEnum<T> that(final T enumeration) {
         return () -> new StepAssertor<>(enumeration, EnumType.ENUMERATION);
     }
 
     /**
-     * First step to check a date.
+     * First step to check a {@link Date}.
      * 
      * @param date
-     *            the date to check
-     * @return the predicate date assertor
+     *            the {@link Date} to check
+     * @return the predicate {@link Date} assertor
      */
     public static PredicateAssertorDate that(final Date date) {
         return () -> new StepAssertor<>(date, EnumType.DATE);
     }
 
     /**
-     * First step to check a calendar.
+     * First step to check a {@link Calendar}.
      * 
      * @param calendar
-     *            the calendar to check
-     * @return the predicate calendar assertor
+     *            the {@link Calendar} to check
+     * @return the predicate {@link Calendar} assertor
      */
     public static PredicateAssertorCalendar that(final Calendar calendar) {
         return () -> new StepAssertor<>(calendar, EnumType.CALENDAR);
     }
 
     /**
-     * Get the global locale used for generate messages of exceptions
+     * Get the global {@link Locale} used to generate messages of exceptions.
      * 
-     * @return the locale
+     * @return the {@link Locale}
      */
     public static final Locale getLocale() {
         return Assertor.locale;
     }
 
     /**
-     * Get the global locale used for generate messages of exceptions
+     * Get the global {@link Locale} used to generate messages of exceptions.
      * 
      * @param locale
-     *            The locale
-     * @return the locale if not null otherwise the default one
+     *            The {@link Locale}
+     * @return the {@link Locale} if not null otherwise the default one
      */
     public static final Locale getLocale(final Locale locale) {
         if (locale != null) {
@@ -203,11 +203,11 @@ public class Assertor {
     }
 
     /**
-     * Define the default locale for the assertor. Be aware in
-     * multi-threading...
+     * Define the default {@link Locale} for the assertor. Be aware in
+     * multi-threading context, the {@link Locale} is static...
      * 
      * @param locale
-     *            the locale to set
+     *            the {@link Locale} to set
      */
     public static final void setLocale(final Locale locale) {
         Assertor.locale = locale;

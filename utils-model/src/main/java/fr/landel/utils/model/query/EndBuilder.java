@@ -115,7 +115,7 @@ public class EndBuilder<E extends AbstractEntity<E, K>, K extends Serializable &
         final List<CharSequence> builder = new ArrayList<>();
         if (!this.groupByBuilder.isEmpty()) {
             builder.add(GROUP_BY);
-            builder.add(StringUtils.join(this.groupByBuilder, StringUtils.JOIN_SEPARATOR));
+            builder.add(StringUtils.join(this.groupByBuilder, StringUtils.SEPARATOR_COMMA));
         }
         if (this.havingBuilder != null) {
             builder.add(HAVING);
@@ -123,7 +123,7 @@ public class EndBuilder<E extends AbstractEntity<E, K>, K extends Serializable &
         }
         if (!this.orderByBuilder.isEmpty()) {
             builder.add(ORDER_BY);
-            builder.add(StringUtils.join(this.orderByBuilder, StringUtils.JOIN_SEPARATOR));
+            builder.add(StringUtils.join(this.orderByBuilder, StringUtils.SEPARATOR_COMMA));
         }
         return StringUtils.join(builder, SPACE);
     }

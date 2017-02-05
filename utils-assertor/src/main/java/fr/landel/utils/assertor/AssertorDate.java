@@ -129,8 +129,8 @@ public class AssertorDate extends Constants {
      * is around to the specified date (same type)
      * 
      * <p>
-     * precondition: neither dates cannot be null, {@code calendarField} must be
-     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * precondition: neither dates can be null, {@code calendarField} must be a
+     * valid field and {@code calendarAmount} cannot be equal to zero
      * </p>
      * 
      * Valid calendar field:
@@ -227,7 +227,7 @@ public class AssertorDate extends Constants {
      * is after the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null
+     * precondition: neither dates can be null
      * </p>
      * 
      * @param step
@@ -252,8 +252,8 @@ public class AssertorDate extends Constants {
      * is after the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null, {@code calendarField} must be
-     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * precondition: neither dates can be null, {@code calendarField} must be a
+     * valid field and {@code calendarAmount} cannot be equal to zero
      * </p>
      * 
      * Valid calendar field:
@@ -305,7 +305,7 @@ public class AssertorDate extends Constants {
      * is after or equals to the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null
+     * precondition: neither dates can be null
      * </p>
      * 
      * @param step
@@ -331,8 +331,8 @@ public class AssertorDate extends Constants {
      * is after or equals to the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null, {@code calendarField} must be
-     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * precondition: neither dates can be null, {@code calendarField} must be a
+     * valid field and {@code calendarAmount} cannot be equal to zero
      * </p>
      * 
      * Valid calendar field:
@@ -384,7 +384,7 @@ public class AssertorDate extends Constants {
      * is before the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null
+     * precondition: neither dates can be null
      * </p>
      * 
      * @param step
@@ -409,8 +409,8 @@ public class AssertorDate extends Constants {
      * is before the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null, {@code calendarField} must be
-     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * precondition: neither dates can be null, {@code calendarField} must be a
+     * valid field and {@code calendarAmount} cannot be equal to zero
      * </p>
      * 
      * Valid calendar field:
@@ -462,7 +462,7 @@ public class AssertorDate extends Constants {
      * is before or equals to the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null
+     * precondition: neither dates can be null
      * </p>
      * 
      * @param step
@@ -488,8 +488,8 @@ public class AssertorDate extends Constants {
      * is before or equals to the specified date (same type)
      * 
      * <p>
-     * precondition: neither date cannot be null, {@code calendarField} must be
-     * a valid field and {@code calendarAmount} cannot be equal to zero
+     * precondition: neither dates can be null, {@code calendarField} must be a
+     * valid field and {@code calendarAmount} cannot be equal to zero
      * </p>
      * 
      * Valid calendar field:

@@ -26,9 +26,14 @@ import java.util.Objects;
 public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
-     * The join separator (for readability)
+     * The comma separator to join (for readability)
      */
-    public static final String JOIN_SEPARATOR = ", ";
+    public static final String SEPARATOR_COMMA = ", ";
+
+    /**
+     * The semicolon separator to join (for readability)
+     */
+    public static final String SEPARATOR_SEMICOLON = "; ";
 
     private static final String BRACE_OPEN = "{";
     private static final String BRACE_CLOSE = "}";
@@ -336,7 +341,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     @SafeVarargs
     public static <T> String joinComma(final T... elements) {
-        return join(elements, JOIN_SEPARATOR);
+        return join(elements, SEPARATOR_COMMA);
     }
 
     /**
@@ -365,7 +370,7 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (iterable == null) {
             return null;
         }
-        return join(iterable.iterator(), JOIN_SEPARATOR);
+        return join(iterable.iterator(), SEPARATOR_COMMA);
     }
 
     /**

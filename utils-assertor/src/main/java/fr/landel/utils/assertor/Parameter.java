@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Assertor parameter
+ * Assertor parameter DTO
  *
  * @since Feb 4, 2017
  * @author Gilles

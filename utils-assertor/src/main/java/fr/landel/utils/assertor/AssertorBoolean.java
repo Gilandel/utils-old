@@ -26,6 +26,10 @@ public class AssertorBoolean extends Constants {
     /**
      * Prepare the next step to validate if the {@link Boolean} is {@code true}
      * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
      * @param step
      *            the current step
      * @param message
@@ -41,6 +45,10 @@ public class AssertorBoolean extends Constants {
 
     /**
      * Prepare the next step to validate if the {@link Boolean} is {@code false}
+     * 
+     * <p>
+     * precondition: none
+     * </p>
      * 
      * @param step
      *            the current step

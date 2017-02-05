@@ -260,7 +260,7 @@ public class AssertorCharSequence extends Constants {
      * the specified character
      * 
      * <p>
-     * precondition: neither {@link CharSequence} or {@code character} cannot be
+     * precondition: neither {@link CharSequence} or {@code character} can be
      * {@code null}
      * </p>
      * 
@@ -440,7 +440,7 @@ public class AssertorCharSequence extends Constants {
      * specified pattern
      * 
      * <p>
-     * precondition: neither {@link CharSequence} or {@code pattern} cannot be
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
      * {@code null}
      * </p>
      * 
@@ -500,7 +500,7 @@ public class AssertorCharSequence extends Constants {
      * in the {@link CharSequence}
      * 
      * <p>
-     * precondition: neither {@link CharSequence} or {@code pattern} cannot be
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
      * {@code null}
      * </p>
      * 
@@ -556,7 +556,7 @@ public class AssertorCharSequence extends Constants {
     }
 
     /**
-     * Searches in char sequence, if the specified sub sequence exists in.
+     * Search in char sequence, if the specified sub sequence exists in.
      * {@code null} values have to be checked first.
      * 
      * @param textToSearch

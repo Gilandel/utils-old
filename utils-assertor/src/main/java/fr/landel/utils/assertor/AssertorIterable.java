@@ -105,7 +105,7 @@ public class AssertorIterable extends Constants {
      * values
      * 
      * <p>
-     * precondition: neither {@link Iterable} cannot be {@code null} or empty
+     * precondition: neither {@link Iterable} can be {@code null} or empty
      * </p>
      * 
      * @param step
@@ -129,7 +129,7 @@ public class AssertorIterable extends Constants {
      * values
      * 
      * <p>
-     * precondition: neither {@link Iterable} cannot be {@code null} or empty
+     * precondition: neither {@link Iterable} can be {@code null} or empty
      * </p>
      * 
      * @param step

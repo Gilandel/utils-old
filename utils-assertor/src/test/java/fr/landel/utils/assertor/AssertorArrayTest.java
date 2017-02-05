@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import org.junit.Test;
@@ -52,10 +53,10 @@ public class AssertorArrayTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link AssertorArray#hasSize} .
+     * Test method for {@link AssertorArray#hasLength} .
      */
     @Test
-    public void testHasSize() {
+    public void testHasLength() {
         String[] array = new String[] {null, "2"};
         assertTrue(Assertor.that(array).hasLength(2).isOK());
         assertFalse(Assertor.that(array).hasLength(1).isOK());
@@ -68,13 +69,16 @@ public class AssertorArrayTest extends AbstractTest {
         assertTrue(Assertor.that(array).isEmpty().xor().hasLength(2).isOK());
 
         assertTrue(Assertor.that(array).hasLength(2).and(Assertor.that("ee").contains("ee")).and().contains("2").isOK());
+
+        Expect.exception(() -> Assertor.that(array).hasLength(12, Locale.US, "the array has not the specified length %2$d*").toThrow(),
+                IllegalArgumentException.class, "the array has not the specified length 12", JUNIT_ERROR);
     }
 
     /**
-     * Test method for {@link AssertorArray#hasNotSize} .
+     * Test method for {@link AssertorArray#hasNotLength} .
      */
     @Test
-    public void testHasNotSize() {
+    public void testHasNotLength() {
         String[] array = new String[] {null, "2"};
         assertTrue(Assertor.that(array).not().hasLength(1).isOK());
         assertFalse(Assertor.that(array).not().hasLength(2).isOK());

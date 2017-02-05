@@ -76,15 +76,15 @@ public class Message {
         }
         if (this.message != null) {
             if (this.locale != null) {
-                sb.append(StringUtils.JOIN_SEPARATOR);
+                sb.append(StringUtils.SEPARATOR_COMMA);
             }
             sb.append("message: ").append(this.message);
         }
         if (ArrayUtils.isNotEmpty(this.arguments)) {
             if (this.locale != null || this.message != null) {
-                sb.append(StringUtils.JOIN_SEPARATOR);
+                sb.append(StringUtils.SEPARATOR_COMMA);
             }
-            sb.append("arguments: ").append(StringUtils.join(this.arguments, StringUtils.JOIN_SEPARATOR));
+            sb.append("arguments: ").append(StringUtils.join(this.arguments, StringUtils.SEPARATOR_COMMA));
         }
         return sb.append("]").toString();
     }

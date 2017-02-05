@@ -45,7 +45,7 @@ public class QueryDTO extends AbstractQueryBuilder1 {
         add(NEW);
         add(dtoClass.getCanonicalName());
         add(PARENTHESIS_OPEN);
-        add(StringUtils.join(fields, StringUtils.JOIN_SEPARATOR));
+        add(StringUtils.joinComma(fields));
         add(PARENTHESIS_CLOSE);
     }
 

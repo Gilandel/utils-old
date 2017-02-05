@@ -258,13 +258,13 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
             Assertor.that(c1).isNotAround((Calendar) null, Calendar.SECOND, 5).toThrow();
             fail();
         }, IllegalArgumentException.class,
-                "neither dates cannot be null, calendar field has to be a supported value and calendar amount different to 0", JUNIT_ERROR);
+                "neither dates can be null, calendar field has to be a supported value and calendar amount different to 0", JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that(c1.getTime()).isNotAround((Date) null, Calendar.SECOND, 5).toThrow();
             fail();
         }, IllegalArgumentException.class,
-                "neither dates cannot be null, calendar field has to be a supported value and calendar amount different to 0", JUNIT_ERROR);
+                "neither dates can be null, calendar field has to be a supported value and calendar amount different to 0", JUNIT_ERROR);
     }
 
     /**

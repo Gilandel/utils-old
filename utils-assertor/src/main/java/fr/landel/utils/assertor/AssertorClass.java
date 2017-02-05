@@ -31,7 +31,7 @@ public class AssertorClass extends Constants {
      * the specified super type
      * 
      * <p>
-     * precondition: neither classes cannot be null
+     * precondition: neither classes can be null
      * </p>
      * 
      * @param step

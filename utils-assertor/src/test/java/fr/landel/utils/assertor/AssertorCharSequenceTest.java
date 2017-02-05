@@ -474,6 +474,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
         assertFalse(Assertor.that((String) null).contains("toto part en vacances").isOK());
         assertFalse(Assertor.that("toto").contains((CharSequence) null).isOK());
         assertFalse(Assertor.that("toto").contains((Character) null).isOK());
+        assertFalse(Assertor.that((String) null).contains((Character) null).isOK());
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").toThrow();

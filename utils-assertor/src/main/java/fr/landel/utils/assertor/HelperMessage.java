@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -43,7 +44,8 @@ import fr.landel.utils.commons.StringUtils;
 public final class HelperMessage extends Constants {
 
     // The regular expression from String#format
-    // (just for info, the original regular expression)
+    // (just for info, the original regular expression, it's replaced here cause
+    // of performance issues)
     // "%(\\d+\\$)?([-#+ 0,(\\<]*)?(\\d+)?(\\.\\d+)?([tT])?([a-zA-Z%])"
 
     /**
@@ -64,9 +66,36 @@ public final class HelperMessage extends Constants {
 
     private static final char PERCENT = '%';
     private static final char PREFIX = PERCENT;
+    private static final char DOT = '.';
     private static final char INDEX_SUFFIX = '$';
     private static final char TIME_LOWERCASE = 't';
     private static final char TIME_UPPERCASE = 'T';
+
+    // from ascii table (bounds are excluded)
+    private static final int NUM_START = 47;
+    private static final int NUM_END = 58;
+    private static final int NUM_FIRST = 48;
+    private static final int ALPHA_UC_START = 64; // Upper case
+    private static final int ALPHA_UC_END = 91; // Upper case
+    private static final int ALPHA_LC_START = 96; // Lower case
+    private static final int ALPHA_LC_END = 123; // Lower case
+
+    private static final Predicate<Character> IS_NUM = c -> NUM_START < c && c < NUM_END;
+    private static final Predicate<Character> IS_ALPHA = c -> (ALPHA_UC_START < c && c < ALPHA_UC_END)
+            || (ALPHA_LC_START < c && c < ALPHA_LC_END);
+
+    private static final int STATE_NOTHING = 0;
+    private static final int STATE_NUMBER = 1;
+    private static final int STATE_INDEX = 2;
+    private static final int STATE_FLAGS = 4;
+    private static final int STATE_INTEGER = 8;
+    private static final int STATE_DOT = 16;
+    private static final int STATE_DECIMAL = 32;
+    private static final int STATE_TIME = 64;
+    private static final int STATE_TYPE = 128;
+    private static final int STATE_SUFFIX = 256;
+
+    private static final int SHIFT_LEFT = 10;
 
     /**
      * Parse the string to find parameters and arguments expressions, changes
@@ -132,7 +161,7 @@ public final class HelperMessage extends Constants {
         final char[] chars = StringUtils.toChars(text);
 
         int start = -1;
-        int state = 0;
+        int state = STATE_NOTHING;
 
         final Set<Group> groups = new TreeSet<>();
 
@@ -144,52 +173,55 @@ public final class HelperMessage extends Constants {
                 start = i;
                 group = new Group(start);
             } else if (group != null) {
-                if (state < 2 && chars[i] > 47 && chars[i] < 58) {
+                if (state < STATE_INDEX && IS_NUM.test(chars[i])) {
                     // (\\d+\\$)? ; the number
-                    if (state == 0) {
-                        state = 1;
+                    if (state == STATE_NOTHING) {
+                        state = STATE_NUMBER;
                         group.index = 0;
                     }
-                    group.index = group.index * 10 + chars[i] - 48;
-                } else if (state < 2 && chars[i] == INDEX_SUFFIX) {
+                    // shift left from 1 number and add the number (convert char
+                    // into number)
+                    group.index = group.index * SHIFT_LEFT + chars[i] - NUM_FIRST;
+                } else if (state < STATE_INDEX && chars[i] == INDEX_SUFFIX) {
                     // (\\d+\\$)? ; the dollar
-                    state |= 2;
-                } else if (state < 8 && Arrays.binarySearch(FLAGS, chars[i]) > -1) {
+                    state |= STATE_INDEX;
+                } else if (state < STATE_INTEGER && Arrays.binarySearch(FLAGS, chars[i]) > -1) {
                     // ([-#+ 0,(\\<]*)?
-                    state |= 4;
+                    state |= STATE_FLAGS;
                     group.flags.append((char) chars[i]);
-                } else if (state < 16 && chars[i] == '.') {
+                } else if (state < STATE_DOT && chars[i] == DOT) {
                     // (\\d+)?(\\.\\d+)? ; the dot
-                    state |= 16;
+                    state |= STATE_DOT;
                     group.number.append((char) chars[i]);
-                } else if (state < 64 && chars[i] > 47 && chars[i] < 58) {
-                    // (\\d+)?(\\.\\d+)? ; 8 for before dot and 32 after
-                    if ((state & 16) == 16) {
-                        state |= 32;
+                } else if (state < STATE_TIME && chars[i] > NUM_START && chars[i] < NUM_END) {
+                    // (\\d+)?(\\.\\d+)? ; 8 (integer) for numbers before dot
+                    // and 32 (decimal) for numbers after
+                    if ((state & STATE_DOT) == STATE_DOT) {
+                        state |= STATE_DECIMAL;
                     } else {
-                        state |= 8;
+                        state |= STATE_INTEGER;
                     }
                     group.number.append((char) chars[i]);
-                } else if (state < 64 && chars[i] == TIME_UPPERCASE || chars[i] == TIME_LOWERCASE) {
+                } else if (state < STATE_TIME && chars[i] == TIME_UPPERCASE || chars[i] == TIME_LOWERCASE) {
                     // [tT]
-                    state |= 64;
+                    state |= STATE_TIME;
                     group.time = (char) chars[i];
-                } else if (state < 128 && ((chars[i] > 64 && chars[i] < 91) || (chars[i] > 96 && chars[i] < 123) || chars[i] == PERCENT)) {
+                } else if (state < STATE_TYPE && (IS_ALPHA.test(chars[i]) || chars[i] == PERCENT)) {
                     // [a-zA-Z%]
-                    state |= 128;
+                    state |= STATE_TYPE;
                     group.type.append((char) chars[i]);
-                } else if (state < 256 && chars[i] == PARAM_SUFFIX) {
+                } else if (state < STATE_SUFFIX && chars[i] == PARAM_SUFFIX) {
                     // to detect internal parameter form
-                    state |= 256;
+                    state |= STATE_SUFFIX;
                     group.asterisk = true;
                 } else {
-                    if ((state & 2) != 2 && group.index > -1) {
+                    if ((state & STATE_INDEX) != STATE_INDEX && group.index > -1) {
                         // no index, so first number detected is the format, not
                         // a number
                         group.number.insert(0, String.valueOf(group.index));
                         group.index = -1;
                     }
-                    if ((state & 128) == 128) {
+                    if ((state & STATE_TYPE) == STATE_TYPE) {
                         // complete
                         group.end = i;
                         groups.add(group);
@@ -197,11 +229,11 @@ public final class HelperMessage extends Constants {
                     if (chars[i] == PREFIX) {
                         // prepare the next expression
                         start = i;
-                        state = 0;
+                        state = STATE_NOTHING;
                         group = new Group(start);
                     } else {
                         group = null;
-                        state = 0;
+                        state = STATE_NOTHING;
                     }
                 }
             }
@@ -313,12 +345,12 @@ public final class HelperMessage extends Constants {
     private static StringBuilder surroundByBrackets(final Object object, final EnumType type) {
         final StringBuilder sb = new StringBuilder(EnumChar.BRACKET_OPEN.getUnicode());
         if (EnumType.ARRAY.equals(type)) {
-            sb.append(StringUtils.join((Object[]) object, StringUtils.JOIN_SEPARATOR));
+            sb.append(StringUtils.joinComma((Object[]) object));
         } else if (EnumType.ITERABLE.equals(type)) {
-            sb.append(StringUtils.join((Iterable<?>) object, StringUtils.JOIN_SEPARATOR));
+            sb.append(StringUtils.joinComma((Iterable<?>) object));
         } else { // see surroundable
             Map<?, ?> map = (Map<?, ?>) object;
-            sb.append(StringUtils.join(map.entrySet(), StringUtils.JOIN_SEPARATOR));
+            sb.append(StringUtils.joinComma(map.entrySet()));
         }
         return sb.append(EnumChar.BRACKET_CLOSE.getUnicode());
     }

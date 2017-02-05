@@ -27,7 +27,12 @@ import fr.landel.utils.commons.ArrayUtils;
 public class AssertorArray extends Constants {
 
     /**
-     * Prepare the next step to validate the array length
+     * Prepare the next step to validate the array length.
+     * 
+     * <p>
+     * precondition: {@code length} has to be a positive number and
+     * {@code array} cannot be {@code null}
+     * </p>
      * 
      * @param step
      *            the current step
@@ -50,7 +55,11 @@ public class AssertorArray extends Constants {
     }
 
     /**
-     * Prepare the next step to validate if the array is {@code null} or empty
+     * Prepare the next step to validate if the array is {@code null} or empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
      * 
      * @param step
      *            the current step
@@ -69,7 +78,11 @@ public class AssertorArray extends Constants {
 
     /**
      * Prepare the next step to validate if the array is NOT {@code null} and
-     * NOT empty
+     * NOT empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
      * 
      * @param step
      *            the current step
@@ -87,7 +100,11 @@ public class AssertorArray extends Constants {
     }
 
     /**
-     * Prepare the next step to validate if the array contains the element
+     * Prepare the next step to validate if the array contains the element.
+     * 
+     * <p>
+     * precondition: {@code array} cannot be {@code null}
+     * </p>
      * 
      * @param step
      *            the current step
@@ -123,6 +140,10 @@ public class AssertorArray extends Constants {
      * Prepare the next step to validate if the array contains all elements of
      * the specified array
      * 
+     * <p>
+     * precondition: neither of {@code array} can be {@code null}
+     * </p>
+     * 
      * @param step
      *            the current step
      * @param array
@@ -141,6 +162,10 @@ public class AssertorArray extends Constants {
     /**
      * Prepare the next step to validate if the array contains any elements of
      * the specified array
+     * 
+     * <p>
+     * precondition: neither of {@code array} can be {@code null}
+     * </p>
      * 
      * @param step
      *            the current step

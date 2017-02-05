@@ -114,7 +114,7 @@ public class AssertorMap extends Constants {
      * {@code map} entries
      * 
      * <p>
-     * precondition: neither {@link Map} cannot be {@code null} or empty
+     * precondition: neither {@link Map} can be {@code null} or empty
      * </p>
      * 
      * @param step
@@ -140,7 +140,7 @@ public class AssertorMap extends Constants {
      * {@code keys} entries
      * 
      * <p>
-     * precondition: neither {@link Map} and {@code keys} cannot be {@code null}
+     * precondition: neither {@link Map} and {@code keys} can be {@code null}
      * or empty
      * </p>
      * 
@@ -167,7 +167,7 @@ public class AssertorMap extends Constants {
      * {@code map} entries
      * 
      * <p>
-     * precondition: neither {@link Map} cannot be {@code null} or empty
+     * precondition: neither {@link Map} can be {@code null} or empty
      * </p>
      * 
      * @param step
@@ -193,7 +193,7 @@ public class AssertorMap extends Constants {
      * {@code keys} entries
      * 
      * <p>
-     * precondition: neither {@link Map} and {@code keys} cannot be {@code null}
+     * precondition: neither {@link Map} and {@code keys} can be {@code null}
      * or empty
      * </p>
      * 

@@ -67,7 +67,11 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     /**
-     * Apply the NOT operator on the next assertion
+     * Add the NOT operator on the next assertion
+     * 
+     * <pre>
+     * Assertor.that(object).not().isInstanceOf(Exception.class).toThrow();
+     * </pre>
      * 
      * @return an assertor based on the current one
      */
@@ -76,41 +80,53 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     /**
-     * Checks if the checked object is {@code null}.
+     * Check if the checked object is {@code null}.
      * 
      * <p>
      * precondition: none
      * </p>
      * 
-     * @return the assetor step
+     * <pre>
+     * Assertor.that(object).isNull().toThrow();
+     * </pre>
+     * 
+     * @return the assertor step
      */
     default S isNull() {
         return this.isNull(null);
     }
 
     /**
-     * Checks if the checked object is {@code null}.
+     * Check if the checked object is {@code null}.
      * 
      * <p>
      * precondition: none
      * </p>
      * 
+     * <pre>
+     * Assertor.that(object).isNull("The object must be null").toThrow();
+     * </pre>
+     * 
      * @param message
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNull(final CharSequence message, final Object... arguments) {
         return this.isNull(null, message, arguments);
     }
 
     /**
-     * Checks if the checked object is {@code null}.
+     * Check if the checked object is {@code null}.
      * 
      * <p>
      * precondition: none
      * </p>
+     * 
+     * <pre>
+     * Assertor.that(object).isNull(Locale.US, "The object must be null").toThrow();
+     * </pre>
      * 
      * @param locale
      *            the message locale
@@ -118,48 +134,60 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNull(final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isNull(this.getStep(), Message.of(locale, message, arguments)));
     }
 
     /**
-     * Checks if the checked object is NOT {@code null}.
+     * Check if the checked object is NOT {@code null}.
      * 
      * <p>
      * precondition: none
      * </p>
      * 
-     * @return the assetor step
+     * <pre>
+     * Assertor.that(object).isNotNull().toThrow();
+     * </pre>
+     * 
+     * @return the assertor step
      */
     default S isNotNull() {
         return this.isNotNull(null);
     }
 
     /**
-     * Checks if the checked object is NOT {@code null}.
+     * Check if the checked object is NOT {@code null}.
      * 
      * <p>
      * precondition: none
      * </p>
      * 
+     * <pre>
+     * Assertor.that(object).isNotNull("The object cannot be null").toThrow();
+     * </pre>
+     * 
      * @param message
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNotNull(final CharSequence message, final Object... arguments) {
         return this.isNotNull(null, message, arguments);
     }
 
     /**
-     * Checks if the checked object is NOT {@code null}.
+     * Check if the checked object is NOT {@code null}.
      * 
      * <p>
      * precondition: none
      * </p>
+     * 
+     * <pre>
+     * Assertor.that(object).isNotNull(Locale.US, "The object cannot be null").toThrow();
+     * </pre>
      * 
      * @param locale
      *            the message locale
@@ -167,33 +195,41 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNotNull(final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isNotNull(this.getStep(), Message.of(locale, message, arguments)));
     }
 
     /**
-     * Checks if the checked object is equal to the specified {@code object}.
+     * Check if the checked object is equal to the specified {@code object}.
      * 
      * <p>
      * precondition: none
      * </p>
      * 
+     * <pre>
+     * Assertor.that(object).isEqual(object2).toThrow();
+     * </pre>
+     * 
      * @param object
      *            the object to compare
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isEqual(final Object object) {
         return this.isEqual(object, null);
     }
 
     /**
-     * Checks if the checked object is equal to the specified {@code object}.
+     * Check if the checked object is equal to the specified {@code object}.
      * 
      * <p>
      * precondition: none
      * </p>
+     * 
+     * <pre>
+     * Assertor.that(object).isEqual(object2, "The object must be equal").toThrow();
+     * </pre>
      * 
      * @param object
      *            the object to compare
@@ -201,18 +237,22 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isEqual(final Object object, final CharSequence message, final Object... arguments) {
         return this.isEqual(object, null, message, arguments);
     }
 
     /**
-     * Checks if the checked object is equal to the specified {@code object}.
+     * Check if the checked object is equal to the specified {@code object}.
      * 
      * <p>
      * precondition: none
      * </p>
+     * 
+     * <pre>
+     * Assertor.that(object).isEqual(object2, Locale.US, "The object must be equal").toThrow();
+     * </pre>
      * 
      * @param object
      *            the object to compare
@@ -222,15 +262,14 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isEqual(this.getStep(), object, Message.of(locale, message, arguments)));
     }
 
     /**
-     * Checks if the checked object is NOT equal to the specified
-     * {@code object}.
+     * Check if the checked object is NOT equal to the specified {@code object}.
      * 
      * <p>
      * precondition: none
@@ -238,15 +277,14 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * 
      * @param object
      *            the object to compare
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNotEqual(final Object object) {
         return this.isNotEqual(object, null);
     }
 
     /**
-     * Checks if the checked object is NOT equal to the specified
-     * {@code object}.
+     * Check if the checked object is NOT equal to the specified {@code object}.
      * 
      * <p>
      * precondition: none
@@ -258,15 +296,14 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNotEqual(final Object object, final CharSequence message, final Object... arguments) {
         return this.isNotEqual(object, null, message, arguments);
     }
 
     /**
-     * Checks if the checked object is NOT equal to the specified
-     * {@code object}.
+     * Check if the checked object is NOT equal to the specified {@code object}.
      * 
      * <p>
      * precondition: none
@@ -280,35 +317,35 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isNotEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isNotEqual(this.getStep(), object, Message.of(locale, message, arguments)));
     }
 
     /**
-     * Checks if the checked object is an instance of the specified
+     * Check if the checked object is an instance of the specified
      * {@code clazz}.
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * precondition: neither {@link Object} and {@code clazz} can be
      * {@code null}
      * </p>
      * 
      * @param clazz
      *            the instance class
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isInstanceOf(final Class<?> clazz) {
         return this.isInstanceOf(clazz, null);
     }
 
     /**
-     * Checks if the checked object is an instance of the specified
+     * Check if the checked object is an instance of the specified
      * {@code clazz}.
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * precondition: neither {@link Object} and {@code clazz} can be
      * {@code null}
      * </p>
      * 
@@ -318,18 +355,18 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isInstanceOf(final Class<?> clazz, final CharSequence message, final Object... arguments) {
         return this.isInstanceOf(clazz, null, message, arguments);
     }
 
     /**
-     * Checks if the checked object is an instance of the specified
+     * Check if the checked object is an instance of the specified
      * {@code clazz}.
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * precondition: neither {@link Object} and {@code clazz} can be
      * {@code null}
      * </p>
      * 
@@ -341,35 +378,35 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isInstanceOf(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isInstanceOf(this.getStep(), clazz, Message.of(locale, message, arguments)));
     }
 
     /**
-     * Checks if the checked object is assignable from the specified
+     * Check if the checked object is assignable from the specified
      * {@code clazz}.
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * precondition: neither {@link Object} and {@code clazz} can be
      * {@code null}
      * </p>
      * 
      * @param clazz
      *            the class (super class or interface)
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isAssignableFrom(final Class<?> clazz) {
         return this.isAssignableFrom(clazz, null);
     }
 
     /**
-     * Checks if the checked object is assignable from the specified
+     * Check if the checked object is assignable from the specified
      * {@code clazz}.
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * precondition: neither {@link Object} and {@code clazz} can be
      * {@code null}
      * </p>
      * 
@@ -379,18 +416,18 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isAssignableFrom(final Class<?> clazz, final CharSequence message, final Object... arguments) {
         return this.isAssignableFrom(clazz, null, message, arguments);
     }
 
     /**
-     * Checks if the checked object is assignable from the specified
+     * Check if the checked object is assignable from the specified
      * {@code clazz}.
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code clazz} cannot be
+     * precondition: neither {@link Object} and {@code clazz} can be
      * {@code null}
      * </p>
      * 
@@ -402,14 +439,14 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      *            the message on hash code not equal
      * @param arguments
      *            the message arguments
-     * @return the assetor step
+     * @return the assertor step
      */
     default S isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
         return this.get(AssertorObject.isAssignableFrom(this.getStep(), clazz, Message.of(locale, message, arguments)));
     }
 
     /**
-     * Checks if the checked value matches the specified {@code hashCode}.
+     * Check if the checked value matches the specified {@code hashCode}.
      * 
      * <p>
      * precondition: none
@@ -424,7 +461,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     /**
-     * Checks if the checked value matches the specified {@code hashCode}.
+     * Check if the checked value matches the specified {@code hashCode}.
      * 
      * <p>
      * precondition: none
@@ -443,7 +480,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
     }
 
     /**
-     * Checks if the checked value matches the specified {@code hashCode}.
+     * Check if the checked value matches the specified {@code hashCode}.
      * 
      * <p>
      * precondition: none

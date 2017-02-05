@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -135,7 +136,7 @@ public class AssertorObject extends Constants {
      * {@code type}
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code type} cannot be
+     * precondition: neither {@link Object} and {@code type} can be
      * {@code null}
      * </p>
      * 
@@ -164,7 +165,7 @@ public class AssertorObject extends Constants {
      * {@code type}
      * 
      * <p>
-     * precondition: neither {@link Object} and {@code superType} cannot be
+     * precondition: neither {@link Object} and {@code superType} can be
      * {@code null}
      * </p>
      * 
@@ -208,7 +209,7 @@ public class AssertorObject extends Constants {
      */
     protected static <T> StepAssertor<T> hasHashCode(final StepAssertor<T> step, final int hashCode, final Message message) {
 
-        final BiPredicate<T, Boolean> checker = (object, not) -> (object != null ? object.hashCode() : 0) == hashCode;
+        final BiPredicate<T, Boolean> checker = (object, not) -> Objects.hashCode(object) == hashCode;
 
         return new StepAssertor<>(step, checker, false, message, MSG.OBJECT.HASH_CODE, false,
                 new Parameter<>(hashCode, EnumType.NUMBER_INTEGER));

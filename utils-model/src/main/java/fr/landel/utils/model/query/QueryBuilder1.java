@@ -408,7 +408,8 @@ public class QueryBuilder1<E extends AbstractEntity<E, K>, K extends Serializabl
      *            the primary key type
      * @return the current query builder
      */
-    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder1<E, K> or(final QueryBuilder1<T, Y> query) {
+    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder1<E, K> or(
+            final QueryBuilder1<T, Y> query) {
         this.or();
         return this.append(query);
     }
@@ -461,7 +462,8 @@ public class QueryBuilder1<E extends AbstractEntity<E, K>, K extends Serializabl
      *            the primary key type
      * @return the current query builder
      */
-    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder1<E, K> and(final QueryBuilder1<T, Y> query) {
+    public <T extends AbstractEntity<T, Y>, Y extends Serializable & Comparable<Y>> QueryBuilder1<E, K> and(
+            final QueryBuilder1<T, Y> query) {
         this.and();
         return this.append(query);
     }
@@ -740,7 +742,7 @@ public class QueryBuilder1<E extends AbstractEntity<E, K>, K extends Serializabl
      */
     public QueryBuilder1<E, K> orderBy(final QueryOrder... queryOrder) {
         this.add(ORDER_BY);
-        this.add(StringUtils.join(queryOrder, StringUtils.JOIN_SEPARATOR));
+        this.add(StringUtils.joinComma(queryOrder));
 
         return this;
     }

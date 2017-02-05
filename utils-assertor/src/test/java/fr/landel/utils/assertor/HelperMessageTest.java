@@ -193,7 +193,7 @@ public class HelperMessageTest extends AbstractTest {
 
         assertEquals("e = %2$+10.4f %2$s %1$s %3$s1$s", HelperMessage.prepare("e = %1$+10.4f %s %s* %s1$s", 1, 2).toString());
 
-        assertEquals("e = %1$+10.4f  ", HelperMessage.prepare("e = %+10.4f %11d %2d*", 0, 1).toString());
+        assertEquals("e = %1$+10.4f  ", HelperMessage.prepare("e = %+10.4f %11222d %2d*", 0, 1).toString());
 
         assertEquals("e = %1$+10.4f  ", HelperMessage.prepare("e = %+10.4f %2$11d %1$2d*", 0, 1).toString());
 
