@@ -16,7 +16,16 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * (Description)
+ * This class define methods that can be applied on the checked {@link Map}
+ * object. To provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepMap}. The chain looks like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorMap} &gt; {@link PredicateStepMap} &gt; {@link PredicateAssertorMap} &gt; {@link PredicateStepMap}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorMap} and ends with
+ * {@link PredicateStepMap}.
  *
  * @since Aug 3, 2016
  * @author Gilles
@@ -25,11 +34,17 @@ import java.util.Map;
 @FunctionalInterface
 public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateStepMap<K, V>, Map<K, V>> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateStepMap<K, V> get(final StepAssertor<Map<K, V>> result) {
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorMap<K, V> not() {
         return () -> HelperAssertor.not(getStep());

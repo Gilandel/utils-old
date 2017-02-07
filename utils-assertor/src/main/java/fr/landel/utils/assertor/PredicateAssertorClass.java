@@ -15,7 +15,16 @@ package fr.landel.utils.assertor;
 import java.util.Locale;
 
 /**
- * (Description)
+ * This class define methods that can be applied on the checked {@link Class}
+ * object. To provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepClass}. The chain looks like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorClass} &gt; {@link PredicateStepClass} &gt; {@link PredicateAssertorClass} &gt; {@link PredicateStepClass}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorClass} and ends with
+ * {@link PredicateStepClass}.
  *
  * @since Aug 3, 2016
  * @author Gilles
@@ -24,11 +33,17 @@ import java.util.Locale;
 @FunctionalInterface
 public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateStepClass<T>, Class<T>> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateStepClass<T> get(final StepAssertor<Class<T>> result) {
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorClass<T> not() {
         return () -> HelperAssertor.not(getStep());

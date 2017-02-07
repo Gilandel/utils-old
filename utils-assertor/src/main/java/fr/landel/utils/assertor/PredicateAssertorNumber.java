@@ -15,8 +15,16 @@ package fr.landel.utils.assertor;
 import java.util.Locale;
 
 /**
- * This class define methods that can be applied on the checked number. Each
- * method return a {@link PredicateStepNumber}
+ * This class define methods that can be applied on the checked {@link Number}
+ * object. To provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepNumber}. The chain looks like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorNumber} &gt; {@link PredicateStepNumber} &gt; {@link PredicateAssertorNumber} &gt; {@link PredicateStepNumber}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorNumber} and ends with
+ * {@link PredicateStepNumber}.
  *
  * @since Aug 3, 2016
  * @author Gilles
@@ -396,9 +404,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
     }
 
     /**
-     * Asserts that the given number is greater than the number to compare. If
-     * one of the number is null, it's considered as the lowest. If both are
-     * {@code null}, they are considered equal, so the result is {@code false}.
+     * Asserts that the given number is greater than the number to compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
+     * both are {@code null}, they are considered equal, so the result is
+     * {@code false}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -417,9 +429,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
     }
 
     /**
-     * Asserts that the given number is greater than the number to compare. If
-     * one of the number is null, it's considered as the lowest. If both are
-     * {@code null}, they are considered equal, so the result is {@code false}.
+     * Asserts that the given number is greater than the number to compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
+     * both are {@code null}, they are considered equal, so the result is
+     * {@code false}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -442,9 +458,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
     }
 
     /**
-     * Asserts that the given number is greater than the number to compare. If
-     * one of the number is null, it's considered as the lowest. If both are
-     * {@code null}, they are considered equal, so the result is {@code false}.
+     * Asserts that the given number is greater than the number to compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
+     * both are {@code null}, they are considered equal, so the result is
+     * {@code false}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -471,9 +491,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
 
     /**
      * Asserts that the given number is equal or greater than the number to
-     * compare. If one of the number is null, it's considered as the lowest. If
+     * compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
      * both are {@code null}, they are considered equal, so the result is
      * {@code true}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -493,9 +517,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
 
     /**
      * Asserts that the given number is equal or greater than the number to
-     * compare. If one of the number is null, it's considered as the lowest. If
+     * compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
      * both are {@code null}, they are considered equal, so the result is
      * {@code true}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -519,9 +547,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
 
     /**
      * Asserts that the given number is equal or greater than the number to
-     * compare. If one of the number is null, it's considered as the lowest. If
+     * compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
      * both are {@code null}, they are considered equal, so the result is
      * {@code true}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -547,9 +579,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
     }
 
     /**
-     * Asserts that the given number is lower than the number to compare. If one
-     * of the number is null, it's considered as the lowest. If both are
-     * {@code null}, they are considered equal, so the result is {@code false}.
+     * Asserts that the given number is lower than the number to compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
+     * both are {@code null}, they are considered equal, so the result is
+     * {@code false}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -568,9 +604,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
     }
 
     /**
-     * Asserts that the given number is lower than the number to compare. If one
-     * of the number is null, it's considered as the lowest. If both are
-     * {@code null}, they are considered equal, so the result is {@code false}.
+     * Asserts that the given number is lower than the number to compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
+     * both are {@code null}, they are considered equal, so the result is
+     * {@code false}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -593,9 +633,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
     }
 
     /**
-     * Asserts that the given number is lower than the number to compare. If one
-     * of the number is null, it's considered as the lowest. If both are
-     * {@code null}, they are considered equal, so the result is {@code false}.
+     * Asserts that the given number is lower than the number to compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
+     * both are {@code null}, they are considered equal, so the result is
+     * {@code false}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -622,9 +666,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
 
     /**
      * Asserts that the given number is equal or lower than the number to
-     * compare. If one of the number is null, it's considered as the lowest. If
+     * compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
      * both are {@code null}, they are considered equal, so the result is
      * {@code true}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -644,9 +692,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
 
     /**
      * Asserts that the given number is equal or lower than the number to
-     * compare. If one of the number is null, it's considered as the lowest. If
+     * compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
      * both are {@code null}, they are considered equal, so the result is
      * {@code true}.
+     * </p>
      * 
      * <p>
      * precondition: none
@@ -670,9 +722,13 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
 
     /**
      * Asserts that the given number is equal or lower than the number to
-     * compare. If one of the number is null, it's considered as the lowest. If
+     * compare.
+     * 
+     * <p>
+     * If one of the number is {@code null}, it's considered as the lowest. If
      * both are {@code null}, they are considered equal, so the result is
      * {@code true}.
+     * </p>
      * 
      * <p>
      * precondition: none

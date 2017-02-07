@@ -16,7 +16,16 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * (Description)
+ * This class define methods that can be applied on the checked {@link Calendar}
+ * object. To provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepCalendar}. The chain looks like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorCalendar} &gt; {@link PredicateStepCalendar} &gt; {@link PredicateAssertorCalendar} &gt; {@link PredicateStepCalendar}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorCalendar} and ends
+ * with {@link PredicateStepCalendar}.
  *
  * @since Aug 3, 2016
  * @author Gilles
@@ -25,175 +34,1413 @@ import java.util.Locale;
 @FunctionalInterface
 public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateStepCalendar, Calendar> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateStepCalendar get(final StepAssertor<Calendar> result) {
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorCalendar not() {
         return () -> HelperAssertor.not(this.getStep());
     }
 
+    /**
+     * Check if the checked {@link Calendar} is equal to the {@code date}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isEqual(calendar2).toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @return the assertor step
+     */
     default PredicateStepCalendar isEqual(final Calendar date) {
         return this.isEqual(date, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is equal to the {@code date}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isEqual(calendar2, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isEqual(final Calendar date, final CharSequence message, final Object... arguments) {
         return this.isEqual(date, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is equal to the {@code date}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isEqual(calendar2, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isEqual(final Calendar date, final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isEqual(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is NOT equal to the {@code date}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isNotEqual(calendar2).toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @return the assertor step
+     */
     default PredicateStepCalendar isNotEqual(final Calendar date) {
         return this.isNotEqual(date, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is NOT equal to the {@code date}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isNotEqual(calendar2, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isNotEqual(final Calendar date, final CharSequence message, final Object... arguments) {
         return this.isNotEqual(date, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is NOT equal to the {@code date}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isNotEqual(calendar2, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isNotEqual(final Calendar date, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorDate.isNotEqual(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is around the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isEqual}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1).toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAround(final Calendar date, final int calendarField, final int calendarAmount) {
         return this.isAround(date, calendarField, calendarAmount, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is around the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isEqual}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1, "not around").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAround(final Calendar date, final int calendarField, final int calendarAmount,
             final CharSequence message, final Object... arguments) {
         return this.isAround(date, calendarField, calendarAmount, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is around the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isEqual}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1, Locale.US, "not around").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAround(final Calendar date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isAround(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is NOT around the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isNotEqual}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1).toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @return the assertor step
+     */
     default PredicateStepCalendar isNotAround(final Calendar date, final int calendarField, final int calendarAmount) {
         return this.isNotAround(date, calendarField, calendarAmount, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is NOT around the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isNotEqual}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1, "must not be around").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isNotAround(final Calendar date, final int calendarField, final int calendarAmount,
             final CharSequence message, final Object... arguments) {
         return this.isNotAround(date, calendarField, calendarAmount, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is NOT around the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isNotEqual}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1, Locale.US, "must not be around").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isNotAround(final Calendar date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isNotAround(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is after the {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfter(calendar2).toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAfter(final Calendar date) {
         return this.isAfter(date, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is after the {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfter(calendar2, "not after").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAfter(final Calendar date, final CharSequence message, final Object... arguments) {
         return this.isAfter(date, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is after the {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfter(calendar2, Locale.US, "not after").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAfter(final Calendar date, final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isAfter(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is after the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isAfter(Calendar)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1).toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAfter(final Calendar date, final int calendarField, final int calendarAmount) {
         return this.isAfter(date, calendarField, calendarAmount, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is after the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isAfter(Calendar, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1, "not after").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAfter(final Calendar date, final int calendarField, final int calendarAmount,
             final CharSequence message, final Object... arguments) {
         return this.isAfter(date, calendarField, calendarAmount, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is after the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isAfter(Calendar, Locale, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1, Locale.US, "not after").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isAfter(final Calendar date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isAfter(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCalendar isAfterOrEquals(final Calendar date) {
-        return this.isAfterOrEquals(date, null);
+    /**
+     * Check if the checked {@link Calendar} is after or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * precondition: neither can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfterOrEqual(calendar2).toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isAfterOrEqual(final Calendar date) {
+        return this.isAfterOrEqual(date, null);
     }
 
-    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final CharSequence message, final Object... arguments) {
-        return this.isAfterOrEquals(date, null, message, arguments);
+    /**
+     * Check if the checked {@link Calendar} is after or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * precondition: neither can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, "not after or equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isAfterOrEqual(final Calendar date, final CharSequence message, final Object... arguments) {
+        return this.isAfterOrEqual(date, null, message, arguments);
     }
 
-    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final Locale locale, final CharSequence message,
+    /**
+     * Check if the checked {@link Calendar} is after or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * precondition: neither can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Locale.US, "not after or equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isAfterOrEqual(final Calendar date, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorDate.isAfterOrEquals(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isAfterOrEqual(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final int calendarField, final int calendarAmount) {
-        return this.isAfterOrEquals(date, calendarField, calendarAmount, null);
+    /**
+     * Check if the checked {@link Calendar} is after or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isAfterOrEqual(Calendar)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1).toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isAfterOrEqual(final Calendar date, final int calendarField, final int calendarAmount) {
+        return this.isAfterOrEqual(date, calendarField, calendarAmount, null);
     }
 
-    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+    /**
+     * Check if the checked {@link Calendar} is after or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isAfterOrEqual(Calendar, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1, "not after or equal").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isAfterOrEqual(final Calendar date, final int calendarField, final int calendarAmount,
             final CharSequence message, final Object... arguments) {
-        return this.isAfterOrEquals(date, calendarField, calendarAmount, null, message, arguments);
+        return this.isAfterOrEqual(date, calendarField, calendarAmount, null, message, arguments);
     }
 
-    default PredicateStepCalendar isAfterOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+    /**
+     * Check if the checked {@link Calendar} is after or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as
+     * {@link #isAfterOrEqual(Calendar, Locale, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1, Locale.US, "not after or equal").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isAfterOrEqual(final Calendar date, final int calendarField, final int calendarAmount,
             final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isAfterOrEquals(this.getStep(), date, calendarField, calendarAmount,
+        return () -> AssertorDate.isAfterOrEqual(this.getStep(), date, calendarField, calendarAmount,
                 Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is before to the {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBefore(calendar2).toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @return the assertor step
+     */
     default PredicateStepCalendar isBefore(final Calendar date) {
         return this.isBefore(date, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is before to the {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBefore(calendar2, "not before").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isBefore(final Calendar date, final CharSequence message, final Object... arguments) {
         return this.isBefore(date, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is before to the {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBefore(calendar2, Locale.US, "not before").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isBefore(final Calendar date, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorDate.isBefore(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Check if the checked {@link Calendar} is before to the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isBefore(Calendar)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1).toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @return the assertor step
+     */
     default PredicateStepCalendar isBefore(final Calendar date, final int calendarField, final int calendarAmount) {
         return this.isBefore(date, calendarField, calendarAmount, null);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is before to the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isBefore(Calendar, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1, "not before").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isBefore(final Calendar date, final int calendarField, final int calendarAmount,
             final CharSequence message, final Object... arguments) {
         return this.isBefore(date, calendarField, calendarAmount, null, message, arguments);
     }
 
+    /**
+     * Check if the checked {@link Calendar} is before to the {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isBefore(Calendar, Locale, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1, Locale.US, "not before").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
     default PredicateStepCalendar isBefore(final Calendar date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isBefore(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCalendar isBeforeOrEquals(final Calendar date) {
-        return this.isBeforeOrEquals(date, null);
+    /**
+     * Check if the checked {@link Calendar} is before or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2).toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isBeforeOrEqual(final Calendar date) {
+        return this.isBeforeOrEqual(date, null);
     }
 
-    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final CharSequence message, final Object... arguments) {
-        return this.isBeforeOrEquals(date, null, message, arguments);
+    /**
+     * Check if the checked {@link Calendar} is before or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, "not before or equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isBeforeOrEqual(final Calendar date, final CharSequence message, final Object... arguments) {
+        return this.isBeforeOrEqual(date, null, message, arguments);
     }
 
-    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final Locale locale, final CharSequence message,
+    /**
+     * Check if the checked {@link Calendar} is before or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * precondition: neither dates can be {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Locale.US, "not before or equal").toThrow();
+     * </pre>
+     * 
+     * @param date
+     *            the date to compare
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isBeforeOrEqual(final Calendar date, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorDate.isBeforeOrEquals(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isBeforeOrEqual(this.getStep(), date, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final int calendarField, final int calendarAmount) {
-        return this.isBeforeOrEquals(date, calendarField, calendarAmount, null);
+    /**
+     * Check if the checked {@link Calendar} is before or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isBeforeOrEqual(Calendar)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1).toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isBeforeOrEqual(final Calendar date, final int calendarField, final int calendarAmount) {
+        return this.isBeforeOrEqual(date, calendarField, calendarAmount, null);
     }
 
-    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+    /**
+     * Check if the checked {@link Calendar} is before or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as {@link #isBeforeOrEqual(Calendar, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1, "not before or equal").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isBeforeOrEqual(final Calendar date, final int calendarField, final int calendarAmount,
             final CharSequence message, final Object... arguments) {
-        return this.isBeforeOrEquals(date, calendarField, calendarAmount, null, message, arguments);
+        return this.isBeforeOrEqual(date, calendarField, calendarAmount, null, message, arguments);
     }
 
-    default PredicateStepCalendar isBeforeOrEquals(final Calendar date, final int calendarField, final int calendarAmount,
+    /**
+     * Check if the checked {@link Calendar} is before or equal to the
+     * {@code date}.
+     * 
+     * <p>
+     * If the {@code calendarField} is equal to -1, the method does exactly the
+     * same as
+     * {@link #isBeforeOrEqual(Calendar, Locale, CharSequence, Object...)}.
+     * </p>
+     * 
+     * <p>
+     * precondition: if {@code calendarField} is not equal to -1. Neither dates
+     * can be {@code null}, the {@code calendarField} must be a valid field and
+     * the {@code calendarAmount} cannot be equal to zero.
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1, Locale.US, "not before or equal").toThrow();
+     * </pre>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param date
+     *            the date to compare
+     * @param calendarField
+     *            the calendar field
+     * @param calendarAmount
+     *            the calendar amount
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message on mismatch
+     * @param arguments
+     *            the message arguments
+     * @return the assertor step
+     */
+    default PredicateStepCalendar isBeforeOrEqual(final Calendar date, final int calendarField, final int calendarAmount,
             final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isBeforeOrEquals(this.getStep(), date, calendarField, calendarAmount,
+        return () -> AssertorDate.isBeforeOrEqual(this.getStep(), date, calendarField, calendarAmount,
                 Message.of(locale, message, arguments));
     }
 }

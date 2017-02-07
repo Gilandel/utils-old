@@ -367,7 +367,7 @@ public class Constants {
             /**
              * Message key for date after or equals
              */
-            String AFTER_OR_EQUALS = "date.afterOrEquals";
+            String AFTER_OR_EQUALS = "date.afterOrEqual";
 
             /**
              * Message key for date before
@@ -377,7 +377,7 @@ public class Constants {
             /**
              * Message key for date before or equals
              */
-            String BEFORE_OR_EQUALS = "date.beforeOrEquals";
+            String BEFORE_OR_EQUALS = "date.beforeOrEqual";
         }
 
         /**

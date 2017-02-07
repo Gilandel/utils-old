@@ -33,11 +33,17 @@ import java.util.Locale;
 @FunctionalInterface
 public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateStepArray<T>, T[]> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateStepArray<T> get(final StepAssertor<T[]> result) {
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorArray<T> not() {
         return () -> HelperAssertor.not(getStep());

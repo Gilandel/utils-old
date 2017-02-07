@@ -15,7 +15,16 @@ package fr.landel.utils.assertor;
 import java.util.Locale;
 
 /**
- * (Description)
+ * This class define methods that can be applied on the checked {@link Iterable}
+ * object. To provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepIterable}. The chain looks like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorIterable} &gt; {@link PredicateStepIterable} &gt; {@link PredicateAssertorIterable} &gt; {@link PredicateStepIterable}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorIterable} and ends
+ * with {@link PredicateStepIterable}.
  *
  * @since Aug 3, 2016
  * @author Gilles
@@ -24,11 +33,17 @@ import java.util.Locale;
 @FunctionalInterface
 public interface PredicateAssertorIterable<T> extends PredicateAssertor<PredicateStepIterable<T>, Iterable<T>> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateStepIterable<T> get(final StepAssertor<Iterable<T>> result) {
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorIterable<T> not() {
         return () -> HelperAssertor.not(getStep());

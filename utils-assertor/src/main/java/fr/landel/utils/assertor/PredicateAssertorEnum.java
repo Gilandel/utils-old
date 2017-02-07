@@ -15,8 +15,16 @@ package fr.landel.utils.assertor;
 import java.util.Locale;
 
 /**
+ * This class define methods that can be applied on the checked {@link Enum}
+ * object. To provide a result, it's also provide a chain builder by returning a
+ * {@link PredicateStepEnum}. The chain looks like:
  * 
- * (Description)
+ * <pre>
+ * {@link PredicateAssertorEnum} &gt; {@link PredicateStepEnum} &gt; {@link PredicateAssertorEnum} &gt; {@link PredicateStepEnum}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorEnum} and ends with
+ * {@link PredicateStepEnum}.
  *
  * @since Aug 7, 2016
  * @author Gilles
@@ -25,11 +33,17 @@ import java.util.Locale;
 @FunctionalInterface
 public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAssertor<PredicateStepEnum<T>, T> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateStepEnum<T> get(final StepAssertor<T> result) {
         return () -> result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     default PredicateAssertorEnum<T> not() {
         return () -> HelperAssertor.not(getStep());

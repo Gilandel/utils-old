@@ -318,7 +318,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isAfterOrEquals(final StepAssertor<T> step, final T date,
+    protected static <T extends Comparable<T>> StepAssertor<T> isAfterOrEqual(final StepAssertor<T> step, final T date,
             final Message message) {
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) >= 0;
@@ -369,7 +369,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isAfterOrEquals(final StepAssertor<T> step, final T date,
+    protected static <T extends Comparable<T>> StepAssertor<T> isAfterOrEqual(final StepAssertor<T> step, final T date,
             final int calendarField, final int calendarAmount, final Message message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
@@ -475,7 +475,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isBeforeOrEquals(final StepAssertor<T> step, final T date,
+    protected static <T extends Comparable<T>> StepAssertor<T> isBeforeOrEqual(final StepAssertor<T> step, final T date,
             final Message message) {
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) <= 0;
@@ -526,7 +526,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isBeforeOrEquals(final StepAssertor<T> step, final T date,
+    protected static <T extends Comparable<T>> StepAssertor<T> isBeforeOrEqual(final StepAssertor<T> step, final T date,
             final int calendarField, final int calendarAmount, final Message message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);

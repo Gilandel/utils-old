@@ -16,8 +16,17 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- * This class define methods that can be applied on the checked char sequence.
- * Each method return a {@link PredicateStepCharSequence}
+ * This class define methods that can be applied on the checked
+ * {@link CharSequence} object. To provide a result, it's also provide a chain
+ * builder by returning a {@link PredicateStepCharSequence}. The chain looks
+ * like:
+ * 
+ * <pre>
+ * {@link PredicateAssertorCharSequence} &gt; {@link PredicateStepCharSequence} &gt; {@link PredicateAssertorCharSequence} &gt; {@link PredicateStepCharSequence}...
+ * </pre>
+ * 
+ * This chain always starts with a {@link PredicateAssertorCharSequence} and
+ * ends with {@link PredicateStepCharSequence}.
  *
  * @since Aug 7, 2016
  * @author Gilles
@@ -49,6 +58,11 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * cannot not be {@code null} and the length cannot be lower than 0 (returns
      * false).
      * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be null and {@code length} must
+     * be a positive number
+     * </p>
+     * 
      * <pre>
      * Assertor.that(name).hasLength(5).toThrow();
      * </pre>
@@ -65,6 +79,11 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * Asserts that the given char sequence has the specified length. The input
      * cannot not be {@code null} and the length cannot be lower than 0 (returns
      * false).
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be null and {@code length} must
+     * be a positive number
+     * </p>
      * 
      * <pre>
      * Assertor.that(name).hasLength(5, "not the good length").toThrow();
@@ -86,6 +105,11 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * Asserts that the given char sequence has the specified length. The input
      * cannot not be {@code null} and the length cannot be lower than 0 (returns
      * false).
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be null and {@code length} must
+     * be a positive number
+     * </p>
      * 
      * <pre>
      * Assertor.that(name).hasLength(5, Locale.US, "not the good length").toThrow();
