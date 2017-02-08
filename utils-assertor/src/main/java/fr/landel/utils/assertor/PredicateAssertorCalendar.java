@@ -106,7 +106,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param date
      *            the date to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -173,7 +174,9 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param date
      *            the date to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale}) (only used to format
+     *            this message, otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -335,7 +338,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param calendarAmount
      *            the calendar amount
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -497,7 +501,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param calendarAmount
      *            the calendar amount
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -565,7 +570,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param date
      *            the date to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -726,7 +732,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param calendarAmount
      *            the calendar amount
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -797,7 +804,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param date
      *            the date to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -963,7 +971,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param calendarAmount
      *            the calendar amount
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -1032,7 +1041,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param date
      *            the date to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -1194,7 +1204,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param calendarAmount
      *            the calendar amount
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -1265,7 +1276,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param date
      *            the date to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -1431,7 +1443,8 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * @param calendarAmount
      *            the calendar amount
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments

@@ -108,7 +108,8 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @param length
      *            the length to check
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on incorrect length
      * @param arguments
@@ -169,7 +170,8 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </pre>
      * 
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -230,7 +232,8 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </pre>
      * 
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -297,7 +300,8 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @param object
      *            the object to find
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -364,7 +368,8 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @param objects
      *            the objects to find
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments
@@ -432,7 +437,8 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @param objects
      *            the objects to find
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on mismatch
      * @param arguments

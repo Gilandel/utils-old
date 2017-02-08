@@ -162,7 +162,7 @@ public class AssertorCharSequence extends Constants {
      * 
      * @param step
      *            the current step
-     * @param substring
+     * @param string
      *            the string to compare
      * @param ignoreCase
      *            {@code true} to ignore the case
@@ -174,12 +174,12 @@ public class AssertorCharSequence extends Constants {
      *            the char sequence type
      * @return the next step
      */
-    protected static <T extends CharSequence> StepAssertor<T> isEqual(final StepAssertor<T> step, final CharSequence substring,
+    protected static <T extends CharSequence> StepAssertor<T> isEqual(final StepAssertor<T> step, final CharSequence string,
             final boolean ignoreCase, final boolean ignoreLineReturns, final Message message) {
 
-        final BiPredicate<T, Boolean> checker = (object, not) -> isEqualInternal(substring, object, ignoreCase, ignoreLineReturns);
+        final BiPredicate<T, Boolean> checker = (object, not) -> isEqualInternal(string, object, ignoreCase, ignoreLineReturns);
 
-        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, false, new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, false, new Parameter<>(string, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -192,7 +192,7 @@ public class AssertorCharSequence extends Constants {
      * 
      * @param step
      *            the current step
-     * @param substring
+     * @param string
      *            the string to compare
      * @param ignoreCase
      *            {@code true} to ignore the case
@@ -204,12 +204,12 @@ public class AssertorCharSequence extends Constants {
      *            the char sequence type
      * @return the next step
      */
-    protected static <T extends CharSequence> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final CharSequence substring,
+    protected static <T extends CharSequence> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final CharSequence string,
             final boolean ignoreCase, final boolean ignoreLineReturns, final Message message) {
 
-        final BiPredicate<T, Boolean> checker = (object, not) -> !isEqualInternal(substring, object, ignoreCase, ignoreLineReturns);
+        final BiPredicate<T, Boolean> checker = (object, not) -> !isEqualInternal(string, object, ignoreCase, ignoreLineReturns);
 
-        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, true, new Parameter<>(substring, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, true, new Parameter<>(string, EnumType.CHAR_SEQUENCE));
     }
 
     private static <T extends CharSequence> boolean isEqualInternal(final T object1, final CharSequence object2, final boolean ignoreCase,
@@ -470,8 +470,8 @@ public class AssertorCharSequence extends Constants {
      * specified regular expression
      * 
      * <p>
-     * precondition: {@link CharSequence} cannot be {@code null} and the
-     * expression regular cannot be {@code null} or empty
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
      * </p>
      * 
      * @param step
@@ -530,8 +530,8 @@ public class AssertorCharSequence extends Constants {
      * be found in the {@link CharSequence}
      * 
      * <p>
-     * precondition: {@link CharSequence} cannot be {@code null} and the
-     * expression regular cannot be {@code null} or empty
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
      * </p>
      * 
      * @param step

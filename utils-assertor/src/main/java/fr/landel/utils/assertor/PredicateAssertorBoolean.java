@@ -99,7 +99,8 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </pre>
      * 
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on incorrect length
      * @param arguments
@@ -160,7 +161,8 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </pre>
      * 
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on incorrect length
      * @param arguments

@@ -118,7 +118,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * @param length
      *            The length (cannot be lower than 0)
      * @param locale
-     *            The locale of the message (only applied for this message,
+     *            The locale of the message (only used to format this message,
      *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            The message on mismatch
@@ -131,291 +131,1595 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
         return () -> AssertorCharSequence.hasLength(this.getStep(), length, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence is {@code null} or empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEmpty().toThrow();
+     * </pre>
+     * 
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isEmpty() {
         return this.isEmpty(null);
     }
 
+    /**
+     * Asserts that the given char sequence is {@code null} or empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEmpty("not empty").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isEmpty(final CharSequence message, final Object... arguments) {
         return this.isEmpty(null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence is {@code null} or empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEmpty(Locale.US, "not empty").toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorCharSequence.isEmpty(this.getStep(), Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence is NOT {@code null} and NOT empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEmpty().toThrow();
+     * </pre>
+     * 
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isNotEmpty() {
         return this.isNotEmpty(null);
     }
 
+    /**
+     * Asserts that the given char sequence is NOT {@code null} and NOT empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEmpty("cannot be empty").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isNotEmpty(final CharSequence message, final Object... arguments) {
         return this.isNotEmpty(null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence is NOT {@code null} and NOT empty.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEmpty(Locale.US, "cannot be empty").toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorCharSequence.isNotEmpty(this.getStep(), Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence is {@code null}, empty or blank.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isBlank().toThrow();
+     * </pre>
+     * 
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isBlank() {
         return this.isBlank(null);
     }
 
+    /**
+     * Asserts that the given char sequence is {@code null}, empty or blank.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isBlank("not blank").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isBlank(final CharSequence message, final Object... arguments) {
         return this.isBlank(null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence is {@code null}, empty or blank.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isBlank(Locale.US, "not blank").toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isBlank(final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorCharSequence.isBlank(this.getStep(), Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence is NOT {@code null}, NOT empty and
+     * NOT blank.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotBlank().toThrow();
+     * </pre>
+     * 
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isNotBlank() {
         return this.isNotBlank(null);
     }
 
+    /**
+     * Asserts that the given char sequence is NOT {@code null}, NOT empty and
+     * NOT blank.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotBlank("cannot be blank").toThrow();
+     * </pre>
+     * 
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isNotBlank(final CharSequence message, final Object... arguments) {
         return this.isNotBlank(null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence is NOT {@code null}, NOT empty and
+     * NOT blank.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotBlank(Locale.US, "cannot be blank").toThrow();
+     * </pre>
+     * 
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> isNotBlank(final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorCharSequence.isNotBlank(this.getStep(), Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isEqual(final CharSequence substring) {
-        return this.isEqual(substring, null);
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqual(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqual(final CharSequence string) {
+        return this.isEqual(string, null);
     }
 
-    default PredicateStepCharSequence<T> isEqual(final CharSequence substring, final CharSequence message, final Object... arguments) {
-        return this.isEqual(substring, null, message, arguments);
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqual(title, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqual(final CharSequence string, final CharSequence message, final Object... arguments) {
+        return this.isEqual(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isEqual(final CharSequence substring, final Locale locale, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqual(title, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqual(final CharSequence string, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, false, false, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isEqual(this.getStep(), string, false, false, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence substring) {
-        return this.isEqualIgnoreCase(substring, null);
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring case considerations.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreCase(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence string) {
+        return this.isEqualIgnoreCase(string, null);
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence substring, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring case considerations.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreCase(title, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence string, final CharSequence message,
             final Object... arguments) {
-        return this.isEqualIgnoreCase(substring, null, message, arguments);
+        return this.isEqualIgnoreCase(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring case considerations.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreCase(title, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreCase(final CharSequence string, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, true, false, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isEqual(this.getStep(), string, true, false, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence substring) {
-        return this.isEqualIgnoreLineReturns(substring, null);
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring line returns considerations (characters '\r' and
+     * '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreLineReturns(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence string) {
+        return this.isEqualIgnoreLineReturns(string, null);
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence substring, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring line returns considerations (characters '\r' and
+     * '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreLineReturns(title, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence string, final CharSequence message,
             final Object... arguments) {
-        return this.isEqualIgnoreLineReturns(substring, null, message, arguments);
+        return this.isEqualIgnoreLineReturns(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence substring, final Locale locale,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring line returns considerations (characters '\r' and
+     * '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreLineReturns(title, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreLineReturns(final CharSequence string, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, false, true, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isEqual(this.getStep(), string, false, true, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence substring) {
-        return this.isEqualIgnoreCaseAndLineReturns(substring, null);
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring case and line returns considerations (characters
+     * '\r' and '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence string) {
+        return this.isEqualIgnoreCaseAndLineReturns(string, null);
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence substring, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring case and line returns considerations (characters
+     * '\r' and '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence string, final CharSequence message,
             final Object... arguments) {
-        return this.isEqualIgnoreCaseAndLineReturns(substring, null, message, arguments);
+        return this.isEqualIgnoreCaseAndLineReturns(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence substring, final Locale locale,
+    /**
+     * Asserts that the given char sequence is equal to the specified
+     * {@code string} ignoring case and line returns considerations (characters
+     * '\r' and '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isEqualIgnoreCaseAndLineReturns(final CharSequence string, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isEqual(this.getStep(), substring, true, true, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isEqual(this.getStep(), string, true, true, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isNotEqual(final CharSequence substring) {
-        return this.isNotEqual(substring, null);
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqual(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqual(final CharSequence string) {
+        return this.isNotEqual(string, null);
     }
 
-    default PredicateStepCharSequence<T> isNotEqual(final CharSequence substring, final CharSequence message, final Object... arguments) {
-        return this.isNotEqual(substring, null, message, arguments);
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqual(title, "cannot be equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqual(final CharSequence string, final CharSequence message, final Object... arguments) {
+        return this.isNotEqual(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isNotEqual(final CharSequence substring, final Locale locale, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string}.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqual(title, Locale.US, "cannot be equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqual(final CharSequence string, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, false, false, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), string, false, false, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence substring) {
-        return this.isNotEqualIgnoreCase(substring, null);
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring case considerations.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreCase(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence string) {
+        return this.isNotEqualIgnoreCase(string, null);
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence substring, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring case considerations.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreCase(title, "cannot be equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence string, final CharSequence message,
             final Object... arguments) {
-        return this.isNotEqualIgnoreCase(substring, null, message, arguments);
+        return this.isNotEqualIgnoreCase(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring case considerations.
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreCase(title, Locale.US, "cannot be equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCase(final CharSequence string, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, true, false, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), string, true, false, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence substring) {
-        return this.isNotEqualIgnoreLineReturns(substring, null);
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring line returns considerations (characters '\r' and
+     * '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreLineReturns(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence string) {
+        return this.isNotEqualIgnoreLineReturns(string, null);
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence substring, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring line returns considerations (characters '\r' and
+     * '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreLineReturns(title, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence string, final CharSequence message,
             final Object... arguments) {
-        return this.isNotEqualIgnoreLineReturns(substring, null, message, arguments);
+        return this.isNotEqualIgnoreLineReturns(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence substring, final Locale locale,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring line returns considerations (characters '\r' and
+     * '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreLineReturns(title, Locale.US, "not equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreLineReturns(final CharSequence string, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, false, true, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), string, false, true, Message.of(locale, message, arguments));
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence substring) {
-        return this.isNotEqualIgnoreCaseAndLineReturns(substring, null);
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring case and line returns considerations (characters
+     * '\r' and '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title).toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence string) {
+        return this.isNotEqualIgnoreCaseAndLineReturns(string, null);
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence substring, final CharSequence message,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring case and line returns considerations (characters
+     * '\r' and '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title, "cannot be equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence string, final CharSequence message,
             final Object... arguments) {
-        return this.isNotEqualIgnoreCaseAndLineReturns(substring, null, message, arguments);
+        return this.isNotEqualIgnoreCaseAndLineReturns(string, null, message, arguments);
     }
 
-    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence substring, final Locale locale,
+    /**
+     * Asserts that the given char sequence is NOT equal to the specified
+     * {@code string} ignoring case and line returns considerations (characters
+     * '\r' and '\n' are ignored).
+     * 
+     * <p>
+     * precondition: none
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title, Locale.US, "cannot be equal").toThrow();
+     * </pre>
+     * 
+     * @param string
+     *            The {@link CharSequence} to compare
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
+    default PredicateStepCharSequence<T> isNotEqualIgnoreCaseAndLineReturns(final CharSequence string, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorCharSequence.isNotEqual(this.getStep(), substring, true, true, Message.of(locale, message, arguments));
+        return () -> AssertorCharSequence.isNotEqual(this.getStep(), string, true, true, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code character}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code character} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(character).toThrow();
+     * </pre>
+     * 
+     * @param character
+     *            The {@link Character} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> contains(final Character character) {
         return this.contains(character, null);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code character}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code character} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(character, "character not found").toThrow();
+     * </pre>
+     * 
+     * @param character
+     *            The {@link Character} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> contains(final Character character, final CharSequence message, final Object... arguments) {
         return this.contains(character, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code character}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code character} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(character, Locale.US, "character not found").toThrow();
+     * </pre>
+     * 
+     * @param character
+     *            The {@link Character} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> contains(final Character character, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.contains(this.getStep(), character, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(word).toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> contains(final CharSequence substring) {
         return this.contains(substring, null);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(word, "word not found").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> contains(final CharSequence substring, final CharSequence message, final Object... arguments) {
         return this.contains(substring, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(word, Locale.US, "word not found").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> contains(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.contains(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence starts with the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(word).toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> startsWith(final CharSequence substring) {
         return this.startsWith(substring, null);
     }
 
+    /**
+     * Asserts that the given char sequence starts with the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(word, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> startsWith(final CharSequence substring, final CharSequence message, final Object... arguments) {
         return this.startsWith(substring, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence starts with the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).contains(word, Locale.US, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> startsWith(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.startsWith(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence starts with the specified
+     * {@code substring}, ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).startsWithIgnoreCase(word).toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> startsWithIgnoreCase(final CharSequence substring) {
         return this.startsWithIgnoreCase(substring, null);
     }
 
+    /**
+     * Asserts that the given char sequence starts with the specified
+     * {@code substring}, ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).startsWithIgnoreCase(word, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> startsWithIgnoreCase(final CharSequence substring, final CharSequence message,
             final Object... arguments) {
         return this.startsWithIgnoreCase(substring, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence starts with the specified
+     * {@code substring}, ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).startsWithIgnoreCase(word, Locale.US, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> startsWithIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.startsWithIgnoreCase(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence ends with the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).endsWith(word).toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> endsWith(final CharSequence substring) {
         return this.endsWith(substring, null);
     }
 
+    /**
+     * Asserts that the given char sequence ends with the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).endsWith(word, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> endsWith(final CharSequence substring, final CharSequence message, final Object... arguments) {
         return this.endsWith(substring, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence ends with the specified
+     * {@code substring}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).endsWith(word, Locale.US, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> endsWith(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.endsWith(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence ends with the specified
+     * {@code substring}, ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).endsWithIgnoreCase(word).toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> endsWithIgnoreCase(final CharSequence substring) {
         return this.endsWithIgnoreCase(substring, null);
     }
 
+    /**
+     * Asserts that the given char sequence ends with the specified
+     * {@code substring}, ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).endsWithIgnoreCase(word, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> endsWithIgnoreCase(final CharSequence substring, final CharSequence message,
             final Object... arguments) {
         return this.endsWithIgnoreCase(substring, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence ends with the specified
+     * {@code substring}, ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and
+     * {@code substring} cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).endsWithIgnoreCase(word, Locale.US, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * </pre>
+     * 
+     * @param substring
+     *            The {@link CharSequence} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> endsWithIgnoreCase(final CharSequence substring, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.endsWithIgnoreCase(this.getStep(), substring, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence matches the specified
+     * {@code pattern}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).matches(pattern).toThrow();
+     * </pre>
+     * 
+     * @param pattern
+     *            The {@link Pattern} to match
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> matches(final Pattern pattern) {
         return this.matches(pattern, null);
     }
 
+    /**
+     * Asserts that the given char sequence matches the specified
+     * {@code pattern}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).matches(pattern, "'%1$s*' doesn't match the pattern").toThrow();
+     * </pre>
+     * 
+     * @param pattern
+     *            The {@link Pattern} to match
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> matches(final Pattern pattern, final CharSequence message, final Object... arguments) {
         return this.matches(pattern, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence matches the specified
+     * {@code pattern}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).matches(pattern, Locale.US, "'%1$s*' doesn't match the pattern").toThrow();
+     * </pre>
+     * 
+     * @param pattern
+     *            The {@link Pattern} to match
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> matches(final Pattern pattern, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.matches(this.getStep(), pattern, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence matches the specified {@code regex}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).matches(regex).toThrow();
+     * </pre>
+     * 
+     * @param regex
+     *            The {@link CharSequence} to match
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> matches(final CharSequence regex) {
         return this.matches(regex, null);
     }
 
+    /**
+     * Asserts that the given char sequence matches the specified {@code regex}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).matches(regex, "'%1$s*' doesn't match the regular expression").toThrow();
+     * </pre>
+     * 
+     * @param regex
+     *            The {@link CharSequence} to match
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> matches(final CharSequence regex, final CharSequence message, final Object... arguments) {
         return this.matches(regex, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence matches the specified {@code regex}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).matches(regex, Locale.US, "'%1$s*' doesn't match the regular expression").toThrow();
+     * </pre>
+     * 
+     * @param regex
+     *            The {@link CharSequence} to match
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> matches(final CharSequence regex, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.matches(this.getStep(), regex, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code pattern}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).find(pattern).toThrow();
+     * </pre>
+     * 
+     * @param pattern
+     *            The {@link Pattern} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> find(final Pattern pattern) {
         return this.find(pattern, null);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code pattern}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).find(pattern, "'%1$s*' doesn't contain the pattern").toThrow();
+     * </pre>
+     * 
+     * @param pattern
+     *            The {@link Pattern} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> find(final Pattern pattern, final CharSequence message, final Object... arguments) {
         return this.find(pattern, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code pattern}.
+     * 
+     * <p>
+     * precondition: neither {@link CharSequence} or {@code pattern} can be
+     * {@code null}
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).find(pattern, Locale.US, "'%1$s*' doesn't contain the pattern").toThrow();
+     * </pre>
+     * 
+     * @param pattern
+     *            The {@link Pattern} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> find(final Pattern pattern, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.find(this.getStep(), pattern, Message.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code regex}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).find(regex).toThrow();
+     * </pre>
+     * 
+     * @param regex
+     *            The {@link CharSequence} to find
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> find(final CharSequence regex) {
         return this.find(regex, null);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code regex}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).find(regex, "'%1$s*' doesn't contain the regular expression").toThrow();
+     * </pre>
+     * 
+     * @param regex
+     *            The {@link CharSequence} to find
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> find(final CharSequence regex, final CharSequence message, final Object... arguments) {
         return this.find(regex, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given char sequence contains the specified
+     * {@code regex}.
+     * 
+     * <p>
+     * precondition: {@link CharSequence} cannot be {@code null} and the regular
+     * expression cannot be {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(name).find(regex, Locale.US, "'%1$s*' doesn't contain the regular expression").toThrow();
+     * </pre>
+     * 
+     * @param regex
+     *            The {@link CharSequence} to find
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepCharSequence<T> find(final CharSequence regex, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorCharSequence.find(this.getStep(), regex, Message.of(locale, message, arguments));

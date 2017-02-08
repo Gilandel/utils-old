@@ -129,7 +129,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </pre>
      * 
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -190,7 +191,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </pre>
      * 
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -257,7 +259,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @param object
      *            the object to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -312,7 +315,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @param object
      *            the object to compare
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -373,7 +377,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @param clazz
      *            the instance class
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -434,7 +439,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @param clazz
      *            the class (super class or interface)
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -489,7 +495,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @param hashCode
      *            the expected hash code
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
@@ -549,7 +556,8 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @param predicate
      *            the predicate that validates the object
      * @param locale
-     *            the message locale
+     *            the message locale (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
      * @param message
      *            the message on hash code not equal
      * @param arguments
