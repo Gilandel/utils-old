@@ -27,7 +27,7 @@ import fr.landel.utils.commons.DateUtils;
  * @author Gilles
  *
  */
-public class AssertorDate extends Constants {
+public class AssertorDate extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate if the {@link Date} or {@link Calendar}
@@ -47,7 +47,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isEqual(final StepAssertor<T> step, final T date, final Message message) {
+    protected static <T extends Comparable<T>> StepAssertor<T> isEqual(final StepAssertor<T> step, final T date, final MessageAssertor message) {
 
         return AssertorDate.isAround(step, date, -1, 0, message);
     }
@@ -70,7 +70,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final T date, final Message message) {
+    protected static <T extends Comparable<T>> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final T date, final MessageAssertor message) {
 
         return AssertorDate.isNotAround(step, date, -1, 0, message);
     }
@@ -119,7 +119,7 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isNotAround(final StepAssertor<T> step, final T date,
-            final int calendarField, final int calendarAmount, final Message message) {
+            final int calendarField, final int calendarAmount, final MessageAssertor message) {
 
         return AssertorDate.isAround(step, date, calendarField, calendarAmount, true, message);
     }
@@ -168,13 +168,13 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isAround(final StepAssertor<T> step, final T date, final int calendarField,
-            final int calendarAmount, final Message message) {
+            final int calendarAmount, final MessageAssertor message) {
 
         return AssertorDate.isAround(step, date, calendarField, calendarAmount, false, message);
     }
 
     private static <T extends Comparable<T>> StepAssertor<T> isAround(final StepAssertor<T> step, final T date, final int calendarField,
-            final int calendarAmount, final boolean reverse, final Message message) {
+            final int calendarAmount, final boolean reverse, final MessageAssertor message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
 
@@ -190,10 +190,10 @@ public class AssertorDate extends Constants {
         };
 
         if (calendarField == -1) {
-            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.EQUALS, reverse, new Parameter<>(date));
+            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.EQUALS, reverse, new ParameterAssertor<>(date));
         } else {
-            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AROUND, reverse, new Parameter<>(date),
-                    new Parameter<>(calendarField, EnumType.CALENDAR_FIELD), new Parameter<>(calendarAmount, EnumType.NUMBER_INTEGER));
+            return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AROUND, reverse, new ParameterAssertor<>(date),
+                    new ParameterAssertor<>(calendarField, EnumType.CALENDAR_FIELD), new ParameterAssertor<>(calendarAmount, EnumType.NUMBER_INTEGER));
         }
     }
 
@@ -240,7 +240,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isAfter(final StepAssertor<T> step, final T date, final Message message) {
+    protected static <T extends Comparable<T>> StepAssertor<T> isAfter(final StepAssertor<T> step, final T date, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) > 0;
 
@@ -291,13 +291,13 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isAfter(final StepAssertor<T> step, final T date, final int calendarField,
-            final int calendarAmount, final Message message) {
+            final int calendarAmount, final MessageAssertor message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c > 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER, false, new Parameter<>(date));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER, false, new ParameterAssertor<>(date));
     }
 
     /**
@@ -319,7 +319,7 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isAfterOrEqual(final StepAssertor<T> step, final T date,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) >= 0;
 
@@ -370,13 +370,13 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isAfterOrEqual(final StepAssertor<T> step, final T date,
-            final int calendarField, final int calendarAmount, final Message message) {
+            final int calendarField, final int calendarAmount, final MessageAssertor message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c >= 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER_OR_EQUALS, false, new Parameter<>(date));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.AFTER_OR_EQUALS, false, new ParameterAssertor<>(date));
     }
 
     /**
@@ -397,7 +397,7 @@ public class AssertorDate extends Constants {
      *            the date type
      * @return the next step
      */
-    protected static <T extends Comparable<T>> StepAssertor<T> isBefore(final StepAssertor<T> step, final T date, final Message message) {
+    protected static <T extends Comparable<T>> StepAssertor<T> isBefore(final StepAssertor<T> step, final T date, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) < 0;
 
@@ -448,13 +448,13 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isBefore(final StepAssertor<T> step, final T date, final int calendarField,
-            final int calendarAmount, final Message message) {
+            final int calendarAmount, final MessageAssertor message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c < 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE, false, new Parameter<>(date));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE, false, new ParameterAssertor<>(date));
     }
 
     /**
@@ -476,7 +476,7 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isBeforeOrEqual(final StepAssertor<T> step, final T date,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (date1, not) -> Comparators.compare(date1, date) <= 0;
 
@@ -527,21 +527,21 @@ public class AssertorDate extends Constants {
      * @return the next step
      */
     protected static <T extends Comparable<T>> StepAssertor<T> isBeforeOrEqual(final StepAssertor<T> step, final T date,
-            final int calendarField, final int calendarAmount, final Message message) {
+            final int calendarField, final int calendarAmount, final MessageAssertor message) {
 
         final Predicate<T> preChecker = preChecker(date, calendarField, calendarAmount);
 
         final BiPredicate<T, Boolean> checker = AssertorDate.checker(date, calendarField, calendarAmount, c -> c <= 0);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE_OR_EQUALS, false, new Parameter<>(date));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.DATE.BEFORE_OR_EQUALS, false, new ParameterAssertor<>(date));
     }
 
     private static <T extends Comparable<T>> StepAssertor<T> is(final StepAssertor<T> step, final T date, final CharSequence key,
-            final BiPredicate<T, Boolean> checker, final Message message) {
+            final BiPredicate<T, Boolean> checker, final MessageAssertor message) {
 
         final Predicate<T> preChecker = (date1) -> date1 != null && date != null;
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new Parameter<>(date));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new ParameterAssertor<>(date));
     }
 
     private static <T extends Comparable<T>> Predicate<T> preChecker(final T date, final int calendarField, final int calendarAmount) {

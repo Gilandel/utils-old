@@ -59,7 +59,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> hasSize(final int size, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.hasSize(this.getStep(), size, Message.of(locale, message, arguments));
+        return () -> AssertorMap.hasSize(this.getStep(), size, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> isEmpty() {
@@ -71,7 +71,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.isEmpty(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorMap.isEmpty(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> isNotEmpty() {
@@ -83,7 +83,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.isNotEmpty(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorMap.isNotEmpty(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> contains(final K key) {
@@ -95,7 +95,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
     }
 
     default PredicateStepMap<K, V> contains(final K key, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorMap.contains(this.getStep(), key, Message.of(locale, message, arguments));
+        return () -> AssertorMap.contains(this.getStep(), key, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> contains(final K key, final V value) {
@@ -108,7 +108,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> contains(final K key, final V value, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.contains(this.getStep(), key, value, Message.of(locale, message, arguments));
+        return () -> AssertorMap.contains(this.getStep(), key, value, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> containsAll(final Iterable<K> keys) {
@@ -121,7 +121,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAll(final Iterable<K> keys, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAll(this.getStep(), keys, Message.of(locale, message, arguments));
+        return () -> AssertorMap.containsAll(this.getStep(), keys, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> containsAll(final Map<K, V> map) {
@@ -134,7 +134,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAll(final Map<K, V> map, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAll(this.getStep(), map, Message.of(locale, message, arguments));
+        return () -> AssertorMap.containsAll(this.getStep(), map, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> containsAny(final Iterable<K> keys) {
@@ -147,7 +147,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAny(final Iterable<K> keys, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAny(this.getStep(), keys, Message.of(locale, message, arguments));
+        return () -> AssertorMap.containsAny(this.getStep(), keys, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepMap<K, V> containsAny(final Map<K, V> map) {
@@ -160,6 +160,6 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
 
     default PredicateStepMap<K, V> containsAny(final Map<K, V> map, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorMap.containsAny(this.getStep(), map, Message.of(locale, message, arguments));
+        return () -> AssertorMap.containsAny(this.getStep(), map, MessageAssertor.of(locale, message, arguments));
     }
 }

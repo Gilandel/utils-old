@@ -27,7 +27,7 @@ import org.apache.commons.collections4.MapUtils;
  * @author Gilles
  *
  */
-public class AssertorMap extends Constants {
+public class AssertorMap extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate the {@link Map} size
@@ -49,14 +49,14 @@ public class AssertorMap extends Constants {
      *            the {@link Map} value elements type
      * @return the next step
      */
-    protected static <K, V> StepAssertor<Map<K, V>> hasSize(final StepAssertor<Map<K, V>> step, final int size, final Message message) {
+    protected static <K, V> StepAssertor<Map<K, V>> hasSize(final StepAssertor<Map<K, V>> step, final int size, final MessageAssertor message) {
 
         final Predicate<Map<K, V>> preChecker = (map) -> size >= 0 && map != null;
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> map.size() == size;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.SIZE, false,
-                new Parameter<>(size, EnumType.NUMBER_INTEGER));
+                new ParameterAssertor<>(size, EnumType.NUMBER_INTEGER));
     }
 
     /**
@@ -77,7 +77,7 @@ public class AssertorMap extends Constants {
      *            the {@link Map} value elements type
      * @return the next step
      */
-    protected static <K, V> StepAssertor<Map<K, V>> isEmpty(final StepAssertor<Map<K, V>> step, final Message message) {
+    protected static <K, V> StepAssertor<Map<K, V>> isEmpty(final StepAssertor<Map<K, V>> step, final MessageAssertor message) {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> MapUtils.isEmpty(map);
 
@@ -102,7 +102,7 @@ public class AssertorMap extends Constants {
      *            the {@link Map} value elements type
      * @return the next step
      */
-    protected static <K, V> StepAssertor<Map<K, V>> isNotEmpty(final StepAssertor<Map<K, V>> step, final Message message) {
+    protected static <K, V> StepAssertor<Map<K, V>> isNotEmpty(final StepAssertor<Map<K, V>> step, final MessageAssertor message) {
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> MapUtils.isNotEmpty(map);
 
@@ -130,7 +130,7 @@ public class AssertorMap extends Constants {
      * @return the next step
      */
     protected static <K, V> StepAssertor<Map<K, V>> containsAll(final StepAssertor<Map<K, V>> step, final Map<K, V> map,
-            final Message message) {
+            final MessageAssertor message) {
 
         return contains(step, map, MSG.MAP.CONTAINS_MAP_ALL, true, message);
     }
@@ -157,7 +157,7 @@ public class AssertorMap extends Constants {
      * @return the next step
      */
     protected static <K, V> StepAssertor<Map<K, V>> containsAll(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
-            final Message message) {
+            final MessageAssertor message) {
 
         return contains(step, keys, MSG.MAP.CONTAINS_KEYS_ALL, true, message);
     }
@@ -183,7 +183,7 @@ public class AssertorMap extends Constants {
      * @return the next step
      */
     protected static <K, V> StepAssertor<Map<K, V>> containsAny(final StepAssertor<Map<K, V>> step, final Map<K, V> map,
-            final Message message) {
+            final MessageAssertor message) {
 
         return contains(step, map, MSG.MAP.CONTAINS_MAP_ANY, false, message);
     }
@@ -210,7 +210,7 @@ public class AssertorMap extends Constants {
      * @return the next step
      */
     protected static <K, V> StepAssertor<Map<K, V>> containsAny(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
-            final Message message) {
+            final MessageAssertor message) {
 
         return contains(step, keys, MSG.MAP.CONTAINS_KEYS_ANY, false, message);
     }
@@ -235,13 +235,13 @@ public class AssertorMap extends Constants {
      *            the {@link Map} value elements type
      * @return the next step
      */
-    protected static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final K key, final Message message) {
+    protected static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final K key, final MessageAssertor message) {
 
         final Predicate<Map<K, V>> preChecker = (map) -> MapUtils.isNotEmpty(map);
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> map.containsKey(key);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false, new Parameter<>(key));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false, new ParameterAssertor<>(key));
     }
 
     /**
@@ -267,34 +267,34 @@ public class AssertorMap extends Constants {
      * @return the next step
      */
     protected static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final K key, final V value,
-            final Message message) {
+            final MessageAssertor message) {
 
         final Predicate<Map<K, V>> preChecker = (map) -> MapUtils.isNotEmpty(map);
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> AssertorMap.contains(map, key, value);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false, new Parameter<>(key),
-                new Parameter<>(value));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.MAP.CONTAINS_KEY, false, new ParameterAssertor<>(key),
+                new ParameterAssertor<>(value));
     }
 
     private static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final Iterable<K> keys,
-            final CharSequence key, final boolean all, final Message message) {
+            final CharSequence key, final boolean all, final MessageAssertor message) {
 
         final Predicate<Map<K, V>> preChecker = (map) -> MapUtils.isNotEmpty(map) && !IterableUtils.isEmpty(keys);
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map, not) -> AssertorMap.contains(map, keys, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(keys, EnumType.ITERABLE));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new ParameterAssertor<>(keys, EnumType.ITERABLE));
     }
 
     private static <K, V> StepAssertor<Map<K, V>> contains(final StepAssertor<Map<K, V>> step, final Map<K, V> map, final CharSequence key,
-            final boolean all, final Message message) {
+            final boolean all, final MessageAssertor message) {
 
         final Predicate<Map<K, V>> preChecker = (map1) -> MapUtils.isNotEmpty(map1) && MapUtils.isNotEmpty(map);
 
         final BiPredicate<Map<K, V>, Boolean> checker = (map1, not) -> AssertorMap.contains(map1, map, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(map, EnumType.MAP));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new ParameterAssertor<>(map, EnumType.MAP));
     }
 
     private static <K, V> boolean contains(final Map<K, V> map, final Iterable<K> keys, final boolean all, final boolean not) {

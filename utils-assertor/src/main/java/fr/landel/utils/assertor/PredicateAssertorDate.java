@@ -115,7 +115,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      * @return the assertor step
      */
     default PredicateStepDate isEqual(final Date date, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isEqual(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isEqual(this.getStep(), date, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -182,7 +182,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      * @return the assertor step
      */
     default PredicateStepDate isNotEqual(final Date date, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isNotEqual(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isNotEqual(this.getStep(), date, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -344,7 +344,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      */
     default PredicateStepDate isAround(final Date date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isAround(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isAround(this.getStep(), date, calendarField, calendarAmount, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -506,7 +506,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      */
     default PredicateStepDate isNotAround(final Date date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isNotAround(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isNotAround(this.getStep(), date, calendarField, calendarAmount, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -573,7 +573,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      * @return the assertor step
      */
     default PredicateStepDate isAfter(final Date date, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isAfter(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isAfter(this.getStep(), date, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -735,7 +735,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      */
     default PredicateStepDate isAfter(final Date date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isAfter(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isAfter(this.getStep(), date, calendarField, calendarAmount, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -802,7 +802,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      * @return the assertor step
      */
     default PredicateStepDate isAfterOrEqual(final Date date, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isAfterOrEqual(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isAfterOrEqual(this.getStep(), date, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -965,7 +965,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
     default PredicateStepDate isAfterOrEqual(final Date date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isAfterOrEqual(this.getStep(), date, calendarField, calendarAmount,
-                Message.of(locale, message, arguments));
+                MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -1032,7 +1032,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      * @return the assertor step
      */
     default PredicateStepDate isBefore(final Date date, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isBefore(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isBefore(this.getStep(), date, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -1194,7 +1194,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      */
     default PredicateStepDate isBefore(final Date date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isBefore(this.getStep(), date, calendarField, calendarAmount, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isBefore(this.getStep(), date, calendarField, calendarAmount, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -1261,7 +1261,7 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
      * @return the assertor step
      */
     default PredicateStepDate isBeforeOrEqual(final Date date, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorDate.isBeforeOrEqual(this.getStep(), date, Message.of(locale, message, arguments));
+        return () -> AssertorDate.isBeforeOrEqual(this.getStep(), date, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -1424,6 +1424,6 @@ public interface PredicateAssertorDate extends PredicateAssertor<PredicateStepDa
     default PredicateStepDate isBeforeOrEqual(final Date date, final int calendarField, final int calendarAmount, final Locale locale,
             final CharSequence message, final Object... arguments) {
         return () -> AssertorDate.isBeforeOrEqual(this.getStep(), date, calendarField, calendarAmount,
-                Message.of(locale, message, arguments));
+                MessageAssertor.of(locale, message, arguments));
     }
 }

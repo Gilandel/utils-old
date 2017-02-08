@@ -24,7 +24,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.RunnerException;
 
-import fr.landel.utils.assertor.Constants.MSG;
+import fr.landel.utils.assertor.ConstantsAssertor.MSG;
 
 /**
  * Checks assertor performance

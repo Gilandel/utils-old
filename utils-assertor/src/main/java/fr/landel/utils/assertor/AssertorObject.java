@@ -25,7 +25,7 @@ import fr.landel.utils.commons.ClassUtils;
  * @author Gilles
  *
  */
-public class AssertorObject extends Constants {
+public class AssertorObject extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate if {@link Object} is {@code null}
@@ -42,7 +42,7 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> isNull(final StepAssertor<T> step, final Message message) {
+    protected static <T> StepAssertor<T> isNull(final StepAssertor<T> step, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> object == null;
 
@@ -64,7 +64,7 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> isNotNull(final StepAssertor<T> step, final Message message) {
+    protected static <T> StepAssertor<T> isNotNull(final StepAssertor<T> step, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> object != null;
 
@@ -89,11 +89,11 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> isEqual(final StepAssertor<T> step, final Object object, final Message message) {
+    protected static <T> StepAssertor<T> isEqual(final StepAssertor<T> step, final Object object, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object1, not) -> isEqualInternal(object1, object);
 
-        return new StepAssertor<>(step, checker, false, message, MSG.OBJECT.EQUALS, false, new Parameter<>(object));
+        return new StepAssertor<>(step, checker, false, message, MSG.OBJECT.EQUALS, false, new ParameterAssertor<>(object));
     }
 
     /**
@@ -114,11 +114,11 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final Object object, final Message message) {
+    protected static <T> StepAssertor<T> isNotEqual(final StepAssertor<T> step, final Object object, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object1, not) -> !isEqualInternal(object1, object);
 
-        return new StepAssertor<>(step, checker, false, message, MSG.OBJECT.EQUALS, true, new Parameter<>(object));
+        return new StepAssertor<>(step, checker, false, message, MSG.OBJECT.EQUALS, true, new ParameterAssertor<>(object));
     }
 
     private static <T> boolean isEqualInternal(final T object1, final Object object2) {
@@ -150,14 +150,14 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> isInstanceOf(final StepAssertor<T> step, final Class<?> type, final Message message) {
+    protected static <T> StepAssertor<T> isInstanceOf(final StepAssertor<T> step, final Class<?> type, final MessageAssertor message) {
 
         final Predicate<T> preChecker = (object) -> object != null && type != null;
 
         final BiPredicate<T, Boolean> checker = (object, not) -> type.isInstance(object);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.OBJECT.INSTANCE, false,
-                new Parameter<>(type, EnumType.CLASS));
+                new ParameterAssertor<>(type, EnumType.CLASS));
     }
 
     /**
@@ -179,14 +179,14 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> isAssignableFrom(final StepAssertor<T> step, final Class<?> superType, final Message message) {
+    protected static <T> StepAssertor<T> isAssignableFrom(final StepAssertor<T> step, final Class<?> superType, final MessageAssertor message) {
 
         final Predicate<T> preChecker = (object) -> object != null && superType != null;
 
         final BiPredicate<T, Boolean> checker = (object, not) -> superType.isAssignableFrom(ClassUtils.getClass(object));
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.OBJECT.ASSIGNABLE, false,
-                new Parameter<>(superType, EnumType.CLASS));
+                new ParameterAssertor<>(superType, EnumType.CLASS));
     }
 
     /**
@@ -207,12 +207,12 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> hasHashCode(final StepAssertor<T> step, final int hashCode, final Message message) {
+    protected static <T> StepAssertor<T> hasHashCode(final StepAssertor<T> step, final int hashCode, final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> Objects.hashCode(object) == hashCode;
 
         return new StepAssertor<>(step, checker, false, message, MSG.OBJECT.HASH_CODE, false,
-                new Parameter<>(hashCode, EnumType.NUMBER_INTEGER));
+                new ParameterAssertor<>(hashCode, EnumType.NUMBER_INTEGER));
     }
 
     /**
@@ -233,13 +233,13 @@ public class AssertorObject extends Constants {
      *            The object type
      * @return the next step
      */
-    protected static <T> StepAssertor<T> validates(final StepAssertor<T> step, final Predicate<T> predicate, final Message message) {
+    protected static <T> StepAssertor<T> validates(final StepAssertor<T> step, final Predicate<T> predicate, final MessageAssertor message) {
 
         final Predicate<T> preChecker = (object) -> predicate != null;
 
         final BiPredicate<T, Boolean> checker = (object, not) -> predicate.test(object);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.OBJECT.VALIDATES, false,
-                new Parameter<>(predicate, EnumType.UNKNOWN));
+                new ParameterAssertor<>(predicate, EnumType.UNKNOWN));
     }
 }

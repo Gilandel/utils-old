@@ -197,7 +197,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
         if (!result.isPrecondition() || !result.isValid()) {
             final String error;
             if (message != null) {
-                error = HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, message, result.getParameters(), arguments);
+                error = HelperMessage.getMessage(ConstantsAssertor.DEFAULT_ASSERTION, locale, message, result.getParameters(), arguments);
             } else {
                 error = result.getMessage();
             }
@@ -212,7 +212,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * wrong. The function provide two data:
      * <ul>
      * <li>first: the current error message</li>
-     * <li>second: the list of parameters as {@link Parameter} of:
+     * <li>second: the list of parameters as {@link ParameterAssertor} of:
      * <ul>
      * <li>object to check</li>
      * <li>the type of object</li>
@@ -246,7 +246,7 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @throws E
      *             The type of exception to throw
      */
-    default <E extends Throwable> T toThrow(final BiFunction<String, List<Parameter<?>>, E> function) throws E {
+    default <E extends Throwable> T toThrow(final BiFunction<String, List<ParameterAssertor<?>>, E> function) throws E {
         Objects.requireNonNull(function);
 
         final ResultAssertor result = HelperAssertor.combine(this.getStep(), true);

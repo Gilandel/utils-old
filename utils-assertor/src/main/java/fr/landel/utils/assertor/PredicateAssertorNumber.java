@@ -128,7 +128,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isEqual(final N number, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isEqual(this.getStep(), number, Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isEqual(this.getStep(), number, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -208,7 +208,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isNotEqual(final N number, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isNotEqual(this.getStep(), number, Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isNotEqual(this.getStep(), number, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -270,7 +270,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isZero(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isZero(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isZero(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -335,7 +335,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isPositive(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isPositive(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isPositive(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -400,7 +400,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isNegative(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isNegative(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isNegative(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -486,7 +486,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isGT(final N number, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isGT(this.getStep(), number, Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isGT(this.getStep(), number, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -575,7 +575,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isGTE(final N number, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isGTE(this.getStep(), number, Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isGTE(this.getStep(), number, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -661,7 +661,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isLT(final N number, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isLT(this.getStep(), number, Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isLT(this.getStep(), number, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -750,6 +750,6 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * @return The operator
      */
     default PredicateStepNumber<N> isLTE(final N number, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorNumber.isLTE(this.getStep(), number, Message.of(locale, message, arguments));
+        return () -> AssertorNumber.isLTE(this.getStep(), number, MessageAssertor.of(locale, message, arguments));
     }
 }

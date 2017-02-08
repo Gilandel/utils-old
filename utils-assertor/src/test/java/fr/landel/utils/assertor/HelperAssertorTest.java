@@ -131,15 +131,15 @@ public class HelperAssertorTest extends AbstractTest {
      */
     @Test
     public void testGetLastChecked() {
-        final List<Parameter<?>> params = new ArrayList<>();
+        final List<ParameterAssertor<?>> params = new ArrayList<>();
 
         assertNull(HelperAssertor.getLastChecked(params));
 
-        params.add(new Parameter<>(true, EnumType.BOOLEAN));
+        params.add(new ParameterAssertor<>(true, EnumType.BOOLEAN));
 
         assertNull(HelperAssertor.getLastChecked(params));
 
-        params.add(new Parameter<>(true, EnumType.BOOLEAN, true));
+        params.add(new ParameterAssertor<>(true, EnumType.BOOLEAN, true));
 
         assertTrue(HelperAssertor.getLastChecked(params));
     }

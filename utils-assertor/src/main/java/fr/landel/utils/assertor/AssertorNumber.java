@@ -24,7 +24,7 @@ import fr.landel.utils.commons.NumberUtils;
  * @author Gilles
  *
  */
-public class AssertorNumber extends Constants {
+public class AssertorNumber extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate if {@link Number} is equal to
@@ -45,11 +45,11 @@ public class AssertorNumber extends Constants {
      * @return the next step
      */
     protected static <N extends Number & Comparable<N>> StepAssertor<N> isEqual(final StepAssertor<N> step, final N number,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) == 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, false, new Parameter<>(number));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, false, new ParameterAssertor<>(number));
     }
 
     /**
@@ -71,11 +71,11 @@ public class AssertorNumber extends Constants {
      * @return the next step
      */
     protected static <N extends Number & Comparable<N>> StepAssertor<N> isNotEqual(final StepAssertor<N> step, final N number,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) != 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, true, new Parameter<>(number));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.EQUALS, true, new ParameterAssertor<>(number));
     }
 
     /**
@@ -93,7 +93,7 @@ public class AssertorNumber extends Constants {
      *            The number type
      * @return the next step
      */
-    protected static <N extends Number & Comparable<N>> StepAssertor<N> isZero(final StepAssertor<N> step, final Message message) {
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isZero(final StepAssertor<N> step, final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> NumberUtils.isZero(object);
 
@@ -116,7 +116,7 @@ public class AssertorNumber extends Constants {
      *            The number type
      * @return the next step
      */
-    protected static <N extends Number & Comparable<N>> StepAssertor<N> isPositive(final StepAssertor<N> step, final Message message) {
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isPositive(final StepAssertor<N> step, final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> NumberUtils.signum(object) > 0;
 
@@ -139,7 +139,7 @@ public class AssertorNumber extends Constants {
      *            The number type
      * @return the next step
      */
-    protected static <N extends Number & Comparable<N>> StepAssertor<N> isNegative(final StepAssertor<N> step, final Message message) {
+    protected static <N extends Number & Comparable<N>> StepAssertor<N> isNegative(final StepAssertor<N> step, final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> NumberUtils.signum(object) < 0;
 
@@ -165,11 +165,11 @@ public class AssertorNumber extends Constants {
      * @return the next step
      */
     protected static <N extends Number & Comparable<N>> StepAssertor<N> isGT(final StepAssertor<N> step, final N number,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) > 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GT, false, new Parameter<>(number));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GT, false, new ParameterAssertor<>(number));
     }
 
     /**
@@ -191,11 +191,11 @@ public class AssertorNumber extends Constants {
      * @return the next step
      */
     protected static <N extends Number & Comparable<N>> StepAssertor<N> isGTE(final StepAssertor<N> step, final N number,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) >= 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GTE, false, new Parameter<>(number));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.GTE, false, new ParameterAssertor<>(number));
     }
 
     /**
@@ -217,11 +217,11 @@ public class AssertorNumber extends Constants {
      * @return the next step
      */
     protected static <N extends Number & Comparable<N>> StepAssertor<N> isLT(final StepAssertor<N> step, final N number,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) < 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LT, false, new Parameter<>(number));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LT, false, new ParameterAssertor<>(number));
     }
 
     /**
@@ -243,10 +243,10 @@ public class AssertorNumber extends Constants {
      * @return the next step
      */
     protected static <N extends Number & Comparable<N>> StepAssertor<N> isLTE(final StepAssertor<N> step, final N number,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<N, Boolean> checker = (object, not) -> Comparators.compare(object, number) <= 0;
 
-        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LTE, false, new Parameter<>(number));
+        return new StepAssertor<>(step, checker, false, message, MSG.NUMBER.LTE, false, new ParameterAssertor<>(number));
     }
 }

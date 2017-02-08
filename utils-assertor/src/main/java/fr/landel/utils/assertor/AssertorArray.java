@@ -24,7 +24,7 @@ import fr.landel.utils.commons.ArrayUtils;
  * @author Gilles
  *
  */
-public class AssertorArray extends Constants {
+public class AssertorArray extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate the array length.
@@ -44,14 +44,14 @@ public class AssertorArray extends Constants {
      *            the array elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<T[]> hasLength(final StepAssertor<T[]> step, final int length, final Message message) {
+    protected static <T> StepAssertor<T[]> hasLength(final StepAssertor<T[]> step, final int length, final MessageAssertor message) {
 
         final Predicate<T[]> preChecker = (object) -> length >= 0 && object != null;
 
         final BiPredicate<T[], Boolean> checker = (object, not) -> object.length == length;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ARRAY.LENGTH, false,
-                new Parameter<>(length, EnumType.NUMBER_INTEGER));
+                new ParameterAssertor<>(length, EnumType.NUMBER_INTEGER));
     }
 
     /**
@@ -69,7 +69,7 @@ public class AssertorArray extends Constants {
      *            the array elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<T[]> isEmpty(final StepAssertor<T[]> step, final Message message) {
+    protected static <T> StepAssertor<T[]> isEmpty(final StepAssertor<T[]> step, final MessageAssertor message) {
 
         final BiPredicate<T[], Boolean> checker = (object, not) -> ArrayUtils.isEmpty(object);
 
@@ -92,7 +92,7 @@ public class AssertorArray extends Constants {
      *            the array elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<T[]> isNotEmpty(final StepAssertor<T[]> step, final Message message) {
+    protected static <T> StepAssertor<T[]> isNotEmpty(final StepAssertor<T[]> step, final MessageAssertor message) {
 
         final BiPredicate<T[], Boolean> checker = (object, not) -> ArrayUtils.isNotEmpty(object);
 
@@ -116,24 +116,24 @@ public class AssertorArray extends Constants {
      *            the array elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<T[]> contains(final StepAssertor<T[]> step, final T element, final Message message) {
+    protected static <T> StepAssertor<T[]> contains(final StepAssertor<T[]> step, final T element, final MessageAssertor message) {
 
         final Predicate<T[]> preChecker = (object) -> object != null;
 
         final BiPredicate<T[], Boolean> checker = (object, not) -> AssertorArray.has(object, element);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ARRAY.CONTAINS_OBJECT, false,
-                new Parameter<>(element, EnumType.UNKNOWN));
+                new ParameterAssertor<>(element, EnumType.UNKNOWN));
     }
 
     private static <T> StepAssertor<T[]> contains(final StepAssertor<T[]> step, final T[] array, final boolean all, final CharSequence key,
-            final Message message) {
+            final MessageAssertor message) {
 
         final Predicate<T[]> preChecker = (object) -> array != null && object != null;
 
         final BiPredicate<T[], Boolean> checker = (object, not) -> AssertorArray.has(object, array, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(array, EnumType.ARRAY));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new ParameterAssertor<>(array, EnumType.ARRAY));
     }
 
     /**
@@ -154,7 +154,7 @@ public class AssertorArray extends Constants {
      *            the array elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<T[]> containsAll(final StepAssertor<T[]> step, final T[] array, final Message message) {
+    protected static <T> StepAssertor<T[]> containsAll(final StepAssertor<T[]> step, final T[] array, final MessageAssertor message) {
 
         return AssertorArray.contains(step, array, true, MSG.ARRAY.CONTAINS_ALL, message);
     }
@@ -177,7 +177,7 @@ public class AssertorArray extends Constants {
      *            the array elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<T[]> containsAny(final StepAssertor<T[]> step, final T[] array, final Message message) {
+    protected static <T> StepAssertor<T[]> containsAny(final StepAssertor<T[]> step, final T[] array, final MessageAssertor message) {
 
         return AssertorArray.contains(step, array, false, MSG.ARRAY.CONTAINS_ANY, message);
     }

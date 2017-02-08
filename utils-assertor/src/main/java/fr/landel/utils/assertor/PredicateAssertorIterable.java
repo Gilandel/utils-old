@@ -58,7 +58,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
     }
 
     default PredicateStepIterable<T> hasSize(final int size, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorIterable.hasSize(this.getStep(), size, Message.of(locale, message, arguments));
+        return () -> AssertorIterable.hasSize(this.getStep(), size, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepIterable<T> isEmpty() {
@@ -70,7 +70,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
     }
 
     default PredicateStepIterable<T> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorIterable.isEmpty(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorIterable.isEmpty(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepIterable<T> isNotEmpty() {
@@ -82,7 +82,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
     }
 
     default PredicateStepIterable<T> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorIterable.isNotEmpty(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorIterable.isNotEmpty(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepIterable<T> contains(final T value) {
@@ -94,7 +94,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
     }
 
     default PredicateStepIterable<T> contains(final T value, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorIterable.contains(this.getStep(), value, Message.of(locale, message, arguments));
+        return () -> AssertorIterable.contains(this.getStep(), value, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepIterable<T> containsAll(final Iterable<T> values) {
@@ -107,7 +107,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
 
     default PredicateStepIterable<T> containsAll(final Iterable<T> values, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorIterable.containsAll(this.getStep(), values, Message.of(locale, message, arguments));
+        return () -> AssertorIterable.containsAll(this.getStep(), values, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepIterable<T> containsAny(final Iterable<T> values) {
@@ -120,6 +120,6 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
 
     default PredicateStepIterable<T> containsAny(final Iterable<T> values, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorIterable.containsAny(this.getStep(), values, Message.of(locale, message, arguments));
+        return () -> AssertorIterable.containsAny(this.getStep(), values, MessageAssertor.of(locale, message, arguments));
     }
 }

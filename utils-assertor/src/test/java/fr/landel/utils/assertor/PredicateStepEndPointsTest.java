@@ -44,13 +44,13 @@ public class PredicateStepEndPointsTest extends AbstractTest {
     /**
      * Default exception builder
      */
-    protected static final BiFunction<String, List<Parameter<?>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (String errors,
-            List<Parameter<?>> parameters) -> new IllegalArgumentException(
-                    HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
+    protected static final BiFunction<String, List<ParameterAssertor<?>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (String errors,
+            List<ParameterAssertor<?>> parameters) -> new IllegalArgumentException(
+                    HelperMessage.getMessage(ConstantsAssertor.DEFAULT_ASSERTION, null, errors, parameters, null));
 
-    private static final BiFunction<String, List<Parameter<?>>, IOException> EXCEPTION_BUILDER = (String errors,
-            List<Parameter<?>> parameters) -> new IOException(
-                    HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, null, errors, parameters, null));
+    private static final BiFunction<String, List<ParameterAssertor<?>>, IOException> EXCEPTION_BUILDER = (String errors,
+            List<ParameterAssertor<?>> parameters) -> new IOException(
+                    HelperMessage.getMessage(ConstantsAssertor.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     /**
      * Test method for {@link PredicateStep#toThrow()}.

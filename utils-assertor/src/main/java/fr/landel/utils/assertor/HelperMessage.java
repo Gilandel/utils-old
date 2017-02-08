@@ -41,7 +41,7 @@ import fr.landel.utils.commons.StringUtils;
  * @author Gilles
  *
  */
-public final class HelperMessage extends Constants {
+public final class HelperMessage extends ConstantsAssertor {
 
     // The regular expression from String#format
     // (just for info, the original regular expression, it's replaced here cause
@@ -310,11 +310,11 @@ public final class HelperMessage extends Constants {
      *            the input list
      * @return the output array
      */
-    public static Object[] convertParams(final List<Parameter<?>> parameters) {
+    public static Object[] convertParams(final List<ParameterAssertor<?>> parameters) {
         if (CollectionUtils.isNotEmpty(parameters)) {
             final List<Object> convertedParams = CollectionUtils2.transformIntoList(parameters, HelperAssertor.PARAM_TRANSFORMER);
             // The object, the type and if it's a checked object
-            Parameter<?> param;
+            ParameterAssertor<?> param;
             int calendarField = -1;
 
             // in order for binary search
@@ -369,8 +369,8 @@ public final class HelperMessage extends Constants {
      *            The list of parameters to inject in message
      * @return The message formatted
      */
-    protected static String getMessage(final Message message, final CharSequence defaultKey, final boolean not,
-            final List<Parameter<?>> parameters) {
+    protected static String getMessage(final MessageAssertor message, final CharSequence defaultKey, final boolean not,
+            final List<ParameterAssertor<?>> parameters) {
 
         final Locale locale;
         final String currentMessage;
@@ -386,7 +386,7 @@ public final class HelperMessage extends Constants {
         }
 
         if (currentMessage.indexOf('%') > -1) {
-            return HelperMessage.getMessage(Constants.DEFAULT_ASSERTION, locale, currentMessage, parameters, currentArguments);
+            return HelperMessage.getMessage(ConstantsAssertor.DEFAULT_ASSERTION, locale, currentMessage, parameters, currentArguments);
         } else {
             return currentMessage;
         }
@@ -409,7 +409,7 @@ public final class HelperMessage extends Constants {
      * @return The message formatted
      */
     public static String getMessage(final CharSequence defaultString, final Locale locale, final CharSequence message,
-            final List<Parameter<?>> parameters, final Object[] arguments) {
+            final List<ParameterAssertor<?>> parameters, final Object[] arguments) {
 
         String msg;
 
@@ -447,7 +447,7 @@ public final class HelperMessage extends Constants {
      * @return The loaded property
      */
     protected static String getDefaultMessage(final CharSequence key, final boolean precondition, final boolean not,
-            final List<Parameter<?>> parameters) {
+            final List<ParameterAssertor<?>> parameters) {
         Objects.requireNonNull(key);
 
         final StringBuilder keyProperty = new StringBuilder(key);

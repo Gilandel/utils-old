@@ -27,7 +27,7 @@ public class ResultAssertor {
     private final boolean precondition;
     private final boolean valid;
     private final String message;
-    private final List<Parameter<?>> parameters;
+    private final List<ParameterAssertor<?>> parameters;
 
     /**
      * Constructor
@@ -41,7 +41,7 @@ public class ResultAssertor {
      * @param parameters
      *            the complete list of parameters
      */
-    public ResultAssertor(boolean precondition, boolean valid, String message, final List<Parameter<?>> parameters) {
+    public ResultAssertor(boolean precondition, boolean valid, String message, final List<ParameterAssertor<?>> parameters) {
         this.precondition = precondition;
         this.valid = valid;
         this.message = message;
@@ -72,7 +72,7 @@ public class ResultAssertor {
     /**
      * @return the parameters
      */
-    public List<Parameter<?>> getParameters() {
+    public List<ParameterAssertor<?>> getParameters() {
         return this.parameters;
     }
 }

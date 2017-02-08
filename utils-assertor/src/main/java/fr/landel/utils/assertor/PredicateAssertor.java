@@ -138,7 +138,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S isNull(final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isNull(this.getStep(), Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.isNull(this.getStep(), MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -200,7 +200,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S isNotNull(final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isNotNull(this.getStep(), Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.isNotNull(this.getStep(), MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -268,7 +268,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S isEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isEqual(this.getStep(), object, Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.isEqual(this.getStep(), object, MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -324,7 +324,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S isNotEqual(final Object object, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isNotEqual(this.getStep(), object, Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.isNotEqual(this.getStep(), object, MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -386,7 +386,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S isInstanceOf(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isInstanceOf(this.getStep(), clazz, Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.isInstanceOf(this.getStep(), clazz, MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -448,7 +448,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.isAssignableFrom(this.getStep(), clazz, Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.isAssignableFrom(this.getStep(), clazz, MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -504,7 +504,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * @return the assertor step
      */
     default S hasHashCode(final int hashCode, final Locale locale, final CharSequence message, final Object... arguments) {
-        return this.get(AssertorObject.hasHashCode(this.getStep(), hashCode, Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.hasHashCode(this.getStep(), hashCode, MessageAssertor.of(locale, message, arguments)));
     }
 
     /**
@@ -568,6 +568,6 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      */
     default <E extends Throwable> S validates(final PredicateThrowable<T, E> predicate, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return this.get(AssertorObject.validates(this.getStep(), predicate, Message.of(locale, message, arguments)));
+        return this.get(AssertorObject.validates(this.getStep(), predicate, MessageAssertor.of(locale, message, arguments)));
     }
 }

@@ -78,9 +78,9 @@ public class StepAssertor<T> implements Serializable {
     private BiPredicate<T, Boolean> checker;
     // if 'not' is directly applied by checker
     private boolean notAppliedByChecker;
-    private Message message;
+    private MessageAssertor message;
 
-    private List<Parameter<?>> parameters;
+    private List<ParameterAssertor<?>> parameters;
 
     /**
      * Base constructor
@@ -215,8 +215,8 @@ public class StepAssertor<T> implements Serializable {
      */
     @SafeVarargs
     public StepAssertor(final StepAssertor<T> previousStep, final Predicate<T> preChecker, final BiPredicate<T, Boolean> checker,
-            final boolean notAppliedByChecker, final Message message, final CharSequence messageKey, final boolean messageKeyNot,
-            final Parameter<?>... parameters) {
+            final boolean notAppliedByChecker, final MessageAssertor message, final CharSequence messageKey, final boolean messageKeyNot,
+            final ParameterAssertor<?>... parameters) {
         this(EnumStep.ASSERTION, previousStep, null, null, null, false, null, false);
 
         this.messageKey = messageKey;
@@ -251,7 +251,7 @@ public class StepAssertor<T> implements Serializable {
      */
     @SafeVarargs
     public StepAssertor(final StepAssertor<T> previousStep, final BiPredicate<T, Boolean> checker, final boolean notAppliedByChecker,
-            final Message message, final CharSequence messageKey, final boolean messageKeyNot, final Parameter<?>... parameters) {
+            final MessageAssertor message, final CharSequence messageKey, final boolean messageKeyNot, final ParameterAssertor<?>... parameters) {
         this(previousStep, null, checker, notAppliedByChecker, message, messageKey, messageKeyNot, parameters);
     }
 
@@ -279,7 +279,7 @@ public class StepAssertor<T> implements Serializable {
     /**
      * @return the message
      */
-    public Message getMessage() {
+    public MessageAssertor getMessage() {
         return this.message;
     }
 
@@ -349,7 +349,7 @@ public class StepAssertor<T> implements Serializable {
     /**
      * @return the clone of parameters
      */
-    protected List<Parameter<?>> getParameters() {
+    protected List<ParameterAssertor<?>> getParameters() {
         return this.parameters;
     }
 

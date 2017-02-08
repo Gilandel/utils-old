@@ -24,7 +24,7 @@ import org.apache.commons.collections4.IterableUtils;
  * @author Gilles
  *
  */
-public class AssertorIterable extends Constants {
+public class AssertorIterable extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate the {@link Iterable} size
@@ -44,14 +44,14 @@ public class AssertorIterable extends Constants {
      *            the {@link Iterable} elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<Iterable<T>> hasSize(final StepAssertor<Iterable<T>> step, final int size, final Message message) {
+    protected static <T> StepAssertor<Iterable<T>> hasSize(final StepAssertor<Iterable<T>> step, final int size, final MessageAssertor message) {
 
         final Predicate<Iterable<T>> preChecker = (iterable) -> size >= 0 && iterable != null;
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> IterableUtils.size(iterable) == size;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.SIZE, false,
-                new Parameter<>(size, EnumType.NUMBER_INTEGER, false));
+                new ParameterAssertor<>(size, EnumType.NUMBER_INTEGER, false));
     }
 
     /**
@@ -70,7 +70,7 @@ public class AssertorIterable extends Constants {
      *            the {@link Iterable} elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<Iterable<T>> isEmpty(final StepAssertor<Iterable<T>> step, final Message message) {
+    protected static <T> StepAssertor<Iterable<T>> isEmpty(final StepAssertor<Iterable<T>> step, final MessageAssertor message) {
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> IterableUtils.isEmpty(iterable);
 
@@ -93,7 +93,7 @@ public class AssertorIterable extends Constants {
      *            the {@link Iterable} elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<Iterable<T>> isNotEmpty(final StepAssertor<Iterable<T>> step, final Message message) {
+    protected static <T> StepAssertor<Iterable<T>> isNotEmpty(final StepAssertor<Iterable<T>> step, final MessageAssertor message) {
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> !IterableUtils.isEmpty(iterable);
 
@@ -119,7 +119,7 @@ public class AssertorIterable extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Iterable<T>> containsAll(final StepAssertor<Iterable<T>> step, final Iterable<T> values,
-            final Message message) {
+            final MessageAssertor message) {
 
         return contains(step, values, MSG.ITERABLE.CONTAINS_ALL, true, message);
     }
@@ -143,7 +143,7 @@ public class AssertorIterable extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Iterable<T>> containsAny(final StepAssertor<Iterable<T>> step, final Iterable<T> values,
-            final Message message) {
+            final MessageAssertor message) {
 
         return contains(step, values, MSG.ITERABLE.CONTAINS_ANY, false, message);
     }
@@ -166,23 +166,23 @@ public class AssertorIterable extends Constants {
      *            the {@link Iterable} elements type
      * @return the next step
      */
-    protected static <T> StepAssertor<Iterable<T>> contains(final StepAssertor<Iterable<T>> step, final T value, final Message message) {
+    protected static <T> StepAssertor<Iterable<T>> contains(final StepAssertor<Iterable<T>> step, final T value, final MessageAssertor message) {
 
         final Predicate<Iterable<T>> preChecker = (iterable) -> !IterableUtils.isEmpty(iterable);
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable, not) -> AssertorIterable.has(iterable, value);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.CONTAINS_OBJECT, false, new Parameter<>(value));
+        return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ITERABLE.CONTAINS_OBJECT, false, new ParameterAssertor<>(value));
     }
 
     private static <T> StepAssertor<Iterable<T>> contains(final StepAssertor<Iterable<T>> step, final Iterable<T> iterable,
-            final CharSequence key, final boolean all, final Message message) {
+            final CharSequence key, final boolean all, final MessageAssertor message) {
 
         final Predicate<Iterable<T>> preChecker = (iterable1) -> !IterableUtils.isEmpty(iterable1) && !IterableUtils.isEmpty(iterable);
 
         final BiPredicate<Iterable<T>, Boolean> checker = (iterable1, not) -> AssertorIterable.has(iterable1, iterable, all, not);
 
-        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new Parameter<>(iterable, EnumType.ITERABLE));
+        return new StepAssertor<>(step, preChecker, checker, true, message, key, false, new ParameterAssertor<>(iterable, EnumType.ITERABLE));
     }
 
     private static <T> boolean has(final Iterable<T> iterable, final T object) {

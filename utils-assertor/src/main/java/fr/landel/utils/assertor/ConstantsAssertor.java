@@ -33,7 +33,7 @@ import fr.landel.utils.commons.EnumChar;
  * @author Gilles
  *
  */
-public class Constants {
+public class ConstantsAssertor {
 
     /**
      * The logger
@@ -90,7 +90,7 @@ public class Constants {
 
     /**
      * Returns the property associated to the key with replaced arguments or the
-     * default string if not found {@link Constants#DEFAULT_ASSERTION}.
+     * default string if not found {@link ConstantsAssertor#DEFAULT_ASSERTION}.
      * 
      * @param key
      *            The property key

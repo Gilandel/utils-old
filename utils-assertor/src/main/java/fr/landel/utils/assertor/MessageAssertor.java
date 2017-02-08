@@ -24,7 +24,7 @@ import fr.landel.utils.commons.StringUtils;
  * @author Gilles
  *
  */
-public class Message {
+public class MessageAssertor {
 
     private final Locale locale;
     private final CharSequence message;
@@ -40,7 +40,7 @@ public class Message {
      * @param arguments
      *            the message arguments
      */
-    private Message(final Locale locale, final CharSequence message, final Object[] arguments) {
+    private MessageAssertor(final Locale locale, final CharSequence message, final Object[] arguments) {
 
         this.locale = locale;
         this.message = message;
@@ -100,7 +100,7 @@ public class Message {
      *            the message arguments
      * @return the new message instance
      */
-    public static Message of(final Locale locale, final CharSequence message, final Object[] arguments) {
-        return new Message(locale, message, arguments);
+    public static MessageAssertor of(final Locale locale, final CharSequence message, final Object[] arguments) {
+        return new MessageAssertor(locale, message, arguments);
     }
 }

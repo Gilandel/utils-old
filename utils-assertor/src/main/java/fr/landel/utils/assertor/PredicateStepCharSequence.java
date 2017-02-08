@@ -13,8 +13,8 @@
 package fr.landel.utils.assertor;
 
 /**
- * 
- * (Description)
+ * This class is an intermediate or final link in chain, see
+ * {@link PredicateStep}.
  *
  * @since Aug 7, 2016
  * @author Gilles

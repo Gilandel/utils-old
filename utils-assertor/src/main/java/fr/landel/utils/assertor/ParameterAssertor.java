@@ -26,7 +26,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @param <T>
  *            the type of object
  */
-public class Parameter<T> implements Serializable {
+public class ParameterAssertor<T> implements Serializable {
 
     /**
      * serialVersionUID
@@ -47,7 +47,7 @@ public class Parameter<T> implements Serializable {
      * @param checked
      *            if the object is checked
      */
-    protected Parameter(final T object, final EnumType type, final boolean checked) {
+    protected ParameterAssertor(final T object, final EnumType type, final boolean checked) {
         this.object = object;
         this.type = type;
         this.checked = checked;
@@ -61,7 +61,7 @@ public class Parameter<T> implements Serializable {
      * @param type
      *            The type of object
      */
-    protected Parameter(final T object, final EnumType type) {
+    protected ParameterAssertor(final T object, final EnumType type) {
         this(object, type, false);
     }
 
@@ -71,7 +71,7 @@ public class Parameter<T> implements Serializable {
      * @param object
      *            The object
      */
-    protected Parameter(final T object) {
+    protected ParameterAssertor(final T object) {
         this(object, EnumType.getType(object), false);
     }
 

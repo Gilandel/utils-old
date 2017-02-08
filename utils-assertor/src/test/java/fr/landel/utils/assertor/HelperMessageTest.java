@@ -220,7 +220,7 @@ public class HelperMessageTest extends AbstractTest {
      */
     @Test
     public void testConvertParams() {
-        final List<Parameter<?>> parameters = new ArrayList<>();
+        final List<ParameterAssertor<?>> parameters = new ArrayList<>();
 
         final Date date1 = new Date(1464475553640L);
         final Calendar calendar1 = DateUtils.getCalendar(date1);
@@ -230,20 +230,20 @@ public class HelperMessageTest extends AbstractTest {
         map.put("key1", "value1");
         map.put("key2", "value2");
 
-        parameters.add(new Parameter<>(true, EnumType.BOOLEAN));
-        parameters.add(new Parameter<>(integers, EnumType.ARRAY));
-        parameters.add(new Parameter<>(Calendar.YEAR, EnumType.CALENDAR_FIELD));
-        parameters.add(new Parameter<>(Calendar.ZONE_OFFSET, EnumType.CALENDAR_FIELD));
-        parameters.add(new Parameter<>("text", EnumType.CHAR_SEQUENCE));
-        parameters.add(new Parameter<>(HelperMessage.class, EnumType.CLASS));
-        parameters.add(new Parameter<>(date1, EnumType.DATE));
-        parameters.add(new Parameter<>(calendar1, EnumType.DATE));
-        parameters.add(new Parameter<>(EnumOperator.AND, EnumType.ENUMERATION));
-        parameters.add(new Parameter<>(texts, EnumType.ITERABLE));
-        parameters.add(new Parameter<>(map, EnumType.MAP));
-        parameters.add(new Parameter<>(3.25f, EnumType.NUMBER_DECIMAL));
-        parameters.add(new Parameter<>(12, EnumType.NUMBER_INTEGER));
-        parameters.add(new Parameter<>(Color.BLACK, EnumType.UNKNOWN));
+        parameters.add(new ParameterAssertor<>(true, EnumType.BOOLEAN));
+        parameters.add(new ParameterAssertor<>(integers, EnumType.ARRAY));
+        parameters.add(new ParameterAssertor<>(Calendar.YEAR, EnumType.CALENDAR_FIELD));
+        parameters.add(new ParameterAssertor<>(Calendar.ZONE_OFFSET, EnumType.CALENDAR_FIELD));
+        parameters.add(new ParameterAssertor<>("text", EnumType.CHAR_SEQUENCE));
+        parameters.add(new ParameterAssertor<>(HelperMessage.class, EnumType.CLASS));
+        parameters.add(new ParameterAssertor<>(date1, EnumType.DATE));
+        parameters.add(new ParameterAssertor<>(calendar1, EnumType.DATE));
+        parameters.add(new ParameterAssertor<>(EnumOperator.AND, EnumType.ENUMERATION));
+        parameters.add(new ParameterAssertor<>(texts, EnumType.ITERABLE));
+        parameters.add(new ParameterAssertor<>(map, EnumType.MAP));
+        parameters.add(new ParameterAssertor<>(3.25f, EnumType.NUMBER_DECIMAL));
+        parameters.add(new ParameterAssertor<>(12, EnumType.NUMBER_INTEGER));
+        parameters.add(new ParameterAssertor<>(Color.BLACK, EnumType.UNKNOWN));
 
         Object[] convertedParams = HelperMessage.convertParams(parameters);
 
@@ -280,10 +280,11 @@ public class HelperMessageTest extends AbstractTest {
     }
 
     /**
-     * Test method for {@link Parameter#toString()}.
+     * Test method for {@link ParameterAssertor#toString()}.
      */
     @Test
     public void testParameterToString() {
-        assertEquals("Parameter[object=true,type=BOOLEAN,checked=false]", new Parameter<>(true, EnumType.BOOLEAN).toString());
+        assertEquals("ParameterAssertor[object=true,type=BOOLEAN,checked=false]",
+                new ParameterAssertor<>(true, EnumType.BOOLEAN).toString());
     }
 }

@@ -59,7 +59,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
 
     default PredicateStepEnum<T> hasName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.hasName(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorEnum.hasName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name) {
@@ -72,7 +72,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
 
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorEnum.hasNameIgnoreCase(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorEnum.hasNameIgnoreCase(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepEnum<T> hasOrdinal(final int ordinal) {
@@ -84,6 +84,6 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
     }
 
     default PredicateStepEnum<T> hasOrdinal(final int ordinal, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorEnum.hasOrdinal(this.getStep(), ordinal, Message.of(locale, message, arguments));
+        return () -> AssertorEnum.hasOrdinal(this.getStep(), ordinal, MessageAssertor.of(locale, message, arguments));
     }
 }

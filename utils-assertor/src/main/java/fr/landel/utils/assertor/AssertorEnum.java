@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Gilles
  *
  */
-public class AssertorEnum extends Constants {
+public class AssertorEnum extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate if the {@link Enum} has the specified
@@ -45,7 +45,7 @@ public class AssertorEnum extends Constants {
      * @return the next step
      */
     protected static <T extends Enum<T>> StepAssertor<T> hasNameIgnoreCase(final StepAssertor<T> step, final CharSequence name,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> object.name().equalsIgnoreCase(name.toString());
 
@@ -71,7 +71,7 @@ public class AssertorEnum extends Constants {
      * @return the next step
      */
     protected static <T extends Enum<T>> StepAssertor<T> hasName(final StepAssertor<T> step, final CharSequence name,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> object.name().equals(name);
 
@@ -79,11 +79,11 @@ public class AssertorEnum extends Constants {
     }
 
     private static <T extends Enum<T>> StepAssertor<T> hasName(final StepAssertor<T> step, final CharSequence name, final CharSequence key,
-            final BiPredicate<T, Boolean> checker, final Message message) {
+            final BiPredicate<T, Boolean> checker, final MessageAssertor message) {
 
         final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(name);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new Parameter<>(name, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new ParameterAssertor<>(name, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -104,13 +104,13 @@ public class AssertorEnum extends Constants {
      *            the enumeration type
      * @return the next step
      */
-    protected static <T extends Enum<T>> StepAssertor<T> hasOrdinal(final StepAssertor<T> step, final int ordinal, final Message message) {
+    protected static <T extends Enum<T>> StepAssertor<T> hasOrdinal(final StepAssertor<T> step, final int ordinal, final MessageAssertor message) {
 
         final Predicate<T> preChecker = (object) -> object != null && ordinal >= 0;
 
         final BiPredicate<T, Boolean> checker = (object, not) -> object.ordinal() == ordinal;
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.ENUM.ORDINAL, false,
-                new Parameter<>(ordinal, EnumType.NUMBER_INTEGER));
+                new ParameterAssertor<>(ordinal, EnumType.NUMBER_INTEGER));
     }
 }

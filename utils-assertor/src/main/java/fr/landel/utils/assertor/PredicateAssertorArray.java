@@ -117,7 +117,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @return the assertor step
      */
     default PredicateStepArray<T> hasLength(final int length, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.hasLength(this.getStep(), length, Message.of(locale, message, arguments));
+        return () -> AssertorArray.hasLength(this.getStep(), length, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -179,7 +179,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @return the assertor step
      */
     default PredicateStepArray<T> isEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.isEmpty(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorArray.isEmpty(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -241,7 +241,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @return the assertor step
      */
     default PredicateStepArray<T> isNotEmpty(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.isNotEmpty(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorArray.isNotEmpty(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -309,7 +309,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * @return the assertor step
      */
     default PredicateStepArray<T> contains(final T object, final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorArray.contains(this.getStep(), object, Message.of(locale, message, arguments));
+        return () -> AssertorArray.contains(this.getStep(), object, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -378,7 +378,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      */
     default PredicateStepArray<T> containsAll(final T[] objects, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorArray.containsAll(this.getStep(), objects, Message.of(locale, message, arguments));
+        return () -> AssertorArray.containsAll(this.getStep(), objects, MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -447,6 +447,6 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      */
     default PredicateStepArray<T> containsAny(final T[] objects, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorArray.containsAny(this.getStep(), objects, Message.of(locale, message, arguments));
+        return () -> AssertorArray.containsAny(this.getStep(), objects, MessageAssertor.of(locale, message, arguments));
     }
 }

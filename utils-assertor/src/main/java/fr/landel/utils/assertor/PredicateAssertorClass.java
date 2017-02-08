@@ -62,7 +62,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
     @Override
     default PredicateStepClass<T> isAssignableFrom(final Class<?> clazz, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.isAssignableFrom(this.getStep(), clazz, Message.of(locale, message, arguments));
+        return () -> AssertorClass.isAssignableFrom(this.getStep(), clazz, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepClass<T> hasName(final CharSequence name) {
@@ -75,7 +75,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepClass<T> hasName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.hasName(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorClass.hasName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepClass<T> hasSimpleName(final CharSequence name) {
@@ -88,7 +88,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepClass<T> hasSimpleName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.hasSimpleName(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorClass.hasSimpleName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepClass<T> hasCanonicalName(final CharSequence name) {
@@ -101,7 +101,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepClass<T> hasCanonicalName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.hasCanonicalName(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorClass.hasCanonicalName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepClass<T> hasTypeName(final CharSequence name) {
@@ -114,7 +114,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepClass<T> hasTypeName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.hasTypeName(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorClass.hasTypeName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
     default PredicateStepClass<T> hasPackageName(final CharSequence name) {
@@ -127,6 +127,6 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
 
     default PredicateStepClass<T> hasPackageName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
-        return () -> AssertorClass.hasPackageName(this.getStep(), name, Message.of(locale, message, arguments));
+        return () -> AssertorClass.hasPackageName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 }

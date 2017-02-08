@@ -29,16 +29,16 @@ import fr.landel.utils.commons.EnumChar;
  * @author Gilles
  *
  */
-public class HelperAssertor extends Constants {
+public class HelperAssertor extends ConstantsAssertor {
 
     /**
      * Empty {@code String}
      */
     protected static final CharSequence EMPTY_STRING = "";
 
-    protected static final Transformer<Parameter<?>, Object> PARAM_TRANSFORMER = new Transformer<Parameter<?>, Object>() {
+    protected static final Transformer<ParameterAssertor<?>, Object> PARAM_TRANSFORMER = new Transformer<ParameterAssertor<?>, Object>() {
         @Override
-        public Object transform(final Parameter<?> input) {
+        public Object transform(final ParameterAssertor<?> input) {
             return input.getObject();
         }
     };
@@ -104,9 +104,9 @@ public class HelperAssertor extends Constants {
         Object object = null;
         boolean checked = false;
         EnumType type = null;
-        Parameter<?> param = null;
+        ParameterAssertor<?> param = null;
 
-        final List<Parameter<?>> parameters = new ArrayList<>();
+        final List<ParameterAssertor<?>> parameters = new ArrayList<>();
 
         for (StepAssertor<?> s : steps) {
             if (EnumStep.CREATION.equals(s.getStepType())) {
@@ -114,7 +114,7 @@ public class HelperAssertor extends Constants {
                 object = s.getObject();
                 type = s.getType();
                 checked = s.isChecked();
-                param = new Parameter<>(object, type, checked);
+                param = new ParameterAssertor<>(object, type, checked);
 
                 parameters.add(param);
 
@@ -147,7 +147,7 @@ public class HelperAssertor extends Constants {
                 operator = s.getOperator();
                 object = s.getObject();
                 checked = s.isChecked();
-                param = new Parameter<>(object, type, checked);
+                param = new ParameterAssertor<>(object, type, checked);
 
                 parameters.add(param);
 
@@ -167,10 +167,10 @@ public class HelperAssertor extends Constants {
         return new ResultAssertor(true, valid, message.toString(), parameters);
     }
 
-    private static <T> ResultAssertor getPreconditionMessage(final StepAssertor<T> step, final Parameter<?> param,
-            final List<Parameter<?>> parameters, final boolean loadMessage) {
+    private static <T> ResultAssertor getPreconditionMessage(final StepAssertor<T> step, final ParameterAssertor<?> param,
+            final List<ParameterAssertor<?>> parameters, final boolean loadMessage) {
 
-        final List<Parameter<?>> assertParameters = new ArrayList<>();
+        final List<ParameterAssertor<?>> assertParameters = new ArrayList<>();
         assertParameters.add(param);
         assertParameters.addAll(step.getParameters());
 
@@ -185,7 +185,7 @@ public class HelperAssertor extends Constants {
         return new ResultAssertor(false, false, error, parameters);
     }
 
-    private static <T> boolean validatesAndGetMessage(final StepAssertor<T> step, final Parameter<?> param, final Object object,
+    private static <T> boolean validatesAndGetMessage(final StepAssertor<T> step, final ParameterAssertor<?> param, final Object object,
             final boolean valid, final boolean not, final EnumOperator operator, final StringBuilder message, final boolean loadMessage) {
 
         boolean nextValid = HelperAssertor.isValid(valid, HelperAssertor.check(step, object, not), operator);
@@ -195,7 +195,7 @@ public class HelperAssertor extends Constants {
                 message.append(operator);
             }
 
-            final List<Parameter<?>> assertParameters = new ArrayList<>();
+            final List<ParameterAssertor<?>> assertParameters = new ArrayList<>();
             assertParameters.add(param);
             assertParameters.addAll(step.getParameters());
 
@@ -208,7 +208,7 @@ public class HelperAssertor extends Constants {
     }
 
     private static <T> Triple<Boolean, EnumOperator, ResultAssertor> managesSub(final StepAssertor<T> step,
-            final List<Parameter<?>> parameters, final boolean valid, final EnumOperator operator, final StringBuilder message,
+            final List<ParameterAssertor<?>> parameters, final boolean valid, final EnumOperator operator, final StringBuilder message,
             final boolean loadMessage) {
 
         final StepAssertor<?> subStep = step.getSubStep();
@@ -297,7 +297,7 @@ public class HelperAssertor extends Constants {
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T> T getLastChecked(final List<Parameter<?>> parameters) {
+    protected static <T> T getLastChecked(final List<ParameterAssertor<?>> parameters) {
         final int size = parameters.size();
         T object = null;
         for (int i = size - 1; i >= 0; i--) {

@@ -108,7 +108,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * @return the assertor step
      */
     default PredicateStepBoolean isTrue(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorBoolean.isTrue(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorBoolean.isTrue(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 
     /**
@@ -170,6 +170,6 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * @return the assertor step
      */
     default PredicateStepBoolean isFalse(final Locale locale, final CharSequence message, final Object... arguments) {
-        return () -> AssertorBoolean.isFalse(this.getStep(), Message.of(locale, message, arguments));
+        return () -> AssertorBoolean.isFalse(this.getStep(), MessageAssertor.of(locale, message, arguments));
     }
 }

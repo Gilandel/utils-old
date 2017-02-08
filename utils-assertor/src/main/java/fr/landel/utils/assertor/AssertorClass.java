@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Gilles
  *
  */
-public class AssertorClass extends Constants {
+public class AssertorClass extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate if the {@link Class} is assignable from
@@ -45,14 +45,14 @@ public class AssertorClass extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Class<T>> isAssignableFrom(final StepAssertor<Class<T>> step, final Class<?> superType,
-            final Message message) {
+            final MessageAssertor message) {
 
         final Predicate<Class<T>> preChecker = (type) -> type != null && superType != null;
 
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> superType.isAssignableFrom(type);
 
         return new StepAssertor<>(step, preChecker, checker, false, message, MSG.CLASS.ASSIGNABLE, false,
-                new Parameter<>(superType, EnumType.CLASS));
+                new ParameterAssertor<>(superType, EnumType.CLASS));
     }
 
     /**
@@ -74,7 +74,7 @@ public class AssertorClass extends Constants {
      *            the class type
      * @return the next step
      */
-    protected static <T> StepAssertor<Class<T>> hasName(final StepAssertor<Class<T>> step, final CharSequence name, final Message message) {
+    protected static <T> StepAssertor<Class<T>> hasName(final StepAssertor<Class<T>> step, final CharSequence name, final MessageAssertor message) {
 
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> type.getName().equals(name);
 
@@ -101,7 +101,7 @@ public class AssertorClass extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Class<T>> hasSimpleName(final StepAssertor<Class<T>> step, final CharSequence name,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> type.getSimpleName().equals(name);
 
@@ -128,7 +128,7 @@ public class AssertorClass extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Class<T>> hasCanonicalName(final StepAssertor<Class<T>> step, final CharSequence name,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> type.getCanonicalName().equals(name);
 
@@ -155,7 +155,7 @@ public class AssertorClass extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Class<T>> hasTypeName(final StepAssertor<Class<T>> step, final CharSequence name,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> type.getTypeName().equals(name);
 
@@ -182,7 +182,7 @@ public class AssertorClass extends Constants {
      * @return the next step
      */
     protected static <T> StepAssertor<Class<T>> hasPackageName(final StepAssertor<Class<T>> step, final CharSequence name,
-            final Message message) {
+            final MessageAssertor message) {
 
         final BiPredicate<Class<T>, Boolean> checker = (type, not) -> type.getPackage().getName().equals(name);
 
@@ -190,10 +190,10 @@ public class AssertorClass extends Constants {
     }
 
     private static <T> StepAssertor<Class<T>> has(final StepAssertor<Class<T>> step, final CharSequence name, final CharSequence key,
-            final BiPredicate<Class<T>, Boolean> checker, final Message message) {
+            final BiPredicate<Class<T>, Boolean> checker, final MessageAssertor message) {
 
         final Predicate<Class<T>> preChecker = (type) -> type != null && StringUtils.isNotEmpty(name);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new Parameter<>(name, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new ParameterAssertor<>(name, EnumType.CHAR_SEQUENCE));
     }
 }

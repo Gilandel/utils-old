@@ -21,7 +21,7 @@ import java.util.function.BiPredicate;
  * @author Gilles
  *
  */
-public class AssertorBoolean extends Constants {
+public class AssertorBoolean extends ConstantsAssertor {
 
     /**
      * Prepare the next step to validate if the {@link Boolean} is {@code true}
@@ -36,7 +36,7 @@ public class AssertorBoolean extends Constants {
      *            the message if invalid
      * @return the next step
      */
-    protected static StepAssertor<Boolean> isTrue(final StepAssertor<Boolean> step, final Message message) {
+    protected static StepAssertor<Boolean> isTrue(final StepAssertor<Boolean> step, final MessageAssertor message) {
 
         final BiPredicate<Boolean, Boolean> checker = (bool, not) -> Boolean.TRUE.equals(bool);
 
@@ -56,7 +56,7 @@ public class AssertorBoolean extends Constants {
      *            the message if invalid
      * @return the next step
      */
-    protected static StepAssertor<Boolean> isFalse(final StepAssertor<Boolean> step, final Message message) {
+    protected static StepAssertor<Boolean> isFalse(final StepAssertor<Boolean> step, final MessageAssertor message) {
 
         final BiPredicate<Boolean, Boolean> checker = (bool, not) -> Boolean.FALSE.equals(bool);
 
