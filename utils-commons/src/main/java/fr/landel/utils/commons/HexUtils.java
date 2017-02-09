@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Hex utility class.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
@@ -44,6 +44,12 @@ public final class HexUtils {
     private static final int CHAR_SIZE = 2;
     private static final int INTEGER_SIZE = 4;
     private static final int PERCENT_MAX = 100;
+
+    /**
+     * Hidden constructor.
+     */
+    private HexUtils() {
+    }
 
     /**
      * Convert an integer (0 to 255) into a byte (-128 to 127).

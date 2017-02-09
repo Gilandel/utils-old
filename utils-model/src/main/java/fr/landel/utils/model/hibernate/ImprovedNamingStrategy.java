@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -23,7 +23,7 @@ import fr.landel.utils.commons.StringUtils;
 /**
  * Improve naming strategy for JPA 2.1 and Hibernate 5
  *
- * @since 25 nov. 2015
+ * @since Nov 25, 2015
  * @author Gilles
  *
  */
@@ -33,31 +33,31 @@ public class ImprovedNamingStrategy implements PhysicalNamingStrategy {
     private static final String CONVERTER_REPLACEMENT = "$1_$2";
 
     @Override
-    public Identifier toPhysicalCatalogName(Identifier identifier, JdbcEnvironment jdbcEnv) {
+    public Identifier toPhysicalCatalogName(final Identifier identifier, final JdbcEnvironment jdbcEnv) {
         return this.convert(identifier);
     }
 
     @Override
-    public Identifier toPhysicalColumnName(Identifier identifier, JdbcEnvironment jdbcEnv) {
+    public Identifier toPhysicalColumnName(final Identifier identifier, final JdbcEnvironment jdbcEnv) {
         return this.convert(identifier);
     }
 
     @Override
-    public Identifier toPhysicalSchemaName(Identifier identifier, JdbcEnvironment jdbcEnv) {
+    public Identifier toPhysicalSchemaName(final Identifier identifier, final JdbcEnvironment jdbcEnv) {
         return this.convert(identifier);
     }
 
     @Override
-    public Identifier toPhysicalSequenceName(Identifier identifier, JdbcEnvironment jdbcEnv) {
+    public Identifier toPhysicalSequenceName(final Identifier identifier, final JdbcEnvironment jdbcEnv) {
         return this.convert(identifier);
     }
 
     @Override
-    public Identifier toPhysicalTableName(Identifier identifier, JdbcEnvironment jdbcEnv) {
+    public Identifier toPhysicalTableName(final Identifier identifier, final JdbcEnvironment jdbcEnv) {
         return this.convert(identifier);
     }
 
-    private Identifier convert(Identifier identifier) {
+    private Identifier convert(final Identifier identifier) {
         if (identifier == null || StringUtils.isBlank(identifier.getText())) {
             return identifier;
         }

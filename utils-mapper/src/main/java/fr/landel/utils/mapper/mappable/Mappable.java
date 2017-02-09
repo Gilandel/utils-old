@@ -2,7 +2,7 @@
  * #%L
  * utils-mapper
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation to map a DTO into an entity (and vis versa).
  *
- * @since 14 juil. 2015
+ * @since Jul 14, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  *

@@ -2,7 +2,7 @@
  * #%L
  * utils-web
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -23,12 +23,12 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.landel.utils.commons.io.FileUtils;
+import fr.landel.utils.io.FileUtils;
 
 /**
  * HTC loader tests.
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */

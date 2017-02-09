@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -15,7 +15,7 @@ package fr.landel.utils.aop.observable;
 /**
  * A simple enum to test AOP parameters
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */

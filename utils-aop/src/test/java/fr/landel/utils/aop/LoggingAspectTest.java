@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -13,8 +13,10 @@
 package fr.landel.utils.aop;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,12 +29,12 @@ import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 
 import fr.landel.utils.aop.observable.AOPObservable;
 import fr.landel.utils.aop.observable.EnumTest;
-import fr.landel.utils.commons.io.EncodingUtils;
+import fr.landel.utils.io.EncodingUtils;
 
 /**
  * Check logging aspect methods.
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */
@@ -61,6 +63,9 @@ public class LoggingAspectTest extends AbstractAspectTest<LoggingAspect> {
 
         AspectJProxyFactory factory = new AspectJProxyFactory(target);
         LoggingAspect aspect = new LoggingAspect();
+
+        assertNotNull(aspect.getLogger());
+
         factory.addAspect(aspect);
 
         AOPObservable proxy = factory.getProxy();
@@ -214,6 +219,68 @@ public class LoggingAspectTest extends AbstractAspectTest<LoggingAspect> {
             assertEquals(expectedLog, outputLog);
         } catch (IOException e) {
             fail("Errors occurred in AspectTest#logTest6Simple()\n" + e);
+        }
+    }
+
+    /**
+     * Check AOP
+     */
+    @Test
+    public void logTestNull() {
+        final String expectedLog = EXPECTED_TEXT + "(null)";
+
+        AOPObservable target = new AOPObservable();
+
+        AspectJProxyFactory factory = new AspectJProxyFactory(target);
+        LoggingAspect aspect = new LoggingAspect();
+
+        assertNotNull(aspect.getLogger());
+
+        factory.addAspect(aspect);
+
+        AOPObservable proxy = factory.getProxy();
+
+        this.stream.reset();
+
+        proxy.test(null);
+
+        try {
+            String outputLog = this.stream.toString(EncodingUtils.ENCODING_UTF_8);
+
+            assertEquals(expectedLog, outputLog);
+        } catch (IOException e) {
+            fail("Errors occurred in AspectTest#logTestNull()\n" + e);
+        }
+    }
+
+    /**
+     * Check AOP
+     */
+    @Test
+    public void logTestObject() {
+        final String expectedLog = EXPECTED_TEXT + "((Color){java.awt.Color[r=0,g=0,b=0]})";
+
+        AOPObservable target = new AOPObservable();
+
+        AspectJProxyFactory factory = new AspectJProxyFactory(target);
+        LoggingAspect aspect = new LoggingAspect();
+
+        assertNotNull(aspect.getLogger());
+
+        factory.addAspect(aspect);
+
+        AOPObservable proxy = factory.getProxy();
+
+        this.stream.reset();
+
+        proxy.test(Color.BLACK);
+
+        try {
+            String outputLog = this.stream.toString(EncodingUtils.ENCODING_UTF_8);
+
+            assertEquals(expectedLog, outputLog);
+        } catch (IOException e) {
+            fail("Errors occurred in AspectTest#logTestNull()\n" + e);
         }
     }
 }

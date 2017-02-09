@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -24,12 +24,12 @@ import org.junit.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 
 import fr.landel.utils.aop.observable.AOPObservable;
-import fr.landel.utils.commons.io.EncodingUtils;
+import fr.landel.utils.io.EncodingUtils;
 
 /**
  * Check profiling aspect methods.
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */

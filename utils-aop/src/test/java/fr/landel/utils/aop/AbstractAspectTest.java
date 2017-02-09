@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -27,7 +27,7 @@ import ch.qos.logback.core.OutputStreamAppender;
 /**
  * Abstract aspect test (initialize the test appender).
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  * @param <A>

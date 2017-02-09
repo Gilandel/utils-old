@@ -2,7 +2,7 @@
  * #%L
  * utils-mapper
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -25,7 +25,7 @@ import fr.landel.utils.mapper.EnumMode;
 /**
  * Annotation to map properties from a DTO to an entity (and vis versa).
  *
- * @since 14 juil. 2015
+ * @since Jul 14, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  *

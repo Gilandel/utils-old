@@ -2,7 +2,7 @@
  * #%L
  * utils-mapper
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -15,7 +15,7 @@ package fr.landel.utils.mapper;
 /**
  * Mapping mode
  *
- * @since 17 mars 2016
+ * @since Mar 17, 2016
  * @author Gilles
  *
  */

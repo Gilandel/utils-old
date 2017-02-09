@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>fr.landel</groupId>
 		<artifactId>utils</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.landel.utils</groupId>
@@ -12,12 +12,41 @@
 	<name>utils-mapper</name>
 	<description>To map classes through annotations</description>
 
-	<properties>
-		<java.home>C:\\Program Files\\Java\\jdk1.8.0_92</java.home>
-	</properties>
-
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-perf-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/perf/java</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-perf-resources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/perf/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
 			<!-- Add license header and generate third-party text file -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -33,46 +62,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			<!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>${uberjar.name}</finalName>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.openjdk.jmh.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                            <shadeTestJar>true</shadeTestJar>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin> -->
-
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>run-benchmarks</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<classpathScope>test</classpathScope>
-							<mainClass>fr.landel.utils.mapper.utils.Test</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -93,14 +82,12 @@
 		<dependency>
 			<groupId>fr.landel.utils</groupId>
 			<artifactId>utils-commons</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
-		<!-- Unit testing -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>fr.landel.utils</groupId>
+			<artifactId>utils-assertor</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Commons -->

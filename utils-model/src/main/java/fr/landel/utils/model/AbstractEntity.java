@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 /**
  * Abstract entity.
  *
- * @since 13 juil. 2015
+ * @since Jul 13, 2015
  * @author Gilles
  *
  * @param <E>

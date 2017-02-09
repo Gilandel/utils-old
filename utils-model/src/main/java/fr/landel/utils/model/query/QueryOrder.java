@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -15,7 +15,7 @@ package fr.landel.utils.model.query;
 /**
  * Query order.
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */
@@ -24,12 +24,12 @@ public final class QueryOrder {
     /**
      * Ascendant order
      */
-    public static final String ORDER_ASC = "ASC";
+    protected static final String ORDER_ASC = "ASC";
 
     /**
      * Descendant order
      */
-    public static final String ORDER_DESC = "DESC";
+    protected static final String ORDER_DESC = "DESC";
 
     /**
      * Order
@@ -56,7 +56,7 @@ public final class QueryOrder {
 
     @Override
     public String toString() {
-        return this.column + " " + this.order;
+        return this.column + QueryBuilder.SPACE + this.order;
     }
 
     /**

@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -24,7 +24,7 @@ import fr.landel.utils.commons.DateUtils;
 /**
  * AOP observable for tests
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */
@@ -38,6 +38,16 @@ public class AOPObservable {
      */
     public void test() {
         // Observable method, no parameter
+    }
+
+    /**
+     * Test method with object parameter (logging)
+     * 
+     * @param object
+     *            Object
+     */
+    public void test(final Object object) {
+        // Observable method, object parameter
     }
 
     /**

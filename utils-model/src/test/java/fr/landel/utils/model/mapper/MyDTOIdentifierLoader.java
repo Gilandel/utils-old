@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -22,7 +22,7 @@ import fr.landel.utils.mapper.core.AbstractDTOIdentifierLoader;
 /**
  * DTO identifiers loader for tests.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */

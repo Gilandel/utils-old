@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -26,7 +26,7 @@ import fr.landel.utils.model.AbstractEntity;
 /**
  * The zone DTO for query tests.
  *
- * @since 30 nov. 2015
+ * @since Nov 30, 2015
  * @author Gilles
  *
  */

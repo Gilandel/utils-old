@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -24,12 +24,13 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.Transformer;
 
 /**
  * Utility class to manage collections.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
@@ -57,7 +58,8 @@ public final class CollectionUtils2 {
 
     /**
      * To array an iterable (take the type of the first element, otherwise use
-     * the default 'toArray(new T[0])')
+     * the default 'toArray(new T[0])'). Returns {@code null} if the iterable is
+     * empty.
      * 
      * @param iterable
      *            The input iterable (required)
@@ -70,24 +72,94 @@ public final class CollectionUtils2 {
      */
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(final Iterable<T> iterable, final Class<T> type) {
-        if (iterable != null) {
+        if (!IterableUtils.isEmpty(iterable)) {
             final Iterator<T> iterator = iterable.iterator();
-            if (iterator.hasNext()) {
-                final List<T> list = new ArrayList<>();
-                while (iterator.hasNext()) {
-                    final T obj = iterator.next();
-                    list.add(obj);
+            final List<T> list = new ArrayList<>();
+            final Set<Class<T>> classes = new HashSet<>();
+            while (iterator.hasNext()) {
+                final T obj = iterator.next();
+                list.add(obj);
+                if (obj != null) {
+                    classes.add(ClassUtils.getClass(obj));
                 }
-                final Class<T> typeClass;
-                if (type != null) {
-                    typeClass = type;
-                } else {
-                    typeClass = CastGenerics.getClass(list.get(0));
-                }
-                return list.toArray((T[]) Array.newInstance(typeClass, list.size()));
             }
+            final Class<?> typeClass;
+            if (type != null) {
+                typeClass = type;
+            } else if (classes.size() == 1) {
+                typeClass = classes.iterator().next();
+            } else {
+                typeClass = Object.class;
+            }
+            return list.toArray((T[]) Array.newInstance(typeClass, list.size()));
+        } else if (iterable != null && type != null) {
+            return (T[]) Array.newInstance(type, 0);
         }
         return null;
+    }
+
+    /**
+     * List all classes in an iterable ({@code null} values are excluded in the
+     * output set)
+     * 
+     * @param iterable
+     *            The iterable to check
+     * @param <T>
+     *            The generic type of iterable
+     * @return a list of classes, even if iterable is null or empty
+     */
+    public static <T> Set<Class<T>> getClasses(final Iterable<T> iterable) {
+        final Set<Class<T>> classes = new HashSet<>();
+        if (!IterableUtils.isEmpty(iterable)) {
+            final Iterator<T> iterator = iterable.iterator();
+            while (iterator.hasNext()) {
+                final T obj = iterator.next();
+                if (obj != null) {
+                    classes.add(ClassUtils.getClass(obj));
+                }
+            }
+        }
+        return classes;
+    }
+
+    /**
+     * Check if the iterable contains specific types (all {@code null} values
+     * and classes are excluded)
+     * 
+     * @param iterable
+     *            The iterable to check
+     * @param classes
+     *            The list of classes ({@code null}, returns false, all
+     *            {@code null} classes are removed)
+     * @param <T>
+     *            The generic type of iterable
+     * @return true, if all classes are found
+     */
+    public static <T> boolean containsClasses(final Iterable<T> iterable, final Class<?>... classes) {
+        if (classes != null && !IterableUtils.isEmpty(iterable)) {
+            int found = 0;
+
+            // remove null classes
+            final Set<Class<?>> classRefSet = new HashSet<>();
+            for (Class<?> clazz : classes) {
+                if (clazz != null) {
+                    classRefSet.add(clazz);
+                }
+            }
+
+            // list all classes in provided iterable
+            final Set<Class<T>> classSet = getClasses(iterable);
+
+            // count
+            for (Class<?> clazz : classRefSet) {
+                if (classSet.contains(clazz)) {
+                    found++;
+                }
+            }
+
+            return found == classRefSet.size();
+        }
+        return false;
     }
 
     /**
@@ -424,19 +496,86 @@ public final class CollectionUtils2 {
         }
     }
 
+    /**
+     * Get typed list class
+     * 
+     * @param type
+     *            The class type
+     * @param <T>
+     *            The type
+     * @return The typed class
+     */
     public static <T> Class<List<T>> getListClass(final Class<T> type) {
         return CastGenerics.getClass(new ArrayList<T>());
     }
 
+    /**
+     * Get typed set class
+     * 
+     * @param type
+     *            The class type
+     * @param <T>
+     *            The type
+     * @return The typed class
+     */
     public static <T> Class<Set<T>> getSetClass(final Class<T> type) {
         return CastGenerics.getClass(new HashSet<T>());
     }
 
+    /**
+     * Get typed queue class
+     * 
+     * @param type
+     *            The class type
+     * @param <T>
+     *            The type
+     * @return The typed class
+     */
     public static <T> Class<Queue<T>> getQueueClass(final Class<T> type) {
         return CastGenerics.getClass(new LinkedList<T>());
     }
 
+    /**
+     * Get typed map class
+     * 
+     * @param keyType
+     *            The key class
+     * @param valueType
+     *            The value class
+     * @param <K>
+     *            The key type
+     * @param <V>
+     *            The value type
+     * @return The typed class
+     */
     public static <K, V> Class<Map<K, V>> getMapClass(final Class<K> keyType, final Class<V> valueType) {
         return CastGenerics.getClass(new HashMap<K, V>());
+    }
+
+    /**
+     * Get the value from the map, in case of null, put the value into the map
+     * at the specified key.
+     * 
+     * @param map
+     *            The input map
+     * @param key
+     *            The key
+     * @param defaultValue
+     *            The value if no key or if value equals null
+     * @param <K>
+     *            The type of key
+     * @param <V>
+     *            The type of value
+     * @return The value or the default value
+     */
+    public static <K, V> V getOrPut(final Map<K, V> map, final K key, final V defaultValue) {
+        V value = map.get(key);
+
+        if (value == null) {
+            value = defaultValue;
+            map.put(key, defaultValue);
+        }
+
+        return value;
     }
 }

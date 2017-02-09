@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -15,7 +15,7 @@ package fr.landel.utils.commons.exception;
 /**
  * Abstract exception.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
@@ -39,8 +39,8 @@ public abstract class AbstractException extends Exception {
      * @param message
      *            message
      */
-    public AbstractException(final String message) {
-        super(message);
+    public AbstractException(final CharSequence message) {
+        super(message.toString());
     }
 
     /**
@@ -73,8 +73,8 @@ public abstract class AbstractException extends Exception {
      * @param exception
      *            The exception
      */
-    public AbstractException(final String message, final Throwable exception) {
-        super(message, exception);
+    public AbstractException(final CharSequence message, final Throwable exception) {
+        super(message.toString(), exception);
     }
 
     /**
@@ -90,8 +90,8 @@ public abstract class AbstractException extends Exception {
      * @param writableStackTrace
      *            whether or not the stack trace should be writable
      */
-    protected AbstractException(final String message, final Throwable cause, final boolean enableSuppression,
+    protected AbstractException(final CharSequence message, final Throwable cause, final boolean enableSuppression,
             final boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        super(message.toString(), cause, enableSuppression, writableStackTrace);
     }
 }

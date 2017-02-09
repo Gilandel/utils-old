@@ -2,7 +2,7 @@
  * #%L
  * utils-web
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -19,13 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import fr.landel.utils.commons.io.EncodingUtils;
-import fr.landel.utils.commons.io.FileUtils;
+import fr.landel.utils.io.EncodingUtils;
+import fr.landel.utils.io.FileUtils;
 
 /**
  * PIE HTC loader.
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */

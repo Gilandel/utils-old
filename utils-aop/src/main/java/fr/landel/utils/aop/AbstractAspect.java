@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -32,7 +32,7 @@ import fr.landel.utils.commons.EnumChar;
 /**
  * Abstract aspect.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */
@@ -90,8 +90,8 @@ public abstract class AbstractAspect {
      *            join point
      * @return the signature
      */
-    private String getSignature(final JoinPoint joinPoint) {
-        final StringBuffer signBuilder = new StringBuffer();
+    protected String getSignature(final JoinPoint joinPoint) {
+        final StringBuilder signBuilder = new StringBuilder();
 
         signBuilder.append(joinPoint.getTarget().getClass());
         signBuilder.append(EnumChar.DOT);
@@ -123,7 +123,7 @@ public abstract class AbstractAspect {
      * @param object
      *            object
      */
-    private void appendObject(final StringBuffer logEntry, final Object object) {
+    protected void appendObject(final StringBuilder logEntry, final Object object) {
         final Class<?> objClass = object.getClass();
 
         if (!this.checkSimpleType(logEntry, object, objClass)) {
@@ -151,7 +151,7 @@ public abstract class AbstractAspect {
      *            object classs
      * @return <code>true</code> if simple type, <code>false</code> otherwise
      */
-    private boolean checkSimpleType(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected boolean checkSimpleType(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         boolean done = false;
 
         if (String.class.equals(objClass)) {
@@ -185,11 +185,11 @@ public abstract class AbstractAspect {
      *            date
      * @return the formatted date
      */
-    private String formatDate(final Date date) {
-        Calendar calendar = Calendar.getInstance();
+    protected String formatDate(final Date date) {
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        int time = calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
+        final int time = calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
         if (time > 0) {
             return this.dtf.format(date);
         }
@@ -206,7 +206,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    private void appendArray(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendArray(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Object[] objects = (Object[]) object;
 
@@ -235,7 +235,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    private void appendIterator(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendIterator(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Iterator<?> iterator;
         if (Iterable.class.isAssignableFrom(objClass)) {
@@ -272,7 +272,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    private void appendMap(final StringBuffer logEntry, final Object object, final Class<?> objClass) {
+    protected void appendMap(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Map<?, ?> map = (Map<?, ?>) object;
 

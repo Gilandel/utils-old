@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -31,28 +31,39 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.ClassUtils;
-
 /**
  * Check utility class.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
 public class ClassUtilsTest {
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#getSuperclasses(java.lang.Class)}
-     * .
+     * Test method for {@link ClassUtils#getSuperclasses(java.lang.Class)} .
      */
     @Test
     public void testGetSuperclasses() {
-        final List<Class<?>> expectedClasses = Arrays.asList(TreeMap.class, AbstractMap.class, NavigableMap.class, Cloneable.class,
+        List<Class<?>> expectedClasses = Arrays.asList(TreeMap.class, AbstractMap.class, NavigableMap.class, Cloneable.class,
                 Serializable.class, Map.class, SortedMap.class, Object.class);
 
-        final Set<Class<?>> treeMapClasses = ClassUtils.getSuperclasses(TreeMap.class);
+        Set<Class<?>> treeMapClasses = ClassUtils.getSuperclasses(TreeMap.class);
+
+        assertNotNull(treeMapClasses);
+        assertEquals(expectedClasses.size(), treeMapClasses.size());
+
+        for (Class<?> treeMapClass : treeMapClasses) {
+            if (!expectedClasses.contains(treeMapClass)) {
+                fail("Super class not found: " + treeMapClass);
+            }
+        }
+
+        // Interface
+
+        expectedClasses = Arrays.asList(Map.class, Object.class);
+
+        treeMapClasses = ClassUtils.getSuperclasses(Map.class);
 
         assertNotNull(treeMapClasses);
         assertEquals(expectedClasses.size(), treeMapClasses.size());
@@ -66,7 +77,7 @@ public class ClassUtilsTest {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#getCommonSuperclasses(java.lang.Class, java.lang.Class)}
+     * {@link ClassUtils#getCommonSuperclasses(java.lang.Class, java.lang.Class)}
      * .
      */
     @Test
@@ -87,8 +98,7 @@ public class ClassUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#isAnyNull(Object...)} .
+     * Test method for {@link ClassUtils#isAnyNull(Object...)} .
      */
     @Test
     public void testIsAnyNull() {
@@ -102,8 +112,7 @@ public class ClassUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#isAllNull(Object...)} .
+     * Test method for {@link ClassUtils#isAllNull(Object...)} .
      */
     @Test
     public void testIsAllNull() {
@@ -118,8 +127,7 @@ public class ClassUtilsTest {
     }
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.ClassUtils#isNoneNull(Object...)} .
+     * Test method for {@link ClassUtils#isNoneNull(Object...)} .
      */
     @Test
     public void testIsNoneNull() {
@@ -132,5 +140,34 @@ public class ClassUtilsTest {
         assertTrue(ClassUtils.isNoneNull(ClassUtilsTest.class, ClassUtils.class));
         assertFalse(ClassUtils.isNoneNull(ClassUtilsTest.class, ClassUtils.class, null));
         assertFalse(ClassUtils.isNoneNull(null, null, null));
+    }
+
+    /**
+     * Test method for {@link ClassUtils#getName(Object)} .
+     */
+    @Test
+    public void testGetName() {
+        assertEquals("null", ClassUtils.getName(null));
+        assertEquals("java.lang.Integer", ClassUtils.getName(3));
+        assertEquals("java.lang.Integer", ClassUtils.getCanonicalName(3));
+        assertEquals("Integer", ClassUtils.getSimpleName(3));
+        assertEquals("[Ljava.lang.Integer;", ClassUtils.getName(new Integer[] {3}));
+        assertEquals("java.lang.Integer[]", ClassUtils.getTypeName(new Integer[] {3}));
+        assertEquals("java.lang", ClassUtils.getPackageName(3));
+    }
+
+    /**
+     * Test method for {@link ClassUtils#isAssignableFrom(Class, Object)} .
+     */
+    @Test
+    public void testIsAssignableFrom() {
+        assertTrue(ClassUtils.isAssignableFrom(String.class, ""));
+        assertTrue(ClassUtils.isAssignableFrom(CharSequence.class, ""));
+        assertFalse(ClassUtils.isAssignableFrom(String.class, 12));
+        assertFalse(ClassUtils.isAssignableFrom(String.class, null));
+
+        assertFalse(ClassUtils.isAssignableFrom(null, ""));
+        assertFalse(ClassUtils.isAssignableFrom(null, 12));
+        assertFalse(ClassUtils.isAssignableFrom(null, null));
     }
 }

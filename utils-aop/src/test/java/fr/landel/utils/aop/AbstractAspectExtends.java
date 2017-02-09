@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -15,14 +15,14 @@ package fr.landel.utils.aop;
 /**
  * Aspect implementation for tests
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */
 public abstract class AbstractAspectExtends extends AbstractAspect {
 
     /**
-     * Base package path
+     * Observable
      */
-    protected static final String BASE_PACKAGE = "fr.landel.utils.aop.observable";
+    protected static final String OBSERVABLE = "fr.landel.utils.aop.observable.AOPObservable";
 }

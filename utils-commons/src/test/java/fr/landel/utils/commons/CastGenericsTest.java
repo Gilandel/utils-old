@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -19,7 +19,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -37,25 +40,13 @@ import org.junit.Test;
 /**
  * Check utility class (generic cast).
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
 public class CastGenericsTest {
 
-    private static final Comparator<String> COMPARATOR = new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-            if (o1 != null && o2 != null) {
-                return o1.compareTo(o2);
-            } else if (o1 != null) {
-                return 1;
-            } else if (o2 != null) {
-                return -1;
-            }
-            return 0;
-        }
-    };
+    private static final Comparator<String> COMPARATOR = Comparators.STRING.desc();
 
     /**
      * Check cast a object
@@ -73,11 +64,14 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetObject() {
-        ExException map = new ExException("msg");
-        IOException result = CastGenerics.cast(map, IOException.class);
+        ExException exex = new ExException("msg");
+        IOException result = CastGenerics.cast(exex, IOException.class);
 
         assertEquals("msg", result.getMessage());
         assertNull(CastGenerics.cast(null, IOException.class));
+        assertNull(CastGenerics.cast("", IOException.class));
+        assertNull(CastGenerics.cast("", null));
+        assertNull(CastGenerics.cast(null, null));
     }
 
     /**
@@ -109,6 +103,11 @@ public class CastGenericsTest {
         assertEquals("value1", result.get(0));
         assertNull(result.get(1));
         assertEquals("value2", result.get(2));
+
+        assertEquals(0, CastGenerics.getArrayList(list, null).size());
+        assertEquals(0, CastGenerics.getArrayList(null, null).size());
+        assertEquals(0, CastGenerics.getArrayList(12, String.class).size());
+        assertEquals(0, CastGenerics.getArrayList(Arrays.asList(12), String.class).size());
     }
 
     /**
@@ -123,6 +122,7 @@ public class CastGenericsTest {
         queue.add("value2");
 
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getLinkedListAsQueue(null, String.class)));
+        assertTrue(CollectionUtils.isEmpty(CastGenerics.getLinkedTransferQueue(null, String.class)));
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getPriorityQueue(null, String.class)));
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getLinkedBlockingQueue(null, String.class)));
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getPriorityBlockingQueue(null, String.class)));
@@ -131,6 +131,10 @@ public class CastGenericsTest {
         Queue<String> result = CastGenerics.getLinkedListAsQueue(queue, String.class);
         assertEquals("value1", result.poll());
         assertNull(result.poll());
+        assertEquals("value2", result.poll());
+
+        result = CastGenerics.getLinkedTransferQueue(queue, String.class);
+        assertEquals("value1", result.poll());
         assertEquals("value2", result.poll());
 
         result = CastGenerics.getPriorityQueue(queue, String.class);
@@ -148,6 +152,12 @@ public class CastGenericsTest {
         result = CastGenerics.getArrayBlockingQueue(queue, String.class, queue.size());
         assertEquals("value1", result.poll());
         assertEquals("value2", result.poll());
+
+        assertEquals(0, CastGenerics.getLinkedListAsQueue(12, String.class).size());
+
+        Queue<Integer> queue2 = new LinkedList<>();
+        queue2.add(2);
+        assertEquals(0, CastGenerics.getLinkedListAsQueue(queue2, String.class).size());
     }
 
     /**
@@ -156,59 +166,72 @@ public class CastGenericsTest {
     @Test
     public void testGetMap() {
         Map<Object, Object> map = new HashMap<>();
-        map.put("key", "value");
-        map.put("key2", null);
+        map.put("key2", "value");
+        map.put("key1", null);
         map.put(null, "value2");
 
         assertTrue(MapUtils.isEmpty(CastGenerics.getHashMap(null, String.class, String.class)));
+        assertTrue(MapUtils.isEmpty(CastGenerics.getLinkedHashMap(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getHashtable(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class)));
         assertTrue(MapUtils.isEmpty(CastGenerics.getTreeMap(null, String.class, String.class, COMPARATOR)));
 
         Map<String, String> result = CastGenerics.getHashMap(map, String.class, String.class);
-        assertEquals("value", result.get("key"));
+        assertEquals("value", result.get("key2"));
         assertEquals("value2", result.get(null));
-        assertNull(result.get("key2"));
+        assertNull(result.get("key1"));
 
         result = CastGenerics.getHashtable(map, String.class, String.class);
-        assertEquals("value", result.get("key"));
-        assertNull(result.get("key2"));
+        assertEquals("value", result.get("key2"));
+        assertNull(result.get("key1"));
 
         result = CastGenerics.getTreeMap(map, String.class, String.class, COMPARATOR);
-        assertEquals("value", result.get("key"));
-        assertEquals("value2", result.get(null));
-        assertNull(result.get("key2"));
+        Iterator<Entry<String, String>> entries = result.entrySet().iterator();
+        assertEquals("value", entries.next().getValue());
+        assertNull(entries.next().getValue());
+        assertEquals("value2", entries.next().getValue());
 
         // No comparator: TreeMap is not null safe
         result = CastGenerics.getTreeMap(map, String.class, String.class);
-        assertEquals("value", result.get("key"));
-        assertNull(result.get("key2"));
+        assertEquals("value", result.get("key2"));
+        assertNull(result.get("key1"));
+        // assertEquals("value2", result.get(null));
     }
 
     /**
      * Check cast hash set
      */
     @Test
-    public void testGetHashSet() {
+    public void testGetSet() {
         Set<Object> set = new HashSet<>();
-        set.add("test");
+        set.add("test2");
         set.add(null);
+        set.add("test1");
+
+        assertTrue(CollectionUtils.isEmpty(CastGenerics.getHashSet(null, null)));
 
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getHashSet(null, String.class)));
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getTreeSet(null, String.class)));
         assertTrue(CollectionUtils.isEmpty(CastGenerics.getTreeSet(null, String.class, COMPARATOR)));
 
+        assertTrue(CollectionUtils.isEmpty(CastGenerics.getHashSet(2, String.class)));
+
         Set<String> result = CastGenerics.getHashSet(set, String.class);
-        assertEquals(1, result.size());
-        assertEquals("test", result.toArray(new String[result.size()])[0]);
+        assertEquals(2, result.size());
+        assertTrue(result.contains("test1"));
+        assertTrue(result.contains("test2"));
 
         result = CastGenerics.getTreeSet(set, String.class);
-        assertEquals(1, result.size());
-        assertEquals("test", result.toArray(new String[result.size()])[0]);
+        assertEquals(2, result.size());
+        Iterator<String> it = result.iterator();
+        assertEquals("test1", it.next());
+        assertEquals("test2", it.next());
 
         result = CastGenerics.getTreeSet(set, String.class, COMPARATOR);
-        assertEquals(1, result.size());
-        assertEquals("test", result.toArray(new String[result.size()])[0]);
+        assertEquals(2, result.size());
+        it = result.iterator();
+        assertEquals("test2", it.next());
+        assertEquals("test1", it.next());
     }
 
     /**
@@ -216,11 +239,17 @@ public class CastGenericsTest {
      */
     @Test
     public void testGetIterator() {
-        Set<Object> set = new HashSet<>();
+        Set<CharSequence> set = new HashSet<>();
         set.add("test");
         set.add(null);
 
         assertFalse(CastGenerics.getIterator(null, String.class).hasNext());
+        assertFalse(CastGenerics.getIterator(null, null).hasNext());
+        assertFalse(CastGenerics.getIterator(set.iterator(), null).hasNext());
+        assertFalse(CastGenerics.getIterator("", null).hasNext());
+        assertFalse(CastGenerics.getIterator("", String.class).hasNext());
+        assertTrue(CastGenerics.getIterator(set.iterator(), Integer.class).hasNext());
+        assertNull(CastGenerics.getIterator(set.iterator(), Integer.class).next());
 
         Iterator<String> iterator = CastGenerics.getIterator(set.iterator(), String.class);
         assertTrue(iterator.hasNext());
@@ -240,16 +269,93 @@ public class CastGenericsTest {
 
         assertEquals(objects[0], exception.getMessage());
         assertEquals(objects[1], exception.getCause());
+
+        Object[] objects2 = {"TEST", null};
+
+        exception = CastGenerics.map(Exception.class, objects2);
+
+        assertEquals(objects2[0], exception.getMessage());
+        assertNull(objects2[1]);
+
+        Object[] objects3 = {"TEST"};
+
+        exception = CastGenerics.map(Exception.class, objects3);
+
+        assertEquals(objects3[0], exception.getMessage());
+
+        Object[] objects4 = {12};
+
+        assertNull(CastGenerics.map(Exception.class, objects4));
+
+        Object[] objects5 = {"TEST", -1};
+
+        assertNull(CastGenerics.map(ExException.class, objects5));
+        assertNull(CastGenerics.map(Exception.class, "", ""));
+
+        assertNull(CastGenerics.map(null, objects4));
+        assertNull(CastGenerics.map(null, (Object[]) null));
+        assertNull(CastGenerics.map(Exception.class, (Object[]) null));
     }
 
     /**
      * Check get typed list class
      */
     @Test
-    public void testGetListTypedClass() {
-        Class<List<Exception>> exceptionListClass = CastGenerics.getListTypedClass(Exception.class);
+    public void testGetTypedListClass() {
+        Class<List<Exception>> clazz = CastGenerics.getTypedListClass(Exception.class);
+        assertNotNull(clazz);
+        assertNotNull(CastGenerics.getTypedListClass(List.class));
+        assertNotNull(CastGenerics.getTypedListClass(null));
+        assertTrue(List.class.isAssignableFrom(clazz));
+    }
 
-        assertNotNull(exceptionListClass);
+    /**
+     * Check get typed set class
+     */
+    @Test
+    public void testGetTypedSetClass() {
+        Class<Set<Exception>> clazz = CastGenerics.getTypedSetClass(Exception.class);
+        assertNotNull(clazz);
+        assertNotNull(CastGenerics.getTypedSetClass(Exception.class));
+        assertNotNull(CastGenerics.getTypedSetClass(List.class));
+        assertNotNull(CastGenerics.getTypedSetClass(null));
+        assertTrue(Set.class.isAssignableFrom(clazz));
+    }
+
+    /**
+     * Check get typed queue class
+     */
+    @Test
+    public void testGetTypedQueueClass() {
+        Class<Queue<Exception>> clazz = CastGenerics.getTypedQueueClass(Exception.class);
+        assertNotNull(clazz);
+        assertNotNull(CastGenerics.getTypedQueueClass(List.class));
+        assertNotNull(CastGenerics.getTypedQueueClass(null));
+        assertTrue(Queue.class.isAssignableFrom(clazz));
+    }
+
+    /**
+     * Check get typed map class
+     */
+    @Test
+    public void testGetTypedMapClass() {
+        Class<Map<Exception, Integer>> clazz = CastGenerics.getTypedMapClass(Exception.class, Integer.class);
+        assertNotNull(clazz);
+        assertNotNull(CastGenerics.getTypedMapClass(List.class, Integer.class));
+        assertNotNull(CastGenerics.getTypedMapClass(String.class, String.class));
+        assertNotNull(CastGenerics.getTypedMapClass(null, null));
+        assertTrue(Map.class.isAssignableFrom(clazz));
+    }
+
+    /**
+     * Check {@link CastGenerics#getConstructor}
+     */
+    @Test
+    public void testGetConstructor() {
+        Constructor<ExException> constructor = CastGenerics.getConstructor(ExException.class, String.class, Integer.class);
+        assertNotNull(constructor);
+        assertNotNull(CastGenerics.instantiate(false, constructor, "message", 1));
+        assertNull(CastGenerics.instantiate(false, constructor, "message", "Test"));
     }
 
     static class ExException extends IOException {
@@ -267,6 +373,38 @@ public class CastGenericsTest {
          */
         ExException(final String message) {
             super(message);
+        }
+
+        /**
+         * Constructor
+         *
+         * @param message
+         *            The exception message
+         * @param value
+         *            The value
+         */
+        ExException(final String message, final Integer value) {
+            super(message);
+
+            if (value < 0) {
+                throw new IllegalArgumentException("Value cannot be negative");
+            }
+        }
+
+        /**
+         * Constructor
+         *
+         * @param message
+         *            The exception message
+         * @param description
+         *            The description
+         */
+        ExException(final String message, final String description) {
+            super(message);
+
+            if (description == null) {
+                throw new IllegalArgumentException("description cannot be null");
+            }
         }
     }
 }

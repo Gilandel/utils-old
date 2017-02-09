@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -16,14 +16,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.listener.AbstractListenable;
-import fr.landel.utils.commons.listener.EventListener;
-import fr.landel.utils.commons.listener.Listener;
-
 /**
  * Class to check the listenable design pattern
  *
- * @since 23 avr. 2016
+ * @since Apr 23, 2016
  * @author Gilles
  *
  */
@@ -34,7 +30,7 @@ public class ListenerTest {
     /**
      * The object to listen
      *
-     * @since 23 avr. 2016
+     * @since Apr 23, 2016
      * @author Gilles
      *
      */
@@ -45,7 +41,7 @@ public class ListenerTest {
     /**
      * An object which listens the listenable
      *
-     * @since 23 avr. 2016
+     * @since Apr 23, 2016
      * @author Gilles
      *
      */
@@ -62,14 +58,16 @@ public class ListenerTest {
 
         @Override
         public void execute(final EventListener event) {
-            switch (event.getValue()) {
-            case ADD_EVENT:
-                ListenerTest.eventCount++;
-                break;
-            case REMOVE_EVENT:
-                ListenerTest.eventCount--;
-                break;
-            default:
+            if (event.getSource() != null) {
+                switch (event.getValue()) {
+                case ADD_EVENT:
+                    ListenerTest.eventCount++;
+                    break;
+                case REMOVE_EVENT:
+                    ListenerTest.eventCount--;
+                    break;
+                default:
+                }
             }
         }
     }

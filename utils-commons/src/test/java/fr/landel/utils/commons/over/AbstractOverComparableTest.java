@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -14,6 +14,7 @@ package fr.landel.utils.commons.over;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -21,12 +22,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.over.AbstractOverComparable;
-
 /**
  * Check methods from over comparable and over object classes
  *
- * @since 23 avr. 2016
+ * @since Apr 23, 2016
  * @author Gilles
  *
  */
@@ -35,13 +34,21 @@ public class AbstractOverComparableTest {
     /**
      * The comparable implementation
      *
-     * @since 23 avr. 2016
+     * @since Apr 23, 2016
      * @author Gilles
      *
      */
     private class ComparableImpl extends AbstractOverComparable<ComparableImpl> {
 
         private Integer value;
+        private String value2;
+
+        /**
+         * Constructor
+         */
+        public ComparableImpl() {
+            super();
+        }
 
         /**
          * Constructor
@@ -52,6 +59,24 @@ public class AbstractOverComparableTest {
         public ComparableImpl(final Integer value) {
             super(ComparableImpl.class);
             this.value = value;
+        }
+
+        /**
+         * Constructor
+         *
+         * @param value
+         *            The unused value
+         */
+        public ComparableImpl(final String value) {
+            super(null);
+            this.value2 = value;
+        }
+
+        /**
+         * @return value 2
+         */
+        public String getValue2() {
+            return this.value2;
         }
 
         @Override
@@ -100,6 +125,9 @@ public class AbstractOverComparableTest {
         assertEquals(-1, comparable1.compareTo(null));
         assertEquals(0, comparable1.compareTo(comparable1));
         assertEquals(1, comparable1.compareTo(comparable2));
+
+        // simple check
+        assertNotNull(new ComparableImpl());
     }
 
     /**
@@ -122,9 +150,14 @@ public class AbstractOverComparableTest {
     public void testOverToString() {
         final int key1 = 10;
 
-        final ComparableImpl comparable1 = new ComparableImpl(key1);
+        ComparableImpl comparable = new ComparableImpl(key1);
 
-        assertEquals("ComparableImpl [value=10]", comparable1.toString());
+        assertEquals("ComparableImpl [value=10]", comparable.toString());
+
+        comparable = new ComparableImpl("");
+
+        assertEquals("", comparable.getValue2());
+        assertEquals("ComparableImpl [value=null]", comparable.toString());
     }
 
     /**

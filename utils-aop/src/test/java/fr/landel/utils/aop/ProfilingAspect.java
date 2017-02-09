@@ -2,7 +2,7 @@
  * #%L
  * utils-aop
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -22,7 +22,7 @@ import fr.landel.utils.aop.exception.AOPException;
 /**
  * Profile aspect
  *
- * @since 2 déc. 2015
+ * @since Dec 2, 2015
  * @author Gilles
  *
  */
@@ -32,7 +32,7 @@ public class ProfilingAspect extends AbstractAspectExtends {
     /**
      * point cut for all methods of the service layer of the application
      */
-    @Pointcut("execution(* " + BASE_PACKAGE + ".*.*(..))")
+    @Pointcut("execution(* " + OBSERVABLE + ".*(..))")
     public void trace() {
         // Point cut, no code here
     }

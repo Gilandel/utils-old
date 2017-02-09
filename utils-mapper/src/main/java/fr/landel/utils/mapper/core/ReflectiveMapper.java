@@ -2,7 +2,7 @@
  * #%L
  * utils-mapper
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -13,7 +13,7 @@
 package fr.landel.utils.mapper.core;
 
 import fr.landel.utils.commons.exception.AbstractException;
-import fr.landel.utils.commons.stream.FunctionThrowable;
+import fr.landel.utils.commons.function.FunctionThrowable;
 import fr.landel.utils.mapper.DTOIdentifier;
 import fr.landel.utils.mapper.EnumMode;
 import fr.landel.utils.mapper.MapperException;
@@ -21,7 +21,7 @@ import fr.landel.utils.mapper.MapperException;
 /**
  * Reflective mapper (DTO &lt;-&gt; DTO)
  *
- * @since 29 juil. 2015
+ * @since Jul 29, 2015
  * @author Gilles
  *
  */

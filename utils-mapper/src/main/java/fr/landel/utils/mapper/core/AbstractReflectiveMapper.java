@@ -2,7 +2,7 @@
  * #%L
  * utils-mapper
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.landel.utils.commons.exception.AbstractException;
-import fr.landel.utils.commons.stream.FunctionThrowable;
+import fr.landel.utils.commons.function.FunctionThrowable;
 import fr.landel.utils.mapper.DTOIdentifier;
 import fr.landel.utils.mapper.EnumMode;
 import fr.landel.utils.mapper.MapperException;
@@ -37,7 +37,7 @@ import fr.landel.utils.mapper.utils.ReflectUtils;
 /**
  * Reflective mapper (DTO 1 &lt;-&gt; DTO 2)
  *
- * @since 29 juil. 2015
+ * @since Jul 29, 2015
  * @author Erwan Ropartz
  * @author Gilles Landel
  *

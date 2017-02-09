@@ -2,7 +2,7 @@
  * #%L
  * utils-mapper
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -24,7 +24,7 @@ import fr.landel.utils.mapper.mappable.MappablesProperty;
  * 
  * Class to check reflection utils
  *
- * @since 14 mai 2016
+ * @since May 14, 2016
  * @author Gilles
  *
  */

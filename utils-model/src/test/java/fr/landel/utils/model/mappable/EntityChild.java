@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -15,16 +15,28 @@ package fr.landel.utils.model.mappable;
 import java.util.Date;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import fr.landel.utils.mapper.mappable.Mappable;
 import fr.landel.utils.model.AbstractEntity;
 
 /**
  * Entity child to test mapper.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */
+@Entity
 @Mappable(value = DTOChild.class)
 public class EntityChild extends AbstractEntity<EntityChild, String> implements CommonMethods {
 
@@ -33,29 +45,53 @@ public class EntityChild extends AbstractEntity<EntityChild, String> implements 
      */
     private static final long serialVersionUID = 3596881374018184721L;
 
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "id", length = 50)
     private String pk;
 
+    @Column(name = "val_byte")
     private Byte valByte;
 
+    @Column(name = "val_boolean")
     private Boolean valBoolean;
 
+    @Column(name = "val_character")
     private Character valCharacter;
 
+    @Column(name = "val_short")
     private Short valShort;
 
+    @Column(name = "val_integer")
     private Integer valInteger;
 
+    @Column(name = "val_long")
     private Long valLong;
 
+    @Column(name = "val_float")
     private Float valFloat;
 
+    @Column(name = "val_double")
     private Double valDouble;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "date_")
     private Date date;
 
+    @Column(name = "locale")
+    @Enumerated(EnumType.STRING)
     private EnumLocale locale;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_parent1")
+    private EntityParent parent1;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_parent2")
+    private EntityParent parent2;
 
     /**
      * 
@@ -194,6 +230,36 @@ public class EntityChild extends AbstractEntity<EntityChild, String> implements 
     @Override
     public void setLocale(EnumLocale locale) {
         this.locale = locale;
+    }
+
+    /**
+     * @return the parent1
+     */
+    public EntityParent getParent1() {
+        return this.parent1;
+    }
+
+    /**
+     * @param parent1
+     *            the parent1 to set
+     */
+    public void setParent1(EntityParent parent1) {
+        this.parent1 = parent1;
+    }
+
+    /**
+     * @return the parent2
+     */
+    public EntityParent getParent2() {
+        return this.parent2;
+    }
+
+    /**
+     * @param parent2
+     *            the parent2 to set
+     */
+    public void setParent2(EntityParent parent2) {
+        this.parent2 = parent2;
     }
 
     @Override

@@ -1,7 +1,5 @@
 language: java
 
-sudo: false
-
 jdk:
   - oraclejdk8
 
@@ -12,13 +10,19 @@ addons:
   
 before_install:
   - pip install --user codecov
+  - curl http://www.jpm4j.org/install/script | sudo sh
+  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
 
 script: mvn clean compile test cobertura:cobertura
 
 after_success:
   - codecov
+  - codacy-coverage-reporter -l Java -r target/cobertura/coverage.xml
   - distribution/deploy.sh
 
+before_cache:
+  - rm -rf $HOME/.m2/repository/fr/landel/utils
+  
 cache:
   directories:
   - $HOME/.m2

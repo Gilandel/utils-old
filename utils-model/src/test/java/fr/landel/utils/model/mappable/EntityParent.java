@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -19,16 +19,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import fr.landel.utils.mapper.mappable.Mappable;
 import fr.landel.utils.model.AbstractEntity;
 
 /**
  * Entity parent to test mapper.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles
  *
  */
+@Entity
 @Mappable(value = DTOParent.class)
 public class EntityParent extends AbstractEntity<EntityParent, String> implements CommonMethods {
 
@@ -37,36 +50,57 @@ public class EntityParent extends AbstractEntity<EntityParent, String> implement
      */
     private static final long serialVersionUID = 3596881374018184721L;
 
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "id", length = 50)
     private String pk;
 
+    @Column(name = "val_byte")
     private Byte valByte;
 
+    @Column(name = "val_boolean")
     private Boolean valBoolean;
 
+    @Column(name = "val_character")
     private Character valCharacter;
 
+    @Column(name = "val_short")
     private Short valShort;
 
+    @Column(name = "val_integer")
     private Integer valInteger;
 
+    @Column(name = "val_long")
     private Long valLong;
 
+    @Column(name = "val_float")
     private Float valFloat;
 
+    @Column(name = "val_double")
     private Double valDouble;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "date_")
     private Date date;
 
+    @Column(name = "locale")
+    @Enumerated(EnumType.STRING)
     private EnumLocale locale;
 
+    @OneToOne
+    @JoinColumn(name = "child")
     private EntityChild child;
 
+    @OneToMany(mappedBy = "parent1")
     private Set<EntityChild> children1;
 
+    @OneToMany(mappedBy = "parent2")
     private List<EntityChild> children2;
 
+    @Column(name = "only_in_entity")
     private Long onlyInEntity;
 
     /**

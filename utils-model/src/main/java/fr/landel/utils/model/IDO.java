@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -17,7 +17,7 @@ import java.io.Serializable;
 /**
  * Identifiable Data Object
  *
- * @since 15 sept. 2015
+ * @since Sep 15, 2015
  * @author Gilles
  *
  * @param <D>

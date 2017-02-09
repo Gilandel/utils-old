@@ -1,8 +1,8 @@
 /*
  * #%L
- * OpenLib
+ * utils-poi
  * %%
- * Copyright (C) 2015 Open Groupe
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -21,12 +21,12 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.io.FileSystemUtils;
+import fr.landel.utils.io.FileSystemUtils;
 
 /**
  * Check the XLS comparison
  *
- * @since 10 déc. 2015
+ * @since Dec 10, 2015
  * @author Gilles
  *
  */
@@ -94,7 +94,53 @@ public class AssertXLSTest {
 
             fail("The files must have differences");
         } catch (IllegalArgumentException e) {
-            assertEquals("[Assertion failed] Style fill foreground color [3, 4]", e.getMessage());
+            assertEquals("Style fill foreground color [3, 4]", e.getMessage());
+        }
+    }
+
+    /**
+     * Check XLS comparison exception
+     * 
+     * @throws IOException
+     *             On loading exception
+     */
+    @Test
+    public void testAssertNotEquals3() throws IOException {
+        final File source = new File(SRC_DIR);
+
+        File expectedFile = new File(source, "file1.xls"); // no box
+        File targetFile = new File(source, "file4.xls"); // blue box
+
+        try {
+            AssertXLS.assertEquals(expectedFile, targetFile);
+
+            fail("The files must have differences");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Shapes children", e.getMessage());
+        }
+    }
+
+    /**
+     * Check XLS comparison exception
+     * 
+     * @throws IOException
+     *             On loading exception
+     */
+    @Test
+    public void testAssertNotEquals4() throws IOException {
+        final File source = new File(SRC_DIR);
+
+        // no comment
+        File expectedFile = new File(source, "file5.xls");
+        // comment in cell bellow image
+        File targetFile = new File(source, "file6.xls");
+
+        try {
+            AssertXLS.assertEquals(expectedFile, targetFile);
+
+            fail("The files must have differences");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Comment text [17, 4]", e.getMessage());
         }
     }
 }

@@ -1,8 +1,8 @@
 /*
  * #%L
- * OpenLib
+ * utils-poi
  * %%
- * Copyright (C) 2015 Open Groupe
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -12,9 +12,7 @@
  */
 package fr.landel.utils.poi;
 
-import static fr.landel.utils.commons.asserts.AbstractAssert.fail;
-import static fr.landel.utils.commons.asserts.AbstractAssert.isEqual;
-import static fr.landel.utils.commons.asserts.AbstractAssert.isNotNull;
+import static fr.landel.utils.assertor.Assertor.that;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFAnchor;
+import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFName;
 import org.apache.poi.hssf.usermodel.HSSFObjectData;
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is used to check XLS files comparator
  *
- * @since 11 déc. 2015
+ * @since Dec 11, 2015
  * @author Gilles
  *
  */
@@ -81,20 +80,16 @@ public final class AssertXLS {
      *             if doesn't match
      */
     public static void assertEquals(final File expectedFile, final File fileToCheck) {
-        try (FileInputStream isExpected = new FileInputStream(expectedFile)) {
-            try (FileInputStream isToCheck = new FileInputStream(fileToCheck)) {
-                final AssertXLS assertXLS = new AssertXLS(expectedFile, fileToCheck, isExpected, isToCheck);
+        try (FileInputStream isExpected = new FileInputStream(expectedFile); FileInputStream isToCheck = new FileInputStream(fileToCheck)) {
+            final AssertXLS assertXLS = new AssertXLS(expectedFile, fileToCheck, isExpected, isToCheck);
 
-                assertXLS.checkSheets();
-                assertXLS.checkFonts();
-                assertXLS.checkNames();
-                assertXLS.checkEmbeddedObjects();
-                assertXLS.checkPictures();
-            } catch (IOException e) {
-                fail("File to check cannot be loaded. ", e);
-            }
+            assertXLS.checkSheets();
+            assertXLS.checkFonts();
+            assertXLS.checkNames();
+            assertXLS.checkEmbeddedObjects();
+            assertXLS.checkPictures();
         } catch (IOException e) {
-            fail("Expected file cannot be loaded. ", e);
+            throw new IllegalArgumentException("files cannot be loaded. ", e);
         }
     }
 
@@ -115,8 +110,8 @@ public final class AssertXLS {
                 Row rowExpected = sheetExpected.getRow(r);
                 Row row = sheet.getRow(r);
                 if (rowExpected != null || row != null) {
-                    isNotNull(rowExpected, "Row expected");
-                    isNotNull(row, "Row " + r);
+                    that(rowExpected).isNotNull().toThrow("Row expected");
+                    that(row).isNotNull().toThrow("Row " + r);
 
                     this.checkRow(rowExpected, row, r);
                 }
@@ -165,6 +160,14 @@ public final class AssertXLS {
                     isEqual(pictureExpected.getShapeType(), picture.getShapeType(), "Picture shape type");
 
                     this.checkPictureData(errorBytesLength, pictureExpected.getPictureData(), picture.getPictureData());
+                } else if (HSSFComment.class.isAssignableFrom(shapeExpected.getClass())) {
+                    HSSFComment commentExpected = (HSSFComment) shapeExpected;
+                    HSSFComment comment = (HSSFComment) shape;
+
+                    isEqual(commentExpected.getBackgroundImageId(), comment.getBackgroundImageId(), "Comment background");
+                    isEqual(commentExpected.getClientAnchor(), comment.getClientAnchor(), "Comment client anchor");
+
+                    checkComment(commentExpected, comment, commentExpected.getRow(), commentExpected.getColumn());
                 } else if (HSSFShapeGroup.class.isAssignableFrom(shapeExpected.getClass())) {
                     HSSFShapeGroup shapeGroupExpected = (HSSFShapeGroup) shapeExpected;
                     HSSFShapeGroup shapeGroup = (HSSFShapeGroup) shape;
@@ -181,14 +184,14 @@ public final class AssertXLS {
                     isEqual(shapeExpected.isFlipHorizontal(), shape.isFlipHorizontal(), "Shape flip horizontal");
                     isEqual(shapeExpected.isFlipVertical(), shape.isFlipVertical(), "Shape flip vertical");
                 } else {
-                    fail("not implemented");
+                    throw new IllegalArgumentException("not implemented");
                 }
             }
         }
     }
 
     private void checkRow(final Row rowExpected, final Row row, final int rowIndex) {
-        isEqual(rowExpected.getPhysicalNumberOfCells(), row.getPhysicalNumberOfCells());
+        that(rowExpected.getPhysicalNumberOfCells()).isEqual(row.getPhysicalNumberOfCells());
         this.checkStyle(rowExpected.getRowStyle(), row.getRowStyle(), rowIndex, -1);
 
         for (int c = 0; c < row.getPhysicalNumberOfCells(); c++) {
@@ -222,6 +225,8 @@ public final class AssertXLS {
             isEqual(commentExpected.getColumn(), comment.getColumn(), "Comment column" + cellPosition);
             isEqual(commentExpected.getRow(), comment.getRow(), "Comment row" + cellPosition);
             isEqual(commentExpected.isVisible(), comment.isVisible(), "Comment visible" + cellPosition);
+
+            isEqual(commentExpected.getString().getString(), comment.getString().getString(), "Comment text" + cellPosition);
         }
     }
 
@@ -233,12 +238,12 @@ public final class AssertXLS {
             isNotNull(style, "Style" + cellPosition);
 
             isEqual(styleExpected.getDataFormatString(), style.getDataFormatString(), "Style data format string" + cellPosition);
-            isEqual(styleExpected.getAlignment(), style.getAlignment(), "Style alignment" + cellPosition);
-            isEqual(styleExpected.getVerticalAlignment(), style.getVerticalAlignment(), "Style vertical algnment" + cellPosition);
-            isEqual(styleExpected.getBorderBottom(), style.getBorderBottom(), "Style border bottom" + cellPosition);
-            isEqual(styleExpected.getBorderLeft(), style.getBorderLeft(), "Style border left" + cellPosition);
-            isEqual(styleExpected.getBorderRight(), style.getBorderRight(), "Style border right" + cellPosition);
-            isEqual(styleExpected.getBorderTop(), style.getBorderTop(), "Style border top" + cellPosition);
+            isEqual(styleExpected.getAlignmentEnum(), style.getAlignmentEnum(), "Style alignment" + cellPosition);
+            isEqual(styleExpected.getVerticalAlignmentEnum(), style.getVerticalAlignmentEnum(), "Style vertical algnment" + cellPosition);
+            isEqual(styleExpected.getBorderBottomEnum(), style.getBorderBottomEnum(), "Style border bottom" + cellPosition);
+            isEqual(styleExpected.getBorderLeftEnum(), style.getBorderLeftEnum(), "Style border left" + cellPosition);
+            isEqual(styleExpected.getBorderRightEnum(), style.getBorderRightEnum(), "Style border right" + cellPosition);
+            isEqual(styleExpected.getBorderTopEnum(), style.getBorderTopEnum(), "Style border top" + cellPosition);
             isEqual(styleExpected.getBottomBorderColor(), style.getBottomBorderColor(), "Style bottom border color" + cellPosition);
             isEqual(styleExpected.getLeftBorderColor(), style.getLeftBorderColor(), "Style left border color" + cellPosition);
             isEqual(styleExpected.getRightBorderColor(), style.getRightBorderColor(), "Style right border color" + cellPosition);
@@ -246,7 +251,7 @@ public final class AssertXLS {
             isEqual(styleExpected.getDataFormat(), style.getDataFormat(), "Style data format" + cellPosition);
             isEqual(styleExpected.getFillBackgroundColor(), style.getFillBackgroundColor(), "Style fill background color" + cellPosition);
             isEqual(styleExpected.getFillForegroundColor(), style.getFillForegroundColor(), "Style fill foreground color" + cellPosition);
-            isEqual(styleExpected.getFillPattern(), style.getFillPattern(), "Style fill pattern" + cellPosition);
+            isEqual(styleExpected.getFillPatternEnum(), style.getFillPatternEnum(), "Style fill pattern" + cellPosition);
             isEqual(styleExpected.getFontIndex(), style.getFontIndex(), "Style font index" + cellPosition);
             isEqual(styleExpected.getHidden(), style.getHidden(), "Style hidden" + cellPosition);
             isEqual(styleExpected.getIndention(), style.getIndention(), "Style indentation" + cellPosition);
@@ -261,20 +266,20 @@ public final class AssertXLS {
     private void checkCellType(final Cell cellExpected, final Cell cell, final int rowIndex, final int columnIndex) {
         final String cellPosition = String.format(CELL_POSITION, rowIndex, columnIndex);
 
-        switch (cell.getCellType()) {
-        case Cell.CELL_TYPE_NUMERIC:
+        switch (cell.getCellTypeEnum()) {
+        case NUMERIC:
             isEqual((Double) cellExpected.getNumericCellValue(), (Double) cell.getNumericCellValue(), "Cell type numeric" + cellPosition);
             break;
-        case Cell.CELL_TYPE_STRING:
+        case STRING:
             isEqual(cellExpected.getRichStringCellValue(), cell.getRichStringCellValue(), "Cell type string" + cellPosition);
             break;
-        case Cell.CELL_TYPE_FORMULA:
+        case FORMULA:
             isEqual(cellExpected.getCellFormula(), cell.getCellFormula(), "Cell type formula" + cellPosition);
             break;
-        case Cell.CELL_TYPE_BOOLEAN:
+        case BOOLEAN:
             isEqual(cellExpected.getBooleanCellValue(), cell.getBooleanCellValue(), "Cell type boolean" + cellPosition);
             break;
-        case Cell.CELL_TYPE_ERROR:
+        case ERROR:
             isEqual(cellExpected.getErrorCellValue(), cell.getErrorCellValue(), "Cell type error" + cellPosition);
             break;
         default: // Cell.CELL_TYPE_BLANK or DATE or Hyperlink
@@ -299,7 +304,7 @@ public final class AssertXLS {
     }
 
     private void checkFonts() {
-        isEqual(this.workbookExpected.getNumberOfFonts(), this.workbook.getNumberOfFonts());
+        that(this.workbookExpected.getNumberOfFonts()).isEqual(this.workbook.getNumberOfFonts());
 
         for (short i = 0; i < this.workbookExpected.getNumberOfFonts(); i++) {
             HSSFFont fontExpected = this.workbookExpected.getFontAt(i);
@@ -320,7 +325,7 @@ public final class AssertXLS {
     }
 
     private void checkNames() {
-        isEqual(this.workbookExpected.getNumberOfNames(), this.workbook.getNumberOfNames());
+        that(this.workbookExpected.getNumberOfNames()).isEqual(this.workbook.getNumberOfNames());
 
         for (int i = 0; i < this.workbookExpected.getNumberOfNames(); i++) {
             HSSFName nameExpected = this.workbookExpected.getNameAt(i);
@@ -431,5 +436,13 @@ public final class AssertXLS {
         for (int j = 0; j < expectedBytes.length; j++) {
             isEqual(expectedBytes[j], bytes[j], "Picture bytes");
         }
+    }
+
+    private static <T> void isEqual(final T obj1, final T obj2, String message) {
+        that(obj1).isEqual(obj2).toThrow(message);
+    }
+
+    private static <T> void isNotNull(final T obj, String message) {
+        that(obj).isNotNull().toThrow(message);
     }
 }

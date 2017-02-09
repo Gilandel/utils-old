@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -20,12 +20,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import fr.landel.utils.commons.exception.AbstractException;
-
 /**
- * (Description)
+ * Check abstract exception
  *
- * @since 23 avr. 2016
+ * @since Apr 23, 2016
  * @author Gilles
  *
  */
@@ -37,9 +35,7 @@ public class AbstractExceptionTest extends AbstractException {
     private static final long serialVersionUID = -6301742295214990685L;
 
     /**
-     * Test method for
-     * {@link fr.landel.utils.commons.exception.AbstractException#AbstractException()}
-     * .
+     * Test method for {@link AbstractException#AbstractException()} .
      *
      * @throws AbstractException
      *             The expected exception
@@ -61,8 +57,7 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.exception.AbstractException#AbstractException(java.lang.String)}
-     * .
+     * {@link AbstractException#AbstractException(java.lang.String)} .
      */
     @Test
     public void testAbstractExceptionString() {
@@ -85,8 +80,7 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.exception.AbstractException#AbstractException(java.lang.Throwable)}
-     * .
+     * {@link AbstractException#AbstractException(java.lang.Throwable)} .
      */
     @Test
     public void testAbstractExceptionThrowable() {
@@ -110,7 +104,7 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.exception.AbstractException#AbstractException(java.lang.Class, java.lang.Throwable)}
+     * {@link AbstractException#AbstractException(java.lang.Class, java.lang.Throwable)}
      * .
      */
     @Test
@@ -136,7 +130,7 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.exception.AbstractException#AbstractException(java.lang.String, java.lang.Throwable)}
+     * {@link AbstractException#AbstractException(java.lang.String, java.lang.Throwable)}
      * .
      */
     @Test
@@ -162,7 +156,7 @@ public class AbstractExceptionTest extends AbstractException {
 
     /**
      * Test method for
-     * {@link fr.landel.utils.commons.exception.AbstractException#AbstractException(java.lang.String, java.lang.Throwable, boolean, boolean)}
+     * {@link AbstractException#AbstractException(java.lang.String, java.lang.Throwable, boolean, boolean)}
      * .
      */
     @Test

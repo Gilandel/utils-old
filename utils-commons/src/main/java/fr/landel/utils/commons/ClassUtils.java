@@ -2,7 +2,7 @@
  * #%L
  * utils-commons
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -17,11 +17,12 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Utility class to manage classes.
  *
- * @since 27 nov. 2015
+ * @since Nov 27, 2015
  * @author Gilles Landel
  *
  */
@@ -130,5 +131,112 @@ public final class ClassUtils {
             return !ClassUtils.isAnyNull(objects);
         }
         return false;
+    }
+
+    /**
+     * Get the class of the object (null safe).
+     * 
+     * @param object
+     *            The object (required)
+     * @param <T>
+     *            The object type
+     * @return The class of the object or {@code null}
+     */
+    public static <T> Class<T> getClass(final T object) {
+        return CastGenerics.getClass(object);
+    }
+
+    /**
+     * Check if the class of the object is assignable from the specified class
+     * (null safe).
+     * 
+     * @param clazz
+     *            The class or super class
+     * @param object
+     *            The object (required)
+     * @return true, if assignable from
+     */
+    public static boolean isAssignableFrom(final Class<?> clazz, final Object object) {
+        if (clazz != null) {
+            Class<?> objClass = CastGenerics.getClass(object);
+            if (objClass != null) {
+                return clazz.isAssignableFrom(objClass);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get the class name or the string "{@code null}"
+     * 
+     * @param object
+     *            The object to check
+     * @return The string
+     */
+    public static String getName(final Object object) {
+        return ClassUtils.getName(object, (c) -> c.getName());
+    }
+
+    /**
+     * Get the simple class name or the string "{@code null}"
+     * 
+     * @param object
+     *            The object to check
+     * @return The string
+     */
+    public static String getSimpleName(final Object object) {
+        return ClassUtils.getName(object, (c) -> c.getSimpleName());
+    }
+
+    /**
+     * Get the canonical class name or the string "{@code null}"
+     * 
+     * @param object
+     *            The object to check
+     * @return The string
+     */
+    public static String getCanonicalName(final Object object) {
+        return ClassUtils.getName(object, (c) -> c.getCanonicalName());
+    }
+
+    /**
+     * Get the type name or the string "{@code null}"
+     * 
+     * @param object
+     *            The object to check
+     * @return The string
+     */
+    public static String getTypeName(final Object object) {
+        return ClassUtils.getName(object, (c) -> c.getTypeName());
+    }
+
+    /**
+     * Get the package class name or the string "{@code null}"
+     * 
+     * @param object
+     *            The object to check
+     * @return The string
+     */
+    public static String getPackageName(final Object object) {
+        return ClassUtils.getName(object, (c) -> c.getPackage().getName());
+    }
+
+    /**
+     * Get the class name or the string "{@code null}"
+     * 
+     * @param object
+     *            The object to check
+     * @param function
+     *            The function to extract the name from class
+     * @return The string
+     */
+    private static String getName(final Object object, final Function<Class<?>, String> function) {
+        final String clazzName;
+        if (object != null) {
+            clazzName = function.apply(object.getClass());
+        } else {
+            clazzName = "null";
+        }
+        return clazzName;
     }
 }

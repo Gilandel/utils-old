@@ -2,7 +2,7 @@
  * #%L
  * utils-model
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -19,7 +19,7 @@ import org.hibernate.dialect.HSQLDialect;
  * 
  * @see <a href="https://hibernate.onjira.com/browse/HHH-7002">JIRA HHH-7002</a>
  *
- * @since 10 déc. 2015
+ * @since Dec 10, 2015
  * @author Gilles
  *
  */
