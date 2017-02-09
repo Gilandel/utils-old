@@ -31,7 +31,8 @@ public class AssertorEnum extends ConstantsAssertor {
      * name (insensitive case)
      * 
      * <p>
-     * precondition: none
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
      * </p>
      * 
      * @param step
@@ -57,7 +58,8 @@ public class AssertorEnum extends ConstantsAssertor {
      * name
      * 
      * <p>
-     * precondition: none
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
      * </p>
      * 
      * @param step
@@ -83,7 +85,8 @@ public class AssertorEnum extends ConstantsAssertor {
 
         final Predicate<T> preChecker = (object) -> object != null && StringUtils.isNotEmpty(name);
 
-        return new StepAssertor<>(step, preChecker, checker, false, message, key, false, new ParameterAssertor<>(name, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, preChecker, checker, false, message, key, false,
+                new ParameterAssertor<>(name, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -104,7 +107,8 @@ public class AssertorEnum extends ConstantsAssertor {
      *            the enumeration type
      * @return the next step
      */
-    protected static <T extends Enum<T>> StepAssertor<T> hasOrdinal(final StepAssertor<T> step, final int ordinal, final MessageAssertor message) {
+    protected static <T extends Enum<T>> StepAssertor<T> hasOrdinal(final StepAssertor<T> step, final int ordinal,
+            final MessageAssertor message) {
 
         final Predicate<T> preChecker = (object) -> object != null && ordinal >= 0;
 

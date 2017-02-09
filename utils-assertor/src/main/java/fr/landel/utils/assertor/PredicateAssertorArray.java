@@ -313,7 +313,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     /**
-     * Check if the array contains ALL the specified objects.
+     * Check if the array contains ALL the specified {@code objects}.
      * 
      * <p>
      * precondition: neither {@code array} can be {@code null}
@@ -332,7 +332,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     /**
-     * Check if the array contains ALL the specified objects.
+     * Check if the array contains ALL the specified {@code objects}.
      * 
      * <p>
      * precondition: neither {@code array} can be {@code null}
@@ -355,7 +355,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     /**
-     * Check if the array contains ALL the specified objects.
+     * Check if the array contains ALL the specified {@code objects}.
      * 
      * <p>
      * precondition: neither {@code array} can be {@code null}
@@ -382,7 +382,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     /**
-     * Check if the array contains ANY the specified objects.
+     * Check if the array contains ANY element of {@code objects}.
      * 
      * <p>
      * precondition: neither {@code array} can be {@code null}
@@ -401,7 +401,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     /**
-     * Check if the array contains ANY the specified objects.
+     * Check if the array contains ANY element of {@code objects}.
      * 
      * <p>
      * precondition: neither {@code array} can be {@code null}
@@ -424,7 +424,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
     }
 
     /**
-     * Check if the array contains ANY the specified objects.
+     * Check if the array contains ANY element of {@code objects}.
      * 
      * <p>
      * precondition: neither {@code array} can be {@code null}

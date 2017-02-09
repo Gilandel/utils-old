@@ -49,40 +49,217 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
         return () -> HelperAssertor.not(getStep());
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code name}.
+     * 
+     * <p>
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasName(name).toThrow();
+     * </pre>
+     * 
+     * @param name
+     *            The name
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasName(final CharSequence name) {
         return this.hasName(name, null);
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code name}.
+     * 
+     * <p>
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasName(name, "bad name").toThrow();
+     * </pre>
+     * 
+     * @param name
+     *            The name
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasName(final CharSequence name, final CharSequence message, final Object... arguments) {
         return this.hasName(name, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code name}.
+     * 
+     * <p>
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasName(name, Locale.US, "bad name").toThrow();
+     * </pre>
+     * 
+     * @param name
+     *            The name
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasName(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorEnum.hasName(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code name},
+     * ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasNameIgnoreCase(name).toThrow();
+     * </pre>
+     * 
+     * @param name
+     *            The name
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name) {
         return this.hasNameIgnoreCase(name, null);
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code name},
+     * ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasNameIgnoreCase(name, "bad name").toThrow();
+     * </pre>
+     * 
+     * @param name
+     *            The name
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name, final CharSequence message, final Object... arguments) {
         return this.hasNameIgnoreCase(name, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code name},
+     * ignoring case considerations.
+     * 
+     * <p>
+     * precondition: {@link Enum} cannot be null and {@code name} cannot be
+     * {@code null} or empty
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasNameIgnoreCase(name, Locale.US, "bad name").toThrow();
+     * </pre>
+     * 
+     * @param name
+     *            The name
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasNameIgnoreCase(final CharSequence name, final Locale locale, final CharSequence message,
             final Object... arguments) {
         return () -> AssertorEnum.hasNameIgnoreCase(this.getStep(), name, MessageAssertor.of(locale, message, arguments));
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code ordinal}.
+     * 
+     * <p>
+     * precondition: the {@code ordinal} cannot be lower than 0
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasOrdinal(ordinal).toThrow();
+     * </pre>
+     * 
+     * @param ordinal
+     *            The ordinal
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasOrdinal(final int ordinal) {
         return this.hasOrdinal(ordinal, null);
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code ordinal}.
+     * 
+     * <p>
+     * precondition: the {@code ordinal} cannot be lower than 0
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasOrdinal(ordinal, "bad ordinal").toThrow();
+     * </pre>
+     * 
+     * @param ordinal
+     *            The ordinal
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasOrdinal(final int ordinal, final CharSequence message, final Object... arguments) {
         return this.hasOrdinal(ordinal, null, message, arguments);
     }
 
+    /**
+     * Asserts that the given {@link Class} has the specified {@code ordinal}.
+     * 
+     * <p>
+     * precondition: the {@code ordinal} cannot be lower than 0
+     * </p>
+     * 
+     * <pre>
+     * Assertor.that(enumeration).hasOrdinal(ordinal, Locale.US, "bad ordinal").toThrow();
+     * </pre>
+     * 
+     * @param ordinal
+     *            The ordinal
+     * @param locale
+     *            The locale of the message (only used to format this message,
+     *            otherwise use {@link Assertor#setLocale})
+     * @param message
+     *            The message on mismatch
+     * @param arguments
+     *            The arguments of the message, use {@link String#format}
+     * @return The operator
+     */
     default PredicateStepEnum<T> hasOrdinal(final int ordinal, final Locale locale, final CharSequence message, final Object... arguments) {
         return () -> AssertorEnum.hasOrdinal(this.getStep(), ordinal, MessageAssertor.of(locale, message, arguments));
     }
