@@ -40,13 +40,21 @@
     3. [isNotEmpty](#isnotempty)
     4. [isBlank](#isblank)
     5. [isNotBlank](#isnotblank)
-    6. [contains](#contains)
-    7. [startsWith](#startswith)
-    8. [startsWithIgnoreCase](#startswithignorecase)
-    9. [endsWith](#endswith)
-    10. [endsWithIgnoreCase](#endswithignorecase)
-    11. [matches](#matches-1)
-    12. [find](#find)
+    6. [isEqual](#isEqual)
+    7. [isNotEqual](#isNotEqual)
+    8. [isEqualIgnoreCase](#isEqualIgnoreCase)
+    9. [isNotEqualIgnoreCase](#isNotEqualIgnoreCase)
+    10. [isEqualIgnoreLineReturns](#isEqualIgnoreLineReturns)
+    11. [isNotEqualIgnoreLineReturns](#isNotEqualIgnoreLineReturns)
+    12. [isEqualIgnoreCaseAndLineReturns](#isEqualIgnoreCaseAndLineReturns)
+    13. [isNotEqualIgnoreCaseAndLineReturns](#isNotEqualIgnoreCaseAndLineReturns)
+    14. [contains](#contains)
+    15. [startsWith](#startswith)
+    16. [startsWithIgnoreCase](#startswithignorecase)
+    17. [endsWith](#endswith)
+    18. [endsWithIgnoreCase](#endswithignorecase)
+    19. [matches](#matches-1)
+    20. [find](#find)
   5. [Date & Calendar](#date-calendar)
     1. [isAround](#isaround)
     2. [isNotAround](#isnotaround)
@@ -724,6 +732,54 @@ Assertor.that("").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw a
 Assertor.that("   ").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
 ```
 
+#### isEqual
+Assert that char sequence is equal to the string
+
+* Signatures:
+	- contains(CharSequence string)
+	- contains(CharSequence string, CharSequence message, Object[] arguments)
+	- contains(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isEqual("text").toThrow(); // -> OK
+Assertor.that("text").isEqual("ex", "Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("text").isEqual("TexT").toThrow(); // -> OK
+Assertor.that("text").isEqual("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().isEqual("text").toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).not().contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+```
+
+#### isNotEqual
+Assert that char sequence is NOT equal to the string
+
+#### isEqualIgnoreCase
+Assert that char sequence is equal to the string, ignoring case considerations
+
+#### isNotEqualIgnoreCase
+Assert that char sequence is NOT equal to the string, ignoring case considerations
+
+#### isEqualIgnoreLineReturns
+Assert that char sequence is equal to the string, ignoring line returns considerations
+
+#### isNotEqualIgnoreLineReturns
+Assert that char sequence is NOT equal to the string, ignoring line returns considerations
+
+#### isEqualIgnoreCaseAndLineReturns
+Assert that char sequence is equal to the string, ignoring case and line returns considerations
+
+#### isNotEqualIgnoreCaseAndLineReturns
+Assert that char sequence is NOT equal to the string, ignoring case and line returns considerations
+
 #### contains
 Assert that char sequence contains the substring.
 
@@ -739,7 +795,7 @@ Assert that char sequence contains the substring.
 * Examples:
 ```java
 Assertor.that("text").contains("t").toThrow(); // -> OK
-Assertor.that("text").contains("ex", "Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("text").contains("ex", "Param '%1$s*' not contains '%2$s*'").toThrow(); // -> OK
 Assertor.that("text").contains("text").toThrow(); // -> OK
 Assertor.that("text").contains("y").toThrow(); // -> throw an exception
 Assertor.that("text").not().contains("y").toThrow(); // -> OK
