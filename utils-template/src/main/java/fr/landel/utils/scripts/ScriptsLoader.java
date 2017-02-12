@@ -92,11 +92,13 @@ public class ScriptsLoader {
      */
     public void init(final ClassLoader loader, final ScriptsList<?>... scriptsList) throws IOException {
         for (ScriptsList<?> value : scriptsList) {
-            final StringBuilder sb = new StringBuilder();
-            this.scripts.put(value, sb);
+            if (StringUtils.isNotBlank(value.getName())) {
+                final StringBuilder sb = new StringBuilder();
+                this.scripts.put(value, sb);
 
-            try (final InputStream is = loader.getResourceAsStream(new StringBuilder(this.path).append(value.getName()).toString())) {
-                sb.append(FileUtils.getFileContent(is, value.getCharset()));
+                try (final InputStream is = loader.getResourceAsStream(new StringBuilder(this.path).append(value.getName()).toString())) {
+                    sb.append(FileUtils.getFileContent(is, value.getCharset()));
+                }
             }
         }
     }
