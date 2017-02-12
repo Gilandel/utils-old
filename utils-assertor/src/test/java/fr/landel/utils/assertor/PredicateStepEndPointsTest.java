@@ -44,8 +44,8 @@ public class PredicateStepEndPointsTest extends AbstractTest {
     /**
      * Default exception builder
      */
-    protected static final BiFunction<String, List<ParameterAssertor<?>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (String errors,
-            List<ParameterAssertor<?>> parameters) -> new IllegalArgumentException(
+    protected static final BiFunction<String, List<ParameterAssertor<?>>, IllegalArgumentException> DEFAULT_EXCEPTION_BUILDER = (
+            String errors, List<ParameterAssertor<?>> parameters) -> new IllegalArgumentException(
                     HelperMessage.getMessage(ConstantsAssertor.DEFAULT_ASSERTION, null, errors, parameters, null));
 
     private static final BiFunction<String, List<ParameterAssertor<?>>, IOException> EXCEPTION_BUILDER = (String errors,
@@ -175,18 +175,19 @@ public class PredicateStepEndPointsTest extends AbstractTest {
      */
     @Test
     public void testGetErrors() {
-        assertEquals("", Assertor.that(new BigDecimal("265.45155")).isNotNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
+        assertFalse(Assertor.that(new BigDecimal("265.45155")).isNotNull(Locale.FRANCE, "test %1$,.3f*").getErrors().isPresent());
 
-        assertEquals("test 265,452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
-        assertEquals("test 265.452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors());
+        assertEquals("test 265,452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors().get());
+        assertEquals("test 265.452", Assertor.that(new BigDecimal("265.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors().get());
         assertEquals("test 2 654 125,452",
-                Assertor.that(new BigDecimal("2654125.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors());
-        assertEquals("test 2,654,125.452", Assertor.that(new BigDecimal("2654125.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors());
+                Assertor.that(new BigDecimal("2654125.45155")).isNull(Locale.FRANCE, "test %1$,.3f*").getErrors().get());
+        assertEquals("test 2,654,125.452",
+                Assertor.that(new BigDecimal("2654125.45155")).isNull(Locale.US, "test %1$,.3f*").getErrors().get());
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2016, 6, 25);
-        assertEquals("test 25 juillet 2016", Assertor.that(calendar).isNull(Locale.FRANCE, "test %1$te* %1$tB* %1$tY*").getErrors());
-        assertEquals("test July 25, 2016", Assertor.that(calendar).isNull(Locale.US, "test %1$tB* %1$te*, %1$tY*").getErrors());
+        assertEquals("test 25 juillet 2016", Assertor.that(calendar).isNull(Locale.FRANCE, "test %1$te* %1$tB* %1$tY*").getErrors().get());
+        assertEquals("test July 25, 2016", Assertor.that(calendar).isNull(Locale.US, "test %1$tB* %1$te*, %1$tY*").getErrors().get());
     }
 
     /**

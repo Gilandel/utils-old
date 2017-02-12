@@ -111,10 +111,11 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * // or blank OR the char sequence 'text' should NOT contain 'text')"
      * </pre>
      * 
-     * @return a {@code String} containing the errors
+     * @return an {@link Optional} containing the errors message
      */
-    default String getErrors() {
-        return HelperAssertor.combine(this.getStep(), true).getMessage();
+    default Optional<String> getErrors() {
+        return Optional
+                .ofNullable(Assertor.that(HelperAssertor.combine(this.getStep(), true).getMessage()).isNotEmpty().get().orElse(null));
     }
 
     /**

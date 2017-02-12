@@ -59,16 +59,16 @@ public class AssertorObjectTest extends AbstractTest {
         try {
             Assertor.setLocale(Locale.US);
             assertEquals(Locale.US, Assertor.getLocale());
-            assertEquals("Test 3.14", Assertor.that(1).isNotEqual(1, "Test %.2f", Math.PI).getErrors());
-            assertEquals("Test 3,14", Assertor.that(1).isNotEqual(1, Locale.FRANCE, "Test %.2f", Math.PI).getErrors());
+            assertEquals("Test 3.14", Assertor.that(1).isNotEqual(1, "Test %.2f", Math.PI).getErrors().get());
+            assertEquals("Test 3,14", Assertor.that(1).isNotEqual(1, Locale.FRANCE, "Test %.2f", Math.PI).getErrors().get());
 
-            assertEquals("Test 3.14", Assertor.that(1).not().isEqual(1, "Test %.2f", Math.PI).getErrors());
-            assertEquals("Test 3,14", Assertor.that(1).not().isEqual(1, Locale.FRANCE, "Test %.2f", Math.PI).getErrors());
+            assertEquals("Test 3.14", Assertor.that(1).not().isEqual(1, "Test %.2f", Math.PI).getErrors().get());
+            assertEquals("Test 3,14", Assertor.that(1).not().isEqual(1, Locale.FRANCE, "Test %.2f", Math.PI).getErrors().get());
 
             Assertor.setLocale(Locale.FRANCE);
             assertEquals(Locale.FRANCE, Assertor.getLocale());
-            assertEquals("Test 3,14", Assertor.that(1).isNotEqual(1, "Test %.2f", Math.PI).getErrors());
-            assertEquals("Test 3.14", Assertor.that(1).isNotEqual(1, Locale.US, "Test %.2f", Math.PI).getErrors());
+            assertEquals("Test 3,14", Assertor.that(1).isNotEqual(1, "Test %.2f", Math.PI).getErrors().get());
+            assertEquals("Test 3.14", Assertor.that(1).isNotEqual(1, Locale.US, "Test %.2f", Math.PI).getErrors().get());
 
             // Reset
             Assertor.setLocale(Locale.getDefault());
@@ -516,7 +516,7 @@ public class AssertorObjectTest extends AbstractTest {
                         throw new IOException();
                     }
                     return true;
-                }, Locale.US, "Path '%1$s*' provided by '%s' is invalid in '%.2f'ms", "John", 10.26589f).getErrors());
+                }, Locale.US, "Path '%1$s*' provided by '%s' is invalid in '%.2f'ms", "John", 10.26589f).getErrors().get());
 
         assertEquals("Path '/var/log/dev.log' provided by 'John' is invalid in '10,27'ms",
                 Assertor.that("/var/log/dev.log").validates((path) -> {
@@ -524,7 +524,7 @@ public class AssertorObjectTest extends AbstractTest {
                         throw new IOException();
                     }
                     return true;
-                }, Locale.FRANCE, "Path '%1$s*' provided by '%s' is invalid in '%.2f'ms", "John", 10.26589f).getErrors());
+                }, Locale.FRANCE, "Path '%1$s*' provided by '%s' is invalid in '%.2f'ms", "John", 10.26589f).getErrors().get());
     }
 
     /**

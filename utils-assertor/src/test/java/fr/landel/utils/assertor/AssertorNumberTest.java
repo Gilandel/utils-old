@@ -59,7 +59,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertTrue(Assertor.that(2).isEqual(2, "error1").or().isNull().isOK());
         assertTrue(Assertor.that(2).isEqual(2, "error1").xor().isNull().isOK());
 
-        assertEquals("error1", Assertor.that(2).isEqual(1, "error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isEqual(1, "error1").getErrors().get());
 
         Assertor.that(2).isEqual(2).and(Assertor.that(12).isGT(10)).isOK();
 
@@ -87,7 +87,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertTrue(Assertor.that(2).isNotEqual(null, "error1").isOK());
         assertTrue(Assertor.that((Integer) null).isNotEqual(1, "error1").isOK());
 
-        assertEquals("error1", Assertor.that(2).isNotEqual(2, "error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isNotEqual(2, "error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(2).isNotEqual(2, "error1 %1$s* %s", 0).toThrow();
@@ -118,7 +118,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertFalse(Assertor.that((Integer) null).isZero().isOK());
         assertTrue(Assertor.that((Integer) null).not().isZero().isOK());
 
-        assertEquals("error1", Assertor.that(2).isZero("error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isZero("error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(2).isZero("error1 %1$s* %s", 0).toThrow();
@@ -149,7 +149,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertFalse(Assertor.that((Integer) null).isPositive().isOK());
         assertTrue(Assertor.that((Integer) null).not().isPositive().isOK());
 
-        assertEquals("error1", Assertor.that(0).isPositive("error1").getErrors());
+        assertEquals("error1", Assertor.that(0).isPositive("error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(0).isPositive("error1 %1$s* %s", 0).toThrow();
@@ -180,7 +180,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertFalse(Assertor.that((Integer) null).isNegative().isOK());
         assertTrue(Assertor.that((Integer) null).not().isNegative().isOK());
 
-        assertEquals("error1", Assertor.that(0).isNegative("error1").getErrors());
+        assertEquals("error1", Assertor.that(0).isNegative("error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(0).isNegative("error1 %1$s* %s", 0).toThrow();
@@ -212,7 +212,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertTrue(Assertor.that(2).isGT(null, "error1").isOK());
         assertFalse(Assertor.that((Integer) null).isGT(1, "error1").isOK());
 
-        assertEquals("error1", Assertor.that(2).isGT(2, "error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isGT(2, "error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(2).isGT(2, "error1 %1$s* %s", 0).toThrow();
@@ -240,7 +240,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertTrue(Assertor.that(2).isGTE(null, "error1").isOK());
         assertFalse(Assertor.that((Integer) null).isGTE(1, "error1").isOK());
 
-        assertEquals("error1", Assertor.that(2).isGTE(3, "error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isGTE(3, "error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(2).isGTE(3, "error1 %1$s* %s", 0).toThrow();
@@ -267,7 +267,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertFalse(Assertor.that(1).isLT(0, "error1").isOK());
         assertFalse(Assertor.that(2).isLT(null, "error1").isOK());
         assertTrue(Assertor.that((Integer) null).isLT(1, "error1").isOK());
-        assertEquals("error1", Assertor.that(2).isLT(1, "error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isLT(1, "error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(2).isLT(1, "error1 %1$s* %s", 0).toThrow();
@@ -294,7 +294,7 @@ public class AssertorNumberTest extends AbstractTest {
         assertFalse(Assertor.that(1).isLTE(0, "error1").isOK());
         assertFalse(Assertor.that(2).isLTE(null, "error1").isOK());
         assertTrue(Assertor.that((Integer) null).isLTE(1, "error1").isOK());
-        assertEquals("error1", Assertor.that(2).isLTE(1, "error1").getErrors());
+        assertEquals("error1", Assertor.that(2).isLTE(1, "error1").getErrors().get());
 
         Expect.exception(() -> {
             Assertor.that(2).isLTE(1, "error1 %1$s* %s", 0).toThrow();

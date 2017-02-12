@@ -119,10 +119,12 @@ Assertor.that(object1).isNull().and(object2).isNotNull().toThrow();
 Assertor.that(object1).isNull().or().not().isInstance(Color.class).or(object2).isEqual(object3).isOk();
 ```
 
-Three outputs are available:
-- toThrow: to throw an exception if assertion is false,
-- isOk: to get the boolean result of the assertion,
-- getErrors: to get the error message.
+Mulitple outputs are available:
+- toThrow: throw an exception if assertion is false, otherwise returns the last checked parameter,
+- isOk: get the boolean result of the assertion,
+- getErrors: get the error message (java.util.Optional),
+- get: the result (java.util.Optional),
+- result: the result (fr.landel.utils.commons.Result).
 
 These three output methods are considerate as final.
 So when these methods are called a clear of intermediate conditions is done.
@@ -165,7 +167,8 @@ The syntax is exactly the same as default [String.format](http://docs.oracle.com
 ## Output details
 
 ### toThrow
-Throw an exception if the assertion is false. Three ways to personalize the exception exist:
+Throw an exception if the assertion is false, otherwise returns the last checked value.
+Three ways to personalize the exception exist:
 - a message:
 	The message can be personalized via arguments injection and locale.
 	Back-side the method String.format will be called with these arguments.
@@ -736,49 +739,151 @@ Assertor.that("   ").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> thro
 Assert that char sequence is equal to the string
 
 * Signatures:
-	- contains(CharSequence string)
-	- contains(CharSequence string, CharSequence message, Object[] arguments)
-	- contains(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+	- isEqual(CharSequence string)
+	- isEqual(CharSequence string, CharSequence message, Object[] arguments)
+	- isEqual(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
 
 * Prerequisites: none
 
 * Examples:
 ```java
 Assertor.that("text").isEqual("text").toThrow(); // -> OK
-Assertor.that("text").isEqual("ex", "Param '%1$s*' not blank").toThrow(); // -> OK
-Assertor.that("text").isEqual("TexT").toThrow(); // -> OK
+Assertor.that("text").isEqual("ex", "Param '%1$s*' not equal").toThrow(); -> throw an exception
+Assertor.that("text").isEqual("TexT").toThrow(); -> throw an exception
 Assertor.that("text").isEqual("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().isEqual("text").toThrow(); // -> OK
-
-// prerequisite errors
-Assertor.that(null).contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").not().isEqual("text").toThrow(); // -> throw an exception
 ```
 
 #### isNotEqual
 Assert that char sequence is NOT equal to the string
 
+* Signatures:
+	- isNotEqual(CharSequence string)
+	- isNotEqual(CharSequence string, CharSequence message, Object[] arguments)
+	- isNotEqual(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isNotEqual("text").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqual("ex", "Param '%1$s*' equal").toThrow(); // -> OK
+Assertor.that("text").isNotEqual("TexT").toThrow(); // -> OK
+Assertor.that("text").isNotEqual("y").toThrow(); // -> OK
+Assertor.that("text").not().isNotEqual("text").toThrow(); -> throw an exception
+```
+
 #### isEqualIgnoreCase
 Assert that char sequence is equal to the string, ignoring case considerations
+
+* Signatures:
+	- isEqualIgnoreCase(CharSequence string)
+	- isEqualIgnoreCase(CharSequence string, CharSequence message, Object[] arguments)
+	- isEqualIgnoreCase(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isEqualIgnoreCase("text").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCase("ex", "Param '%1$s*' equal").toThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreCase("TexT").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCase("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().isEqualIgnoreCase("text").toThrow(); -> throw an exception
 
 #### isNotEqualIgnoreCase
 Assert that char sequence is NOT equal to the string, ignoring case considerations
 
+* Signatures:
+	- isNotEqualIgnoreCase(CharSequence string)
+	- isNotEqualIgnoreCase(CharSequence string, CharSequence message, Object[] arguments)
+	- isNotEqualIgnoreCase(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isNotEqualIgnoreCase("text").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCase("ex", "Param '%1$s*' equal").toThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreCase("TexT").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCase("y").toThrow(); // -> OK
+Assertor.that("text").not().isNotEqualIgnoreCase("text").toThrow(); -> OK
+
 #### isEqualIgnoreLineReturns
 Assert that char sequence is equal to the string, ignoring line returns considerations
+
+* Signatures:
+	- isEqualIgnoreLineReturns(CharSequence string)
+	- isEqualIgnoreLineReturns(CharSequence string, CharSequence message, Object[] arguments)
+	- isEqualIgnoreLineReturns(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isEqualIgnoreLineReturns("text").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreLineReturns("tex\nt").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreLineReturns("Tex\nT").toThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreLineReturns("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().isEqualIgnoreLineReturns("text").toThrow(); -> throw an exception
 
 #### isNotEqualIgnoreLineReturns
 Assert that char sequence is NOT equal to the string, ignoring line returns considerations
 
+* Signatures:
+	- isNotEqualIgnoreLineReturns(CharSequence string)
+	- isNotEqualIgnoreLineReturns(CharSequence string, CharSequence message, Object[] arguments)
+	- isNotEqualIgnoreLineReturns(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isNotEqualIgnoreLineReturns("text").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreLineReturns("tex\nt").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreLineReturns("Tex\nT").toThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreLineReturns("y").toThrow(); // -> OK
+Assertor.that("text").not().isNotEqualIgnoreLineReturns("text").toThrow(); -> OK
+
 #### isEqualIgnoreCaseAndLineReturns
 Assert that char sequence is equal to the string, ignoring case and line returns considerations
 
+* Signatures:
+	- isEqualIgnoreCaseAndLineReturns(CharSequence string)
+	- isEqualIgnoreCaseAndLineReturns(CharSequence string, CharSequence message, Object[] arguments)
+	- isEqualIgnoreCaseAndLineReturns(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("text").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("tex\nt").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("Tex\nT").toThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("y").toThrow(); // -> throw an exception
+Assertor.that("text").not().isEqualIgnoreCaseAndLineReturns("text").toThrow(); -> throw an exception
+
 #### isNotEqualIgnoreCaseAndLineReturns
 Assert that char sequence is NOT equal to the string, ignoring case and line returns considerations
+
+* Signatures:
+	- isNotEqualIgnoreCaseAndLineReturns(CharSequence string)
+	- isNotEqualIgnoreCaseAndLineReturns(CharSequence string, CharSequence message, Object[] arguments)
+	- isNotEqualIgnoreCaseAndLineReturns(CharSequence string, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites: none
+
+* Examples:
+```java
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("text").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("tex\nt").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("Tex\nT").toThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("y").toThrow(); // -> OK
+Assertor.that("text").not().isNotEqualIgnoreCaseAndLineReturns("text").toThrow(); -> OK
 
 #### contains
 Assert that char sequence contains the substring.
