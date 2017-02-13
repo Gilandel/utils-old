@@ -64,6 +64,8 @@ public final class HelperMessage extends ConstantsAssertor {
      */
     private static final char[] FLAGS = StringUtils.toChars(" #(+,-0<\\");
 
+    private static final String EMPTY = "";
+
     private static final char PERCENT = '%';
     private static final char PREFIX = PERCENT;
     private static final char DOT = '.';
@@ -96,6 +98,20 @@ public final class HelperMessage extends ConstantsAssertor {
     private static final int STATE_SUFFIX = 256;
 
     private static final int SHIFT_LEFT = 10;
+
+    private static final String PREFIX_PERCENT = "%";
+
+    private static final String SUFFIX_CHAR_SEQUENCE = "$s*";
+    private static final String SUFFIX_BOOLEAN = "$B*";
+    private static final String SUFFIX_INTEGER = "$,d*";
+    private static final String SUFFIX_DECIMAL = "$,.3f*";
+    private static final String SUFFIX_TIME_YEAR = "$tY*/";
+    private static final String SUFFIX_TIME_MONTH = "$tm*/";
+    private static final String SUFFIX_TIME_DAY = "$td* ";
+    private static final String SUFFIX_TIME_HOUR = "$tH*:";
+    private static final String SUFFIX_TIME_MINUTE = "$tM*:";
+    private static final String SUFFIX_TIME_SECOND = "$tS* ";
+    private static final String SUFFIX_TIME_ZONE = "$tZ*";
 
     /**
      * Parse the string to find parameters and arguments expressions, changes
@@ -292,7 +308,7 @@ public final class HelperMessage extends ConstantsAssertor {
     private static StringBuilder replaceAndClear(final Set<Group> groups, final StringBuilder sb) {
         groups.stream().sorted(Group.REVERSED_COMPARATOR).forEachOrdered((g) -> {
             if (g.remove) {
-                sb.replace(g.start, g.end, "");
+                sb.replace(g.start, g.end, EMPTY);
             } else {
                 g.asterisk = false;
                 sb.replace(g.start, g.end, g.toString());
@@ -385,7 +401,7 @@ public final class HelperMessage extends ConstantsAssertor {
             locale = null;
         }
 
-        if (currentMessage.indexOf('%') > -1) {
+        if (currentMessage.indexOf(PERCENT) > -1) {
             return HelperMessage.getMessage(ConstantsAssertor.DEFAULT_ASSERTION, locale, currentMessage, parameters, currentArguments);
         } else {
             return currentMessage;
@@ -420,7 +436,7 @@ public final class HelperMessage extends ConstantsAssertor {
 
                 msg = HelperMessage.prepare(message, params.length, 1, args.length, 1).toString();
 
-                if (msg.indexOf('%') > -1) {
+                if (msg.indexOf(PERCENT) > -1) {
                     msg = String.format(Assertor.getLocale(locale), msg, ArrayUtils.addAll(params, args));
                 }
             } else {
@@ -479,25 +495,24 @@ public final class HelperMessage extends ConstantsAssertor {
      */
     protected static StringBuilder getParam(final int index, final EnumType type) {
         final StringBuilder stringBuilder = new StringBuilder();
-        final String percent = "%";
         if (EnumType.CHAR_SEQUENCE.equals(type)) {
-            stringBuilder.append(percent).append(index).append("$s*");
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_CHAR_SEQUENCE);
         } else if (EnumType.BOOLEAN.equals(type)) {
-            stringBuilder.append(percent).append(index).append("$B*");
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_BOOLEAN);
         } else if (EnumType.NUMBER_INTEGER.equals(type)) {
-            stringBuilder.append(percent).append(index).append("$,d*");
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_INTEGER);
         } else if (EnumType.NUMBER_DECIMAL.equals(type)) {
-            stringBuilder.append(percent).append(index).append("$,.3f*");
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_DECIMAL);
         } else if (EnumType.DATE.equals(type) || EnumType.CALENDAR.equals(type)) {
-            stringBuilder.append(percent).append(index).append("$tY*/");
-            stringBuilder.append(percent).append(index).append("$tm*/");
-            stringBuilder.append(percent).append(index).append("$td* ");
-            stringBuilder.append(percent).append(index).append("$tH*:");
-            stringBuilder.append(percent).append(index).append("$tM*:");
-            stringBuilder.append(percent).append(index).append("$tS* ");
-            stringBuilder.append(percent).append(index).append("$tZ*");
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_YEAR);
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_MONTH);
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_DAY);
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_HOUR);
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_MINUTE);
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_SECOND);
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_TIME_ZONE);
         } else {
-            stringBuilder.append(percent).append(index).append("$s*");
+            stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_CHAR_SEQUENCE);
         }
         return stringBuilder;
     }
@@ -513,7 +528,7 @@ public final class HelperMessage extends ConstantsAssertor {
 
         private static final Comparator<Group> REVERSED_COMPARATOR = new Comparator<Group>() {
             @Override
-            public int compare(Group o1, Group o2) {
+            public int compare(final Group o1, final Group o2) {
                 return o2.start - o1.start;
             }
         };
@@ -544,8 +559,8 @@ public final class HelperMessage extends ConstantsAssertor {
 
         @Override
         public String toString() {
-            final StringBuilder sb = new StringBuilder("%");
-            sb.append(this.index).append('$');
+            final StringBuilder sb = new StringBuilder(PREFIX_PERCENT);
+            sb.append(this.index).append(INDEX_SUFFIX);
             sb.append(this.flags);
             sb.append(this.number);
             if (this.time > 0) {
