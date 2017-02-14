@@ -448,29 +448,23 @@ public class AssertorObjectTest extends AbstractTest {
         assertTrue(Assertor.that((Class<?>) null).hasHashCode(0).isOK());
 
         Expect.exception(() -> {
-            Assertor.that(Exception.class).hasHashCode(1).toThrow();
-            fail();
-        }, IllegalArgumentException.class);
+            Assertor.that(IOException.class).hasHashCode(5, "The hash codes don't match (%d != %2$d*)", hashCode).toThrow();
+        }, IllegalArgumentException.class, "The hash codes don't match (" + hashCode + " != 5)", JUNIT_ERROR);
 
-        Expect.exception(() -> {
-            Assertor.that(Exception.class).hasHashCode(1).toThrow();
-            fail();
-        }, IllegalArgumentException.class, "the object 'Exception' should have the hash code '1'", JUNIT_ERROR);
+        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(1, "bad hash code").toThrow(), IllegalArgumentException.class,
+                "bad hash code", JUNIT_ERROR);
 
-        Expect.exception(() -> {
-            Assertor.that((Class<?>) null).hasHashCode(1).toThrow();
-            fail();
-        }, IllegalArgumentException.class, "the object 'null' should have the hash code '1'", JUNIT_ERROR);
+        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(1).toThrow(), IllegalArgumentException.class,
+                "the object 'Exception' should have the hash code '1'", JUNIT_ERROR);
 
-        Expect.exception(() -> {
-            Assertor.that(Exception.class).hasHashCode(0).toThrow();
-            fail();
-        }, IllegalArgumentException.class, "the object 'Exception' should have the hash code '0'", JUNIT_ERROR);
+        Expect.exception(() -> Assertor.that((Class<?>) null).hasHashCode(1).toThrow(), IllegalArgumentException.class,
+                "the object 'null' should have the hash code '1'", JUNIT_ERROR);
 
-        Expect.exception(() -> {
-            Assertor.that((Class<?>) null).not().hasHashCode(0).toThrow();
-            fail();
-        }, IllegalArgumentException.class, "the object 'null' should NOT have the hash code '0'", JUNIT_ERROR);
+        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(0).toThrow(), IllegalArgumentException.class,
+                "the object 'Exception' should have the hash code '0'", JUNIT_ERROR);
+
+        Expect.exception(() -> Assertor.that((Class<?>) null).not().hasHashCode(0).toThrow(), IllegalArgumentException.class,
+                "the object 'null' should NOT have the hash code '0'", JUNIT_ERROR);
     }
 
     /**
@@ -478,9 +472,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test
     public void testValidates() {
-        assertTrue(Assertor.that((Object) 0).validates((obj) -> {
-            return obj != null;
-        }).isOK());
+        assertTrue(Assertor.that((Object) 0).validates((obj) -> obj != null).isOK());
 
         assertFalse(Assertor.that("/var/log/dev.log").validates((path) -> {
             if (!new File(path).exists()) {
@@ -491,13 +483,9 @@ public class AssertorObjectTest extends AbstractTest {
 
         assertFalse(Assertor.that("/var/log/dev.log").validates(null).isOK());
 
-        assertTrue(Assertor.that((Object) null).validates((obj) -> {
-            return obj == null;
-        }, "Path is invalid").isOK());
+        assertTrue(Assertor.that((Object) null).validates((obj) -> obj == null, "Path is invalid").isOK());
 
-        assertTrue(Assertor.that((Object) 0).validates((obj) -> {
-            return obj != null;
-        }, "Path is invalid").isOK());
+        assertTrue(Assertor.that((Object) 0).validates((obj) -> obj != null, "Path is invalid").isOK());
 
         assertFalse(Assertor.that("/var/log/dev.log").validates((path) -> {
             if (!new File(path).exists()) {
@@ -506,9 +494,7 @@ public class AssertorObjectTest extends AbstractTest {
             return true;
         }, "Path '%1$s*' provide by '%s' is invalid", "John").isOK());
 
-        assertTrue(Assertor.that((Object) 0).validates((obj) -> {
-            return obj != null;
-        }, Locale.US, "Path is invalid").isOK());
+        assertTrue(Assertor.that((Object) 0).validates((obj) -> obj != null, Locale.US, "Path is invalid").isOK());
 
         assertEquals("Path '/var/log/dev.log' provided by 'John' is invalid in '10.27'ms",
                 Assertor.that("/var/log/dev.log").validates((path) -> {

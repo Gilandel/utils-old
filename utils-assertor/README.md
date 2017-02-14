@@ -11,6 +11,8 @@
   1. [toThrow](#tothrow)
   2. [isOK](#isok)
   3. [getErrors](#geterrors)
+  4. [get](#get)
+  5. [result](#result)
 4. [Operators](#operators)
   1. [NOT](#not)
   2. [AND](#and)
@@ -24,20 +26,22 @@
     4. [isNotEqual](#isnotequal)
     5. [isInstance](#isinstance)
     6. [isAssignableFrom](#isassignablefrom)
-    7. [matches](#matches)
+    7. [hasHashCode](#hashashcode)
     8. [validates](#validates)
-  2. [Boolean](#boolean)
-    1. [isTrue](#istrue)
-    2. [isFalse](#isfalse)
-  3. [Number](#number)
-    1. [isGT](#isgt)
-    2. [isGTE](#isgte)
-    3. [isLT](#islt)
-    4. [isLTE](#islte)
-  4. [CharSequence](#charsequence)
+  2. [Array](#array)
     1. [hasLength](#haslength)
     2. [isEmpty](#isempty)
     3. [isNotEmpty](#isnotempty)
+    4. [contains](#contains)
+    5. [containsAll](#containsall)
+    6. [containsAny](#containsany)
+  3. [Boolean](#boolean)
+    1. [isTrue](#istrue)
+    2. [isFalse](#isfalse)
+  4. [CharSequence](#charsequence)
+    1. [hasLength](#haslength)
+    2. [isEmpty](#isempty-1)
+    3. [isNotEmpty](#isnotempty-1)
     4. [isBlank](#isblank)
     5. [isNotBlank](#isnotblank)
     6. [isEqual](#isequal-1)
@@ -48,43 +52,55 @@
     11. [isNotEqualIgnoreLineReturns](#isnotequalignorelinereturns)
     12. [isEqualIgnoreCaseAndLineReturns](#isequalignorecaseandlinereturns)
     13. [isNotEqualIgnoreCaseAndLineReturns](#isnotequalignorecaseandlinereturns)
-    14. [contains](#contains)
+    14. [contains](#contains-1)
     15. [startsWith](#startswith)
     16. [startsWithIgnoreCase](#startswithignorecase)
     17. [endsWith](#endswith)
     18. [endsWithIgnoreCase](#endswithignorecase)
-    19. [matches](#matches-1)
+    19. [matches](#matches)
     20. [find](#find)
-  5. [Date & Calendar](#date-calendar)
+  5. [Class](#class)
+    1. [isAssignableFrom](#isassignablefrom-1)
+    2. [hasName](#hasname)
+    3. [hasSimpleName](#hassimplename)
+    4. [hasCanonicalName](#hascanonicalname)
+    5. [hasPackageName](#haspackagename)
+    6. [hasTypeName](#hastypename)
+  6. [Date & Calendar](#date-calendar)
     1. [isAround](#isaround)
     2. [isNotAround](#isnotaround)
     3. [isAfter](#isafter)
-    4. [isAfterOrEquals](#isafterorequals)
+    4. [isAfterOrEqual](#isafterorequal)
     5. [isBefore](#isbefore)
-    6. [isBeforeOrEquals](#isbeforeorequals)
-  6. [Array](#array)
-    1. [hasLength](#haslength-1)
+    6. [isBeforeOrEqual](#isbeforeorequal)
+  7. [Enum](#enum)
+    1. [hasName](#hasname-1)
+    2. [hasNameIgnoreCase](#hasnameignorecase)
+    3. [hasOrdinal](#hasordinal)
+  8. [Iterable](#iterable)
+    1. [hasSize](#hassize)
     2. [isEmpty](#isempty-1)
     3. [isNotEmpty](#isnotempty-1)
-    4. [contains](#contains-1)
-    5. [containsAll](#containsall)
-    6. [containsAny](#containsany)
-  7. [Iterable](#iterable)
-    1. [hasSize](#hassize)
-    2. [isEmpty](#isempty-2)
-    3. [isNotEmpty](#isnotempty-2)
     4. [contains](#contains-2)
     5. [containsAll](#containsall-1)
     6. [containsAny](#containsany-1)
-  8. [Map](#map)
+  9. [Map](#map)
     1. [hasSize](#hassize-1)
-    2. [isEmpty](#isempty-3)
-    3. [isNotEmpty](#isnotempty-3)
+    2. [isEmpty](#isempty-2)
+    3. [isNotEmpty](#isnotempty-2)
     4. [contains](#contains-3)
     5. [containsAll](#containsall-2)
     6. [containsAny](#containsany-2)
-  9. [Class](#class)
-    1. [isAssignableFrom](#isassignablefrom-1)
+  10. [Number](#number)
+    1. [isEqual](#isequal-2)
+    2. [isNotEqual](#isnotequal-2)
+    3. [isZero](#iszero)
+    4. [isPositive](#ispositive)
+    5. [isNegative](#isnegative)
+    6. [isGT](#isgt)
+    7. [isGTE](#isgte)
+    8. [isLT](#islt)
+    9. [isLTE](#islte)
 6. [Others](#others)
   1. [Expect](#expect)
 7. [TODO](#todo)
@@ -93,16 +109,17 @@
 
 This module allow to assert parameters.
 
-For now it manage:
+For now it manages:
+- Object (all other objects)
+- Array
 - Boolean
 - CharSequence (String, StringBuilder...)
-- Number (Byte, Short, Integer, Long, Float, Double, BigInteger, BigDecimal)
+- Class
 - Date & Calendar
-- Array
+- Enum
 - Iterable (Set, List...)
 - Map
-- Class
-- Object (all other objects)
+- Number (Byte, Short, Integer, Long, Float, Double, BigInteger, BigDecimal)
 
 ### Structure
 
@@ -194,6 +211,9 @@ Three ways to personalize the exception exist:
 
 * Examples:
 ```java
+Assertor.that("text").isNotBlank().toThrow(); // -> returns "text" instance
+Assertor.that("text").isNotBlank().or(12).isGT(11).toThrow(); // -> returns 12
+
 Assertor.that("").isNotBlank().toThrow(); // -> throw the default message 'the char sequence should be NOT null, NOT empty and NOT blank'
 Assertor.that("").isNotBlank("The first name is invalid").toThrow(); // -> throw the personalized message 'The first name is invalid'
 
@@ -256,11 +276,19 @@ This method returns the assertion errors.
 
 * Examples:
 ```java
-	Assertor.that("").isNotBlank().getErrors(); // -> return "the char sequence should be NOT null, NOT empty and NOT blank"
-	Assertor.that("").isBlank("The first name is invalid").getErrors(); // -> return ""
+Assertor.that("").isNotBlank().getErrors(); // -> return Optional.of("the char sequence should be NOT null, NOT empty and NOT blank")
+Assertor.that("").isBlank("The first name is invalid").getErrors(); // -> return Optional.empty()
 ```
 
 At the call of 'getErrors()', the assertion is cleared, to avoid this, the parameter 'reset' can be set to 'false' (default: true).
+
+### get
+To get the result as an Optional (java.util.Optional).
+
+* Signatures:
+
+
+### result
 
 ## Operators
 
@@ -450,25 +478,20 @@ Assertor.that(null).not().isAssignableFrom(class1).toThrow(); // -> throw an exc
 Assertor.that(object).not().isAssignableFrom(null).toThrow(); // -> throw an exception
 ```
 
-#### matches
-Assert that the object matches the hamcrest matcher.
+#### hasHashCode
+Assert that the object hash code equals the specified value.
 
 * Signatures:
-	- matches(org.hamcrest.Matcher matcher)
-	- matches(org.hamcrest.Matcher matcher, CharSequence message, Object[] arguments)
-	- matches(org.hamcrest.Matcher matcher, Locale locale, CharSequence message, Object[] arguments)
+	- matches(int hashCode)
+	- matches(int hashCode, CharSequence message, Object[] arguments)
+	- matches(int hashCode, Locale locale, CharSequence message, Object[] arguments)
 
-* Prerequisites:
-	- matcher NOT null
+* Prerequisites: none
 
 * Examples:
 ```java
-Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1)).toThrow();
-Assertor.that(colors).matches(Matchers.hasSize(colors.size() - 1), "Not the good color numbers").toThrow();
-
-// prerequisite errors
-Assertor.that(colors).matches(null).toThrow(); // -> throw an exception
-Assertor.that(colors).not().matches(null).toThrow(); // -> throw an exception
+Assertor.that(colors).hasHashCode(0).toThrow();
+Assertor.that(colors).hasHashCode(45, "The hash codes don't match (%d != %d*)", Objects.hashCode(colors)).toThrow();
 ```
 
 #### validates
@@ -498,6 +521,14 @@ Assertor.that("/var/log/dev.log").validates((path) -> {
 Assertor.that(object).validates(null).toThrow(); // -> throw an exception
 Assertor.that(object).not().validates(null).toThrow(); // -> throw an exception
 ```
+
+### Array
+#### hasLength
+#### isEmpty
+#### isNotEmpty
+#### contains
+#### containsAll
+#### containsAny
 
 ### Boolean
 
@@ -533,105 +564,6 @@ Assert that the boolean is false.
 Assertor.that(bool).isFalse().toThrow(); // -> throw an exception, if bool == true
 Assertor.that(false).isFalse("Bad status").toThrow(); // -> OK
 Assertor.that(true).not().isFalse("Bad status").toThrow(); // -> OK
-```
-
-### Number
-#### isGT
-Assert that number is greater than specified number.
-
-* Signatures:
-	- isGT(Number number)
-	- isGT(Number number, CharSequence message, Object[] arguments)
-	- isGT(Number number, Locale locale, CharSequence message, Object[] arguments)
-
-* Prerequisites:
-	- both number NOT null
-
-* Examples:
-```java
-Assertor.that(12).isGT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isGT(10, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isGT(12).toThrow(); // -> OK
-
-// prerequisite errors
-Assertor.that(null).isGT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isGT(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isGT(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isGT(null).toThrow(); // -> throw an exception
-```
-
-#### isGTE
-Assert that number is greater than or equal to specified number.
-
-* Signatures:
-	- isGTE(Number number)
-	- isGTE(Number number, CharSequence message, Object[] arguments)
-	- isGTE(Number number, Locale locale, CharSequence message, Object[] arguments)
-
-* Prerequisites:
-	- both number NOT null
-
-* Examples:
-```java
-Assertor.that(12).isGTE(13).toThrow(); // -> throw an exception
-Assertor.that(12).isGTE(12).toThrow(); // -> OK
-Assertor.that(12).isGTE(10, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isGTE(13).toThrow(); // -> OK
-
-// prerequisite errors
-Assertor.that(null).isGTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).isGTE(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isGTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isGTE(null).toThrow(); // -> throw an exception
-```
-
-#### isLT
-Assert that number is lower than specified number.
-
-* Signatures:
-	- isLT(Number number)
-	- isLT(Number number, CharSequence message, Object[] arguments)
-	- isLT(Number number, Locale locale, CharSequence message, Object[] arguments)
-
-* Prerequisites:
-	- both number NOT null
-
-* Examples:
-```java
-Assertor.that(12).isLT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isLT(13, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isLT(12).toThrow(); // -> OK
-
-// prerequisite errors
-Assertor.that(null).isLT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isLT(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isLT(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isLT(null).toThrow(); // -> throw an exception
-```
-
-#### isLTE
-Assert that number is lower than or equal to specified number.
-
-* Signatures:
-	- isLTE(Number number)
-	- isLTE(Number number, CharSequence message, Object[] arguments)
-	- isLTE(Number number, Locale locale, CharSequence message, Object[] arguments)
-
-* Prerequisites:
-	- both number NOT null
-
-* Examples:
-```java
-Assertor.that(12).isLTE(11).toThrow(); // -> throw an exception
-Assertor.that(12).isLTE(12).toThrow(); // -> OK
-Assertor.that(12).isLTE(13, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isLTE(11).toThrow(); // -> OK
-
-// prerequisite errors
-Assertor.that(null).isLTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).isLTE(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isLTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isLTE(null).toThrow(); // -> throw an exception
 ```
 
 ### CharSequence
@@ -1094,6 +1026,14 @@ Assertor.that(null).not().find("t", "Param '%1$s*' not blank").toThrow(); // -> 
 Assertor.that("text").not().find(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
 ```
 
+### Class
+#### isAssignableFrom
+#### hasName
+#### hasSimpleName
+#### hasCanonicalName
+#### hasPackageName
+#### hasTypeName
+
 ### Date & Calendar
 #### isAround
 Assert that date1 is around the date2.
@@ -1218,17 +1158,14 @@ Assertor.that(date1).not().isNotAround(date2, -100, -5).toThrow(); // -> throw a
 Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
 ```
 
-#### isAfterOrEquals
+#### isAfterOrEqual
 #### isBefore
-#### isBeforeOrEquals
+#### isBeforeOrEqual
 
-### Array
-#### hasLength
-#### isEmpty
-#### isNotEmpty
-#### contains
-#### containsAll
-#### containsAny
+### Enum
+#### hasName
+#### hasNameIgnoreCase
+#### hasOrdinal
 
 ### Iterable
 #### hasSize
@@ -1246,8 +1183,109 @@ Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).toThrow(); // ->
 #### containsAll
 #### containsAny
 
-### Class
-#### isAssignableFrom
+### Number
+#### isEqual
+#### isNotEqual
+#### isZero
+#### isPositive
+#### isNegative
+#### isGT
+Assert that number is greater than specified number.
+
+* Signatures:
+	- isGT(Number number)
+	- isGT(Number number, CharSequence message, Object[] arguments)
+	- isGT(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isGT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isGT(10, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isGT(12).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isGT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isGT(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isGT(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isGT(null).toThrow(); // -> throw an exception
+```
+
+#### isGTE
+Assert that number is greater than or equal to specified number.
+
+* Signatures:
+	- isGTE(Number number)
+	- isGTE(Number number, CharSequence message, Object[] arguments)
+	- isGTE(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isGTE(13).toThrow(); // -> throw an exception
+Assertor.that(12).isGTE(12).toThrow(); // -> OK
+Assertor.that(12).isGTE(10, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isGTE(13).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isGTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).isGTE(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isGTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isGTE(null).toThrow(); // -> throw an exception
+```
+
+#### isLT
+Assert that number is lower than specified number.
+
+* Signatures:
+	- isLT(Number number)
+	- isLT(Number number, CharSequence message, Object[] arguments)
+	- isLT(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isLT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isLT(13, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isLT(12).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isLT(12).toThrow(); // -> throw an exception
+Assertor.that(12).isLT(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isLT(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isLT(null).toThrow(); // -> throw an exception
+```
+
+#### isLTE
+Assert that number is lower than or equal to specified number.
+
+* Signatures:
+	- isLTE(Number number)
+	- isLTE(Number number, CharSequence message, Object[] arguments)
+	- isLTE(Number number, Locale locale, CharSequence message, Object[] arguments)
+
+* Prerequisites:
+	- both number NOT null
+
+* Examples:
+```java
+Assertor.that(12).isLTE(11).toThrow(); // -> throw an exception
+Assertor.that(12).isLTE(12).toThrow(); // -> OK
+Assertor.that(12).isLTE(13, "Bad status").toThrow(); // -> OK
+Assertor.that(12).not().isLTE(11).toThrow(); // -> OK
+
+// prerequisite errors
+Assertor.that(null).isLTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).isLTE(null).toThrow(); // -> throw an exception
+Assertor.that(null).not().isLTE(12).toThrow(); // -> throw an exception
+Assertor.that(12).not().isLTE(null).toThrow(); // -> throw an exception
+```
 
 ## Others
 ### Expect
