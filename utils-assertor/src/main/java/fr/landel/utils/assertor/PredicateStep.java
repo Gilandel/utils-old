@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import fr.landel.utils.commons.Result;
+import fr.landel.utils.commons.StringUtils;
 
 /**
  * This class is an intermediate or final link in chain, see
@@ -114,8 +115,11 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
      * @return an {@link Optional} containing the errors message
      */
     default Optional<String> getErrors() {
-        return Optional
-                .ofNullable(Assertor.that(HelperAssertor.combine(this.getStep(), true).getMessage()).isNotEmpty().get().orElse(null));
+        final String message = HelperAssertor.combine(this.getStep(), true).getMessage();
+        if (StringUtils.isNotEmpty(message)) {
+            return Optional.of(message);
+        }
+        return Optional.empty();
     }
 
     /**

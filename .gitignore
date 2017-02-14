@@ -13,3 +13,4 @@ buildNumber.properties
 /utils-io/*.log
 /utils-assertor/*.log
 .pmd
+utils-assertor/\.README\.md\.html
