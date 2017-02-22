@@ -234,6 +234,8 @@ Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().i
 // 'errors' contains: the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte12' should NOT start with 'text'" OR the char sequence 'texte12' should be null, empty or blank
 // 'parameters' contains: [{"texte11", EnumType.CHAR_SEQUENCE}, {"texte12", EnumType.CHAR_SEQUENCE}, {"text", EnumType.CHAR_SEQUENCE}]
 // to display the first parameter in MyException call: parameters.get(0).getKey()
+
+
 ```
 
 As explain at the end of the description section, the reset parameter can be set to 'false' through these methods.

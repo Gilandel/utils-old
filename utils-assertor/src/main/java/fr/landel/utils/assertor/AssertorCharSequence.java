@@ -179,7 +179,8 @@ public class AssertorCharSequence extends ConstantsAssertor {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> isEqualInternal(string, object, ignoreCase, ignoreLineReturns);
 
-        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, false, new ParameterAssertor<>(string, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, false,
+                new ParameterAssertor<>(string, EnumType.CHAR_SEQUENCE));
     }
 
     /**
@@ -209,7 +210,8 @@ public class AssertorCharSequence extends ConstantsAssertor {
 
         final BiPredicate<T, Boolean> checker = (object, not) -> !isEqualInternal(string, object, ignoreCase, ignoreLineReturns);
 
-        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, true, new ParameterAssertor<>(string, EnumType.CHAR_SEQUENCE));
+        return new StepAssertor<>(step, checker, false, message, MSG.CSQ.EQUALS, true,
+                new ParameterAssertor<>(string, EnumType.CHAR_SEQUENCE));
     }
 
     private static <T extends CharSequence> boolean isEqualInternal(final T object1, final CharSequence object2, final boolean ignoreCase,

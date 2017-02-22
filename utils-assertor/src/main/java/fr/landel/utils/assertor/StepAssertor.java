@@ -251,7 +251,8 @@ public class StepAssertor<T> implements Serializable {
      */
     @SafeVarargs
     public StepAssertor(final StepAssertor<T> previousStep, final BiPredicate<T, Boolean> checker, final boolean notAppliedByChecker,
-            final MessageAssertor message, final CharSequence messageKey, final boolean messageKeyNot, final ParameterAssertor<?>... parameters) {
+            final MessageAssertor message, final CharSequence messageKey, final boolean messageKeyNot,
+            final ParameterAssertor<?>... parameters) {
         this(previousStep, null, checker, notAppliedByChecker, message, messageKey, messageKeyNot, parameters);
     }
 
@@ -340,6 +341,8 @@ public class StepAssertor<T> implements Serializable {
     }
 
     /**
+     * If the NOT is directly managed by the checker
+     * 
      * @return the notAppliedByChecker
      */
     public boolean isNotAppliedByChecker() {

@@ -301,13 +301,17 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
     }
 
     /**
-     * Throw the specific exception, only if assertion is wrong.
+     * Throw the specific exception, only if assertion is wrong and inject or
+     * not the internal exception to the specified one as suppressed. The
+     * suppressed can be read through the method
+     * {@link Throwable#getSuppressed()}.
      * 
      * <pre>
-     * Assertor.that("text").isBlank().toThrow(new MyException("text should be blank"));
-     * // -&gt; throw a MyException with message: text should be blank
+     * Assertor.that("text").isBlank().toThrow(new MyException("text should be blank"), true);
+     * // -&gt; throw a MyException with message: text should be blank and inject
+     * // the original exception as suppressed
      * 
-     * Assertor.that("text").isNotBlank().toThrow(new MyException("text should be blank"));
+     * Assertor.that("text").isNotBlank().toThrow(new MyException("text should be blank"), true);
      * // -&gt; do nothing
      * </pre>
      * 

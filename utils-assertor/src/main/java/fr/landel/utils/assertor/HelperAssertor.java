@@ -219,14 +219,14 @@ public class HelperAssertor extends ConstantsAssertor {
 
             final ResultAssertor subResult = HelperAssertor.combine(subStep, loadMessage);
 
+            parameters.addAll(subResult.getParameters());
+
             if (!subResult.isPrecondition()) {
                 return Triple.of(false, null, subResult);
             } else {
                 nextOperator = step.getOperator();
 
                 nextValid = HelperAssertor.isValid(nextValid, subResult.isValid(), nextOperator);
-
-                parameters.addAll(subResult.getParameters());
 
                 if (!nextValid && loadMessage && subResult.getMessage() != null) {
 
