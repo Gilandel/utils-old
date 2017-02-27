@@ -15,7 +15,7 @@ package fr.landel.utils.assertor.expect;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import fr.landel.utils.commons.function.AssertConsumer;
+import fr.landel.utils.commons.function.AssertSupplier;
 import fr.landel.utils.commons.function.TriFunction;
 
 /**
@@ -45,7 +45,7 @@ public final class Expect {
      * @param <T>
      *            The generic expected exception type
      */
-    public static <T extends Throwable> void exception(final AssertConsumer<Throwable> consumer, final Class<T> expectedException) {
+    public static <T extends Throwable> void exception(final AssertSupplier<Throwable> consumer, final Class<T> expectedException) {
         exception(consumer, expectedException, null, null, null);
     }
 
@@ -69,7 +69,7 @@ public final class Expect {
      * @param <T>
      *            The generic expected exception type
      */
-    public static <T extends Throwable> void exception(final AssertConsumer<Throwable> consumer, final Class<T> expectedException,
+    public static <T extends Throwable> void exception(final AssertSupplier<Throwable> consumer, final Class<T> expectedException,
             final String expectedMessage) {
         exception(consumer, expectedException, expectedMessage, null);
     }
@@ -94,7 +94,7 @@ public final class Expect {
      * @param <T>
      *            The generic expected exception type
      */
-    public static <T extends Throwable> void exception(final AssertConsumer<Throwable> consumer, final Class<T> expectedException,
+    public static <T extends Throwable> void exception(final AssertSupplier<Throwable> consumer, final Class<T> expectedException,
             final Pattern messagePattern) {
         exception(consumer, expectedException, messagePattern, null);
     }
@@ -138,7 +138,7 @@ public final class Expect {
      * @throws E
      *             Exception provided
      */
-    public static <T extends Throwable, E extends Throwable> void exception(final AssertConsumer<Throwable> consumer,
+    public static <T extends Throwable, E extends Throwable> void exception(final AssertSupplier<Throwable> consumer,
             final Class<T> expectedException, final TriFunction<Boolean, String, String, E> exceptionFunction) throws E {
         exception(consumer, expectedException, null, null, exceptionFunction);
     }
@@ -184,7 +184,7 @@ public final class Expect {
      * @throws E
      *             Provided exception
      */
-    public static <T extends Throwable, E extends Throwable> void exception(final AssertConsumer<Throwable> consumer,
+    public static <T extends Throwable, E extends Throwable> void exception(final AssertSupplier<Throwable> consumer,
             final Class<T> expectedException, final String expectedMessage, final TriFunction<Boolean, String, String, E> exceptionFunction)
             throws E {
 
@@ -233,7 +233,7 @@ public final class Expect {
      * @throws E
      *             Provided exception
      */
-    public static <T extends Throwable, E extends Throwable> void exception(final AssertConsumer<Throwable> consumer,
+    public static <T extends Throwable, E extends Throwable> void exception(final AssertSupplier<Throwable> consumer,
             final Class<T> expectedException, final Pattern messagePattern, final TriFunction<Boolean, String, String, E> exceptionFunction)
             throws E {
 
@@ -244,7 +244,7 @@ public final class Expect {
      * Check that the consumed code raise the specified exception, also check
      * the message and allow to change the thrown exception.
      * 
-     * @param consumer
+     * @param exceptionSupplier
      *            The consumer (required, not null)
      * @param expectedException
      *            The expected exception type (required, not null)
@@ -266,15 +266,15 @@ public final class Expect {
      * @throws E
      *             Provided exception
      */
-    private static <T extends Throwable, E extends Throwable> void exception(final AssertConsumer<Throwable> consumer,
+    private static <T extends Throwable, E extends Throwable> void exception(final AssertSupplier<Throwable> exceptionSupplier,
             final Class<T> expectedException, final String expectedMessage, final Pattern messagePattern,
             final TriFunction<Boolean, String, String, E> exceptionFunction) throws E {
-        Objects.requireNonNull(consumer, "Consumer cannot be null");
+        Objects.requireNonNull(exceptionSupplier, "Consumer cannot be null");
         Objects.requireNonNull(expectedException, "Expected exception cannot be null");
 
         Throwable e = null;
         try {
-            consumer.assertException();
+            exceptionSupplier.assertException();
         } catch (Throwable e1) {
             e = e1;
         }

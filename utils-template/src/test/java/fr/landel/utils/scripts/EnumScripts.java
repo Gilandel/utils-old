@@ -32,7 +32,7 @@ public enum EnumScripts implements ScriptsList<EnumScripts> {
     /**
      * The SQL test file (for test on loader with one line)
      */
-    TEST_ONE_lINE("test_one_line.sql"),
+    TEST_ONE_LINE("test_one_line.sql"),
 
     /**
      * Select patient search by sector or unit (count and paginated select)
@@ -44,8 +44,8 @@ public enum EnumScripts implements ScriptsList<EnumScripts> {
      */
     INDEX_AGGS("index.elastic", StandardCharsets.UTF_8);
 
-    private String name;
-    private Charset charset;
+    private final String name;
+    private final Charset charset;
 
     /**
      * 

@@ -506,7 +506,7 @@ public final class CollectionUtils2 {
      * @return The typed class
      */
     public static <T> Class<List<T>> getListClass(final Class<T> type) {
-        return CastGenerics.getClass(new ArrayList<T>());
+        return CastUtils.getClass(new ArrayList<T>());
     }
 
     /**
@@ -519,7 +519,7 @@ public final class CollectionUtils2 {
      * @return The typed class
      */
     public static <T> Class<Set<T>> getSetClass(final Class<T> type) {
-        return CastGenerics.getClass(new HashSet<T>());
+        return CastUtils.getClass(new HashSet<T>());
     }
 
     /**
@@ -532,7 +532,7 @@ public final class CollectionUtils2 {
      * @return The typed class
      */
     public static <T> Class<Queue<T>> getQueueClass(final Class<T> type) {
-        return CastGenerics.getClass(new LinkedList<T>());
+        return CastUtils.getClass(new LinkedList<T>());
     }
 
     /**
@@ -549,7 +549,7 @@ public final class CollectionUtils2 {
      * @return The typed class
      */
     public static <K, V> Class<Map<K, V>> getMapClass(final Class<K> keyType, final Class<V> valueType) {
-        return CastGenerics.getClass(new HashMap<K, V>());
+        return CastUtils.getClass(new HashMap<K, V>());
     }
 
     /**

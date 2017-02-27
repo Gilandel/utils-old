@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Test;
 
@@ -58,7 +59,7 @@ public class AbstractRuntimeExceptionTest extends AbstractRuntimeException {
 
     /**
      * Test method for
-     * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.String)}
+     * {@link AbstractRuntimeException#AbstractRuntimeException(CharSequence, Object...)}
      * .
      */
     @Test
@@ -77,6 +78,62 @@ public class AbstractRuntimeExceptionTest extends AbstractRuntimeException {
             throw exception;
         } catch (AbstractRuntimeException e) {
             assertEquals("test", e.getMessage());
+        }
+
+        exception = new AbstractRuntimeException("test %s", "exception") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertEquals("test exception", e.getMessage());
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link AbstractRuntimeException#AbstractRuntimeException(Locale, CharSequence, Object...)}
+     * .
+     */
+    @Test
+    public void testAbstractRuntimeExceptionStringLocale() {
+        AbstractRuntimeException exception = new AbstractRuntimeException(Locale.FRANCE, "test") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertEquals("test", e.getMessage());
+        }
+
+        exception = new AbstractRuntimeException(Locale.FRANCE, "test %.2f", Math.PI) {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertEquals("test 3,14", e.getMessage());
         }
     }
 
@@ -159,6 +216,94 @@ public class AbstractRuntimeExceptionTest extends AbstractRuntimeException {
 
     /**
      * Test method for
+     * {@link AbstractRuntimeException#AbstractRuntimeException(Throwable, CharSequence, Object...)}
+     * .
+     */
+    @Test
+    public void testAbstractRuntimeExceptionThrowableString() {
+        AbstractRuntimeException exception = new AbstractRuntimeException(new IOException(), "test") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+        }
+
+        exception = new AbstractRuntimeException(new IOException(), "test %s", "exception") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test exception", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link AbstractRuntimeException#AbstractRuntimeException(Throwable, Locale, CharSequence, Object...)}
+     * .
+     */
+    @Test
+    public void testAbstractRuntimeExceptionThrowableLocale() {
+        AbstractRuntimeException exception = new AbstractRuntimeException(new IOException(), Locale.FRANCE, "test") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+        }
+
+        exception = new AbstractRuntimeException(new IOException(), Locale.FRANCE, "test %.2f", Math.PI) {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            throw exception;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test 3,14", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+        }
+    }
+
+    /**
+     * Test method for
      * {@link AbstractRuntimeException#AbstractRuntimeException(java.lang.String, java.lang.Throwable, boolean, boolean)}
      * .
      */
@@ -201,6 +346,111 @@ public class AbstractRuntimeExceptionTest extends AbstractRuntimeException {
         } catch (AbstractRuntimeException e) {
             assertNotNull(e.getCause());
             assertEquals("test", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+            assertNotNull(e.getSuppressed());
+            assertTrue(e.getSuppressed().length > 0);
+            assertNotNull(e.getStackTrace());
+            assertEquals(0, e.getStackTrace().length);
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link AbstractRuntimeException#AbstractRuntimeException(Throwable, boolean, boolean, CharSequence, Object...)}
+     * .
+     */
+    @Test
+    public void testAbstractRuntimeExceptionThrowableBooleanBooleanString() {
+        AbstractRuntimeException exception1 = new AbstractRuntimeException(new IOException(), false, true, "test") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        AbstractRuntimeException exception2 = new AbstractRuntimeException(new IOException(), true, false, "test %s", "exception") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            exception1.addSuppressed(new IOException());
+            throw exception1;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+            assertNotNull(e.getSuppressed());
+            assertEquals(0, e.getSuppressed().length);
+            assertNotNull(e.getStackTrace());
+            assertTrue(e.getStackTrace().length > 0);
+        }
+
+        try {
+            exception2.addSuppressed(new IOException());
+            throw exception2;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test exception", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+            assertNotNull(e.getSuppressed());
+            assertTrue(e.getSuppressed().length > 0);
+            assertNotNull(e.getStackTrace());
+            assertEquals(0, e.getStackTrace().length);
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link AbstractRuntimeException#AbstractRuntimeException(Throwable, boolean, boolean, Locale, CharSequence, Object...)}
+     * .
+     */
+    @Test
+    public void testAbstractRuntimeExceptionThrowableBooleanBooleanLocale() {
+        AbstractRuntimeException exception1 = new AbstractRuntimeException(new IOException(), false, true, Locale.FRANCE, "test") {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        AbstractRuntimeException exception2 = new AbstractRuntimeException(new IOException(), true, false, Locale.FRANCE, "test %.2f",
+                Math.PI) {
+
+            /**
+             * serialVersionUID
+             */
+            private static final long serialVersionUID = 1L;
+        };
+
+        assertTrue(Exception.class.isAssignableFrom(AbstractRuntimeException.class));
+
+        try {
+            exception1.addSuppressed(new IOException());
+            throw exception1;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test", e.getMessage());
+            assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
+            assertNotNull(e.getSuppressed());
+            assertEquals(0, e.getSuppressed().length);
+            assertNotNull(e.getStackTrace());
+            assertTrue(e.getStackTrace().length > 0);
+        }
+
+        try {
+            exception2.addSuppressed(new IOException());
+            throw exception2;
+        } catch (AbstractRuntimeException e) {
+            assertNotNull(e.getCause());
+            assertEquals("test 3,14", e.getMessage());
             assertTrue(IOException.class.isAssignableFrom(e.getCause().getClass()));
             assertNotNull(e.getSuppressed());
             assertTrue(e.getSuppressed().length > 0);

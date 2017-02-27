@@ -687,38 +687,50 @@ public enum EnumChar {
     CURLY_BRACKET_RIGHT(BRACE_CLOSE),
 
     /**
-     * Lower than or left chevron (symbol: "&lt;", code: 60, unicode: u003c,
-     * HTML: &amp;lt;)
+     * Lower than, less than or left chevron (symbol: "&lt;", code: 60, unicode:
+     * u003c, HTML: &amp;lt;)
      */
     LOWER_THAN('<', "\u003c", "&lt;"),
 
     /**
-     * Lower than or left chevron (symbol: "&lt;", code: 60, unicode: u003c,
-     * HTML: &amp;lt;)
+     * Less than, less than or left chevron (symbol: "&lt;", code: 60, unicode:
+     * u003c, HTML: &amp;lt;)
+     */
+    LESS_THAN(LOWER_THAN),
+
+    /**
+     * Lower than, less than or left chevron (symbol: "&lt;", code: 60, unicode:
+     * u003c, HTML: &amp;lt;)
      */
     CHEVRON_OPEN(LOWER_THAN),
 
     /**
-     * Lower than or left chevron (symbol: "&lt;", code: 60, unicode: u003c,
-     * HTML: &amp;lt;)
+     * Lower than, less than or left chevron (symbol: "&lt;", code: 60, unicode:
+     * u003c, HTML: &amp;lt;)
      */
     CHEVRON_LEFT(LOWER_THAN),
 
     /**
-     * Greater than or right chevron (symbol: "&gt;", code: 63, unicode: u003e,
-     * HTML: &amp;gt;)
+     * Greater than, more than or right chevron (symbol: "&gt;", code: 63,
+     * unicode: u003e, HTML: &amp;gt;)
      */
     GREATER_THAN('>', "\u003e", "&gt;"),
 
     /**
-     * Greater than or right chevron (symbol: "&gt;", code: 63, unicode: u003e,
-     * HTML: &amp;gt;)
+     * Greater than, more than or right chevron (symbol: "&gt;", code: 63,
+     * unicode: u003e, HTML: &amp;gt;)
+     */
+    MORE_THAN(GREATER_THAN),
+
+    /**
+     * Greater than, more than or right chevron (symbol: "&gt;", code: 63,
+     * unicode: u003e, HTML: &amp;gt;)
      */
     CHEVRON_CLOSE(GREATER_THAN),
 
     /**
-     * Greater than or right chevron (symbol: "&gt;", code: 63, unicode: u003e,
-     * HTML: &amp;gt;)
+     * Greater than, more than or right chevron (symbol: "&gt;", code: 63,
+     * unicode: u003e, HTML: &amp;gt;)
      */
     CHEVRON_RIGHT(GREATER_THAN),
 

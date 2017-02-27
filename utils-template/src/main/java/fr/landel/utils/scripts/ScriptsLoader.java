@@ -14,6 +14,7 @@ package fr.landel.utils.scripts;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,17 +47,37 @@ public class ScriptsLoader {
     private String path;
 
     /**
-     * Constructor
+     * Constructor (default path: "scripts/", default template: SQL)
      */
     public ScriptsLoader() {
+        this(DEFAULT_PATH);
+    }
+
+    /**
+     * Constructor (default template: SQL)
+     * 
+     * @param path
+     *            The base path for all scripts
+     */
+    public ScriptsLoader(final String path) {
+        this(path, ScriptsTemplate.TEMPLATE_SQL);
+    }
+
+    /**
+     * Constructor
+     * 
+     * @param path
+     *            The base path for all scripts
+     * @param template
+     *            The template
+     */
+    public ScriptsLoader(final String path, final ScriptsTemplate template) {
         super();
 
         this.scripts = new HashMap<>();
         this.replacer = new ScriptsReplacer();
-
-        this.path = DEFAULT_PATH;
-
-        this.replacer.setTemplate(ScriptsTemplate.TEMPLATE_SQL);
+        this.replacer.setTemplate(template);
+        this.setPath(path);
     }
 
     /**
@@ -81,7 +102,9 @@ public class ScriptsLoader {
     }
 
     /**
-     * Load all scripts from classpath
+     * Load all scripts from classpath. All scripts are loaded from the defined
+     * directory (by default 'scripts', can be override by:
+     * {@link #setPath(String)}).
      * 
      * @param loader
      *            The current class loader
@@ -104,7 +127,9 @@ public class ScriptsLoader {
     }
 
     /**
-     * Load all scripts from classpath
+     * Load all scripts from classpath. All scripts are loaded from the defined
+     * directory (by default 'scripts', can be override by:
+     * {@link #setPath(String)}).
      * 
      * @param scriptsList
      *            The scripts list
@@ -113,6 +138,44 @@ public class ScriptsLoader {
      */
     public void init(final ScriptsList<?>... scriptsList) throws IOException {
         this.init(ScriptsLoader.class.getClassLoader(), scriptsList);
+    }
+
+    /**
+     * Load a single script from classpath. The script is loaded from the
+     * defined directory (by default 'scripts', can be override by:
+     * {@link #setPath(String)}).
+     * 
+     * @param name
+     *            The script name
+     * @param charset
+     *            The script charset
+     * @return The script identifier
+     * @throws IOException
+     *             On loading file failures
+     */
+    public ScriptsList<?> init(final String name, final Charset charset) throws IOException {
+        return this.init(ScriptsLoader.class.getClassLoader(), name, charset);
+    }
+
+    /**
+     * Load a single script from classpath. The script is loaded from the
+     * defined directory (by default 'scripts', can be override by:
+     * {@link #setPath(String)}).
+     * 
+     * @param loader
+     *            The current class loader
+     * @param name
+     *            The script name
+     * @param charset
+     *            The script charset
+     * @return The script identifier
+     * @throws IOException
+     *             On loading file failures
+     */
+    public ScriptsList<?> init(final ClassLoader loader, final String name, final Charset charset) throws IOException {
+        final ScriptsList<?> script = new SingleScriptsList(name, charset);
+        this.init(loader, script);
+        return script;
     }
 
     /**

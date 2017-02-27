@@ -143,7 +143,7 @@ public final class ClassUtils {
      * @return The class of the object or {@code null}
      */
     public static <T> Class<T> getClass(final T object) {
-        return CastGenerics.getClass(object);
+        return CastUtils.getClass(object);
     }
 
     /**
@@ -158,7 +158,7 @@ public final class ClassUtils {
      */
     public static boolean isAssignableFrom(final Class<?> clazz, final Object object) {
         if (clazz != null) {
-            Class<?> objClass = CastGenerics.getClass(object);
+            Class<?> objClass = CastUtils.getClass(object);
             if (objClass != null) {
                 return clazz.isAssignableFrom(objClass);
             }

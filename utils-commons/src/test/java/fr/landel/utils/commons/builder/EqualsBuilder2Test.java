@@ -17,6 +17,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.function.BiPredicate;
+
 import org.junit.Test;
 
 /**
@@ -33,6 +35,8 @@ public class EqualsBuilder2Test {
      */
     @Test
     public void testBuild() {
+        final BiPredicate<String, String> equalsIgnoreCase = (a, b) -> a.equalsIgnoreCase(b);
+
         IllegalArgumentException e1 = new IllegalArgumentException("error");
         NullPointerException e2 = new NullPointerException("error");
         IllegalArgumentException e3 = new IllegalArgumentException("ERROR");
@@ -45,32 +49,35 @@ public class EqualsBuilder2Test {
         assertTrue(new EqualsBuilder2<>(e1, e3).isEqual());
         assertFalse(new EqualsBuilder2<>(e1, null, Exception.class).isEqual());
 
-        try {
-            new EqualsBuilder2<>(null, null).isEqual();
-            fail();
-        } catch (NullPointerException e) {
-            assertNotNull(e);
-        }
-
-        try {
-            new EqualsBuilder2<>(null, e2).isEqual();
-            fail();
-        } catch (NullPointerException e) {
-            assertNotNull(e);
-        }
-
+        assertTrue(new EqualsBuilder2<>(null, null).isEqual());
+        assertFalse(new EqualsBuilder2<>(null, e2).isEqual());
         assertFalse(new EqualsBuilder2<>(e1, null).isEqual());
+        assertFalse(new EqualsBuilder2<>((Exception) null, e2).append(e -> e.getMessage()).isEqual());
+        assertFalse(new EqualsBuilder2<>(null, e2, Exception.class).append(e -> e.getMessage()).isEqual());
+        assertFalse(new EqualsBuilder2<>(e1, null).append(e -> e.getMessage()).isEqual());
 
         assertFalse(new EqualsBuilder2<>(e1, e2).append(e -> e.getMessage()).isEqual());
         assertTrue(new EqualsBuilder2<>(e1, e2, Exception.class).append(e -> e.getMessage()).isEqual());
         assertFalse(new EqualsBuilder2<>(e1, e3).append(e -> e.getMessage()).isEqual());
-        assertTrue(new EqualsBuilder2<>(e1, e3).append(e -> e.getMessage(), (a, b) -> a.equalsIgnoreCase(b)).isEqual());
+        assertTrue(new EqualsBuilder2<>(e1, e3).append(e -> e.getMessage(), equalsIgnoreCase).isEqual());
 
         assertFalse(new EqualsBuilder2<>(e1, e2).append("toto", "titi").isEqual());
         assertTrue(new EqualsBuilder2<>(e1, e3).append("toto", "titi", e -> e.length()).isEqual());
         assertTrue(new EqualsBuilder2<>(e1, e3).append("toto", "titi", e -> e.length()).append("toto", "toto").isEqual());
         assertFalse(new EqualsBuilder2<>(e1, e3).append("toto", "titi").isEqual());
         assertFalse(new EqualsBuilder2<>(e1, e3).append("toto", "tit", e -> e.length()).append("toto", "toto").isEqual());
+
+        assertFalse(
+                new EqualsBuilder2<>(e1, e2).append("toto", "titi").and(e1, e3).append(e -> e.getMessage(), equalsIgnoreCase).isEqual());
+        assertFalse(new EqualsBuilder2<>(e1, e2, Exception.class).append("toto", "toto").and(e1, e3).append(e -> e.getMessage()).isEqual());
+
+        assertTrue(new EqualsBuilder2<>(e1, e2, Exception.class).append("toto", "toto").and(e1, e3)
+                .append(e -> e.getMessage(), equalsIgnoreCase).isEqual());
+        assertTrue(new EqualsBuilder2<>(e1, e2, Exception.class).append(e -> e.getMessage()).and(e1, e3)
+                .append(e -> e.getMessage(), equalsIgnoreCase).isEqual());
+
+        assertTrue(new EqualsBuilder2<>(e1, e3, Exception.class).append(e -> e.getMessage(), equalsIgnoreCase).and(e1, e2, Exception.class)
+                .append("toto", "toto").isEqual());
 
         try {
             new EqualsBuilder2<>(e1, e3).append(null).isEqual();

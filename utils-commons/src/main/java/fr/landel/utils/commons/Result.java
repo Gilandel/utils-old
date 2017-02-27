@@ -51,7 +51,7 @@ public final class Result<T> {
     private static final Result<?> EMPTY = new Result<>();
 
     /**
-     * 
+     * If the current is empty or not
      */
     private final boolean empty;
 
@@ -159,6 +159,31 @@ public final class Result<T> {
      */
     public boolean isNull() {
         return this.empty || this.value == null;
+    }
+
+    /**
+     * Return {@code true} if the value is not empty and not {@code null},
+     * otherwise {@code false}.
+     *
+     * @return {@code true} if the value is not empty and not {@code null},
+     *         otherwise {@code false}
+     */
+    public boolean isNotNull() {
+        return !this.isNull();
+    }
+
+    /**
+     * If a value is present and not {@code null}, invoke the specified consumer
+     * with the value, otherwise do nothing.
+     *
+     * @param consumer
+     *            block to be executed if a value is present
+     * @throws NullPointerException
+     *             if value is present and {@code consumer} is null
+     */
+    public void ifNotNull(final Consumer<? super T> consumer) {
+        if (this.isNotNull())
+            consumer.accept(this.value);
     }
 
     /**

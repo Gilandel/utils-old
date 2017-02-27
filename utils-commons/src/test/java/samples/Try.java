@@ -16,10 +16,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import fr.landel.utils.commons.ClassUtils;
-import fr.landel.utils.commons.function.AssertConsumer;
+import fr.landel.utils.commons.function.AssertSupplier;
 
 /**
- * Just a try test for {@link AssertConsumer}
+ * Just a try test for {@link AssertSupplier}
  * 
  * <p>
  * Not good for production, because this hides bugs. (can only be used, if a
@@ -33,11 +33,11 @@ import fr.landel.utils.commons.function.AssertConsumer;
 public class Try {
 
     @SuppressWarnings("unchecked")
-    public static <E extends Throwable> Optional<Catch<E>> that(final AssertConsumer<E> consumer) {
-        Objects.requireNonNull(consumer);
+    public static <E extends Throwable> Optional<Catch<E>> that(final AssertSupplier<E> exceptionSupplier) {
+        Objects.requireNonNull(exceptionSupplier);
 
         try {
-            consumer.assertException();
+            exceptionSupplier.assertException();
         } catch (Throwable e) {
             return Optional.of(new Catch<>((E) e));
         }

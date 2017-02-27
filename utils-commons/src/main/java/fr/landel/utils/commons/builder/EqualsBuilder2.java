@@ -12,9 +12,9 @@
  */
 package fr.landel.utils.commons.builder;
 
-import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.builder.Builder;
 
@@ -39,7 +39,7 @@ import org.apache.commons.lang3.builder.Builder;
  * 
  * <pre>
  * public boolean equals(Object obj) {
- *     return new EqualsBuilder(this, obj).append(o -> o.field1, (f1, f2) -> f1.getId().).append(o -> o.field2).append(o -> o.field3).isEqual();
+ *     return new EqualsBuilder(this, obj).append(o -&gt; o.field1, (f1, f2) -&gt; f1.getId().).append(o -&gt; o.field2).append(o -&gt; o.field3).isEqual();
  * }
  * </pre>
  *
@@ -49,7 +49,7 @@ import org.apache.commons.lang3.builder.Builder;
  * @param <T>
  *            the type of reference object
  * @param <O>
- *            the type of compare object
+ *            the type of compared object
  */
 public class EqualsBuilder2<T, O> implements Builder<Boolean> {
 
@@ -57,6 +57,7 @@ public class EqualsBuilder2<T, O> implements Builder<Boolean> {
     private final T current;
     private final O other;
     private final Class<T> superClass;
+    private final Supplier<Boolean> isEqualSupplier;
     private T casted = null;
     private boolean isEqual = true;
 
@@ -64,9 +65,9 @@ public class EqualsBuilder2<T, O> implements Builder<Boolean> {
      * Constructor
      *
      * @param current
-     *            the reference object (cannot be {@code null})
+     *            the reference object (may be {@code null})
      * @param other
-     *            the compare object (may be {@code null})
+     *            the compared object (may be {@code null})
      */
     public EqualsBuilder2(final T current, final O other) {
         this(current, other, null);
@@ -76,27 +77,43 @@ public class EqualsBuilder2<T, O> implements Builder<Boolean> {
      * Constructor
      *
      * @param current
-     *            the reference object (cannot be {@code null})
+     *            the reference object (may be {@code null})
      * @param other
-     *            the compare object (may be {@code null})
+     *            the compared object (may be {@code null})
      * @param superClass
-     *            the common class of both checked object
+     *            the common class of both checked objects
      */
     public EqualsBuilder2(final T current, final O other, final Class<T> superClass) {
-        Objects.requireNonNull(current);
+        this(current, other, superClass, null);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param current
+     *            the reference object (may be {@code null})
+     * @param other
+     *            the compared object (may be {@code null})
+     * @param superClass
+     *            the common class of both checked objects
+     * @param isEqualSupplier
+     *            the previous builder supplier
+     */
+    private EqualsBuilder2(final T current, final O other, final Class<T> superClass, final Supplier<Boolean> isEqualSupplier) {
         this.builder = new EqualsBuilder();
         this.current = current;
         this.other = other;
         this.superClass = superClass;
+        this.isEqualSupplier = isEqualSupplier;
         this.check();
     }
 
     @SuppressWarnings("unchecked")
     private void check() {
-        if (this.other == null) {
-            this.isEqual = false;
-        } else if (this.current == this.other) {
+        if (this.current == this.other) {
             this.isEqual = true;
+        } else if (this.current == null || this.other == null) {
+            this.isEqual = false;
         } else if (this.superClass == null && !this.current.getClass().equals(this.other.getClass())) {
             this.isEqual = false;
         }
@@ -164,6 +181,8 @@ public class EqualsBuilder2<T, O> implements Builder<Boolean> {
      *            the get parameter method
      * @param <X>
      *            the object type
+     * @param <V>
+     *            the getter return type
      * @return the current builder
      */
     public <X, V> EqualsBuilder2<T, O> append(final X lhs, final X rhs, final Function<X, V> getter) {
@@ -185,6 +204,8 @@ public class EqualsBuilder2<T, O> implements Builder<Boolean> {
      *            the parameter checker method
      * @param <X>
      *            the object type
+     * @param <V>
+     *            the getter return type
      * @return the current builder
      */
     public <X, V> EqualsBuilder2<T, O> append(final X lhs, final X rhs, final Function<X, V> getter, final BiPredicate<V, V> predicate) {
@@ -195,12 +216,48 @@ public class EqualsBuilder2<T, O> implements Builder<Boolean> {
     }
 
     /**
+     * Append a sub equals builder for other objects.
+     * 
+     * @param newCurrent
+     *            the reference object
+     * @param newOther
+     *            the compared object
+     * @param <X>
+     *            the type of reference object
+     * @param <Y>
+     *            the type of compared object
+     * @return A new {@link EqualsBuilder2}
+     */
+    public <X, Y> EqualsBuilder2<X, Y> and(final X newCurrent, final Y newOther) {
+        return new EqualsBuilder2<>(newCurrent, newOther, null, () -> this.isEqual());
+    }
+
+    /**
+     * Append a sub equals builder for other objects.
+     * 
+     * @param newCurrent
+     *            the reference object
+     * @param newOther
+     *            the compared object
+     * @param superClass
+     *            the common class of both checked objects
+     * @param <X>
+     *            the type of reference object
+     * @param <Y>
+     *            the type of compared object
+     * @return A new {@link EqualsBuilder2}
+     */
+    public <X, Y extends X> EqualsBuilder2<X, Y> and(final X newCurrent, final Y newOther, Class<X> superClass) {
+        return new EqualsBuilder2<>(newCurrent, newOther, superClass, () -> this.isEqual());
+    }
+
+    /**
      * Returns {@code true} if the fields that have been checked are all equal.
      * 
      * @return {@code true}, if all are equal, {@code false} otherwise
      */
     public boolean isEqual() {
-        return this.isEqual && this.builder.isEquals();
+        return (this.isEqualSupplier == null || this.isEqualSupplier.get()) && this.isEqual && this.builder.isEquals();
     }
 
     /**

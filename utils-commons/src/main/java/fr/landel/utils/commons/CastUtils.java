@@ -52,9 +52,9 @@ import org.slf4j.LoggerFactory;
  * @author Gilles Landel
  *
  */
-public final class CastGenerics {
+public final class CastUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CastGenerics.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CastUtils.class);
 
     /**
      * Simple cache to avoid reflect calls
@@ -69,7 +69,7 @@ public final class CastGenerics {
     /**
      * Hidden constructor.
      */
-    private CastGenerics() {
+    private CastUtils() {
     }
 
     /**
@@ -87,6 +87,24 @@ public final class CastGenerics {
             return (Class<T>) object.getClass();
         }
         return null;
+    }
+
+    /**
+     * Auto cast an object.
+     * 
+     * @param object
+     *            The object (required)
+     * @param <T>
+     *            The object type
+     * @return The object or null (if cast failed)
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(final Object object) {
+        try {
+            return (T) object;
+        } catch (ClassCastException e) {
+            return null;
+        }
     }
 
     /**

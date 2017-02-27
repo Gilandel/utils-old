@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import fr.landel.utils.commons.CastGenerics;
+import fr.landel.utils.commons.CastUtils;
 
 /**
  * Abstract class to force implementation of Object methods.
@@ -122,7 +122,7 @@ public abstract class AbstractOverObject<O extends AbstractOverObject<O>> {
         if (obj == null || !this.getOverClass().isAssignableFrom(obj.getClass())) {
             return false;
         }
-        return this.overEquals(CastGenerics.cast(obj, this.getOverClass()));
+        return this.overEquals(CastUtils.cast(obj, this.getOverClass()));
     }
 
     @Override

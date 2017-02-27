@@ -134,6 +134,5 @@ public class SingleTest {
         } catch (UnsupportedOperationException e) {
             assertNotNull(e);
         }
-
     }
 }

@@ -46,7 +46,7 @@ import org.junit.Test;
 
 import fr.landel.utils.assertor.Assertor;
 import fr.landel.utils.assertor.expect.Expect;
-import fr.landel.utils.commons.CastGenerics;
+import fr.landel.utils.commons.CastUtils;
 import fr.landel.utils.mapper.MapperException;
 
 /**
@@ -589,14 +589,14 @@ public class ReflectUtilsTest {
         Collection<?> myCollection = new UnboundedFifoBuffer(1);
 
         Expect.exception(() -> {
-            this.ru.newInstanceCollection(CastGenerics.getClass(myCollection));
+            this.ru.newInstanceCollection(CastUtils.getClass(myCollection));
         }, MapperException.class);
     }
 
     private <X> void checkNewCollectionInstance(final X newObject, final Class<?> collection, final Class<?> expectedClass)
             throws MapperException {
         Collection<X> obs;
-        obs = this.ru.newInstanceCollection(collection, CastGenerics.getClass(newObject));
+        obs = this.ru.newInstanceCollection(collection, CastUtils.getClass(newObject));
         assertNotNull(obs);
         Assertor.that(obs).isAssignableFrom(expectedClass);
         obs.add(newObject);
@@ -612,9 +612,9 @@ public class ReflectUtilsTest {
             final Class<O> outputType, final Class<?> expectedClass) throws MapperException {
         Collection<X> obs;
         if (outputType == null) {
-            obs = this.ru.newInstanceCollection(CastGenerics.getClass(collection));
+            obs = this.ru.newInstanceCollection(CastUtils.getClass(collection));
         } else {
-            obs = this.ru.newInstanceCollection(CastGenerics.getClass(collection), outputType, null);
+            obs = this.ru.newInstanceCollection(CastUtils.getClass(collection), outputType, null);
         }
         assertNotNull(obs);
         Assertor.that(obs).isAssignableFrom(expectedClass);
@@ -647,7 +647,7 @@ public class ReflectUtilsTest {
 
         Set<Observable> o = instanciable;
 
-        Set<Observable> obs = this.ru.newInstanceCollection(CastGenerics.getClass(instanciable), CastGenerics.getClass(o), null);
+        Set<Observable> obs = this.ru.newInstanceCollection(CastUtils.getClass(instanciable), CastUtils.getClass(o), null);
 
         obs.add(new Observable()); // TreeSet requires Comparable
     }
@@ -662,7 +662,7 @@ public class ReflectUtilsTest {
     @Test(expected = MapperException.class)
     public void testNewInstanceCollectionKO3() throws MapperException {
         ArrayBlockingQueue<String> abq = new ArrayBlockingQueue<>(1);
-        this.checkNewCollectionInstance("", abq, CastGenerics.getClass((BlockingQueue<String>) abq), LinkedBlockingQueue.class);
+        this.checkNewCollectionInstance("", abq, CastUtils.getClass((BlockingQueue<String>) abq), LinkedBlockingQueue.class);
     }
 
     /**

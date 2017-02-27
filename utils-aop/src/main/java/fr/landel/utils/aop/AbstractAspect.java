@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
 import fr.landel.utils.aop.exception.AOPException;
+import fr.landel.utils.commons.DateUtils;
 import fr.landel.utils.commons.EnumChar;
 
 /**
@@ -70,7 +71,7 @@ public abstract class AbstractAspect {
     public AbstractAspect() {
         this.logger = LoggerFactory.getLogger(this.getClass());
 
-        this.dtf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        this.dtf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         this.df = new SimpleDateFormat("yyyy/MM/dd");
     }
 
@@ -130,7 +131,7 @@ public abstract class AbstractAspect {
             if (objClass.isArray()) {
                 this.appendArray(logEntry, object, objClass);
             } else if (Iterable.class.isAssignableFrom(objClass) || Iterator.class.isAssignableFrom(objClass)) {
-                this.appendIterator(logEntry, object, objClass);
+                this.appendIterable(logEntry, object, objClass);
             } else if (Map.class.isAssignableFrom(objClass)) {
                 this.appendMap(logEntry, object, objClass);
             } else {
@@ -186,10 +187,10 @@ public abstract class AbstractAspect {
      * @return the formatted date
      */
     protected String formatDate(final Date date) {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        final Calendar calendar = DateUtils.getCalendar(date);
 
-        final int time = calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
+        final int time = calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND)
+                + calendar.get(Calendar.MILLISECOND);
         if (time > 0) {
             return this.dtf.format(date);
         }
@@ -235,7 +236,7 @@ public abstract class AbstractAspect {
      * @param objClass
      *            object class
      */
-    protected void appendIterator(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
+    protected void appendIterable(final StringBuilder logEntry, final Object object, final Class<?> objClass) {
         int loop = 0;
         final Iterator<?> iterator;
         if (Iterable.class.isAssignableFrom(objClass)) {
@@ -333,11 +334,11 @@ public abstract class AbstractAspect {
                 }
             }
         } else {
-			try {
-				return call.proceed();
-			} catch (final Throwable t) {
-				 throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
-			}
-		}
+            try {
+                return call.proceed();
+            } catch (final Throwable t) {
+                throw new AOPException("Error occurred during profiling " + call.getSignature().toString(), t);
+            }
+        }
     }
 }

@@ -37,8 +37,11 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     private static final String BRACE_OPEN = "{";
     private static final String BRACE_CLOSE = "}";
+    private static final String BRACE_OPEN_EXCLUDE = "{{";
+    private static final String BRACE_CLOSE_EXCLUDE = "}}";
+    private static final String BRACE_OPEN_TMP = "[#TMP#[";
+    private static final String BRACE_CLOSE_TMP = "]#TMP#]";
     private static final String BRACES = "{}";
-    private static final int BRACES_LENGTH = 2;
 
     /**
      * Hidden constructor.
@@ -377,7 +380,9 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * Injects all arguments in the specified char sequence. The arguments are
      * injected by replacement of the braces. If no index is specified between
      * braces, an internal index is created and the index is automatically
-     * incremented. The index starts from 0.
+     * incremented. The index starts from 0. To exclude braces, just double them
+     * (like {{0}} will return {0}). If text or number greater than arguments
+     * number are specified, they are ignored.
      * 
      * <p>
      * precondition: {@code charSequence} cannot be {@code null}
@@ -397,6 +402,9 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * 
      * StringUtils.inject("I'll go to {} {3} {} {2}", "the", "this", "afternoon", "beach");
      * // =&gt; "I'll go to the beach this afternoon"
+     * 
+     * StringUtils.inject("I'll go to {{}}{3} {} {2}{{0}} {4} {text}", "the", "this", "afternoon", "beach");
+     * // =&gt; "I'll go to {}beach the afternoon{0} {4} {text}"
      * </pre>
      * 
      * @param charSequence
@@ -414,23 +422,28 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
         final StringBuilder output = new StringBuilder(charSequence);
 
+        // if no brace, just returns the string
         if (output.indexOf(BRACE_OPEN) < 0) {
             return output.toString();
         }
 
+        // replace the excluded braces by a temporary string
+        replaceBrace(output, BRACE_OPEN_EXCLUDE, BRACE_OPEN_TMP);
+        replaceBrace(output, BRACE_CLOSE_EXCLUDE, BRACE_CLOSE_TMP);
+
+        // replace the braces without index by the arguments
         int i = 0;
         int index = 0;
-        String param = BRACES;
-        int len = BRACES_LENGTH;
-
-        while ((index = output.indexOf(param, index)) > -1 && i < arguments.length) {
-            output.replace(index, index + len, String.valueOf(arguments[i++]));
-            index += len;
+        while ((index = output.indexOf(BRACES, index)) > -1 && i < arguments.length) {
+            output.replace(index, index + BRACES.length(), String.valueOf(arguments[i++]));
+            index += BRACES.length();
         }
 
-        index = 0;
-
+        // replace braces with index by the arguments
+        int len;
+        String param;
         for (i = 0; i < arguments.length; ++i) {
+            index = 0;
             param = new StringBuilder(BRACE_OPEN).append(i).append(BRACE_CLOSE).toString();
             len = param.length();
             while ((index = output.indexOf(param, index)) > -1) {
@@ -439,6 +452,18 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
         }
 
+        // replace the temporary brace by the simple brace
+        replaceBrace(output, BRACE_OPEN_TMP, BRACE_OPEN);
+        replaceBrace(output, BRACE_CLOSE_TMP, BRACE_CLOSE);
+
         return output.toString();
+    }
+
+    private static void replaceBrace(final StringBuilder output, final String text, final String replacement) {
+        int index = 0;
+        while ((index = output.indexOf(text, index)) > -1) {
+            output.replace(index, index + text.length(), replacement);
+            index += replacement.length();
+        }
     }
 }

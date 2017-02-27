@@ -64,7 +64,7 @@ public class ScriptsLoaderTest {
 
     private static final String PATH = "src/test/resources/my_scripts/";
 
-    private ScriptsLoader queriesLoader;
+    private ScriptsLoader scriptsLoader;
 
     /**
      * initialize the loader with scripts list
@@ -74,19 +74,33 @@ public class ScriptsLoaderTest {
      */
     @Before
     public void init() throws IOException {
-        this.queriesLoader = new ScriptsLoader();
+        this.scriptsLoader = new ScriptsLoader();
 
-        this.queriesLoader.setPath("my_scripts");
-        this.queriesLoader.init(EnumScripts.values());
+        this.scriptsLoader.setPath("my_scripts");
+        this.scriptsLoader.init(EnumScripts.values());
 
-        this.queriesLoader.setPath("my_scripts/");
-        this.queriesLoader.init(EnumScripts.values());
-
-        assertNotNull(this.queriesLoader.getReplacer());
+        assertNotNull(this.scriptsLoader.getReplacer());
     }
 
     /**
-     * Test queries loader
+     * Test single script loader
+     * 
+     * @throws IOException
+     *             On error
+     */
+    @Test
+    public void testSingleScript() throws IOException {
+        final ScriptsLoader loader = new ScriptsLoader("my_scripts");
+        final ScriptsList<?> script = loader.init("test.sql", StandardCharsets.UTF_8);
+        final StringBuilder builder = loader.get(script, "app.id", "my_best_app");
+
+        assertEquals("select * from test where id = 'my_best_app'", builder.toString());
+
+        assertEquals(1, script.getValues().length);
+    }
+
+    /**
+     * Test scripts loader
      * 
      * @throws IOException
      *             On error
@@ -95,17 +109,17 @@ public class ScriptsLoaderTest {
     public void testGetScripts() throws IOException {
 
         // STANDARD TEMPLATE
-        StringBuilder content = this.queriesLoader.get(EnumScripts.TEST);
+        StringBuilder content = this.scriptsLoader.get(EnumScripts.TEST);
         assertNotNull(content);
         assertEquals("select * from test where id = ''", content.toString());
 
-        content = this.queriesLoader.get(EnumScripts.TEST_ONE_lINE, "app.id", "app_id");
+        content = this.scriptsLoader.get(EnumScripts.TEST_ONE_LINE, "app.id", "app_id");
         assertNotNull(content);
         assertEquals("select * from test where id = 'app_id' ", content.toString());
 
-        assertNull(this.queriesLoader.get(null));
-        assertNull(this.queriesLoader.get(null, null));
-        assertNull(this.queriesLoader.get(null, null, null));
+        assertNull(this.scriptsLoader.get(null));
+        assertNull(this.scriptsLoader.get(null, null));
+        assertNull(this.scriptsLoader.get(null, null, null));
 
         // JSON TEMPLATE
         final ScriptsLoader loader = new ScriptsLoader();
@@ -124,13 +138,13 @@ public class ScriptsLoaderTest {
     }
 
     /**
-     * Test queries loader
+     * Test scripts loader
      */
     @Test
     public void test() {
         String key = "app.id";
         String replacement = "28";
-        StringBuilder builder = this.queriesLoader.get(EnumScripts.TEST, key, replacement);
+        StringBuilder builder = this.scriptsLoader.get(EnumScripts.TEST, key, replacement);
         assertNotNull(builder);
         assertEquals(-1, builder.indexOf(key));
         assertTrue(builder.indexOf(replacement) > -1);
@@ -139,7 +153,7 @@ public class ScriptsLoaderTest {
     }
 
     /**
-     * Test queries loader
+     * Test scripts loader
      */
     @Test
     public void patientsSearchTest() {
@@ -156,11 +170,11 @@ public class ScriptsLoaderTest {
 
         // replacements.put("count", Boolean.TRUE.toString());
 
-        LOGGER.info("Call queriesLoader for patientSearch");
+        LOGGER.info("Call scriptsLoader for patientSearch");
 
-        StringBuilder builder = FileUtils.convertToUnix(this.queriesLoader.get(EnumScripts.PATIENTS_SEARCH, replacements));
+        StringBuilder builder = FileUtils.convertToUnix(this.scriptsLoader.get(EnumScripts.PATIENTS_SEARCH, replacements));
 
-        LOGGER.info("QueriesLoader for patientSearch done");
+        LOGGER.info("scriptsLoader for patientSearch done");
 
         assertNotNull(builder);
         try {

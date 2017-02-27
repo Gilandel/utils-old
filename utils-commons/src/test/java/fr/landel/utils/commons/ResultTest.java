@@ -35,9 +35,6 @@ import org.junit.Test;
  */
 public class ResultTest {
 
-    // private static final Logger LOGGER =
-    // LoggerFactory.getLogger(ResultTest.class);
-
     private boolean consumerCheck = false;
 
     /**
@@ -111,6 +108,43 @@ public class ResultTest {
         assertFalse(Result.of(5).isNull());
         assertTrue(Result.ofNullable(null).isNull());
         assertTrue(Result.empty().isNull());
+    }
+
+    /**
+     * Test method for {@link Result#isNotNull()}.
+     */
+    @Test
+    public void testIsNotNull() {
+        assertTrue(Result.of(5).isNotNull());
+        assertFalse(Result.ofNullable(null).isNotNull());
+        assertFalse(Result.empty().isNotNull());
+    }
+
+    /**
+     * Test method for {@link Result#ifNotNull(Consumer)}.
+     */
+    @Test
+    public void testIfNotNull() {
+        final Consumer<Object> consumer = v -> this.consumerCheck = true;
+
+        this.consumerCheck = false;
+        Result.of(5).ifNotNull(consumer);
+        assertTrue(this.consumerCheck);
+
+        this.consumerCheck = false;
+        Result.ofNullable(null).ifNotNull(consumer);
+        assertFalse(this.consumerCheck);
+
+        this.consumerCheck = false;
+        Result.empty().ifNotNull(consumer);
+        assertFalse(this.consumerCheck);
+
+        try {
+            Result.of(5).ifNotNull(null);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
     }
 
     /**

@@ -15,7 +15,7 @@ package fr.landel.utils.commons.function;
 /**
  * Represents an operation that accepts no input argument and returns no result.
  * The only output is through an exception. Unlike most other functional
- * interfaces, {@code AssertConsumer} is expected to operate via side-effects.
+ * interfaces, {@link AssertSupplier} is expected to operate via side-effects.
  * 
  * <p>
  * This class can be used for example to prepare an exception or to assert the
@@ -28,7 +28,7 @@ package fr.landel.utils.commons.function;
  * </p>
  * 
  * <pre>
- * AssertConsumer&lt;Exception&gt; exceptionBuilder = () -&gt; {
+ * AssertSupplier&lt;Exception&gt; exceptionBuilder = () -&gt; {
  *     throw new Exception("Not possible");
  * };
  * </pre>
@@ -40,7 +40,7 @@ package fr.landel.utils.commons.function;
  *            The exception type
  */
 @FunctionalInterface
-public interface AssertConsumer<E extends Throwable> {
+public interface AssertSupplier<E extends Throwable> {
 
     /**
      * Assert that the code throws the specified exception.

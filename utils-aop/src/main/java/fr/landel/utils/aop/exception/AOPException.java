@@ -12,6 +12,8 @@
  */
 package fr.landel.utils.aop.exception;
 
+import java.util.Locale;
+
 import fr.landel.utils.commons.exception.AbstractException;
 
 /**
@@ -40,17 +42,33 @@ public class AOPException extends AbstractException {
      * Constructor with message.
      * 
      * @param message
-     *            message
+     *            the message
+     * @param arguments
+     *            the message arguments
      */
-    public AOPException(final String message) {
-        super(message);
+    public AOPException(final String message, final Object... arguments) {
+        super(message, arguments);
+    }
+
+    /**
+     * Constructor with message.
+     * 
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message
+     * @param arguments
+     *            the message arguments
+     */
+    public AOPException(final Locale locale, final String message, final Object... arguments) {
+        super(locale, message, arguments);
     }
 
     /**
      * Constructor with exception.
      * 
      * @param exception
-     *            The exception
+     *            the cause exception
      */
     public AOPException(final Throwable exception) {
         super(AOPException.class, exception);
@@ -60,11 +78,41 @@ public class AOPException extends AbstractException {
      * Constructor with message and exception.
      * 
      * @param message
-     *            The message
+     *            the message
      * @param exception
-     *            The exception
+     *            the cause exception
      */
     public AOPException(final String message, final Throwable exception) {
         super(message, exception);
+    }
+
+    /**
+     * Constructor with message and exception.
+     * 
+     * @param exception
+     *            the cause exception
+     * @param message
+     *            the message
+     * @param arguments
+     *            the message arguments
+     */
+    public AOPException(final Throwable exception, final String message, final Object... arguments) {
+        super(exception, message, arguments);
+    }
+
+    /**
+     * Constructor with message and exception.
+     * 
+     * @param exception
+     *            the cause exception
+     * @param locale
+     *            the message locale
+     * @param message
+     *            the message
+     * @param arguments
+     *            the message arguments
+     */
+    public AOPException(final Throwable exception, final Locale locale, final String message, final Object... arguments) {
+        super(exception, locale, message, arguments);
     }
 }

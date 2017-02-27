@@ -258,6 +258,7 @@ public class StringUtilsTest {
         assertEquals("I'll go to the theater this afternoon.", StringUtils.replace(string, "theater", 15, 20));
         assertEquals("I will go to the beach this afternoon.", StringUtils.replace(string, "I will", 0, 4));
         assertEquals("I'll go to the beach this morning.", StringUtils.replace(string, "morning", 26, 35));
+        assertEquals("I'll go to the beach this afternoon!", StringUtils.replace(string, "!", 35, 36));
     }
 
     /**
@@ -376,6 +377,15 @@ public class StringUtilsTest {
         assertEquals("Test", StringUtils.inject("Test"));
         assertEquals("Test", StringUtils.inject("Test", "test"));
         assertEquals("Test", StringUtils.inject("Test", (Object[]) null));
+
+        assertEquals("I'll go to the {0} {}{}this {test} {12}",
+                StringUtils.inject("I'll go to the {{0}} {{}{}}this {test} {12}", "beach", "afternoon"));
+
+        assertEquals("I'll go to the beach this afternoon",
+                StringUtils.inject("I'll go to {} {3} {} {2}", "the", "this", "afternoon", "beach"));
+
+        assertEquals("I'll go to {}beach the afternoon{0} {4} {text}",
+                StringUtils.inject("I'll go to {{}}{3} {} {2}{{0}} {4} {text}", "the", "this", "afternoon", "beach"));
 
         try {
             StringUtils.inject(null, "test");

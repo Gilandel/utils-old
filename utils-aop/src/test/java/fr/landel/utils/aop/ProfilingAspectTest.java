@@ -21,8 +21,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import fr.landel.utils.aop.observable.AOPObservable;
 import fr.landel.utils.io.EncodingUtils;
 
@@ -44,6 +47,43 @@ public class ProfilingAspectTest extends AbstractAspectTest<ProfilingAspect> {
      */
     public ProfilingAspectTest() {
         super(ProfilingAspect.class);
+    }
+
+    /**
+     * Check AOP in profile mode (ProceedingJoinPoint)
+     * 
+     * @throws InterruptedException
+     *             If sleep failed
+     */
+    @Test
+    public void profileTestInfo() throws InterruptedException {
+        // set logger temporary to info level
+        final Logger logger = (Logger) LoggerFactory.getLogger(ProfilingAspect.class);
+        final Level level = logger.getLevel();
+        logger.setLevel(Level.INFO);
+
+        AOPObservable target = new AOPObservable();
+
+        AspectJProxyFactory factory = new AspectJProxyFactory(target);
+        ProfilingAspect aspect = new ProfilingAspect();
+        factory.addAspect(aspect);
+
+        AOPObservable proxy = factory.getProxy();
+
+        this.stream.reset();
+
+        proxy.testSleep();
+
+        try {
+            String outputLog = this.stream.toString(EncodingUtils.ENCODING_UTF_8);
+
+            assertTrue(outputLog.isEmpty());
+        } catch (IOException e) {
+            fail("Errors occurred in AspectTest#logTestInfo()\n" + e);
+        } finally {
+            // reset logger level
+            logger.setLevel(level);
+        }
     }
 
     /**
