@@ -16,9 +16,9 @@ Beware, the current snapshot has a lot of modifications and is not compatible wi
 
 # utils-commons
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
 <dependency>
@@ -35,10 +35,10 @@ Complete description: [Link to summary](./utils-commons#summary)
 
 # utils-assertor
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=95)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=95)
 
 ```xml
 <dependency>
@@ -62,9 +62,9 @@ Complete description: [Link to summary](./utils-assertor#summary)
 
 # utils-io
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
 <dependency>
@@ -86,9 +86,9 @@ Features:
 
 # utils-log
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
 <dependency>
@@ -103,9 +103,9 @@ Features:
 
 # utils-aop
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
 <dependency>
@@ -121,10 +121,10 @@ Features:
 
 # utils-mapper
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=10)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=5)]
-[![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=0)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=0)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=10)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=5)
+![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=0)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=0)
 
 ```xml
 <dependency>
@@ -136,10 +136,10 @@ Features:
 
 # utils-model
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=60)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=30)]
-[![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=0)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=10)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=60)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=30)
+![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=0)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=10)
 
 ```xml
 <dependency>
@@ -151,9 +151,9 @@ Features:
 
 # utils-poi
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
 <dependency>
@@ -168,10 +168,10 @@ Features:
 
 # utils-template
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=0)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=90)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=0)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=90)
 
 ```xml
 <dependency>
@@ -195,9 +195,9 @@ Complete description: [Link to summary](./utils-template#summary)
 
 # utils-web
 
-[![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)]
-[![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)]
-[![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)]
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
 <dependency>
