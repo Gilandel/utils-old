@@ -21,7 +21,7 @@ final ScriptsLoader loader = new ScriptsLoader("my_scripts");
 // to load the specified scripts
 final ScriptsList<?> script = loader.init("test.sql", StandardCharsets.UTF_8);
 
-// here my script file contains two lines:
+// here, my script file contains two lines:
 // -- comment
 // select * from test where id = '{app.id}'
 
@@ -92,7 +92,6 @@ public class ScriptsInitializer {
 }
 
 // OR in Spring
-
 @Configuration
 public class ScriptsInitializer {
 
@@ -107,7 +106,6 @@ public class ScriptsInitializer {
 }
 
 // OR through a simple singleton
-
 public class ScriptsInitializer {
 
 	private static final String PATH = "my_scripts";
@@ -150,10 +148,10 @@ public List<User> loadScript(final String name, final List<Integer> ids) {
 
 ```
 
-!!!Be careful about code injection!!! Some checks can be implement in the template, but always check replacement variables, for example in SQL use setParameter method to set unknown variable.
+!!!Be careful about code injection!!!
+Some checks can be implement in the template, but never trust parameters, for example in SQL use setParameter method to set unknown variable.
 
 ##Example with an SQL script
-
 
 ##Example with a JSON script
 
