@@ -53,9 +53,30 @@ Original idea is based on the version of Assert provided by the Spring Team.
 
 Examples:
 ```java
-Assertor.that(file).isNotNull().and().validates((f) -> f.isDirectory(), "not a directory").toThrow(); // -> if file is not a directory, an IllegalArgumentException is thrown
-Assertor.that(paramInt).iGT(10).toThrow(() -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
-Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid")); // -> if conditions are false, a MyException is thrown
+Assertor.that(file).isNotNull().and().validates(f -> f.isDirectory(), "not a directory").toThrow();
+// -> if 'file' is null or not a directory, an IllegalArgumentException is thrown
+
+Assertor.that(paramInt).isGT(10).toThrow(() -> new MyException("invalid"));
+// -> if 'paramInt' is not greater than 10, a MyException is thrown
+
+Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid"));
+// -> if 'array' is null/empty and 'paramMessage' does not contain 'text', a MyException is thrown
+// -> if 'array' is not null/empty and 'paramMessage' contains 'text', a MyException is thrown
+// -> if 'array' is null/empty and 'paramMessage' contains 'text', returns 'paramMessage'
+// -> if 'array' is not null/empty and 'paramMessage' does not contain 'text', returns 'paramMessage'
+
+Assertor.that(param1).isNotNull().and().not().startsWith("_")
+	.and(param2).isNotNull().and().isBefore(Calendar.getInstance())
+	.toThrow("Param1 '%1$s*' or/and param2 '%3$tF* %3$tT*.%3$tL* %3$tZ*' are incorrect");
+// -> if condition result is false, throw an IllegalArgumentException with the message "Param1 '<value_param1>' or/and param2 '<value_param2>' are incorrect".
+// -> the message uses String.format, to get inject parameter just add an asterisk at the end.
+
+// Exactly the same validation but with more specific errors
+Assertor.that(param1).isNotNull("Param1 cannot be null or empty").and().not().startsWith("_", "Param1 '%1$*' cannot start with '%2$s*'")
+	.and(param2).isNotNull("Param2 cannot be null").and().isBefore(Calendar.getInstance(), "Param2 '%1$tF* %1$tT*.%1$tL* %1$tZ*' must be before '%2$tF* %2$tT*.%2$tL* %2$tZ*'")
+	.toThrow();
+// -> throw for example (if param1="test", param2=Calendar[2018-02-28 04:31:56.399 CET] and NOW=Calendar[2017-02-28 04:31:56.401 CET]):
+// IllegalArgumnentException("Param2 '2018-02-28 04:31:56.399 CET' must be before '2017-02-28 04:31:56.401 CET'")
 ```
 
 Complete description: [Link to summary](./utils-assertor#summary)
@@ -210,6 +231,23 @@ Work progress:
 Features:
 - HTCLoader: A simple loader for [PIE](http://css3pie.com/),
 - ResourceBundleUTF8Control: A Control class to load all resources file in UTF-8 (mainly to avoid multiple encodings in a Web application).
+
+# utils-microbenchmark
+Work progress:
+![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
+![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
+
+```xml
+<dependency>
+	<groupId>fr.landel.utils</groupId>
+	<artifactId>utils-microbenchmark</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
+Features:
+- AbstractMicrobenchmark: An abstract class to easily create JMH test cases
 
 # Roadmap
 

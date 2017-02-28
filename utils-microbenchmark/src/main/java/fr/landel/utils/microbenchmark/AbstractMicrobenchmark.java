@@ -1,8 +1,8 @@
 /*-
  * #%L
- * utils-assertor
+ * utils-microbenchmark
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -10,11 +10,12 @@
  * This file is under Apache License, version 2.0 (2004).
  * #L%
  */
-package fr.landel.utils.assertor;
+package fr.landel.utils.microbenchmark;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,8 +44,8 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * <p>
- * To use it directly in Eclipse, just run the maven build in test life cycle to
- * generate JMH classes.
+ * To use it directly in Eclipse (example for debugging purpose), just run the
+ * maven build in test life cycle to generate JMH classes.
  * </p>
  *
  * @since Aug 8, 2016
@@ -65,7 +66,7 @@ public abstract class AbstractMicrobenchmark {
     private static final Logger LOGGER = LoggerFactory.getLogger("Microbenchmark");
 
     public Collection<RunResult> run() throws IOException, RunnerException {
-        final String classPath = getClass().getCanonicalName();
+        final String classPath = this.getClass().getCanonicalName();
 
         final ChainedOptionsBuilder runnerOptions = new OptionsBuilder().include(classPath).jvmArgs(this.getJvmArgs())
                 .warmupIterations(this.getWarmupIterations()).measurementIterations(this.getMeasureIterations()).forks(this.getNumForks());
@@ -80,7 +81,7 @@ public abstract class AbstractMicrobenchmark {
         runnerOptions.resultFormat(ResultFormatType.JSON);
         runnerOptions.result(file.getAbsolutePath());
 
-        runnerOptions.verbosity(VerboseMode.SILENT);
+        runnerOptions.verbosity(this.getVerboseMode());
 
         final Runner runner = new Runner(runnerOptions.build());
 
@@ -103,10 +104,11 @@ public abstract class AbstractMicrobenchmark {
                 }
 
                 final Double avgScore = scores.stream().reduce(avg).get();
-                LOGGER.info(String.format("[%s] score: %,.3f %s", this.getClass().getSimpleName(), avgScore, result.getScoreUnit()));
+                LOGGER.info(String.format("[%s] score: %,.3f %s", result.getParams().getBenchmark(), avgScore, result.getScoreUnit()));
 
-                Assertor.that(avgScore).isGT(this.getExpectedMinNbOpsPerSeconds())
-                        .toThrow((errors, parameters) -> new AssertionError(errors));
+                final String onBadScore = String.format("[%s] Average score is lower than expected: %,.3f ops/s < %,.3f ops/s",
+                        result.getParams().getBenchmark(), avgScore, this.getExpectedMinNbOpsPerSeconds());
+                assertTrue(onBadScore, avgScore > this.getExpectedMinNbOpsPerSeconds());
             }
         }
 
@@ -146,6 +148,13 @@ public abstract class AbstractMicrobenchmark {
      */
     protected String getOutputDirectory() {
         return AbstractMicrobenchmark.OUTPUT_DIRECTORY;
+    }
+
+    /**
+     * @return the verbose mode
+     */
+    protected VerboseMode getVerboseMode() {
+        return VerboseMode.SILENT;
     }
 
     /**

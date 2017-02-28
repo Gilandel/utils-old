@@ -14,8 +14,11 @@ package fr.landel.utils.commons;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -115,6 +118,28 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * Number of hours in a leap year.
      */
     public static final long HOURS_PER_YEAR_LEAP = HOURS_PER_DAY * DAYS_PER_YEAR_LEAP;
+
+    private static final List<Integer> CALENDAR_FIELDS;
+    static {
+        List<Integer> list = new ArrayList<>();
+        list.add(Calendar.ERA);
+        list.add(Calendar.YEAR);
+        list.add(Calendar.MONTH);
+        list.add(Calendar.WEEK_OF_YEAR);
+        list.add(Calendar.WEEK_OF_MONTH);
+        list.add(Calendar.DATE);
+        list.add(Calendar.DAY_OF_MONTH);
+        list.add(Calendar.DAY_OF_YEAR);
+        list.add(Calendar.DAY_OF_WEEK);
+        list.add(Calendar.DAY_OF_WEEK_IN_MONTH);
+        list.add(Calendar.AM_PM);
+        list.add(Calendar.HOUR);
+        list.add(Calendar.HOUR_OF_DAY);
+        list.add(Calendar.MINUTE);
+        list.add(Calendar.SECOND);
+        list.add(Calendar.MILLISECOND);
+        CALENDAR_FIELDS = Collections.unmodifiableList(list);
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
 
@@ -217,7 +242,6 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * be {@code null} and {@code scale} cannot be {@code null}
      * </p>
      * 
-     * 
      * @param date1
      *            first date
      * @param date2
@@ -239,23 +263,116 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * time scale.
      * 
      * <p>
-     * precondition: {@code date1} cannot be {@code null}, {@code date2} cannot
-     * be {@code null} and {@code scale} cannot be {@code null}
+     * precondition: {@code calendar1} cannot be {@code null}, {@code calendar2}
+     * cannot be {@code null} and {@code scale} cannot be {@code null}
      * </p>
      * 
-     * 
-     * @param date1
+     * @param calendar1
      *            first date
-     * @param date2
+     * @param calendar2
      *            second date
      * @param scale
      *            the time scale
      * @return the duration (can be negative)
      */
-    public static long between(final Calendar date1, final Calendar date2, final TimeUnit scale) {
-        Objects.requireNonNull(date1, "The parameter date1 cannot be null");
-        Objects.requireNonNull(date2, "The parameter date2 cannot be null");
+    public static long between(final Calendar calendar1, final Calendar calendar2, final TimeUnit scale) {
+        Objects.requireNonNull(calendar1, "The parameter calendar1 cannot be null");
+        Objects.requireNonNull(calendar2, "The parameter calendar2 cannot be null");
 
-        return between(date1.getTime(), date2.getTime(), scale);
+        return between(calendar1.getTime(), calendar2.getTime(), scale);
+    }
+
+    /**
+     * Clear all smaller fields. If 'MONTH' is specified, all smaller are
+     * cleared like 'DATE', 'HOUR'... and 'MONTH' is NOT cleared.
+     * 
+     * <p>
+     * precondition: {@code calendar} cannot be {@code null} and
+     * {@code calendarField} must be valid
+     * </p>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param calendar
+     *            the date to clear
+     * @param calendarField
+     *            the calendar field bound
+     */
+    public static void clearSmaller(final Calendar calendar, final int calendarField) {
+        Objects.requireNonNull(calendar, "The parameter calendar cannot be null");
+        if (!CALENDAR_FIELDS.contains(calendarField)) {
+            throw new IllegalArgumentException(StringUtils.inject("The parameter calendarField '{}' is invalid", calendarField));
+        }
+
+        for (int field : CALENDAR_FIELDS) {
+            if (calendarField < field) {
+                calendar.clear(field);
+            }
+        }
+    }
+
+    /**
+     * Clear all bigger fields. If 'MONTH' is specified, all bigger are cleared
+     * like 'DATE', 'HOUR'... and 'MONTH' is NOT cleared.
+     * 
+     * <p>
+     * precondition: {@code calendar} cannot be {@code null} and
+     * {@code calendarField} must be valid
+     * </p>
+     * 
+     * Valid calendar field:
+     * <ul>
+     * <li>{@link Calendar#ERA}</li>
+     * <li>{@link Calendar#YEAR}</li>
+     * <li>{@link Calendar#MONTH}</li>
+     * <li>{@link Calendar#WEEK_OF_YEAR}</li>
+     * <li>{@link Calendar#WEEK_OF_MONTH}</li>
+     * <li>{@link Calendar#DATE}</li>
+     * <li>{@link Calendar#DAY_OF_MONTH}</li>
+     * <li>{@link Calendar#DAY_OF_YEAR}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK}</li>
+     * <li>{@link Calendar#DAY_OF_WEEK_IN_MONTH}</li>
+     * <li>{@link Calendar#AM_PM}</li>
+     * <li>{@link Calendar#HOUR}</li>
+     * <li>{@link Calendar#HOUR_OF_DAY}</li>
+     * <li>{@link Calendar#MINUTE}</li>
+     * <li>{@link Calendar#SECOND}</li>
+     * <li>{@link Calendar#MILLISECOND}</li>
+     * </ul>
+     * 
+     * @param calendar
+     *            the date to clear
+     * @param calendarField
+     *            the calendar field bound
+     */
+    public static void clearBigger(final Calendar calendar, final int calendarField) {
+        Objects.requireNonNull(calendar, "The parameter calendar cannot be null");
+        if (!CALENDAR_FIELDS.contains(calendarField)) {
+            throw new IllegalArgumentException(StringUtils.inject("The parameter calendarField '{}' is invalid", calendarField));
+        }
+
+        for (int field : CALENDAR_FIELDS) {
+            if (calendarField > field) {
+                calendar.clear(field);
+            }
+        }
     }
 }

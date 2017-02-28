@@ -2,7 +2,7 @@
  * #%L
  * utils-assertor
  * %%
- * Copyright (C) 2016 Gilandel
+ * Copyright (C) 2016 - 2017 Gilandel
  * %%
  * Authors: Gilles Landel
  * URL: https://github.com/Gilandel
@@ -25,6 +25,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.RunnerException;
 
 import fr.landel.utils.assertor.ConstantsAssertor.MSG;
+import fr.landel.utils.microbenchmark.AbstractMicrobenchmark;
 
 /**
  * Checks assertor performance

@@ -69,6 +69,8 @@
 	</ciManagement>
 
 	<modules>
+		<module>utils-microbenchmark</module>
+		
 		<module>utils-commons</module>
 		<module>utils-assertor</module>
 		<module>utils-io</module>

@@ -32,7 +32,7 @@
 							</sources>
 						</configuration>
 					</execution>
-					<execution>
+					<!-- <execution>
 						<id>add-perf-resources</id>
 						<phase>generate-sources</phase>
 						<goals>
@@ -45,7 +45,7 @@
 								</resource>
 							</resources>
 						</configuration>
-					</execution>
+					</execution> -->
 				</executions>
 			</plugin>
 
@@ -89,13 +89,9 @@
 
 		<!-- Performance testing -->
 		<dependency>
-			<groupId>org.openjdk.jmh</groupId>
-			<artifactId>jmh-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openjdk.jmh</groupId>
-			<artifactId>jmh-generator-annprocess</artifactId>
+			<groupId>fr.landel</groupId>
+			<artifactId>utils-microbenchmark</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

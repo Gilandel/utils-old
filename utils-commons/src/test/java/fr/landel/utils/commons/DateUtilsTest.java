@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 /**
- * Check utility class (dates).
+ * Check utility class (dates). {@link DateUtils}
  *
  * @since Nov 27, 2015
  * @author Gilles Landel
@@ -246,5 +247,91 @@ public class DateUtilsTest {
     @Test(expected = NullPointerException.class)
     public void testBetweenCalendar2() {
         DateUtils.between(Calendar.getInstance(), null, TimeUnit.DAYS);
+    }
+
+    /**
+     * Check {@link DateUtils#clearSmaller(Calendar, int)}
+     */
+    @Test
+    public void testClearSmaller() {
+        Calendar calendar = new GregorianCalendar(2017, 2, 28, 6, 3, 0);
+
+        DateUtils.clearSmaller(calendar, Calendar.YEAR);
+        assertEquals(2017, calendar.get(Calendar.YEAR));
+        assertEquals(0, calendar.get(Calendar.MONTH));
+        assertEquals(0, calendar.get(Calendar.MINUTE));
+
+        calendar = new GregorianCalendar(2017, 2, 28, 13, 3, 0);
+        assertEquals(1, calendar.get(Calendar.AM_PM));
+        DateUtils.clearSmaller(calendar, Calendar.AM_PM);
+        assertEquals(2017, calendar.get(Calendar.YEAR));
+        assertEquals(1, calendar.get(Calendar.AM_PM));
+        assertEquals(0, calendar.get(Calendar.HOUR));
+
+        calendar = new GregorianCalendar(2017, 2, 28, 13, 3, 0);
+        DateUtils.clearSmaller(calendar, Calendar.DATE);
+        assertEquals(2017, calendar.get(Calendar.YEAR));
+        assertEquals(87, calendar.get(Calendar.DAY_OF_YEAR));
+        assertEquals(28, calendar.get(Calendar.DAY_OF_MONTH));
+        assertEquals(0, calendar.get(Calendar.HOUR));
+
+        try {
+            DateUtils.clearSmaller(null, Calendar.YEAR);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            DateUtils.clearSmaller(calendar, Calendar.DST_OFFSET);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+            assertEquals("The parameter calendarField '16' is invalid", e.getMessage());
+        }
+    }
+
+    /**
+     * Check {@link DateUtils#clearBigger(Calendar, int)}
+     */
+    @Test
+    public void testClearBigger() {
+        final int epochYear = 1970;
+
+        Calendar calendar = new GregorianCalendar(2017, 2, 28, 6, 3, 0);
+
+        DateUtils.clearBigger(calendar, Calendar.YEAR);
+        assertEquals(2017, calendar.get(Calendar.YEAR));
+        assertEquals(2, calendar.get(Calendar.MONTH));
+        assertEquals(3, calendar.get(Calendar.MINUTE));
+
+        calendar = new GregorianCalendar(2017, 2, 28, 13, 3, 0);
+        assertEquals(1, calendar.get(Calendar.AM_PM));
+        DateUtils.clearBigger(calendar, Calendar.AM_PM);
+        assertEquals(epochYear, calendar.get(Calendar.YEAR));
+        assertEquals(1, calendar.get(Calendar.AM_PM));
+        assertEquals(13, calendar.get(Calendar.HOUR_OF_DAY));
+
+        calendar = new GregorianCalendar(2017, 2, 28, 13, 3, 0);
+        DateUtils.clearBigger(calendar, Calendar.DATE);
+        assertEquals(epochYear, calendar.get(Calendar.YEAR));
+        assertEquals(28, calendar.get(Calendar.DAY_OF_YEAR));
+        assertEquals(28, calendar.get(Calendar.DAY_OF_MONTH));
+        assertEquals(13, calendar.get(Calendar.HOUR_OF_DAY));
+
+        try {
+            DateUtils.clearBigger(null, Calendar.YEAR);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            DateUtils.clearBigger(calendar, Calendar.DST_OFFSET);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+            assertEquals("The parameter calendarField '16' is invalid", e.getMessage());
+        }
     }
 }
