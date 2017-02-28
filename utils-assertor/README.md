@@ -741,6 +741,7 @@ Assertor.that("text").isNotEqualIgnoreCase("ex", "Param '%1$s*' equal").toThrow(
 Assertor.that("text").isNotEqualIgnoreCase("TexT").toThrow(); // -> throw an exception
 Assertor.that("text").isNotEqualIgnoreCase("y").toThrow(); // -> OK
 Assertor.that("text").not().isNotEqualIgnoreCase("text").toThrow(); -> OK
+```
 
 #### isEqualIgnoreLineReturns
 Assert that char sequence is equal to the string, ignoring line returns considerations
@@ -760,6 +761,7 @@ Assertor.that("text").isEqualIgnoreLineReturns("tex\nt").toThrow(); // -> OK
 Assertor.that("text").isEqualIgnoreLineReturns("Tex\nT").toThrow(); // -> throw an exception
 Assertor.that("text").isEqualIgnoreLineReturns("y").toThrow(); // -> throw an exception
 Assertor.that("text").not().isEqualIgnoreLineReturns("text").toThrow(); -> throw an exception
+```
 
 #### isNotEqualIgnoreLineReturns
 Assert that char sequence is NOT equal to the string, ignoring line returns considerations
@@ -779,6 +781,7 @@ Assertor.that("text").isNotEqualIgnoreLineReturns("tex\nt").toThrow(); // -> thr
 Assertor.that("text").isNotEqualIgnoreLineReturns("Tex\nT").toThrow(); // -> OK
 Assertor.that("text").isNotEqualIgnoreLineReturns("y").toThrow(); // -> OK
 Assertor.that("text").not().isNotEqualIgnoreLineReturns("text").toThrow(); -> OK
+```
 
 #### isEqualIgnoreCaseAndLineReturns
 Assert that char sequence is equal to the string, ignoring case and line returns considerations
@@ -798,6 +801,7 @@ Assertor.that("text").isEqualIgnoreCaseAndLineReturns("tex\nt").toThrow(); // ->
 Assertor.that("text").isEqualIgnoreCaseAndLineReturns("Tex\nT").toThrow(); // -> OK
 Assertor.that("text").isEqualIgnoreCaseAndLineReturns("y").toThrow(); // -> throw an exception
 Assertor.that("text").not().isEqualIgnoreCaseAndLineReturns("text").toThrow(); -> throw an exception
+```
 
 #### isNotEqualIgnoreCaseAndLineReturns
 Assert that char sequence is NOT equal to the string, ignoring case and line returns considerations
@@ -817,6 +821,7 @@ Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("tex\nt").toThrow(); //
 Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("Tex\nT").toThrow(); // -> throw an exception
 Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("y").toThrow(); // -> OK
 Assertor.that("text").not().isNotEqualIgnoreCaseAndLineReturns("text").toThrow(); -> OK
+```
 
 #### contains
 Assert that char sequence contains the substring.

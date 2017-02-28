@@ -18,6 +18,7 @@ Beware, the current snapshot has a lot of modifications and is not compatible wi
 Work progress:
 ![Code status](http://vbc3.com/script/progressbar.php?text=Code&progress=100)
 ![Test status](http://vbc3.com/script/progressbar.php?text=Test&progress=100)
+![Benchmark status](http://vbc3.com/script/progressbar.php?text=Benchmark&progress=100)
 ![JavaDoc status](http://vbc3.com/script/progressbar.php?text=JavaDoc&progress=100)
 
 ```xml
@@ -69,7 +70,7 @@ Assertor.that(param1).isNotNull().and().not().startsWith("_")
 	.and(param2).isNotNull().and().isBefore(Calendar.getInstance())
 	.toThrow("Param1 '%1$s*' or/and param2 '%3$tF* %3$tT*.%3$tL* %3$tZ*' are incorrect");
 // -> if condition result is false, throw an IllegalArgumentException with the message "Param1 '<value_param1>' or/and param2 '<value_param2>' are incorrect".
-// -> the message uses String.format, to get inject parameter just add an asterisk at the end.
+// -> the message uses String.format, to get injected parameter just add an asterisk at the end.
 
 // Exactly the same validation but with more specific errors
 Assertor.that(param1).isNotNull("Param1 cannot be null or empty").and().not().startsWith("_", "Param1 '%1$*' cannot start with '%2$s*'")
