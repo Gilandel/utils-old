@@ -58,7 +58,7 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
      *            {@code null}
      * @return {@code object} if it is not {@code null}, defaultValue otherwise
      */
-    public static <T> T defaultIfNull(final T object, final Supplier<T> defaultValueSupplier) {
+    public static <T> T defaultIfNull(final T object, final Supplier<? extends T> defaultValueSupplier) {
         Objects.requireNonNull(defaultValueSupplier, "The parameter defaultValueSupplier cannot be null");
 
         return object != null ? object : defaultValueSupplier.get();

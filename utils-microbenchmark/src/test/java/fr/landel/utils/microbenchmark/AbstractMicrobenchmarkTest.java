@@ -48,8 +48,8 @@ public class AbstractMicrobenchmarkTest extends AbstractMicrobenchmark {
     @Benchmark
     public void testFormat() {
         // last comparison
-        // StringUtils.inject: 570 449,731 ops/s
-        // String.format: 140 260,855 ops/s
+        // StringUtils.inject: 570 449,731 ops/s
+        // String.format: 140 260,855 ops/s
 
         String.format("I'll go to the beach this afternoon");
         String.format("I'll go to %%s %%4$s %%s %%3$s");

@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import fr.landel.utils.commons.builder.EqualsBuilder2;
 
 /**
  * Based on {@link java.util.Optional}. The aim is to know if a functional
@@ -72,8 +72,19 @@ public final class Result<T> {
     }
 
     /**
-     * Returns an empty {@code Result} instance. No value is present for this
-     * Result.
+     * Constructs an instance with the value present.
+     *
+     * @param value
+     *            the non-null value to be present
+     */
+    private Result(final T value) {
+        this.value = value;
+        this.empty = false;
+    }
+
+    /**
+     * Returns an empty {@link Result} instance. No value is present for this
+     * {@link Result}.
      *
      * <p>
      * Though it may be tempting to do so, avoid testing if an object is empty
@@ -93,24 +104,13 @@ public final class Result<T> {
     }
 
     /**
-     * Constructs an instance with the value present.
-     *
-     * @param value
-     *            the non-null value to be present
-     */
-    private Result(final T value) {
-        this.value = value;
-        this.empty = false;
-    }
-
-    /**
-     * Returns an {@code Result} with the specified present non-null value.
+     * Returns an {@link Result} with the specified present non-null value.
      *
      * @param <T>
      *            the class of the value
      * @param value
      *            the value to be present, which must be non-null
-     * @return an {@code Result} with the value present
+     * @return an {@link Result} with the value present
      * @throws NullPointerException
      *             if value is null
      */
@@ -119,25 +119,25 @@ public final class Result<T> {
     }
 
     /**
-     * Returns an {@code Result} describing the specified value, if non-null,
-     * otherwise returns an empty {@code Result}.
+     * Returns an {@link Result} describing the specified value, if non-null,
+     * otherwise returns an empty {@link Result}.
      *
      * @param <T>
      *            the class of the value
      * @param value
      *            the possibly-null value to describe
-     * @return an {@code Result} with a present value if the specified value is
-     *         non-null, otherwise an empty {@code Result}
+     * @return an {@link Result} with a present value if the specified value is
+     *         non-null, otherwise an empty {@link Result}
      */
-    public static <T> Result<T> ofNullable(T value) {
+    public static <T> Result<T> ofNullable(final T value) {
         return new Result<>(value);
     }
 
     /**
-     * If a value is present in this {@code Result}, returns the value,
+     * If a value is present in this {@link Result}, returns the value,
      * otherwise throws {@code NoSuchElementException}.
      *
-     * @return the non-null value held by this {@code Result}
+     * @return the non-null value held by this {@link Result}
      * @throws NoSuchElementException
      *             if there is no value present
      *
@@ -203,23 +203,24 @@ public final class Result<T> {
      * @param consumer
      *            block to be executed if a value is present
      * @throws NullPointerException
-     *             if value is present and {@code consumer} is null
+     *             if {@code consumer} is null
      */
     public void ifPresent(final Consumer<? super T> consumer) {
+        Objects.requireNonNull(consumer);
         if (!this.empty)
             consumer.accept(this.value);
     }
 
     /**
      * If a value is present, and the value matches the given predicate, return
-     * an {@code Result} describing the value, otherwise return an empty
-     * {@code Result}. The value may be {@code null}.
+     * an {@link Result} describing the value, otherwise return an empty
+     * {@link Result}. The value may be {@code null}.
      *
      * @param predicate
      *            a predicate to apply to the value, if present
-     * @return an {@code Result} describing the value of this {@code Result} if
+     * @return an {@link Result} describing the value of this {@link Result} if
      *         a value is present and the value matches the given predicate,
-     *         otherwise an empty {@code Result}
+     *         otherwise an empty {@link Result}
      * @throws NullPointerException
      *             if the predicate is null
      */
@@ -233,16 +234,16 @@ public final class Result<T> {
 
     /**
      * If a value is present, apply the provided mapping function to it, and
-     * return an {@code Result} describing the result. Otherwise return an empty
-     * {@code Result}.
+     * return an {@link Result} describing the result. Otherwise return an empty
+     * {@link Result}.
      *
      * @param <U>
      *            The type of the result of the mapping function
      * @param mapper
      *            a mapping function to apply to the value, if present
-     * @return an {@code Result} describing the result of applying a mapping
-     *         function to the value of this {@code Result}, if a value is
-     *         present, otherwise an empty {@code Result}
+     * @return an {@link Result} describing the result of applying a mapping
+     *         function to the value of this {@link Result}, if a value is
+     *         present, otherwise an empty {@link Result}
      * @throws NullPointerException
      *             if the mapping function is null
      */
@@ -256,21 +257,21 @@ public final class Result<T> {
     }
 
     /**
-     * If a value is present, apply the provided {@code Result}-bearing mapping
+     * If a value is present, apply the provided {@link Result}-bearing mapping
      * function to it, return that result, otherwise return an empty
-     * {@code Result}. This method is similar to {@link #map(Function)}, but the
-     * provided mapper is one whose result is already an {@code Result}, and if
+     * {@link Result}. This method is similar to {@link #map(Function)}, but the
+     * provided mapper is one whose result is already an {@link Result}, and if
      * invoked, {@code flatMap} does not wrap it with an additional
-     * {@code Result}.
+     * {@link Result}.
      *
      * @param <U>
-     *            The type parameter to the {@code Result} returned by
+     *            The type parameter to the {@link Result} returned by
      * @param mapper
      *            a mapping function to apply to the value, if present the
      *            mapping function
-     * @return the result of applying an {@code Result}-bearing mapping function
-     *         to the value of this {@code Result}, if a value is present,
-     *         otherwise an empty {@code Result}
+     * @return the result of applying an {@link Result}-bearing mapping function
+     *         to the value of this {@link Result}, if a value is present,
+     *         otherwise an empty {@link Result}
      * @throws NullPointerException
      *             if the mapping function is null or returns a null result
      */
@@ -306,6 +307,7 @@ public final class Result<T> {
      *             if value is not present and {@code other} is {@code null}
      */
     public T orElseGet(final Supplier<? extends T> other) {
+        Objects.requireNonNull(other);
         return !this.empty ? this.value : other.get();
     }
 
@@ -331,6 +333,7 @@ public final class Result<T> {
      *             {@code null}
      */
     public <X extends Throwable> T orElseThrow(final Supplier<? extends X> exceptionSupplier) throws X {
+        Objects.requireNonNull(exceptionSupplier);
         if (!this.empty) {
             return this.value;
         } else {
@@ -342,7 +345,7 @@ public final class Result<T> {
      * Indicates whether some other object is "equal to" this Result. The other
      * object is considered equal if:
      * <ul>
-     * <li>it is also an {@code Result} and;
+     * <li>it is also an {@link Result} and;
      * <li>both instances have no value present or;
      * <li>the present values are "equal to" each other via {@code equals()}.
      * </ul>
@@ -363,7 +366,7 @@ public final class Result<T> {
         }
 
         Result<?> other = (Result<?>) obj;
-        return new EqualsBuilder().append(this.empty, other.empty).append(this.value, other.value).build();
+        return new EqualsBuilder2<>(this, other).append(o -> o.empty).append(o -> o.value).build();
     }
 
     /**
@@ -392,6 +395,6 @@ public final class Result<T> {
      */
     @Override
     public String toString() {
-        return !this.empty ? StringUtils.inject("Result: {}", value) : "Result.empty";
+        return !this.empty ? StringUtils.inject("Result: {}", this.value) : "Result.empty";
     }
 }

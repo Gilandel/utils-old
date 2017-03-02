@@ -222,7 +222,7 @@ public final class Expect {
      *            The message pattern
      * @param exceptionFunction
      *            The exception function (three parameters are injected: (first:
-     *            if it's the expected exception), (second: the expected
+     *            if it's the expected exception), (second: the expected pattern
      *            message) and (third: the actual message), the return has to be
      *            a {@link Throwable}). If the exceptions don't match, the
      *            {@link String} parameters are {@code null}}.
@@ -255,10 +255,10 @@ public final class Expect {
      *            {@code null})
      * @param exceptionFunction
      *            The exception function (three parameters are injected: (first:
-     *            if it's the expected exception), (second: the expected
-     *            message) and (third: the actual message), the return has to be
-     *            a {@link Throwable}). If the exceptions don't match, the
-     *            {@link String} parameters are {@code null}}.
+     *            if it's the expected exception), (second: the expected message
+     *            or the pattern as message) and (third: the actual message),
+     *            the return has to be a {@link Throwable}). If the exceptions
+     *            don't match, the {@link String} parameters are {@code null}}.
      * @param <T>
      *            The generic expected exception type
      * @param <E>
@@ -280,10 +280,10 @@ public final class Expect {
         }
 
         boolean exceptionDontMatch = e == null || !expectedException.isAssignableFrom(e.getClass());
-        boolean expected = expectedMessage != null && !expectedMessage.equals(e.getMessage());
-        boolean pattern = expectedMessage == null && messagePattern != null && !messagePattern.matcher(e.getMessage()).matches();
+        boolean expectedDontMatch = expectedMessage != null && !expectedMessage.equals(e.getMessage());
+        boolean patternDontMatch = expectedMessage == null && messagePattern != null && !messagePattern.matcher(e.getMessage()).matches();
 
-        if (exceptionDontMatch || expected || pattern) {
+        if (exceptionDontMatch || expectedDontMatch || patternDontMatch) {
 
             final String expectedResult;
             if (expectedMessage == null && messagePattern != null) {

@@ -1034,6 +1034,18 @@ Assertor.that("text").not().find(null, "Param '%1$s*' not blank").toThrow(); // 
 
 ### Class
 #### isAssignableFrom
+Assert that class is assignable from .
+* Signatures:
+	- 
+
+* Prerequisites:
+	- char sequence NOT null
+	- pattern / regex NOT null
+
+* Examples:
+```java
+```
+
 #### hasName
 #### hasSimpleName
 #### hasCanonicalName

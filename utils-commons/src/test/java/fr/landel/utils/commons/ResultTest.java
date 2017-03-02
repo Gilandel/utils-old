@@ -297,12 +297,18 @@ public class ResultTest {
     @Test
     public void testOrElseGet() {
         assertEquals(5, (int) Result.of(5).orElseGet(() -> 3));
-        assertEquals(5, (int) Result.of(5).orElseGet(null));
         assertNull(Result.ofNullable(null).orElseGet(() -> 3));
         assertEquals(3, (int) Result.empty().orElseGet(() -> 3));
 
         try {
             Result.empty().orElseGet(null);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            Result.of(5).orElseGet(null);
             fail();
         } catch (NullPointerException e) {
             assertNotNull(e);
@@ -318,7 +324,6 @@ public class ResultTest {
         final Supplier<IllegalArgumentException> exception = () -> new IllegalArgumentException(error);
 
         assertEquals(5, (int) Result.of(5).orElseThrow(exception));
-        assertEquals(5, (int) Result.of(5).orElseThrow(null));
         assertNull(Result.ofNullable(null).orElseThrow(exception));
 
         try {
@@ -330,6 +335,13 @@ public class ResultTest {
 
         try {
             Result.empty().orElseThrow(null);
+            fail();
+        } catch (NullPointerException e) {
+            assertNotNull(e);
+        }
+
+        try {
+            Result.of(5).orElseThrow(null);
             fail();
         } catch (NullPointerException e) {
             assertNotNull(e);
