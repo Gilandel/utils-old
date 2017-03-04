@@ -393,7 +393,11 @@ public class DateUtilsTest {
         localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneOffset.UTC);
         assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar));
         assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime(), ZoneOffset.UTC));
-        assertNotEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime(), null));
+        if (ZoneOffset.UTC.equals(offset)) {
+            assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime(), null));
+        } else {
+            assertNotEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime(), null));
+        }
 
         localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), offset);
         assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime()));
@@ -415,7 +419,11 @@ public class DateUtilsTest {
         offsetDateTime = OffsetDateTime.ofInstant(offsetDateTime.toInstant(), ZoneOffset.UTC);
         assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar));
         assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime(), ZoneOffset.UTC));
-        assertNotEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime(), null));
+        if (ZoneOffset.UTC.equals(offset)) {
+            assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime(), null));
+        } else {
+            assertNotEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime(), null));
+        }
 
         offsetDateTime = OffsetDateTime.ofInstant(offsetDateTime.toInstant(), offset);
         assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime()));

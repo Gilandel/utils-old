@@ -813,7 +813,7 @@ public final class CastUtils {
             try {
                 list.add(instantiableClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Errors occurred in CastGenerics#getTypedListClass()", e);
+                LOGGER.error("Errors occurred in CastUtils#getTypedListClass()", e);
             }
         }
 
@@ -837,7 +837,7 @@ public final class CastUtils {
             try {
                 set.add(instantiableClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Errors occurred in CastGenerics#getTypedSetClass()", e);
+                LOGGER.error("Errors occurred in CastUtils#getTypedSetClass()", e);
             }
         }
 
@@ -861,7 +861,7 @@ public final class CastUtils {
             try {
                 queue.add(instantiableClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Errors occurred in CastGenerics#getTypedQueueClass()", e);
+                LOGGER.error("Errors occurred in CastUtils#getTypedQueueClass()", e);
             }
         }
 
@@ -889,7 +889,7 @@ public final class CastUtils {
             try {
                 map.put(instantiableKeyClass.newInstance(), instantiableValueClass.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("Errors occurred in CastGenerics#getTypedMapClass()", e);
+                LOGGER.error("Errors occurred in CastUtils#getTypedMapClass()", e);
             }
         }
 
