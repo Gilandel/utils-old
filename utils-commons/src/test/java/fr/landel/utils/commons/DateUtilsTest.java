@@ -14,15 +14,25 @@ package fr.landel.utils.commons;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -47,14 +57,14 @@ public class DateUtilsTest {
     public void testGetDate() {
         Calendar calendar = Calendar.getInstance();
 
-        assertNull(DateUtils.getDate((Date) null));
+        assertNull(DateUtils.cloneDate((Date) null));
 
         calendar.set(YEAR, MONTH, DAY);
         Date date1 = calendar.getTime();
 
         assertNotNull(date1);
 
-        Date date2 = DateUtils.getDate(date1);
+        Date date2 = DateUtils.cloneDate(date1);
 
         assertEquals(date1, date2);
 
@@ -333,5 +343,97 @@ public class DateUtilsTest {
             assertNotNull(e);
             assertEquals("The parameter calendarField '16' is invalid", e.getMessage());
         }
+    }
+
+    /**
+     * Check {@link DateUtils#getDate}
+     */
+    @Test
+    public void testGetTimeDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2017, 2, 4, 16, 59, 20); // mars
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        final ZoneOffset offset = OffsetDateTime.now().getOffset();
+
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
+        assertEquals(calendar.getTime(), DateUtils.getDate(localDateTime));
+        assertEquals(calendar, DateUtils.getCalendar(localDateTime));
+
+        LocalDate localDate = LocalDate.of(2017, 03, 04);
+        calendar.set(2017, 02, 04, 0, 0, 0);
+        assertEquals(calendar.getTime(), DateUtils.getDate(localDate));
+        assertEquals(calendar, DateUtils.getCalendar(localDate));
+
+        LocalTime localTime = LocalTime.of(1, 2, 3, 0);
+        calendar.set(1970, 0, 1, 1, 2, 3);
+        assertEquals(calendar, DateUtils.getCalendar(localTime));
+        assertEquals(calendar.getTime(), DateUtils.getDate(localTime));
+
+        calendar.set(2017, 02, 04, 1, 2, 3);
+        assertEquals(calendar, DateUtils.getCalendar(localDate, localTime));
+        assertEquals(calendar.getTime(), DateUtils.getDate(localDate, localTime));
+
+        OffsetDateTime offsetDateTime = OffsetDateTime.of(localDateTime, ZoneOffset.UTC);
+        calendar.setTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC));
+        calendar.set(2017, 2, 4, 16, 59, 20);
+        assertEquals(calendar.getTime(), DateUtils.getCalendar(offsetDateTime).getTime());
+        assertEquals(calendar.getTime(), DateUtils.getDate(offsetDateTime));
+
+        OffsetTime offsetTime = OffsetTime.of(localTime, ZoneOffset.UTC);
+        calendar.set(1970, 0, 1, 1, 2, 3);
+        assertEquals(calendar.getTime(), DateUtils.getCalendar(offsetTime).getTime());
+        assertEquals(calendar.getTime(), DateUtils.getDate(offsetTime));
+
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneOffset.UTC);
+        calendar.set(2017, 2, 4, 16, 59, 20);
+        assertEquals(calendar.getTime(), DateUtils.getCalendar(zonedDateTime).getTime());
+        assertEquals(calendar.getTime(), DateUtils.getDate(zonedDateTime));
+
+        localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneOffset.UTC);
+        assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar));
+        assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime(), ZoneOffset.UTC));
+        assertNotEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime(), null));
+
+        localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), offset);
+        assertEquals(localDateTime, DateUtils.getLocalDateTime(calendar.getTime()));
+
+        assertEquals(localDate, DateUtils.getLocalDate(calendar));
+        assertEquals(localDate, DateUtils.getLocalDate(calendar.getTime()));
+        assertEquals(localDate, DateUtils.getLocalDate(calendar.getTime(), ZoneId.systemDefault()));
+        assertEquals(localDate, DateUtils.getLocalDate(calendar.getTime(), null));
+
+        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.set(2017, 2, 4, 1, 2, 3);
+        assertEquals(localTime, DateUtils.getLocalTime(calendar));
+        assertEquals(localTime, DateUtils.getLocalTime(calendar.getTime()));
+        assertEquals(localTime, DateUtils.getLocalTime(calendar.getTime(), ZoneId.systemDefault()));
+        assertEquals(localTime, DateUtils.getLocalTime(calendar.getTime(), null));
+
+        calendar.setTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC));
+        calendar.set(2017, 2, 4, 16, 59, 20);
+        offsetDateTime = OffsetDateTime.ofInstant(offsetDateTime.toInstant(), ZoneOffset.UTC);
+        assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar));
+        assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime(), ZoneOffset.UTC));
+        assertNotEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime(), null));
+
+        offsetDateTime = OffsetDateTime.ofInstant(offsetDateTime.toInstant(), offset);
+        assertEquals(offsetDateTime, DateUtils.getOffsetDateTime(calendar.getTime()));
+
+        calendar.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
+        calendar.set(2017, 2, 4, 1, 2, 3);
+        localTime = LocalTime.of(1, 2, 3, 0);
+        offsetTime = OffsetTime.of(localTime, offset);
+        assertEquals(offsetTime, DateUtils.getOffsetTime(calendar));
+        assertEquals(offsetTime, DateUtils.getOffsetTime(calendar.getTime()));
+        assertEquals(offsetTime, DateUtils.getOffsetTime(calendar.getTime(), ZoneId.systemDefault()));
+        assertEquals(offsetTime, DateUtils.getOffsetTime(calendar.getTime(), null));
+
+        localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
+        zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+        assertEquals(zonedDateTime, DateUtils.getZonedDateTime(calendar));
+        assertEquals(zonedDateTime, DateUtils.getZonedDateTime(calendar.getTime()));
+        assertEquals(zonedDateTime, DateUtils.getZonedDateTime(calendar.getTime(), ZoneId.systemDefault()));
+        assertEquals(zonedDateTime, DateUtils.getZonedDateTime(calendar.getTime(), null));
     }
 }

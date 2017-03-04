@@ -64,7 +64,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).hasLength(5).toThrow();
+     * Assertor.that(name).hasLength(5).orElseThrow();
      * </pre>
      * 
      * @param length
@@ -86,7 +86,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).hasLength(5, "not the good length").toThrow();
+     * Assertor.that(name).hasLength(5, "not the good length").orElseThrow();
      * </pre>
      * 
      * @param length
@@ -112,7 +112,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).hasLength(5, Locale.US, "not the good length").toThrow();
+     * Assertor.that(name).hasLength(5, Locale.US, "not the good length").orElseThrow();
      * </pre>
      * 
      * @param length
@@ -139,7 +139,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEmpty().toThrow();
+     * Assertor.that(name).isEmpty().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -156,7 +156,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEmpty("not empty").toThrow();
+     * Assertor.that(name).isEmpty("not empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -177,7 +177,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEmpty(Locale.US, "not empty").toThrow();
+     * Assertor.that(name).isEmpty(Locale.US, "not empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -201,7 +201,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEmpty().toThrow();
+     * Assertor.that(name).isNotEmpty().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -218,7 +218,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEmpty("cannot be empty").toThrow();
+     * Assertor.that(name).isNotEmpty("cannot be empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -239,7 +239,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEmpty(Locale.US, "cannot be empty").toThrow();
+     * Assertor.that(name).isNotEmpty(Locale.US, "cannot be empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -263,7 +263,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isBlank().toThrow();
+     * Assertor.that(name).isBlank().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -280,7 +280,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isBlank("not blank").toThrow();
+     * Assertor.that(name).isBlank("not blank").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -301,7 +301,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isBlank(Locale.US, "not blank").toThrow();
+     * Assertor.that(name).isBlank(Locale.US, "not blank").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -326,7 +326,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotBlank().toThrow();
+     * Assertor.that(name).isNotBlank().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -344,7 +344,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotBlank("cannot be blank").toThrow();
+     * Assertor.that(name).isNotBlank("cannot be blank").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -366,7 +366,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotBlank(Locale.US, "cannot be blank").toThrow();
+     * Assertor.that(name).isNotBlank(Locale.US, "cannot be blank").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -391,7 +391,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqual(title).toThrow();
+     * Assertor.that(name).isEqual(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -411,7 +411,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqual(title, "not equal").toThrow();
+     * Assertor.that(name).isEqual(title, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -435,7 +435,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqual(title, Locale.US, "not equal").toThrow();
+     * Assertor.that(name).isEqual(title, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -463,7 +463,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreCase(title).toThrow();
+     * Assertor.that(name).isEqualIgnoreCase(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -483,7 +483,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreCase(title, "not equal").toThrow();
+     * Assertor.that(name).isEqualIgnoreCase(title, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -508,7 +508,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreCase(title, Locale.US, "not equal").toThrow();
+     * Assertor.that(name).isEqualIgnoreCase(title, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -537,7 +537,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreLineReturns(title).toThrow();
+     * Assertor.that(name).isEqualIgnoreLineReturns(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -558,7 +558,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreLineReturns(title, "not equal").toThrow();
+     * Assertor.that(name).isEqualIgnoreLineReturns(title, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -584,7 +584,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreLineReturns(title, Locale.US, "not equal").toThrow();
+     * Assertor.that(name).isEqualIgnoreLineReturns(title, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -613,7 +613,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title).toThrow();
+     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -634,7 +634,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title, "not equal").toThrow();
+     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -660,7 +660,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title, Locale.US, "not equal").toThrow();
+     * Assertor.that(name).isEqualIgnoreCaseAndLineReturns(title, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -688,7 +688,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqual(title).toThrow();
+     * Assertor.that(name).isNotEqual(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -708,7 +708,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqual(title, "cannot be equal").toThrow();
+     * Assertor.that(name).isNotEqual(title, "cannot be equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -732,7 +732,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqual(title, Locale.US, "cannot be equal").toThrow();
+     * Assertor.that(name).isNotEqual(title, Locale.US, "cannot be equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -760,7 +760,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreCase(title).toThrow();
+     * Assertor.that(name).isNotEqualIgnoreCase(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -780,7 +780,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreCase(title, "cannot be equal").toThrow();
+     * Assertor.that(name).isNotEqualIgnoreCase(title, "cannot be equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -805,7 +805,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreCase(title, Locale.US, "cannot be equal").toThrow();
+     * Assertor.that(name).isNotEqualIgnoreCase(title, Locale.US, "cannot be equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -834,7 +834,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreLineReturns(title).toThrow();
+     * Assertor.that(name).isNotEqualIgnoreLineReturns(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -855,7 +855,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreLineReturns(title, "not equal").toThrow();
+     * Assertor.that(name).isNotEqualIgnoreLineReturns(title, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -881,7 +881,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreLineReturns(title, Locale.US, "not equal").toThrow();
+     * Assertor.that(name).isNotEqualIgnoreLineReturns(title, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -910,7 +910,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title).toThrow();
+     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title).orElseThrow();
      * </pre>
      * 
      * @param string
@@ -931,7 +931,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title, "cannot be equal").toThrow();
+     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title, "cannot be equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -957,7 +957,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title, Locale.US, "cannot be equal").toThrow();
+     * Assertor.that(name).isNotEqualIgnoreCaseAndLineReturns(title, Locale.US, "cannot be equal").orElseThrow();
      * </pre>
      * 
      * @param string
@@ -986,7 +986,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(character).toThrow();
+     * Assertor.that(name).contains(character).orElseThrow();
      * </pre>
      * 
      * @param character
@@ -1007,7 +1007,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(character, "character not found").toThrow();
+     * Assertor.that(name).contains(character, "character not found").orElseThrow();
      * </pre>
      * 
      * @param character
@@ -1032,7 +1032,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(character, Locale.US, "character not found").toThrow();
+     * Assertor.that(name).contains(character, Locale.US, "character not found").orElseThrow();
      * </pre>
      * 
      * @param character
@@ -1061,7 +1061,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(word).toThrow();
+     * Assertor.that(name).contains(word).orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1082,7 +1082,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(word, "word not found").toThrow();
+     * Assertor.that(name).contains(word, "word not found").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1107,7 +1107,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(word, Locale.US, "word not found").toThrow();
+     * Assertor.that(name).contains(word, Locale.US, "word not found").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1136,7 +1136,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(word).toThrow();
+     * Assertor.that(name).contains(word).orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1157,7 +1157,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(word, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * Assertor.that(name).contains(word, "'%1$s*' doesn't start with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1182,7 +1182,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).contains(word, Locale.US, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * Assertor.that(name).contains(word, Locale.US, "'%1$s*' doesn't start with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1211,7 +1211,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).startsWithIgnoreCase(word).toThrow();
+     * Assertor.that(name).startsWithIgnoreCase(word).orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1232,7 +1232,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).startsWithIgnoreCase(word, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * Assertor.that(name).startsWithIgnoreCase(word, "'%1$s*' doesn't start with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1258,7 +1258,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).startsWithIgnoreCase(word, Locale.US, "'%1$s*' doesn't start with word '%2$s*'").toThrow();
+     * Assertor.that(name).startsWithIgnoreCase(word, Locale.US, "'%1$s*' doesn't start with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1287,7 +1287,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).endsWith(word).toThrow();
+     * Assertor.that(name).endsWith(word).orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1308,7 +1308,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).endsWith(word, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * Assertor.that(name).endsWith(word, "'%1$s*' doesn't end with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1333,7 +1333,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).endsWith(word, Locale.US, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * Assertor.that(name).endsWith(word, Locale.US, "'%1$s*' doesn't end with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1362,7 +1362,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).endsWithIgnoreCase(word).toThrow();
+     * Assertor.that(name).endsWithIgnoreCase(word).orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1383,7 +1383,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).endsWithIgnoreCase(word, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * Assertor.that(name).endsWithIgnoreCase(word, "'%1$s*' doesn't end with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1409,7 +1409,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).endsWithIgnoreCase(word, Locale.US, "'%1$s*' doesn't end with word '%2$s*'").toThrow();
+     * Assertor.that(name).endsWithIgnoreCase(word, Locale.US, "'%1$s*' doesn't end with word '%2$s*'").orElseThrow();
      * </pre>
      * 
      * @param substring
@@ -1438,7 +1438,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).matches(pattern).toThrow();
+     * Assertor.that(name).matches(pattern).orElseThrow();
      * </pre>
      * 
      * @param pattern
@@ -1459,7 +1459,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).matches(pattern, "'%1$s*' doesn't match the pattern").toThrow();
+     * Assertor.that(name).matches(pattern, "'%1$s*' doesn't match the pattern").orElseThrow();
      * </pre>
      * 
      * @param pattern
@@ -1484,7 +1484,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).matches(pattern, Locale.US, "'%1$s*' doesn't match the pattern").toThrow();
+     * Assertor.that(name).matches(pattern, Locale.US, "'%1$s*' doesn't match the pattern").orElseThrow();
      * </pre>
      * 
      * @param pattern
@@ -1512,7 +1512,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).matches(regex).toThrow();
+     * Assertor.that(name).matches(regex).orElseThrow();
      * </pre>
      * 
      * @param regex
@@ -1532,7 +1532,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).matches(regex, "'%1$s*' doesn't match the regular expression").toThrow();
+     * Assertor.that(name).matches(regex, "'%1$s*' doesn't match the regular expression").orElseThrow();
      * </pre>
      * 
      * @param regex
@@ -1556,7 +1556,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).matches(regex, Locale.US, "'%1$s*' doesn't match the regular expression").toThrow();
+     * Assertor.that(name).matches(regex, Locale.US, "'%1$s*' doesn't match the regular expression").orElseThrow();
      * </pre>
      * 
      * @param regex
@@ -1585,7 +1585,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).find(pattern).toThrow();
+     * Assertor.that(name).find(pattern).orElseThrow();
      * </pre>
      * 
      * @param pattern
@@ -1606,7 +1606,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).find(pattern, "'%1$s*' doesn't contain the pattern").toThrow();
+     * Assertor.that(name).find(pattern, "'%1$s*' doesn't contain the pattern").orElseThrow();
      * </pre>
      * 
      * @param pattern
@@ -1631,7 +1631,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).find(pattern, Locale.US, "'%1$s*' doesn't contain the pattern").toThrow();
+     * Assertor.that(name).find(pattern, Locale.US, "'%1$s*' doesn't contain the pattern").orElseThrow();
      * </pre>
      * 
      * @param pattern
@@ -1660,7 +1660,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).find(regex).toThrow();
+     * Assertor.that(name).find(regex).orElseThrow();
      * </pre>
      * 
      * @param regex
@@ -1681,7 +1681,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).find(regex, "'%1$s*' doesn't contain the regular expression").toThrow();
+     * Assertor.that(name).find(regex, "'%1$s*' doesn't contain the regular expression").orElseThrow();
      * </pre>
      * 
      * @param regex
@@ -1706,7 +1706,7 @@ public interface PredicateAssertorCharSequence<T extends CharSequence> extends P
      * </p>
      * 
      * <pre>
-     * Assertor.that(name).find(regex, Locale.US, "'%1$s*' doesn't contain the regular expression").toThrow();
+     * Assertor.that(name).find(regex, Locale.US, "'%1$s*' doesn't contain the regular expression").orElseThrow();
      * </pre>
      * 
      * @param regex

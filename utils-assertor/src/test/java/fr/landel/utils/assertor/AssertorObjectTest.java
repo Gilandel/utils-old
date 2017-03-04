@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -85,7 +86,7 @@ public class AssertorObjectTest extends AbstractTest {
     public void testObject() {
         PredicateAssertorCharSequence<String> assertor = Assertor.that("text");
 
-        // intermediate condition (no call of isOK or toThrow), so no reset
+        // intermediate condition (no call of isOK or orElseThrow), so no reset
         // and this condition is used in the next one
         assertor.contains("__");
         assertTrue(assertor.contains("ext").isOK());
@@ -104,8 +105,8 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsNullOKObjectString() {
         try {
-            Assertor.that((Object) null).isNull().toThrow("not null object");
-            Assertor.that((Object) null).isNull().toThrow(new IllegalArgumentException(), true);
+            Assertor.that((Object) null).isNull().orElseThrow("not null object");
+            Assertor.that((Object) null).isNull().orElseThrow(new IllegalArgumentException(), true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -116,7 +117,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObjectString() {
-        Assertor.that("").isNull().toThrow("not null object");
+        Assertor.that("").isNull().orElseThrow("not null object");
     }
 
     /**
@@ -125,8 +126,8 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsNullOKObject() {
         try {
-            Assertor.that((Object) null).isNull().toThrow();
-            Assertor.that(Color.BLACK).not().isNull().toThrow();
+            Assertor.that((Object) null).isNull().orElseThrow();
+            Assertor.that(Color.BLACK).not().isNull().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -137,7 +138,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNullKOObject() {
-        Assertor.that("").isNull().toThrow();
+        Assertor.that("").isNull().orElseThrow();
     }
 
     /**
@@ -146,7 +147,7 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsNotNullOKObjectString() {
         try {
-            Assertor.that(1).isNotNull().toThrow("null object");
+            Assertor.that(1).isNotNull().orElseThrow("null object");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -157,7 +158,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObjectString() {
-        Assertor.that((Object) null).isNotNull().toThrow("null object");
+        Assertor.that((Object) null).isNotNull().orElseThrow("null object");
     }
 
     /**
@@ -177,7 +178,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotNullKOObject() {
-        Assertor.that((Object) null).isNotNull().toThrow(new IllegalArgumentException(), true);
+        Assertor.that((Object) null).isNotNull().orElseThrow(new IllegalArgumentException(), true);
     }
 
     /**
@@ -186,14 +187,14 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsNotEqualOKObjectObject() {
         try {
-            Assertor.that("texte9").isNotEqual("texte10").and().isNotEqual(5).toThrow();
-            Assertor.that(5).isNotEqual("texte10").toThrow();
-            Assertor.that("texte9").isNotEqual(null).toThrow();
-            Assertor.that((String) null).isNotEqual("texte10").toThrow();
+            Assertor.that("texte9").isNotEqual("texte10").and().isNotEqual(5).orElseThrow();
+            Assertor.that(5).isNotEqual("texte10").orElseThrow();
+            Assertor.that("texte9").isNotEqual(null).orElseThrow();
+            Assertor.that((String) null).isNotEqual("texte10").orElseThrow();
 
             StringBuilder sb1 = new StringBuilder("texte9");
             StringBuilder sb2 = new StringBuilder("texte10");
-            Assertor.that(sb1).isNotEqual(sb2).toThrow(new IllegalArgumentException(), true);
+            Assertor.that(sb1).isNotEqual(sb2).orElseThrow(new IllegalArgumentException(), true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -204,7 +205,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObject() {
-        Assertor.that("texte11").isNotEqual("texte11").toThrow();
+        Assertor.that("texte11").isNotEqual("texte11").orElseThrow();
     }
 
     /**
@@ -214,7 +215,7 @@ public class AssertorObjectTest extends AbstractTest {
     public void testIsNotEqualKOCharSequence() {
         StringBuilder sb1 = new StringBuilder("texte11");
         StringBuilder sb2 = new StringBuilder("texte11");
-        Assertor.that(sb1).isNotEqual(sb2).toThrow();
+        Assertor.that(sb1).isNotEqual(sb2).orElseThrow();
     }
 
     /**
@@ -222,7 +223,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKONull() {
-        Assertor.that((Object) null).isNotEqual(null).toThrow();
+        Assertor.that((Object) null).isNotEqual(null).orElseThrow();
     }
 
     /**
@@ -233,7 +234,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IOException.class)
     public void testIsNotEqualKONullException() throws IOException {
-        Assertor.that((Object) null).isNotEqual(null).toThrow(new IOException(), true);
+        Assertor.that((Object) null).isNotEqual(null).orElseThrow(new IOException(), true);
     }
 
     /**
@@ -242,7 +243,7 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsNotEqualOKObjectObjectString() {
         try {
-            Assertor.that("texte8").isNotEqual("texte7").toThrow("equal");
+            Assertor.that("texte8").isNotEqual("texte7").orElseThrow("equal");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -253,7 +254,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKOObjectObjectString() {
-        Assertor.that("texte6").isNotEqual("texte6").toThrow("equal");
+        Assertor.that("texte6").isNotEqual("texte6").orElseThrow("equal");
     }
 
     /**
@@ -261,7 +262,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEqualKONOT() {
-        Assertor.that("texte6").not().isNotEqual("texte").toThrow("equal");
+        Assertor.that("texte6").not().isNotEqual("texte").orElseThrow("equal");
     }
 
     /**
@@ -274,15 +275,15 @@ public class AssertorObjectTest extends AbstractTest {
     public void testIsEqualOKObjectObject() throws IOException {
         try {
             Assertor.that("texte4").isEqual("texte4");
-            Assertor.that(5).isEqual(5).toThrow(new IOException(), true);
+            Assertor.that(5).isEqual(5).orElseThrow(new IOException(), true);
 
             StringBuilder sb1 = new StringBuilder("texte4");
             StringBuilder sb2 = new StringBuilder("texte4");
-            Assertor.that(sb1).isEqual(sb2).toThrow(new IOException(), true);
+            Assertor.that(sb1).isEqual(sb2).orElseThrow(new IOException(), true);
 
             assertTrue(Assertor.that('A').isEqual((char) 65).isOK());
 
-            Assertor.that(Color.BLACK).isEqual(new Color(0)).toThrow(new IOException(), true);
+            Assertor.that(Color.BLACK).isEqual(new Color(0)).orElseThrow(new IOException(), true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -293,7 +294,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObject() {
-        Assertor.that("texte5").isEqual("texte3").toThrow();
+        Assertor.that("texte5").isEqual("texte3").orElseThrow();
     }
 
     /**
@@ -302,8 +303,8 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsEqualOKObjectObjectString() {
         try {
-            Assertor.that("texte0").isEqual("texte0").toThrow("not equals");
-            Assertor.that((Object) null).isEqual(null).toThrow("not equals");
+            Assertor.that("texte0").isEqual("texte0").orElseThrow("not equals");
+            Assertor.that((Object) null).isEqual(null).orElseThrow("not equals");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -314,7 +315,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectObjectString() {
-        Assertor.that("texte1").isEqual("texte2").toThrow("not equals");
+        Assertor.that("texte1").isEqual("texte2").orElseThrow("not equals");
     }
 
     /**
@@ -322,7 +323,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKONullObjectString() {
-        Assertor.that((Object) null).isEqual("texte2").toThrow("not equals");
+        Assertor.that((Object) null).isEqual("texte2").orElseThrow("not equals");
     }
 
     /**
@@ -330,7 +331,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOObjectNullString() {
-        Assertor.that("texte1").isEqual(null).toThrow("not equals");
+        Assertor.that("texte1").isEqual(null).orElseThrow("not equals");
     }
 
     /**
@@ -338,7 +339,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOIntegerStringString() {
-        Assertor.that(5).isEqual("test").toThrow("not equals");
+        Assertor.that(5).isEqual("test").orElseThrow("not equals");
     }
 
     /**
@@ -346,7 +347,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEqualKOStringIntegerString() {
-        Assertor.that("test").isEqual(5).toThrow("not equals");
+        Assertor.that("test").isEqual(5).orElseThrow("not equals");
     }
 
     /**
@@ -355,7 +356,7 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsInstanceOfOKClassOfQObject() {
         try {
-            Assertor.that(new IOException()).isInstanceOf(IOException.class).toThrow(new IllegalArgumentException(), true);
+            Assertor.that(new IOException()).isInstanceOf(IOException.class).orElseThrow(new IllegalArgumentException(), true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -366,7 +367,7 @@ public class AssertorObjectTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsInstanceOfKOClassOfQObject() {
-        Assertor.that(new Exception()).isInstanceOf(IOException.class).toThrow();
+        Assertor.that(new Exception()).isInstanceOf(IOException.class).orElseThrow();
     }
 
     /**
@@ -375,23 +376,23 @@ public class AssertorObjectTest extends AbstractTest {
     @Test
     public void testIsInstanceOfOKClassOfQObjectString() {
         try {
-            Assertor.that(new IOException()).isInstanceOf(IOException.class).toThrow("not instance of");
+            Assertor.that(new IOException()).isInstanceOf(IOException.class).orElseThrow("not instance of");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that(new Exception()).isInstanceOf(IOException.class).toThrow("not instance of");
+            Assertor.that(new Exception()).isInstanceOf(IOException.class).orElseThrow("not instance of");
             fail();
         }, IllegalArgumentException.class, "not instance of");
 
         Expect.exception(() -> {
-            Assertor.that((Object) null).isInstanceOf(IOException.class).toThrow("not instance of");
+            Assertor.that((Object) null).isInstanceOf(IOException.class).orElseThrow("not instance of");
             fail();
         }, IllegalArgumentException.class, "not instance of");
 
         Expect.exception(() -> {
-            Assertor.that(new Exception()).isInstanceOf(null).toThrow("not instance of");
+            Assertor.that(new Exception()).isInstanceOf(null).orElseThrow("not instance of");
             fail();
         }, IllegalArgumentException.class, "not instance of");
     }
@@ -407,7 +408,7 @@ public class AssertorObjectTest extends AbstractTest {
         assertFalse(Assertor.that(Color.BLACK).isAssignableFrom(null).isOK());
 
         Expect.exception(() -> {
-            Assertor.that((Object) null).isAssignableFrom(Exception.class).toThrow("msg");
+            Assertor.that((Object) null).isAssignableFrom(Exception.class).orElseThrow("msg");
         }, IllegalArgumentException.class, "msg");
 
     }
@@ -448,22 +449,22 @@ public class AssertorObjectTest extends AbstractTest {
         assertTrue(Assertor.that((Class<?>) null).hasHashCode(0).isOK());
 
         Expect.exception(() -> {
-            Assertor.that(IOException.class).hasHashCode(5, "The hash codes don't match (%d != %2$d*)", hashCode).toThrow();
+            Assertor.that(IOException.class).hasHashCode(5, "The hash codes don't match (%d != %2$d*)", hashCode).orElseThrow();
         }, IllegalArgumentException.class, "The hash codes don't match (" + hashCode + " != 5)", JUNIT_ERROR);
 
-        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(1, "bad hash code").toThrow(), IllegalArgumentException.class,
+        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(1, "bad hash code").orElseThrow(), IllegalArgumentException.class,
                 "bad hash code", JUNIT_ERROR);
 
-        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(1).toThrow(), IllegalArgumentException.class,
+        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(1).orElseThrow(), IllegalArgumentException.class,
                 "the object 'Exception' should have the hash code '1'", JUNIT_ERROR);
 
-        Expect.exception(() -> Assertor.that((Class<?>) null).hasHashCode(1).toThrow(), IllegalArgumentException.class,
+        Expect.exception(() -> Assertor.that((Class<?>) null).hasHashCode(1).orElseThrow(), IllegalArgumentException.class,
                 "the object 'null' should have the hash code '1'", JUNIT_ERROR);
 
-        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(0).toThrow(), IllegalArgumentException.class,
+        Expect.exception(() -> Assertor.that(Exception.class).hasHashCode(0).orElseThrow(), IllegalArgumentException.class,
                 "the object 'Exception' should have the hash code '0'", JUNIT_ERROR);
 
-        Expect.exception(() -> Assertor.that((Class<?>) null).not().hasHashCode(0).toThrow(), IllegalArgumentException.class,
+        Expect.exception(() -> Assertor.that((Class<?>) null).not().hasHashCode(0).orElseThrow(), IllegalArgumentException.class,
                 "the object 'null' should NOT have the hash code '0'", JUNIT_ERROR);
     }
 
@@ -542,6 +543,7 @@ public class AssertorObjectTest extends AbstractTest {
 
         assertEquals(EnumType.DATE, EnumType.getType(new Date()));
         assertEquals(EnumType.CALENDAR, EnumType.getType(Calendar.getInstance()));
+        assertEquals(EnumType.TEMPORAL, EnumType.getType(LocalDateTime.now()));
 
         assertEquals(EnumType.CHAR_SEQUENCE, EnumType.getType(""));
         assertEquals(EnumType.CHAR_SEQUENCE, EnumType.getType(new StringBuilder()));

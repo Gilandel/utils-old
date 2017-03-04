@@ -123,22 +123,22 @@ public class AssertorIterableTest extends AbstractTest {
 
         final Set<String> set = new HashSet<>();
 
-        Assertor.that(set).isEmpty().toThrow();
+        Assertor.that(set).isEmpty().orElseThrow();
 
         set.add(el);
 
         Expect.exception(() -> {
-            Assertor.that(set).isEmpty().toThrow();
+            Assertor.that(set).isEmpty().orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).isEmpty().toThrow("iterable is not empty");
+            Assertor.that(set).isEmpty().orElseThrow("iterable is not empty");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable is not empty");
 
         Expect.exception(() -> {
-            Assertor.that(set).isEmpty().toThrow(new IOException(), true);
+            Assertor.that(set).isEmpty().orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
     }
@@ -156,32 +156,32 @@ public class AssertorIterableTest extends AbstractTest {
         final Set<String> set = new HashSet<>();
         set.add(el);
 
-        Assertor.that(set).isNotEmpty().toThrow();
+        Assertor.that(set).isNotEmpty().orElseThrow();
 
         Expect.exception(() -> {
-            Assertor.that(set).not().isNotEmpty().toThrow("iterable is not empty");
+            Assertor.that(set).not().isNotEmpty().orElseThrow("iterable is not empty");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable is not empty");
 
         set.clear();
 
         Expect.exception(() -> {
-            Assertor.that(set).isNotEmpty().toThrow();
+            Assertor.that(set).isNotEmpty().orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).isNotEmpty().toThrow("iterable is empty");
+            Assertor.that(set).isNotEmpty().orElseThrow("iterable is empty");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable is empty");
 
         Expect.exception(() -> {
-            Assertor.that(set).isNotEmpty().toThrow(new IOException(), true);
+            Assertor.that(set).isNotEmpty().orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
 
         Expect.exception(() -> {
-            Assertor.that((Iterable<String>) null).isNotEmpty().toThrow();
+            Assertor.that((Iterable<String>) null).isNotEmpty().orElseThrow();
             fail();
         }, IllegalArgumentException.class, "the iterable 'should be NOT empty and NOT null", JUNIT_ERROR);
     }
@@ -200,42 +200,42 @@ public class AssertorIterableTest extends AbstractTest {
         final Set<String> set = new HashSet<>();
         set.add(el1);
 
-        Assertor.that(set).contains(el1).toThrow("iterable doesn't contain the element %s*");
+        Assertor.that(set).contains(el1).orElseThrow("iterable doesn't contain the element %s*");
 
         Expect.exception(() -> {
-            Assertor.that(set).contains(el2).toThrow("iterable doesn't contain the element %2$s*");
+            Assertor.that(set).contains(el2).orElseThrow("iterable doesn't contain the element %2$s*");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable doesn't contain the element " + el2);
 
         Expect.exception(() -> {
-            Assertor.that(set).contains(el2).toThrow(new IOException(), true);
+            Assertor.that(set).contains(el2).orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).contains((String) null).toThrow();
+            Assertor.that(set).contains((String) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable '[element1]' should contain the object 'null'", JUNIT_ERROR);
 
         set.clear();
 
         Expect.exception(() -> {
-            Assertor.that(set).contains(el1).toThrow();
+            Assertor.that(set).contains(el1).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).contains(el1).toThrow();
+            Assertor.that(set).contains(el1).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable cannot be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that((Iterable<String>) null).contains(el1).toThrow();
+            Assertor.that((Iterable<String>) null).contains(el1).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable cannot be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).contains((String) null).toThrow();
+            Assertor.that(set).contains((String) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable cannot be null", JUNIT_ERROR);
     }
@@ -256,61 +256,61 @@ public class AssertorIterableTest extends AbstractTest {
         set.add(el1);
         set2.add(el1);
 
-        Assertor.that(set).containsAll(set2).toThrow("iterable doesn't contain the list %s*");
-        Assertor.that(set).containsAny(set2).toThrow("iterable doesn't contain the list %s*");
+        Assertor.that(set).containsAll(set2).orElseThrow("iterable doesn't contain the list %s*");
+        Assertor.that(set).containsAny(set2).orElseThrow("iterable doesn't contain the list %s*");
 
         set2.add(el2);
-        Assertor.that(set).containsAny(set2).toThrow("iterable doesn't contain the list %s*");
+        Assertor.that(set).containsAny(set2).orElseThrow("iterable doesn't contain the list %s*");
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAll(set2).toThrow("iterable doesn't contain the list %2$s*");
+            Assertor.that(set).containsAll(set2).orElseThrow("iterable doesn't contain the list %2$s*");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable doesn't contain the list " + set2.toString(), JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAll(set2).toThrow(new IOException(), true);
+            Assertor.that(set).containsAll(set2).orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAll((Iterable<String>) null).toThrow();
+            Assertor.that(set).containsAll((Iterable<String>) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAny((Iterable<String>) null).toThrow();
+            Assertor.that(set).containsAny((Iterable<String>) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
         set.clear();
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAll(set2).toThrow();
+            Assertor.that(set).containsAll(set2).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAll(set2).toThrow();
+            Assertor.that(set).containsAll(set2).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that((Iterable<String>) null).contains(el1).toThrow();
+            Assertor.that((Iterable<String>) null).contains(el1).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable cannot be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that((Iterable<String>) null).containsAny(set2).toThrow();
+            Assertor.that((Iterable<String>) null).containsAny(set2).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).containsAll((Iterable<String>) null).toThrow();
+            Assertor.that(set).containsAll((Iterable<String>) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
         set.add(null);
-        Assertor.that(set).contains(null).toThrow();
+        Assertor.that(set).contains(null).orElseThrow();
     }
 
     /**
@@ -327,28 +327,28 @@ public class AssertorIterableTest extends AbstractTest {
         final Set<String> set = new HashSet<>();
         set.add(el1);
 
-        Assertor.that(set).not().contains(el2).toThrow("iterable contains the element %s*");
-        Assertor.that(set).not().contains((String) null).toThrow();
+        Assertor.that(set).not().contains(el2).orElseThrow("iterable contains the element %s*");
+        Assertor.that(set).not().contains((String) null).orElseThrow();
 
         Expect.exception(() -> {
-            Assertor.that(set).not().contains(el1).toThrow();
+            Assertor.that(set).not().contains(el1).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable '[element1]' should NOT contain the object 'element1'", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).not().contains(el1).toThrow("iterable contains the element %2$s*");
+            Assertor.that(set).not().contains(el1).orElseThrow("iterable contains the element %2$s*");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable contains the element " + el1, JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).not().contains(el1).toThrow(new IOException(), false);
+            Assertor.that(set).not().contains(el1).orElseThrow(new IOException(), false);
             fail(ERROR);
         }, IOException.class);
 
         set.clear();
 
         Expect.exception(() -> {
-            Assertor.that((Iterable<String>) null).not().contains(el1).toThrow();
+            Assertor.that((Iterable<String>) null).not().contains(el1).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "the iterable cannot be null", JUNIT_ERROR);
     }
@@ -370,22 +370,22 @@ public class AssertorIterableTest extends AbstractTest {
         set2.add(el1);
         set2.add(el2);
 
-        Assertor.that(set).not().containsAll(set2).toThrow("iterable contains the list %s*");
+        Assertor.that(set).not().containsAll(set2).orElseThrow("iterable contains the list %s*");
 
         set2.remove(el1);
 
         Expect.exception(() -> {
-            Assertor.that(set).not().containsAll(set2).toThrow("iterable contains the list %2$s*");
+            Assertor.that(set).not().containsAll(set2).orElseThrow("iterable contains the list %2$s*");
             fail(ERROR);
         }, IllegalArgumentException.class, "iterable contains the list " + set2.toString());
 
         Expect.exception(() -> {
-            Assertor.that(set).not().containsAll(set2).toThrow(new IOException(), true);
+            Assertor.that(set).not().containsAll(set2).orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
 
         Expect.exception(() -> {
-            Assertor.that(set).not().containsAll((Iterable<String>) null).toThrow();
+            Assertor.that(set).not().containsAll((Iterable<String>) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
@@ -397,12 +397,12 @@ public class AssertorIterableTest extends AbstractTest {
         set.clear();
 
         Expect.exception(() -> {
-            Assertor.that((Iterable<String>) null).not().containsAll(set2).toThrow();
+            Assertor.that((Iterable<String>) null).not().containsAll(set2).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(set).not().containsAll((Iterable<String>) null).toThrow();
+            Assertor.that(set).not().containsAll((Iterable<String>) null).orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class, "neither iterables can be null", JUNIT_ERROR);
 
@@ -420,7 +420,7 @@ public class AssertorIterableTest extends AbstractTest {
     @Test
     public void testIsNotEmptyOKCollectionOfQString() {
         try {
-            Assertor.that(Arrays.asList("")).isNotEmpty().toThrow("empty collection");
+            Assertor.that(Arrays.asList("")).isNotEmpty().orElseThrow("empty collection");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -433,7 +433,7 @@ public class AssertorIterableTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQString() {
-        Assertor.that(Collections.emptyList()).isNotEmpty().toThrow("empty collection");
+        Assertor.that(Collections.emptyList()).isNotEmpty().orElseThrow("empty collection");
     }
 
     /**
@@ -443,7 +443,7 @@ public class AssertorIterableTest extends AbstractTest {
     @Test
     public void testIsNotEmptyOKCollectionOfQ() {
         try {
-            Assertor.that(Arrays.asList("")).isNotEmpty().toThrow();
+            Assertor.that(Arrays.asList("")).isNotEmpty().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -455,6 +455,6 @@ public class AssertorIterableTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOCollectionOfQ() {
-        Assertor.that(Collections.emptyList()).isNotEmpty().toThrow();
+        Assertor.that(Collections.emptyList()).isNotEmpty().orElseThrow();
     }
 }

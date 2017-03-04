@@ -110,8 +110,8 @@ public final class AssertXLS {
                 Row rowExpected = sheetExpected.getRow(r);
                 Row row = sheet.getRow(r);
                 if (rowExpected != null || row != null) {
-                    that(rowExpected).isNotNull().toThrow("Row expected");
-                    that(row).isNotNull().toThrow("Row " + r);
+                    that(rowExpected).isNotNull().orElseThrow("Row expected");
+                    that(row).isNotNull().orElseThrow("Row " + r);
 
                     this.checkRow(rowExpected, row, r);
                 }
@@ -439,10 +439,10 @@ public final class AssertXLS {
     }
 
     private static <T> void isEqual(final T obj1, final T obj2, String message) {
-        that(obj1).isEqual(obj2).toThrow(message);
+        that(obj1).isEqual(obj2).orElseThrow(message);
     }
 
     private static <T> void isNotNull(final T obj, String message) {
-        that(obj).isNotNull().toThrow(message);
+        that(obj).isNotNull().orElseThrow(message);
     }
 }

@@ -29,7 +29,7 @@ public class SystemUtilsTest {
     private static final String OS_LC = OS.toLowerCase();
 
     /**
-     * Test method for {@link SystemUtils#OS}.
+     * Test method for {@link SystemUtils#OS_NAME}.
      */
     @Test
     public void testOS() {

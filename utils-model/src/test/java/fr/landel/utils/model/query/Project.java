@@ -190,7 +190,7 @@ public class Project extends AbstractEntity<Project, Integer> {
      * @return creation date of the project
      */
     public Date getDateCreation() {
-        return DateUtils.getDate(this.dateCreation);
+        return DateUtils.cloneDate(this.dateCreation);
     }
 
     /**
@@ -198,7 +198,7 @@ public class Project extends AbstractEntity<Project, Integer> {
      *            creation date of the project
      */
     public void setDateCreation(Date dateCreation) {
-        this.dateCreation = DateUtils.getDate(dateCreation);
+        this.dateCreation = DateUtils.cloneDate(dateCreation);
     }
 
     /**

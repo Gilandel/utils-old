@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -180,6 +181,19 @@ public class Assertor {
     }
 
     /**
+     * First step to check a comparable {@link Temporal}.
+     * 
+     * @param temporal
+     *            the {@link Temporal} to check
+     * @param <T>
+     *            the type of {@link Temporal}
+     * @return the predicate {@link Temporal} assertor
+     */
+    public static <T extends Temporal & Comparable<T>> PredicateAssertorTemporal<T> that(final T temporal) {
+        return () -> new StepAssertor<>(temporal, EnumType.TEMPORAL);
+    }
+
+    /**
      * Get the global {@link Locale} used to generate messages of exceptions.
      * 
      * @return the {@link Locale}
@@ -193,7 +207,7 @@ public class Assertor {
      * 
      * @param locale
      *            The {@link Locale}
-     * @return the {@link Locale} if not null otherwise the default one
+     * @return the {@link Locale} if not null, otherwise the default one
      */
     public static final Locale getLocale(final Locale locale) {
         if (locale != null) {

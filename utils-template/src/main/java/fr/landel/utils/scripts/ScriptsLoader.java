@@ -92,7 +92,7 @@ public class ScriptsLoader {
      *            The base path (default path: scripts/)
      */
     public void setPath(final String path) {
-        Assertor.that(path).isNotEmpty().toThrow("Scripts path cannot be null or empty");
+        Assertor.that(path).isNotEmpty().orElseThrow("Scripts path cannot be null or empty");
 
         if (!path.endsWith("/")) {
             this.path = path + '/';

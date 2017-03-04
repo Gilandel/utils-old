@@ -16,6 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -52,6 +53,9 @@ public class PredicateStepOperatorTest extends AbstractTest {
 
         assertTrue(Assertor.that(text).isNotEmpty().and(new Date()).isAfter(new Date(0)).isOK());
         assertFalse(Assertor.that(text).isNotEmpty().and(new Date()).isBefore(new Date(0)).isOK());
+
+        assertTrue(Assertor.that(text).isNotEmpty().and(LocalDateTime.now()).isAfter(LocalDateTime.MIN).isOK());
+        assertFalse(Assertor.that(text).isNotEmpty().and(LocalDateTime.now()).isAfter(LocalDateTime.MAX).isOK());
 
         assertTrue(Assertor.that(text).isNotEmpty().and(2).isGT(1).isOK());
         assertFalse(Assertor.that(text).isNotEmpty().and(2).isLT(1).isOK());
@@ -94,6 +98,9 @@ public class PredicateStepOperatorTest extends AbstractTest {
 
         assertTrue(Assertor.that(text).isEmpty().or(new Date()).isAfter(new Date(0)).isOK());
         assertFalse(Assertor.that(text).isEmpty().or(new Date()).isBefore(new Date(0)).isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().or(LocalDateTime.now()).isAfter(LocalDateTime.MIN).isOK());
+        assertFalse(Assertor.that(text).isEmpty().or(LocalDateTime.now()).isAfter(LocalDateTime.MAX).isOK());
 
         assertTrue(Assertor.that(text).isEmpty().or(2).isGT(1).isOK());
         assertFalse(Assertor.that(text).isEmpty().or(2).isLT(1).isOK());
@@ -138,6 +145,9 @@ public class PredicateStepOperatorTest extends AbstractTest {
 
         assertTrue(Assertor.that(text).isEmpty().xor(new Date()).isAfter(new Date(0)).isOK());
         assertFalse(Assertor.that(text).isEmpty().xor(new Date()).isBefore(new Date(0)).isOK());
+
+        assertTrue(Assertor.that(text).isNotEmpty().xor(LocalDateTime.now()).isAfter(LocalDateTime.MAX).isOK());
+        assertFalse(Assertor.that(text).isNotEmpty().xor(LocalDateTime.now()).isAfter(LocalDateTime.MIN).isOK());
 
         assertTrue(Assertor.that(text).isEmpty().xor(2).isGT(1).isOK());
         assertFalse(Assertor.that(text).isEmpty().xor(2).isLT(1).isOK());

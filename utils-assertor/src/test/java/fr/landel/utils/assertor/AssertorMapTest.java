@@ -61,28 +61,28 @@ public class AssertorMapTest extends AbstractTest {
 
         final PredicateAssertorMap<String, Integer> assertMap = Assertor.that(map);
 
-        assertMap.isEmpty().toThrow();
+        assertMap.isEmpty().orElseThrow();
 
         Assertor.that(map).isEmpty().and(assertMap.isEmpty()).isOK();
 
         map.put(el, 1);
 
         Expect.exception(() -> {
-            assertMap.isEmpty().toThrow();
+            assertMap.isEmpty().orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            assertMap.isEmpty().toThrow("map is not empty");
+            assertMap.isEmpty().orElseThrow("map is not empty");
             fail(ERROR);
         }, IllegalArgumentException.class, "map is not empty");
 
         Expect.exception(() -> {
-            assertMap.isEmpty().toThrow(new IOException(), true);
+            assertMap.isEmpty().orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
 
-        Assertor.that((Map<String, Integer>) null).isEmpty().toThrow("this argument is required; it must not be null");
+        Assertor.that((Map<String, Integer>) null).isEmpty().orElseThrow("this argument is required; it must not be null");
     }
 
     /**
@@ -100,27 +100,27 @@ public class AssertorMapTest extends AbstractTest {
 
         final PredicateAssertorMap<String, Integer> assertMap = Assertor.that(map);
 
-        assertMap.isNotEmpty().toThrow();
+        assertMap.isNotEmpty().orElseThrow();
 
         Expect.exception(() -> {
-            assertMap.not().isNotEmpty().toThrow();
+            assertMap.not().isNotEmpty().orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         map.clear();
 
         Expect.exception(() -> {
-            assertMap.isNotEmpty().toThrow();
+            assertMap.isNotEmpty().orElseThrow();
             fail(ERROR);
         }, IllegalArgumentException.class);
 
         Expect.exception(() -> {
-            assertMap.isNotEmpty().toThrow("map is empty");
+            assertMap.isNotEmpty().orElseThrow("map is empty");
             fail(ERROR);
         }, IllegalArgumentException.class, "map is empty");
 
         Expect.exception(() -> {
-            assertMap.isNotEmpty().toThrow(new IOException(), true);
+            assertMap.isNotEmpty().orElseThrow(new IOException(), true);
             fail(ERROR);
         }, IOException.class);
 
@@ -145,31 +145,31 @@ public class AssertorMapTest extends AbstractTest {
 
         final PredicateAssertorMap<String, Integer> assertMap = Assertor.that(map);
 
-        assertMap.isNotNull().and().contains(key1).toThrow();
+        assertMap.isNotNull().and().contains(key1).orElseThrow();
 
         final List<String> keys = Arrays.asList(key1);
 
-        assertMap.contains(key1).toThrow();
-        assertMap.contains(key1).toThrow("map doesn't contain the element %2$s*");
-        assertMap.contains(key1).toThrow(new IOException(), true);
-        assertMap.contains(key1, val1).toThrow();
-        assertMap.contains(key1, val1).toThrow("map doesn't contain the element %3$s*");
-        assertMap.contains(key1, val1).toThrow(new IOException(), true);
-        assertMap.contains(key2, null).toThrow();
+        assertMap.contains(key1).orElseThrow();
+        assertMap.contains(key1).orElseThrow("map doesn't contain the element %2$s*");
+        assertMap.contains(key1).orElseThrow(new IOException(), true);
+        assertMap.contains(key1, val1).orElseThrow();
+        assertMap.contains(key1, val1).orElseThrow("map doesn't contain the element %3$s*");
+        assertMap.contains(key1, val1).orElseThrow(new IOException(), true);
+        assertMap.contains(key2, null).orElseThrow();
 
-        assertMap.containsAll(keys).toThrow();
-        assertMap.containsAll(keys).toThrow("map doesn't contain the element %2$s*");
-        assertMap.containsAll(keys).toThrow(new IOException(), true);
-        assertMap.containsAll(map).toThrow();
-        assertMap.containsAll(map).toThrow("map doesn't contain the element %2$s*");
-        assertMap.containsAll(map).toThrow(new IOException(), true);
+        assertMap.containsAll(keys).orElseThrow();
+        assertMap.containsAll(keys).orElseThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAll(keys).orElseThrow(new IOException(), true);
+        assertMap.containsAll(map).orElseThrow();
+        assertMap.containsAll(map).orElseThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAll(map).orElseThrow(new IOException(), true);
 
-        assertMap.containsAny(keys).toThrow();
-        assertMap.containsAny(keys).toThrow("map doesn't contain the element %2$s*");
-        assertMap.containsAny(keys).toThrow(new IOException(), true);
-        assertMap.containsAny(map).toThrow();
-        assertMap.containsAny(map).toThrow("map doesn't contain the element %2$s*");
-        assertMap.containsAny(map).toThrow(new IOException(), true);
+        assertMap.containsAny(keys).orElseThrow();
+        assertMap.containsAny(keys).orElseThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAny(keys).orElseThrow(new IOException(), true);
+        assertMap.containsAny(map).orElseThrow();
+        assertMap.containsAny(map).orElseThrow("map doesn't contain the element %2$s*");
+        assertMap.containsAny(map).orElseThrow(new IOException(), true);
 
         assertTrue(assertMap.contains(key1).and().isNotEmpty().isOK());
         assertTrue(assertMap.contains(key1).or().isEmpty().isOK());
@@ -224,14 +224,14 @@ public class AssertorMapTest extends AbstractTest {
 
         final List<String> keys = Arrays.asList("element3");
 
-        assertMap.isNotNull().and().contains(key1).toThrow();
+        assertMap.isNotNull().and().contains(key1).orElseThrow();
 
-        assertMap.not().contains(key2).toThrow();
-        assertMap.not().contains(key2).toThrow("map contains the element %2$s*");
-        assertMap.not().contains(key2).toThrow(new IOException(), true);
-        assertMap.not().contains(key2, val2).toThrow();
-        assertMap.not().contains(key2, val2).toThrow("map contains the element %3$s*");
-        assertMap.not().contains(key2, val2).toThrow(new IOException(), true);
+        assertMap.not().contains(key2).orElseThrow();
+        assertMap.not().contains(key2).orElseThrow("map contains the element %2$s*");
+        assertMap.not().contains(key2).orElseThrow(new IOException(), true);
+        assertMap.not().contains(key2, val2).orElseThrow();
+        assertMap.not().contains(key2, val2).orElseThrow("map contains the element %3$s*");
+        assertMap.not().contains(key2, val2).orElseThrow(new IOException(), true);
 
         assertFalse(assertMap.not().containsAll(keys).isOK());
         assertFalse(assertMap.not().containsAll(map1).isOK());
@@ -270,7 +270,7 @@ public class AssertorMapTest extends AbstractTest {
         try {
             Map<String, String> map = new HashMap<>();
             map.put("f", "f");
-            Assertor.that(map).isNotEmpty().toThrow();
+            Assertor.that(map).isNotEmpty().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -281,7 +281,7 @@ public class AssertorMapTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQString() {
-        Assertor.that(new HashMap<String, String>()).isNotEmpty().toThrow();
+        Assertor.that(new HashMap<String, String>()).isNotEmpty().orElseThrow();
     }
 
     /**
@@ -292,7 +292,7 @@ public class AssertorMapTest extends AbstractTest {
         try {
             Map<String, String> map = new HashMap<>();
             map.put("fg", "fg");
-            Assertor.that(map).isNotEmpty().toThrow();
+            Assertor.that(map).isNotEmpty().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -303,7 +303,7 @@ public class AssertorMapTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOMapOfQQ() {
-        Assertor.that(new HashMap<String, String>()).isNotEmpty().toThrow();
+        Assertor.that(new HashMap<String, String>()).isNotEmpty().orElseThrow();
     }
 
     /**

@@ -532,7 +532,7 @@ public class ReflectUtilsTest {
 
         assertNotNull(classes);
 
-        Assertor.that(classes).containsAll(new Class<?>[] {Observable.class, Collection.class}).toThrow();
+        Assertor.that(classes).containsAll(new Class<?>[] {Observable.class, Collection.class}).orElseThrow();
     }
 
     /**

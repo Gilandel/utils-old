@@ -58,7 +58,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).hasSize(size).toThrow();
+     * Assertor.that(iterable).hasSize(size).orElseThrow();
      * </pre>
      * 
      * @param size
@@ -78,7 +78,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).hasSize(size, "bad size").toThrow();
+     * Assertor.that(iterable).hasSize(size, "bad size").orElseThrow();
      * </pre>
      * 
      * @param size
@@ -102,7 +102,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).hasSize(size, Locale.US, "bad size").toThrow();
+     * Assertor.that(iterable).hasSize(size, Locale.US, "bad size").orElseThrow();
      * </pre>
      * 
      * @param size
@@ -128,7 +128,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).isEmpty().toThrow();
+     * Assertor.that(iterable).isEmpty().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -145,7 +145,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).isEmpty("the iterable must be null or empty").toThrow();
+     * Assertor.that(iterable).isEmpty("the iterable must be null or empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -166,7 +166,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).isEmpty(Locale.US, "the iterable must be null or empty").toThrow();
+     * Assertor.that(iterable).isEmpty(Locale.US, "the iterable must be null or empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -191,7 +191,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).isNotEmpty().toThrow();
+     * Assertor.that(iterable).isNotEmpty().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -209,7 +209,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).isNotEmpty("the iterable cannot be null or empty").toThrow();
+     * Assertor.that(iterable).isNotEmpty("the iterable cannot be null or empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -231,7 +231,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).isNotEmpty(Locale.US, "the iterable cannot be null or empty").toThrow();
+     * Assertor.that(iterable).isNotEmpty(Locale.US, "the iterable cannot be null or empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -256,7 +256,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).contains(value).toThrow();
+     * Assertor.that(iterable).contains(value).orElseThrow();
      * </pre>
      * 
      * @param value
@@ -276,7 +276,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).contains(value, "the element was not found in the iterable").toThrow();
+     * Assertor.that(iterable).contains(value, "the element was not found in the iterable").orElseThrow();
      * </pre>
      * 
      * @param value
@@ -300,7 +300,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).contains(value, Locale.US, "the element was not found in the iterable").toThrow();
+     * Assertor.that(iterable).contains(value, Locale.US, "the element was not found in the iterable").orElseThrow();
      * </pre>
      * 
      * @param value
@@ -327,7 +327,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).containsAll(values).toThrow();
+     * Assertor.that(iterable).containsAll(values).orElseThrow();
      * </pre>
      * 
      * @param values
@@ -347,7 +347,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).containsAll(values, "not all elements can be found in the iterable").toThrow();
+     * Assertor.that(iterable).containsAll(values, "not all elements can be found in the iterable").orElseThrow();
      * </pre>
      * 
      * @param values
@@ -371,7 +371,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).containsAll(values, Locale.US, "not all elements can be found in the iterable").toThrow();
+     * Assertor.that(iterable).containsAll(values, Locale.US, "not all elements can be found in the iterable").orElseThrow();
      * </pre>
      * 
      * @param values
@@ -399,7 +399,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).containsAny(values).toThrow();
+     * Assertor.that(iterable).containsAny(values).orElseThrow();
      * </pre>
      * 
      * @param values
@@ -419,7 +419,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).containsAny(values, "no element found").toThrow();
+     * Assertor.that(iterable).containsAny(values, "no element found").orElseThrow();
      * </pre>
      * 
      * @param values
@@ -443,7 +443,7 @@ public interface PredicateAssertorIterable<T> extends PredicateAssertor<Predicat
      * </p>
      * 
      * <pre>
-     * Assertor.that(iterable).containsAny(values, Locale.US, "no element found").toThrow();
+     * Assertor.that(iterable).containsAny(values, Locale.US, "no element found").orElseThrow();
      * </pre>
      * 
      * @param values

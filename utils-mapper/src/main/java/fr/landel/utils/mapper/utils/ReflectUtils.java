@@ -86,7 +86,7 @@ public class ReflectUtils {
      */
     public Map<String, Field> getAllFields(final Class<?> clazz) {
 
-        Assertor.that(clazz).isNotNull().toThrow("The class is null");
+        Assertor.that(clazz).isNotNull().orElseThrow("The class is null");
 
         return this.getAllFieldsRec(clazz, new HashMap<String, Field>());
     }
@@ -127,8 +127,8 @@ public class ReflectUtils {
      */
     public <S> boolean isGettable(Field sourceField, S sourceObject) {
 
-        Assertor.that(sourceField).isNotNull().toThrow("The source field is null");
-        Assertor.that(sourceObject).isNotNull().toThrow("The source object is null");
+        Assertor.that(sourceField).isNotNull().orElseThrow("The source field is null");
+        Assertor.that(sourceObject).isNotNull().orElseThrow("The source object is null");
 
         return this.pub.isReadable(sourceObject, sourceField.getName());
     }
@@ -146,8 +146,8 @@ public class ReflectUtils {
      */
     public <S> boolean isSettable(final Field sourceField, final S sourceObject) {
 
-        Assertor.that(sourceField).isNotNull().toThrow("The source field is null");
-        Assertor.that(sourceObject).isNotNull().toThrow("The source object is null");
+        Assertor.that(sourceField).isNotNull().orElseThrow("The source field is null");
+        Assertor.that(sourceObject).isNotNull().orElseThrow("The source object is null");
 
         return this.pub.isWriteable(sourceObject, sourceField.getName());
     }
@@ -174,8 +174,8 @@ public class ReflectUtils {
     public <S, E extends AbstractException> Object invokeGetter(final Field sourceField, final S sourceObject,
             final FunctionThrowable<Object, Object, E> postAction) throws MapperException {
 
-        Assertor.that(sourceField).isNotNull().toThrow("The source field is null");
-        Assertor.that(sourceObject).isNotNull().toThrow("The source object is null");
+        Assertor.that(sourceField).isNotNull().orElseThrow("The source field is null");
+        Assertor.that(sourceObject).isNotNull().orElseThrow("The source object is null");
 
         Object object;
         try {
@@ -211,9 +211,9 @@ public class ReflectUtils {
     public <R, S> R invokeGetter(final Field field, final S instance, final Class<R> resultClass,
             final FunctionThrowable<Object, R, AbstractException> postAction) throws MapperException {
 
-        Assertor.that(field).isNotNull().toThrow("The field is null");
-        Assertor.that(instance).isNotNull().toThrow("The instance is null");
-        Assertor.that(resultClass).isNotNull().toThrow("The result class is null");
+        Assertor.that(field).isNotNull().orElseThrow("The field is null");
+        Assertor.that(instance).isNotNull().orElseThrow("The instance is null");
+        Assertor.that(resultClass).isNotNull().orElseThrow("The result class is null");
 
         try {
             final Object object = this.pub.getProperty(instance, field.getName());
@@ -247,8 +247,8 @@ public class ReflectUtils {
      */
     public <S> void invokeSetter(final Field sourceField, final S sourceObject, final Object value) throws MapperException {
 
-        Assertor.that(sourceField).isNotNull().toThrow("The source field is null");
-        Assertor.that(sourceObject).isNotNull().toThrow("The source object is null");
+        Assertor.that(sourceField).isNotNull().orElseThrow("The source field is null");
+        Assertor.that(sourceObject).isNotNull().orElseThrow("The source object is null");
 
         try {
             this.pub.setProperty(sourceObject, sourceField.getName(), value);
@@ -274,9 +274,9 @@ public class ReflectUtils {
      */
     public <S> Object invoke(final Method method, final S sourceObject, final Object... parameters) throws MapperException {
 
-        Assertor.that(method).isNotNull().toThrow("The method is null");
-        Assertor.that(sourceObject).isNotNull().toThrow("The source object is null");
-        Assertor.that(parameters).isNotNull().toThrow("The parameters is null");
+        Assertor.that(method).isNotNull().orElseThrow("The method is null");
+        Assertor.that(sourceObject).isNotNull().orElseThrow("The source object is null");
+        Assertor.that(parameters).isNotNull().orElseThrow("The parameters is null");
 
         try {
             return method.invoke(sourceObject, parameters);
@@ -294,7 +294,7 @@ public class ReflectUtils {
      */
     public Boolean isMappableClass(final Class<?> clazz) {
 
-        Assertor.that(clazz).isNotNull().toThrow("The class is null");
+        Assertor.that(clazz).isNotNull().orElseThrow("The class is null");
 
         return clazz.getAnnotation(Mappable.class) != null;
     }
@@ -308,7 +308,7 @@ public class ReflectUtils {
      */
     public Boolean isMappableField(final Field field) {
 
-        Assertor.that(field).isNotNull().toThrow("The field is null");
+        Assertor.that(field).isNotNull().orElseThrow("The field is null");
 
         MappableProperty[] mappable = field.getDeclaredAnnotationsByType(MappableProperty.class);
         if (mappable != null && mappable.length > 0) {
@@ -343,7 +343,7 @@ public class ReflectUtils {
     @SuppressWarnings("unchecked")
     public <D, E> Class<E>[] getClassesFromObject(final Class<D> mappableClass) {
 
-        Assertor.that(mappableClass).isNotNull().toThrow("The mappable class is null");
+        Assertor.that(mappableClass).isNotNull().orElseThrow("The mappable class is null");
 
         final Mappable mappableReverse = mappableClass.getAnnotation(Mappable.class);
         if (mappableReverse != null && mappableReverse.value().length > 0) {
@@ -365,7 +365,7 @@ public class ReflectUtils {
      */
     public <I> I newInstance(final Class<I> clazz) throws MapperException {
 
-        Assertor.that(clazz).isNotNull().toThrow("The class is null");
+        Assertor.that(clazz).isNotNull().orElseThrow("The class is null");
 
         try {
             return clazz.newInstance();
@@ -413,7 +413,7 @@ public class ReflectUtils {
     public <C extends Collection<X>, X> C newInstanceCollection(final Class<?> collectionClass, final Class<X> valueClass)
             throws MapperException {
 
-        Assertor.that(valueClass).isNotNull().toThrow("The value class is null");
+        Assertor.that(valueClass).isNotNull().orElseThrow("The value class is null");
 
         return newInstanceCollection((Class<C>) collectionClass, (Class<C>) collectionClass, valueClass);
     }
@@ -442,9 +442,9 @@ public class ReflectUtils {
     public <C extends Collection<X>, O extends Collection<X>, X> O newInstanceCollection(final Class<C> instanciableCollectionClass,
             final Class<O> outputCollectionClass, final Class<X> valueClass) throws MapperException {
 
-        Assertor.that(outputCollectionClass).isNotNull().toThrow("The output collection class is null");
+        Assertor.that(outputCollectionClass).isNotNull().orElseThrow("The output collection class is null");
         Assertor.that(instanciableCollectionClass).isNotNull().and().isAssignableFrom(outputCollectionClass)
-                .toThrow("The instanciable collection class is null and the output class is not assignable from instanciable class");
+                .orElseThrow("The instanciable collection class is null and the output class is not assignable from instanciable class");
 
         final O collection;
 
@@ -506,8 +506,8 @@ public class ReflectUtils {
     public <M extends Map<K, V>, K, V> M newInstanceMap(final Class<?> classMap, final Class<K> classKey, final Class<V> classValue)
             throws MapperException {
 
-        Assertor.that(classKey).isNotNull().toThrow("The map key class is null");
-        Assertor.that(classValue).isNotNull().toThrow("The map value class is null");
+        Assertor.that(classKey).isNotNull().orElseThrow("The map key class is null");
+        Assertor.that(classValue).isNotNull().orElseThrow("The map value class is null");
 
         return newInstanceMap((Class<M>) classMap);
     }
@@ -557,7 +557,7 @@ public class ReflectUtils {
      */
     public <M extends Map<K, V>, K, V> M newInstanceMap(final Class<M> classMap) throws MapperException {
 
-        Assertor.that(classMap).isNotNull().toThrow("The map class is null");
+        Assertor.that(classMap).isNotNull().orElseThrow("The map class is null");
 
         final Map<K, V> map;
 
@@ -591,10 +591,10 @@ public class ReflectUtils {
      */
     public Method getMethod(final Class<?> clazz, final String name, final Class<?>... parameterTypes) throws MapperException {
 
-        Assertor.that(clazz).isNotNull().toThrow("The class is null");
-        Assertor.that(name).isNotBlank().toThrow("The name is null or blank");
+        Assertor.that(clazz).isNotNull().orElseThrow("The class is null");
+        Assertor.that(name).isNotBlank().orElseThrow("The name is null or blank");
         Assertor.that(parameterTypes).isNotNull().and().not().contains(null)
-                .toThrow("The parameter types array is null and at least one parameter type is null");
+                .orElseThrow("The parameter types array is null and at least one parameter type is null");
 
         Method method;
         try {
@@ -624,7 +624,7 @@ public class ReflectUtils {
      */
     public Method getGetterMethod(final Field field) throws MapperException {
 
-        Assertor.that(field).isNotNull().toThrow("The field is null");
+        Assertor.that(field).isNotNull().orElseThrow("The field is null");
 
         Method method;
         String capitalizedName;
@@ -655,7 +655,7 @@ public class ReflectUtils {
      */
     public Method getSetterMethod(final Field field) throws MapperException {
 
-        Assertor.that(field).isNotNull().toThrow("The field is null");
+        Assertor.that(field).isNotNull().orElseThrow("The field is null");
 
         Method method;
         String capitalizedName;

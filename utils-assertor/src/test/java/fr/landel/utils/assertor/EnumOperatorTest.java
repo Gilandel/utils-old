@@ -34,6 +34,9 @@ public class EnumOperatorTest {
         assertNotNull(EnumOperator.values());
         assertEquals(3, EnumOperator.values().length);
 
+        assertEquals(EnumOperator.AND, EnumOperator.valueOf("AND"));
+        assertEquals(EnumOperator.AND, EnumOperator.valueOf(EnumOperator.class, "AND"));
+
         assertEquals(0, EnumOperator.AND.ordinal());
         assertEquals("operator.and", EnumOperator.AND.getKey());
         assertEquals("AND", EnumOperator.AND.name());

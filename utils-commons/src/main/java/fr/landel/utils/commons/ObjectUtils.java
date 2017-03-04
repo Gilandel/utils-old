@@ -57,6 +57,8 @@ public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
      *            the default value supplier, cannot be {@code null}, may supply
      *            {@code null}
      * @return {@code object} if it is not {@code null}, defaultValue otherwise
+     * @throws NullPointerException
+     *             if supplier is {@code null}
      */
     public static <T> T defaultIfNull(final T object, final Supplier<? extends T> defaultValueSupplier) {
         Objects.requireNonNull(defaultValueSupplier, "The parameter defaultValueSupplier cannot be null");

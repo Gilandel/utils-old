@@ -15,6 +15,7 @@ package fr.landel.utils.assertor.expect;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import fr.landel.utils.commons.StringUtils;
 import fr.landel.utils.commons.function.AssertSupplier;
 import fr.landel.utils.commons.function.TriFunction;
 
@@ -24,6 +25,12 @@ import fr.landel.utils.commons.function.TriFunction;
  * @author Gilles
  */
 public final class Expect {
+
+    private static final String ERROR_CONSUMER_NULL = "Consumer cannot be null";
+    private static final String ERROR_EXPECTED_NULL = "Expected exception cannot be null";
+    private static final String ERROR_NO_EXCEPTION = "No exception thrown";
+    private static final String ERROR_EXCEPTION_DONT_MATCH = "The expected exception never came up";
+    private static final String ERROR_MESSAGE_DONT_MATCH = "The exception message isn't as expected.\nExpected (first part) and result (second part):\n{}\n-----\n{}";
 
     private Expect() {
     }
@@ -269,8 +276,8 @@ public final class Expect {
     private static <T extends Throwable, E extends Throwable> void exception(final AssertSupplier<Throwable> exceptionSupplier,
             final Class<T> expectedException, final String expectedMessage, final Pattern messagePattern,
             final TriFunction<Boolean, String, String, E> exceptionFunction) throws E {
-        Objects.requireNonNull(exceptionSupplier, "Consumer cannot be null");
-        Objects.requireNonNull(expectedException, "Expected exception cannot be null");
+        Objects.requireNonNull(exceptionSupplier, ERROR_CONSUMER_NULL);
+        Objects.requireNonNull(expectedException, ERROR_EXPECTED_NULL);
 
         Throwable e = null;
         try {
@@ -279,7 +286,11 @@ public final class Expect {
             e = e1;
         }
 
-        boolean exceptionDontMatch = e == null || !expectedException.isAssignableFrom(e.getClass());
+        if (e == null) {
+            throw new ExpectException(ERROR_NO_EXCEPTION);
+        }
+
+        boolean exceptionDontMatch = !expectedException.isAssignableFrom(e.getClass());
         boolean expectedDontMatch = expectedMessage != null && !expectedMessage.equals(e.getMessage());
         boolean patternDontMatch = expectedMessage == null && messagePattern != null && !messagePattern.matcher(e.getMessage()).matches();
 
@@ -295,11 +306,9 @@ public final class Expect {
             if (exceptionFunction != null) {
                 throw exceptionFunction.apply(!exceptionDontMatch, expectedResult, e.getMessage());
             } else if (exceptionDontMatch) {
-                throw new ExpectException("The expected exception never came up");
+                throw new ExpectException(ERROR_EXCEPTION_DONT_MATCH);
             } else {
-                throw new ExpectException(
-                        new StringBuilder("The exception message isn't as expected.\nExpected (first line) and result (second line):\n")
-                                .append(expectedResult).append("\n").append(e.getMessage()).toString());
+                throw new ExpectException(StringUtils.inject(ERROR_MESSAGE_DONT_MATCH, expectedResult, e.getMessage()));
             }
         }
     }

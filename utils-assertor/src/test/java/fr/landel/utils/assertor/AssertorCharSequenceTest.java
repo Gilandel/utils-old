@@ -69,7 +69,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsNotEmptyOKStringString() {
         try {
-            Assertor.that("a").isNotEmpty().toThrow("empty string");
+            Assertor.that("a").isNotEmpty().orElseThrow("empty string");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -81,7 +81,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOStringString() {
-        Assertor.that("").isNotEmpty().toThrow("empty string");
+        Assertor.that("").isNotEmpty().orElseThrow("empty string");
     }
 
     /**
@@ -90,7 +90,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKONot() {
-        Assertor.that("z").not().isNotEmpty().toThrow("empty string");
+        Assertor.that("z").not().isNotEmpty().orElseThrow("empty string");
     }
 
     /**
@@ -99,7 +99,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2StringString() {
-        Assertor.that((String) null).isNotEmpty().toThrow("empty string");
+        Assertor.that((String) null).isNotEmpty().orElseThrow("empty string");
     }
 
     /**
@@ -109,7 +109,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsNotEmptyOKString() {
         try {
-            Assertor.that("z").isNotEmpty().toThrow();
+            Assertor.that("z").isNotEmpty().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -121,7 +121,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKOString() {
-        Assertor.that("").isNotEmpty().toThrow();
+        Assertor.that("").isNotEmpty().orElseThrow();
     }
 
     /**
@@ -130,7 +130,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotEmptyKO2String() {
-        Assertor.that((String) null).isNotEmpty().toThrow();
+        Assertor.that((String) null).isNotEmpty().orElseThrow();
     }
 
     /**
@@ -140,8 +140,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsEmptyOKStringString() {
         try {
-            Assertor.that((String) null).isEmpty().toThrow("not empty or null");
-            Assertor.that("").isEmpty().toThrow("not empty");
+            Assertor.that((String) null).isEmpty().orElseThrow("not empty or null");
+            Assertor.that("").isEmpty().orElseThrow("not empty");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -153,7 +153,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOStringString() {
-        Assertor.that("r").isEmpty().toThrow("not empty");
+        Assertor.that("r").isEmpty().orElseThrow("not empty");
     }
 
     /**
@@ -162,8 +162,8 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsEmptyOKString() {
         try {
-            Assertor.that((String) null).isEmpty().toThrow();
-            Assertor.that("").isEmpty().toThrow();
+            Assertor.that((String) null).isEmpty().orElseThrow();
+            Assertor.that("").isEmpty().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -174,7 +174,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsEmptyKOString() {
-        Assertor.that("e").isEmpty().toThrow();
+        Assertor.that("e").isEmpty().orElseThrow();
     }
 
     /**
@@ -184,7 +184,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsNotBlankOKStringString() {
         try {
-            Assertor.that("   \t sds  ").isNotBlank().toThrow("blank");
+            Assertor.that("   \t sds  ").isNotBlank().orElseThrow("blank");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -196,7 +196,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOStringString() {
-        Assertor.that("   \t    ").isNotBlank().toThrow("blank");
+        Assertor.that("   \t    ").isNotBlank().orElseThrow("blank");
     }
 
     /**
@@ -206,7 +206,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsNotBlankOKString() {
         try {
-            Assertor.that("    \t  e ").isNotBlank().toThrow();
+            Assertor.that("    \t  e ").isNotBlank().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -218,7 +218,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOString() {
-        Assertor.that("    \t   ").isNotBlank().toThrow();
+        Assertor.that("    \t   ").isNotBlank().orElseThrow();
     }
 
     /**
@@ -227,7 +227,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsNotBlankKOnot() {
-        Assertor.that("    \t   a").not().isNotBlank().toThrow();
+        Assertor.that("    \t   a").not().isNotBlank().orElseThrow();
     }
 
     /**
@@ -237,7 +237,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsBlankOKStringString() {
         try {
-            Assertor.that("   \t   ").isBlank().toThrow("not blank");
+            Assertor.that("   \t   ").isBlank().orElseThrow("not blank");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -249,7 +249,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOStringString() {
-        Assertor.that("   \t d   ").isBlank().toThrow("not blank");
+        Assertor.that("   \t d   ").isBlank().orElseThrow("not blank");
     }
 
     /**
@@ -258,7 +258,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testIsBlankOKString() {
         try {
-            Assertor.that("   \t   ").isBlank().toThrow();
+            Assertor.that("   \t   ").isBlank().orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -269,7 +269,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIsBlankKOString() {
-        Assertor.that("      j ").isBlank().toThrow();
+        Assertor.that("      j ").isBlank().orElseThrow();
     }
 
     /**
@@ -416,7 +416,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testDoesNotContainOKStringStringString() {
         try {
-            Assertor.that("titi part en vacances").not().contains("toto").toThrow("not found");
+            Assertor.that("titi part en vacances").not().contains("toto").orElseThrow("not found");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -429,7 +429,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringStringString() {
-        Assertor.that("titi part en vacances").not().contains("titi").toThrow("not found");
+        Assertor.that("titi part en vacances").not().contains("titi").orElseThrow("not found");
     }
 
     /**
@@ -455,7 +455,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testDoesNotContainKOStringString() {
-        Assertor.that("tata part en vacances").not().contains("tata").toThrow();
+        Assertor.that("tata part en vacances").not().contains("tata").orElseThrow();
     }
 
     /**
@@ -477,41 +477,41 @@ public class AssertorCharSequenceTest extends AbstractTest {
         assertFalse(Assertor.that((String) null).contains((Character) null).isOK());
 
         Expect.exception(() -> {
-            Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").toThrow();
+            Assertor.that("toto part en vacances").contains("toto").and().contains("voyage").orElseThrow();
         }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'", JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains("toto").and().contains("voyage")
-                    .and(Assertor.that("text").isBlank().or().contains("text")).toThrow();
+                    .and(Assertor.that("text").isBlank().or().contains("text")).orElseThrow();
         }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'voyage'", JUNIT_ERROR);
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains("toto").and().contains("voyage")
-                    .or(Assertor.that("text").isBlank().or().not().contains("text")).toThrow();
+                    .or(Assertor.that("text").isBlank().or().not().contains("text")).orElseThrow();
         }, IllegalArgumentException.class,
                 "the char sequence 'toto part en vacances' should contain 'voyage'"
                         + " OR (the char sequence 'text' should be null, empty or blank OR the char sequence 'text' should NOT contain 'text')",
                 JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that("toto part en vacances").contains('t').and().contains('y').toThrow();
+            Assertor.that("toto part en vacances").contains('t').and().contains('y').orElseThrow();
         }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'y'");
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains('t').and().contains('y')
-                    .and(Assertor.that("text").isBlank().or().contains("text")).toThrow();
+                    .and(Assertor.that("text").isBlank().or().contains("text")).orElseThrow();
         }, IllegalArgumentException.class, "the char sequence 'toto part en vacances' should contain 'y'");
 
         Expect.exception(() -> {
             Assertor.that("toto part en vacances").contains('t').and().contains('y')
-                    .or(Assertor.that("text").isBlank().or().not().contains('t')).toThrow();
+                    .or(Assertor.that("text").isBlank().or().not().contains('t')).orElseThrow();
         }, IllegalArgumentException.class,
                 "the char sequence 'toto part en vacances' should contain 'y'"
                         + " OR (the char sequence 'text' should be null, empty or blank OR the char sequence 'text' should NOT contain 't')",
                 JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that((CharSequence) null).contains('t').and().contains((Character) null).toThrow();
+            Assertor.that((CharSequence) null).contains('t').and().contains((Character) null).orElseThrow();
         }, IllegalArgumentException.class, "the char sequence cannot be null and the searched substring cannot be null or empty",
                 JUNIT_ERROR);
     }
@@ -523,7 +523,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringString() {
-        Assertor.that("tata part en vacances").contains("tutu").toThrow();
+        Assertor.that("tata part en vacances").contains("tutu").orElseThrow();
     }
 
     /**
@@ -534,7 +534,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
     @Test
     public void testContainsOKStringStringString() {
         try {
-            Assertor.that("toto part en vacances").contains("toto").toThrow("text not found");
+            Assertor.that("toto part en vacances").contains("toto").orElseThrow("text not found");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -547,7 +547,7 @@ public class AssertorCharSequenceTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testContainsKOStringStringString() {
-        Assertor.that("tata part en vacances").contains("tutu").toThrow("text not found");
+        Assertor.that("tata part en vacances").contains("tutu").orElseThrow("text not found");
     }
 
     /**

@@ -62,25 +62,25 @@ public class AssertorBooleanTest extends AbstractTest {
         assertTrue(Assertor.that(true).isFalse().or(Assertor.that("").isEmpty()).isOK());
 
         try {
-            Assertor.that(false).isFalse().toThrow("not false");
-            Assertor.that(false).isFalse().and(true).not().isFalse().toThrow("not false");
-            Assertor.that(false).isFalse().toThrow(new IllegalArgumentException(), true);
+            Assertor.that(false).isFalse().orElseThrow("not false");
+            Assertor.that(false).isFalse().and(true).not().isFalse().orElseThrow("not false");
+            Assertor.that(false).isFalse().orElseThrow(new IllegalArgumentException(), true);
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that(true).isFalse().toThrow("not false");
+            Assertor.that(true).isFalse().orElseThrow("not false");
             fail();
         }, IllegalArgumentException.class, "not false");
 
         Expect.exception(() -> {
-            Assertor.that(true).isFalse("%s, '%s*'", "not false").toThrow();
+            Assertor.that(true).isFalse("%s, '%s*'", "not false").orElseThrow();
             fail();
         }, IllegalArgumentException.class, "not false, 'true'");
 
         Expect.exception(() -> {
-            Assertor.that(true).isFalse().toThrow(new IOException("not false"), true);
+            Assertor.that(true).isFalse().orElseThrow(new IOException("not false"), true);
             fail();
         }, IOException.class, "not false");
     }
@@ -91,31 +91,31 @@ public class AssertorBooleanTest extends AbstractTest {
     @Test
     public void testIsTrue() {
         try {
-            assertTrue(Assertor.that(true).isTrue().toThrow());
-            assertFalse(Assertor.that(true).isTrue().and(false).not().isTrue().toThrow("not true"));
-            assertTrue(Assertor.that(true).isTrue().toThrow(new IllegalArgumentException(), true));
+            assertTrue(Assertor.that(true).isTrue().orElseThrow());
+            assertFalse(Assertor.that(true).isTrue().and(false).not().isTrue().orElseThrow("not true"));
+            assertTrue(Assertor.that(true).isTrue().orElseThrow(new IllegalArgumentException(), true));
 
-            assertEquals("", Assertor.that(true).isTrue().and("").isEmpty().toThrow());
+            assertEquals("", Assertor.that(true).isTrue().and("").isEmpty().orElseThrow());
 
-            assertTrue(Assertor.that(true).isTrue().and().not().isFalse().toThrow());
-            assertTrue(Assertor.that(true).isTrue().or().isFalse().toThrow());
-            assertTrue(Assertor.that(true).isTrue().xor().isFalse().toThrow());
+            assertTrue(Assertor.that(true).isTrue().and().not().isFalse().orElseThrow());
+            assertTrue(Assertor.that(true).isTrue().or().isFalse().orElseThrow());
+            assertTrue(Assertor.that(true).isTrue().xor().isFalse().orElseThrow());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that(false).isTrue().toThrow("not true");
+            Assertor.that(false).isTrue().orElseThrow("not true");
             fail();
         }, IllegalArgumentException.class, "not true", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(false).isTrue("%s, '%s*'", "not true").toThrow();
+            Assertor.that(false).isTrue("%s, '%s*'", "not true").orElseThrow();
             fail();
         }, IllegalArgumentException.class, "not true, 'false'", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(false).isTrue().toThrow(new IOException("not true"), true);
+            Assertor.that(false).isTrue().orElseThrow(new IOException("not true"), true);
             fail();
         }, IOException.class, "not true", JUNIT_ERROR);
     }

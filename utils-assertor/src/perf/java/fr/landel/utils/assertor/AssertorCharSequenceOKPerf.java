@@ -50,7 +50,7 @@ public class AssertorCharSequenceOKPerf extends AbstractMicrobenchmark {
     public void assertorCharSequenceOKPerf() {
         Assertor.that("text").contains("ex").isOK();
         Assertor.that("text").contains("ex").getErrors();
-        Assertor.that("text").contains("ex").toThrow();
+        Assertor.that("text").contains("ex").orElseThrow();
 
         Assertor.that("text").startsWith("tex").isOK();
         Assertor.that("text").startsWithIgnoreCase("Tex").isOK();

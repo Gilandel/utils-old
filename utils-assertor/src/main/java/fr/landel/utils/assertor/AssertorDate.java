@@ -200,27 +200,30 @@ public class AssertorDate extends ConstantsAssertor {
         }
     }
 
-    private static <T> boolean isAround(final T date1, final T date, final int calendarField, final int calendarAmount, final int compare) {
-        Calendar calendar1;
-        Calendar calendar2;
+    private static <T extends Comparable<T>> boolean isAround(final T date1, final T date, final int calendarField,
+            final int calendarAmount, final int compare) {
+
         final Class<?> clazz = date1.getClass();
 
-        if (Date.class.isAssignableFrom(clazz)) {
+        Calendar calendar1;
+        Calendar calendar2;
+
+        if (Date.class.equals(clazz)) {
             calendar1 = DateUtils.getCalendar((Date) date1);
             calendar2 = DateUtils.getCalendar((Date) date);
-        } else if (Calendar.class.isAssignableFrom(clazz)) {
+        } else { // Calendar
             calendar1 = (Calendar) ((Calendar) date1).clone();
             calendar2 = (Calendar) ((Calendar) date).clone();
-        } else { // Future support of LocalTime...
-            return false;
         }
 
-        if (compare < 0) {
-            calendar1.add(calendarField, calendarAmount);
-            return !calendar1.before(calendar2);
-        } else if (compare > 0) {
-            calendar2.add(calendarField, calendarAmount);
-            return !calendar2.before(calendar1);
+        if (calendarAmount != 0) {
+            if (compare < 0) {
+                calendar1.add(calendarField, calendarAmount);
+                return !calendar1.before(calendar2);
+            } else if (compare > 0) {
+                calendar2.add(calendarField, calendarAmount);
+                return !calendar2.before(calendar1);
+            }
         }
         return true; // normally, not used (equals)
     }

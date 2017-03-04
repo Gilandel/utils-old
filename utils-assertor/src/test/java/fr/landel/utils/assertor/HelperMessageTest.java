@@ -64,18 +64,18 @@ public class HelperMessageTest extends AbstractTest {
 
         Assertor.setLocale(Locale.FRANCE);
         Expect.exception(() -> {
-            Assertor.that(23.6f).isEqual(25.6f).toThrow();
+            Assertor.that(23.6f).isEqual(25.6f).orElseThrow();
             fail();
         }, IllegalArgumentException.class, "the number '23,600' should be equal to '25,600'", JUNIT_ERROR);
         Assertor.setLocale(Locale.US);
 
         Expect.exception(() -> {
-            Assertor.that("texte11").not().isEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
+            Assertor.that("texte11").not().isEqual("texte11").orElseThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
             fail();
         }, IllegalArgumentException.class, "texte 'texte11' is not equal to 'texte11', args");
 
         Expect.exception(() -> {
-            Assertor.that("texte11").isEqual(true).toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
+            Assertor.that("texte11").isEqual(true).orElseThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
             fail();
         }, IllegalArgumentException.class, "texte 'true' is not equal to 'texte11', args");
     }
@@ -86,35 +86,35 @@ public class HelperMessageTest extends AbstractTest {
     @Test
     public void testGetMessage2() {
         try {
-            Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
+            Assertor.that("texte11").isNotEqual("texte11").orElseThrow("texte '%2$s*' is not equal to '%1$s*', %s", "args");
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals("texte 'texte11' is not equal to 'texte11', args", e.getMessage());
         }
 
         try {
-            Assertor.that("texte11").isEqual("texte12").toThrow("texte '%2$s*' is not equal to '%1$s*' or '%s*' != '%s*'...");
+            Assertor.that("texte11").isEqual("texte12").orElseThrow("texte '%2$s*' is not equal to '%1$s*' or '%s*' != '%s*'...");
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals("texte 'texte12' is not equal to 'texte11' or 'texte11' != 'texte12'...", e.getMessage());
         }
 
         Expect.exception(() -> {
-            Assertor.that("texte11").isBlank().or().isNotEqual("texte11").toThrow();
+            Assertor.that("texte11").isBlank().or().isNotEqual("texte11").orElseThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
                 "the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte11' should NOT be equal to 'texte11'",
                 JUNIT_ERROR);
 
         try {
-            Assertor.that("texte11").isNotBlank().and().isNotEqual("texte11").toThrow();
+            Assertor.that("texte11").isNotBlank().and().isNotEqual("texte11").orElseThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals("the char sequence 'texte11' should NOT be equal to 'texte11'", e.getMessage());
         }
 
         try {
-            Assertor.that("texte11").isBlank().or().not().isEqual("texte11").toThrow();
+            Assertor.that("texte11").isBlank().or().not().isEqual("texte11").orElseThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals(
@@ -123,7 +123,7 @@ public class HelperMessageTest extends AbstractTest {
         }
 
         try {
-            Assertor.that("texte11").isBlank().or("texte12").isEqual("texte13").toThrow();
+            Assertor.that("texte11").isBlank().or("texte12").isEqual("texte13").orElseThrow();
             fail("Expect an exception");
         } catch (IllegalArgumentException e) {
             assertEquals(
@@ -138,7 +138,7 @@ public class HelperMessageTest extends AbstractTest {
     @Test
     public void testGetMessage3() {
         Expect.exception(() -> {
-            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
+            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().orElseThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
                 "the char sequence 'texte11' should be null, empty or blank"
@@ -148,7 +148,7 @@ public class HelperMessageTest extends AbstractTest {
 
         // prerequisites == false
         Expect.exception(() -> {
-            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow();
+            Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().orElseThrow();
             fail("Expect an exception");
         }, IllegalArgumentException.class,
                 "the char sequence 'texte11' should be null, empty or blank"
@@ -158,7 +158,7 @@ public class HelperMessageTest extends AbstractTest {
 
         Expect.exception(() -> {
             Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank()
-                    .toThrow((errors, parameters) -> new IllegalArgumentException(errors));
+                    .orElseThrow((errors, parameters) -> new IllegalArgumentException(errors));
             fail("Expect an exception");
         }, IllegalArgumentException.class,
                 "the char sequence 'texte11' should be null, empty or blank"
@@ -176,7 +176,7 @@ public class HelperMessageTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testGetMessageNullObject() {
-        Assertor.that("texte11").isNotEqual("texte11").toThrow("texte '%2$s*' is not equal to '%1$s*', %s", (Object[]) null);
+        Assertor.that("texte11").isNotEqual("texte11").orElseThrow("texte '%2$s*' is not equal to '%1$s*', %s", (Object[]) null);
     }
 
     /**

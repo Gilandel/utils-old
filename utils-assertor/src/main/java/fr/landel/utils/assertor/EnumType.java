@@ -12,6 +12,7 @@
  */
 package fr.landel.utils.assertor;
 
+import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -92,6 +93,11 @@ public enum EnumType {
     MAP,
 
     /**
+     * Temporal type
+     */
+    TEMPORAL,
+
+    /**
      * Calendar field (only used by converter)
      */
     CALENDAR_FIELD;
@@ -131,6 +137,8 @@ public enum EnumType {
                 type = DATE;
             } else if (Calendar.class.isAssignableFrom(clazz)) {
                 type = CALENDAR;
+            } else if (Temporal.class.isAssignableFrom(clazz)) {
+                type = TEMPORAL;
             } else if (Class.class.isInstance(object)) {
                 type = CLASS;
             }

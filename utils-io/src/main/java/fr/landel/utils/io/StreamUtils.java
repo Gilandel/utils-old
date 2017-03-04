@@ -80,7 +80,7 @@ public final class StreamUtils {
      */
     public static synchronized BufferedReader createBufferedReader(final String fileName, final String encoding)
             throws IOException, UnsupportedEncodingException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createBufferedReader(new File(fileName), encoding);
     }
 
@@ -99,7 +99,7 @@ public final class StreamUtils {
      */
     public static synchronized BufferedReader createBufferedReader(final File file, final String encoding)
             throws IOException, UnsupportedEncodingException {
-        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(file).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         final BufferedReader br = new BufferedReader(createInputStreamReader(file, encoding));
         CloseableManager.addCloseable(file, br);
         return br;
@@ -120,7 +120,7 @@ public final class StreamUtils {
      */
     public static synchronized InputStreamReader createInputStreamReader(final String fileName, final String encoding)
             throws IOException, UnsupportedEncodingException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createInputStreamReader(new File(fileName), encoding);
     }
 
@@ -185,7 +185,7 @@ public final class StreamUtils {
      *             Error thrown if wasn't found
      */
     public static synchronized DataInputStream createDataInputStream(final String fileName) throws IOException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createDataInputStream(new File(fileName));
     }
 
@@ -199,7 +199,7 @@ public final class StreamUtils {
      *             Error thrown if wasn't found
      */
     public static synchronized DataInputStream createDataInputStream(final File file) throws IOException {
-        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL), false);
+        Assertor.that(file).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL), false);
         return CloseableManager.addCloseable(file, new DataInputStream(createBufferedInputStream(file)));
     }
 
@@ -213,7 +213,7 @@ public final class StreamUtils {
      *             Error thrown on creating stream
      */
     public static synchronized DataInputStream createDataInputStream(final URL url) throws IOException {
-        Assertor.that(url).isNotNull().toThrow(new FileNotFoundException(ERROR_URL_PARAM_NULL), false);
+        Assertor.that(url).isNotNull().orElseThrow(new FileNotFoundException(ERROR_URL_PARAM_NULL), false);
         return CloseableManager.addCloseable(url, new DataInputStream(createBufferedInputStream(url)));
     }
 
@@ -227,7 +227,7 @@ public final class StreamUtils {
      *             Error thrown on creating stream
      */
     public static synchronized BufferedInputStream createBufferedInputStream(final String fileName) throws IOException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createBufferedInputStream(new File(fileName));
     }
 
@@ -241,7 +241,7 @@ public final class StreamUtils {
      *             Error thrown if file wasn't found
      */
     public static synchronized BufferedInputStream createBufferedInputStream(final File file) throws IOException {
-        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(file).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
 
         final FileInputStream fis = new FileInputStream(file);
         CloseableManager.addCloseable(file, fis);
@@ -262,7 +262,7 @@ public final class StreamUtils {
      *             Thrown if file wasn't found or in case of opening URL stream
      */
     public static synchronized BufferedInputStream createBufferedInputStream(final URL url) throws IOException {
-        Assertor.that(url).isNotNull().toThrow(new FileNotFoundException(ERROR_URL_PARAM_NULL), false);
+        Assertor.that(url).isNotNull().orElseThrow(new FileNotFoundException(ERROR_URL_PARAM_NULL), false);
 
         final InputStream is = url.openStream();
         CloseableManager.addCloseable(url, is);
@@ -396,7 +396,7 @@ public final class StreamUtils {
      */
     public static synchronized OutputStreamWriter createBufferedWriter(final String fileName, final String encoding, final boolean append)
             throws IOException, UnsupportedEncodingException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createBufferedWriter(new File(fileName), encoding, append);
     }
 
@@ -459,7 +459,7 @@ public final class StreamUtils {
      */
     public static synchronized BufferedOutputStream createBufferedOutputStream(final String fileName, final boolean append)
             throws IOException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createBufferedOutputStream(new File(fileName), append);
     }
 
@@ -489,7 +489,7 @@ public final class StreamUtils {
      *             Error thrown if wasn't found
      */
     public static synchronized BufferedOutputStream createBufferedOutputStream(final File file, final boolean append) throws IOException {
-        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL), false);
+        Assertor.that(file).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL), false);
 
         final FileOutputStream fos = new FileOutputStream(file, append);
         CloseableManager.addCloseable(file, fos);
@@ -526,7 +526,7 @@ public final class StreamUtils {
      *             Error thrown if wasn't found
      */
     public static synchronized DataOutputStream createDataOutputStream(final String fileName, final boolean append) throws IOException {
-        Assertor.that(fileName).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
+        Assertor.that(fileName).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_NAME_PARAM_NULL), false);
         return createDataOutputStream(new File(fileName), append);
     }
 
@@ -556,7 +556,7 @@ public final class StreamUtils {
      *             Error thrown if wasn't found
      */
     public static synchronized DataOutputStream createDataOutputStream(final File file, final boolean append) throws IOException {
-        Assertor.that(file).isNotNull().toThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL), false);
+        Assertor.that(file).isNotNull().orElseThrow(new FileNotFoundException(ERROR_FILE_PARAM_NULL), false);
 
         final FileOutputStream fos = new FileOutputStream(file, append);
         CloseableManager.addCloseable(file, fos);

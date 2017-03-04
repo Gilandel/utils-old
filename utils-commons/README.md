@@ -4,6 +4,8 @@
 
 1. [Summary](#summary)
 2. [Commons](#commons)
+  1. [Default](#default)
+  2. [Result](#result)
 3. [Builder](#builder)
   1. [EqualsBuilder](#equalsbuilder)
   2. [EqualsBuilder2](#equalsbuilder2)
@@ -14,7 +16,6 @@
 7. [Over](#over)
 8. [Tuple](#tuple)
 
-
 ##Commons
 - ArrayUtils: Extend ArrayUtils from Apache project, add methods to check array,
 - CastUtils: To cast map / list / object into typed objects,
@@ -22,6 +23,7 @@
 - CollectionUtils2: Add missing transform methods (in complement of CollectionUtils provided by Apache Team),
 - Comparators: Basics comparators (Byte, Short, Long, Float, Double, BigInteger BigDecimal, Char, String, Date, Calendar, Duration, Instant, OffsetTime, OffsetDateTime, LocalTime, LocalDateTime, ZonedDateTime) and Maven version comparator,
 - DateUtils: Extend DateUtils from Apache project, add methods to get date if null, getDate wrapper to secure date transfer and between to calculate time between dates,
+- Default: A class like Optional, but if a null value is set or is defined as empty, this method returns the default value,
 - EnumChar: A list of ASCII characters and others with their unicode and HTML version,
 - EnumUtils: Extend EnumUtils from Apache project, add methods to get null if empty name is used (to avoid exception)
 - HexUtils: To convert hexadecimal in bytes,
@@ -29,6 +31,45 @@
 - ObjectUtils: Extend ObjectUtils from Apache project, add features for Object,
 - Result: A class like Optional, but if a null value is set (not empty), this method returns 'present', the aim is to differentiate an empty value and a null,
 - StringUtils: Extend StringUtils from Apache project, add methods to get default string if empty or null.
+
+###Default
+
+```java
+Default.empty(defaultText).get(); // => returns 'defaultText' content ('defaultText' cannot be null)
+Default.empty(defaultText).isPresent(); // => returns 'false'
+Default.empty(defaultText).ifPresent(consumer); // does nothing
+Default.empty(defaultText).ifAbsent(consumer); // executes the consumer (on the default value)
+
+Default.of(text).get(); // => returns 'text' content ('text' cannot be null)
+Default.of(text).isPresent(); // => returns 'true'
+Default.of(text).ifPresent(consumer); // executes the consumer (on the value)
+Default.of(text).ifAbsent(consumer); // does nothing
+
+Default.ofNullable(text, defaultText).get();
+// => if 'text' is not null, returns 'text' content, otherwise returns 'defaultText' content ('text' may be null, 'defaultText' cannot be null)
+Default.ofNullable(text, defaultText).isPresent(); // => returns 'true' or 'false'
+Default.ofNullable(text, defaultText).ifPresent(consumer); // executes the consumer if 'text' is not null (on the value)
+Default.ofNullable(text, defaultText).ifAbsent(consumer); // executes the consumer if 'text' is null (on the default value)
+```
+
+###Result
+
+```java
+Result.empty().isPresent(); // => returns 'false'
+Result.empty().isNull(); // => returns 'true'
+Result.empty().ifPresent(consumer); // does nothing
+Result.empty().ifNotNull(consumer); // does nothing
+
+Result.of(text).isPresent(); // => returns 'true' ('text' cannot be null)
+Result.of(text).isNull(); // => returns 'false'
+Result.of(text).ifPresent(consumer); // executes the consumer
+Result.of(text).ifNotNull(consumer); // executes the consumer
+
+Result.ofNullable(text).isPresent(); // => returns 'true' ('text' may be null)
+Result.ofNullable(text).isNull(); // => returns 'true' or 'false'
+Result.ofNullable(text).ifPresent(consumer); // executes the consumer
+Result.ofNullable(text).ifNotNull(consumer); // executes the consumer if 'text' is not null
+```
 
 ##Builder
 - EqualsBuilder: Extend EqualsBuilder from Apache project, add the possibility to append a property through a functional getter function,

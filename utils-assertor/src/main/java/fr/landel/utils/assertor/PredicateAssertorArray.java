@@ -58,7 +58,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).hasLength(length).toThrow();
+     * Assertor.that(array).hasLength(length).orElseThrow();
      * </pre>
      * 
      * @param length
@@ -78,7 +78,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).hasLength(length, "the array has not the specified length %2$d*").toThrow();
+     * Assertor.that(array).hasLength(length, "the array has not the specified length %2$d*").orElseThrow();
      * </pre>
      * 
      * @param length
@@ -102,7 +102,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).hasLength(length, Locale.US, "the array has not the specified length %2$d*").toThrow();
+     * Assertor.that(array).hasLength(length, Locale.US, "the array has not the specified length %2$d*").orElseThrow();
      * </pre>
      * 
      * @param length
@@ -128,7 +128,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).isEmpty().toThrow();
+     * Assertor.that(array).isEmpty().orElseThrow();
      * </pre>
      * 
      * @return the assertor step
@@ -145,7 +145,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).isEmpty("the array must be null or empty").toThrow();
+     * Assertor.that(array).isEmpty("the array must be null or empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -166,7 +166,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).isEmpty(Locale.US, "the array must be null or empty").toThrow();
+     * Assertor.that(array).isEmpty(Locale.US, "the array must be null or empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -190,7 +190,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).isNotEmpty().toThrow();
+     * Assertor.that(array).isNotEmpty().orElseThrow();
      * </pre>
      * 
      * @return the assertor step
@@ -207,7 +207,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).isNotEmpty("the array cannot be null or empty").toThrow();
+     * Assertor.that(array).isNotEmpty("the array cannot be null or empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -228,7 +228,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).isNotEmpty(Locale.US, "the array cannot be null or empty").toThrow();
+     * Assertor.that(array).isNotEmpty(Locale.US, "the array cannot be null or empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -252,7 +252,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).contains(object).toThrow();
+     * Assertor.that(array).contains(object).orElseThrow();
      * </pre>
      * 
      * @param object
@@ -271,7 +271,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).contains(object, "the element cannot be found in the array").toThrow();
+     * Assertor.that(array).contains(object, "the element cannot be found in the array").orElseThrow();
      * </pre>
      * 
      * @param object
@@ -294,7 +294,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).contains(object, Locale.US, "the element cannot be found in the array").toThrow();
+     * Assertor.that(array).contains(object, Locale.US, "the element cannot be found in the array").orElseThrow();
      * </pre>
      * 
      * @param object
@@ -320,7 +320,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).containsAll(subarray).toThrow();
+     * Assertor.that(array).containsAll(subarray).orElseThrow();
      * </pre>
      * 
      * @param objects
@@ -339,7 +339,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).containsAll(subarray, "not all elements can be found in the array").toThrow();
+     * Assertor.that(array).containsAll(subarray, "not all elements can be found in the array").orElseThrow();
      * </pre>
      * 
      * @param objects
@@ -362,7 +362,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).containsAll(subarray, Locale.US, "not all elements can be found in the array").toThrow();
+     * Assertor.that(array).containsAll(subarray, Locale.US, "not all elements can be found in the array").orElseThrow();
      * </pre>
      * 
      * @param objects
@@ -389,7 +389,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).containsAny(subarray).toThrow();
+     * Assertor.that(array).containsAny(subarray).orElseThrow();
      * </pre>
      * 
      * @param objects
@@ -408,7 +408,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).containsAny(subarray, "no element found in the array").toThrow();
+     * Assertor.that(array).containsAny(subarray, "no element found in the array").orElseThrow();
      * </pre>
      * 
      * @param objects
@@ -431,7 +431,7 @@ public interface PredicateAssertorArray<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(array).containsAny(subarray, Locale.US, "no element found in the array").toThrow();
+     * Assertor.that(array).containsAny(subarray, Locale.US, "no element found in the array").orElseThrow();
      * </pre>
      * 
      * @param objects

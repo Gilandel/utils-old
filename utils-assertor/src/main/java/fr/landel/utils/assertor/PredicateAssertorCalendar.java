@@ -58,7 +58,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isEqual(calendar2).toThrow();
+     * Assertor.that(calendar).isEqual(calendar2).orElseThrow();
      * </pre>
      * 
      * @param date
@@ -77,7 +77,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isEqual(calendar2, "not equal").toThrow();
+     * Assertor.that(calendar).isEqual(calendar2, "not equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -100,7 +100,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isEqual(calendar2, Locale.US, "not equal").toThrow();
+     * Assertor.that(calendar).isEqual(calendar2, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -126,7 +126,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isNotEqual(calendar2).toThrow();
+     * Assertor.that(calendar).isNotEqual(calendar2).orElseThrow();
      * </pre>
      * 
      * @param date
@@ -145,7 +145,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isNotEqual(calendar2, "not equal").toThrow();
+     * Assertor.that(calendar).isNotEqual(calendar2, "not equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -168,7 +168,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isNotEqual(calendar2, Locale.US, "not equal").toThrow();
+     * Assertor.that(calendar).isNotEqual(calendar2, Locale.US, "not equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -203,7 +203,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1).toThrow();
+     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1).orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -253,7 +253,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1, "not around").toThrow();
+     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1, "not around").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -308,7 +308,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1, Locale.US, "not around").toThrow();
+     * Assertor.that(calendar).isAround(calendar2, Calendar.DAY_OF_YEAR, 1, Locale.US, "not around").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -367,7 +367,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1).toThrow();
+     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1).orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -417,7 +417,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1, "must not be around").toThrow();
+     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1, "must not be around").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -472,7 +472,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1, Locale.US, "must not be around").toThrow();
+     * Assertor.that(calendar).isNotAround(calendar2, Calendar.DAY_OF_YEAR, 1, Locale.US, "must not be around").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -524,7 +524,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfter(calendar2).toThrow();
+     * Assertor.that(calendar).isAfter(calendar2).orElseThrow();
      * </pre>
      * 
      * @param date
@@ -543,7 +543,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfter(calendar2, "not after").toThrow();
+     * Assertor.that(calendar).isAfter(calendar2, "not after").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -566,7 +566,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfter(calendar2, Locale.US, "not after").toThrow();
+     * Assertor.that(calendar).isAfter(calendar2, Locale.US, "not after").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -599,7 +599,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1).toThrow();
+     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1).orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -649,7 +649,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1, "not after").toThrow();
+     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1, "not after").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -704,7 +704,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1, Locale.US, "not after").toThrow();
+     * Assertor.that(calendar).isAfter(calendar2, Calendar.MONTH, 1, Locale.US, "not after").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -757,7 +757,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfterOrEqual(calendar2).toThrow();
+     * Assertor.that(calendar).isAfterOrEqual(calendar2).orElseThrow();
      * </pre>
      * 
      * @param date
@@ -777,7 +777,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfterOrEqual(calendar2, "not after or equal").toThrow();
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, "not after or equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -801,7 +801,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfterOrEqual(calendar2, Locale.US, "not after or equal").toThrow();
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Locale.US, "not after or equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -836,7 +836,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1).toThrow();
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1).orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -887,7 +887,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1, "not after or equal").toThrow();
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1, "not after or equal").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -944,7 +944,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1, Locale.US, "not after or equal").toThrow();
+     * Assertor.that(calendar).isAfterOrEqual(calendar2, Calendar.MONTH, 1, Locale.US, "not after or equal").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -996,7 +996,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBefore(calendar2).toThrow();
+     * Assertor.that(calendar).isBefore(calendar2).orElseThrow();
      * </pre>
      * 
      * @param date
@@ -1015,7 +1015,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBefore(calendar2, "not before").toThrow();
+     * Assertor.that(calendar).isBefore(calendar2, "not before").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -1038,7 +1038,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBefore(calendar2, Locale.US, "not before").toThrow();
+     * Assertor.that(calendar).isBefore(calendar2, Locale.US, "not before").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -1072,7 +1072,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1).toThrow();
+     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1).orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -1122,7 +1122,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1, "not before").toThrow();
+     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1, "not before").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -1177,7 +1177,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1, Locale.US, "not before").toThrow();
+     * Assertor.that(calendar).isBefore(calendar2, Calendar.MONTH, 1, Locale.US, "not before").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -1230,7 +1230,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBeforeOrEqual(calendar2).toThrow();
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2).orElseThrow();
      * </pre>
      * 
      * @param date
@@ -1250,7 +1250,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBeforeOrEqual(calendar2, "not before or equal").toThrow();
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, "not before or equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -1274,7 +1274,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Locale.US, "not before or equal").toThrow();
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Locale.US, "not before or equal").orElseThrow();
      * </pre>
      * 
      * @param date
@@ -1309,7 +1309,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1).toThrow();
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1).orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -1360,7 +1360,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1, "not before or equal").toThrow();
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1, "not before or equal").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:
@@ -1417,7 +1417,7 @@ public interface PredicateAssertorCalendar extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1, Locale.US, "not before or equal").toThrow();
+     * Assertor.that(calendar).isBeforeOrEqual(calendar2, Calendar.MONTH, 1, Locale.US, "not before or equal").orElseThrow();
      * </pre>
      * 
      * Valid calendar field:

@@ -59,7 +59,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).hasSize(size).toThrow();
+     * Assertor.that(map).hasSize(size).orElseThrow();
      * </pre>
      * 
      * @param size
@@ -79,7 +79,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).hasSize(size, "bad size").toThrow();
+     * Assertor.that(map).hasSize(size, "bad size").orElseThrow();
      * </pre>
      * 
      * @param size
@@ -103,7 +103,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).hasSize(size, Locale.US, "bad size").toThrow();
+     * Assertor.that(map).hasSize(size, Locale.US, "bad size").orElseThrow();
      * </pre>
      * 
      * @param size
@@ -129,7 +129,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).isEmpty().toThrow();
+     * Assertor.that(map).isEmpty().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -146,7 +146,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).isEmpty("the map must be null or empty").toThrow();
+     * Assertor.that(map).isEmpty("the map must be null or empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -167,7 +167,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).isEmpty(Locale.US, "the map must be null or empty").toThrow();
+     * Assertor.that(map).isEmpty(Locale.US, "the map must be null or empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -191,7 +191,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).isNotEmpty().toThrow();
+     * Assertor.that(map).isNotEmpty().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -208,7 +208,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).isNotEmpty("the map cannot be null or empty").toThrow();
+     * Assertor.that(map).isNotEmpty("the map cannot be null or empty").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -229,7 +229,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).isNotEmpty(Locale.US, "the map cannot be null or empty").toThrow();
+     * Assertor.that(map).isNotEmpty(Locale.US, "the map cannot be null or empty").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -253,7 +253,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).contains(key).toThrow();
+     * Assertor.that(map).contains(key).orElseThrow();
      * </pre>
      * 
      * @param key
@@ -272,7 +272,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).contains(key, "the key was not found in the map").toThrow();
+     * Assertor.that(map).contains(key, "the key was not found in the map").orElseThrow();
      * </pre>
      * 
      * @param key
@@ -295,7 +295,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).contains(key, Locale.US, "the key was not found in the map").toThrow();
+     * Assertor.that(map).contains(key, Locale.US, "the key was not found in the map").orElseThrow();
      * </pre>
      * 
      * @param key
@@ -322,7 +322,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).contains(key, value).toThrow();
+     * Assertor.that(map).contains(key, value).orElseThrow();
      * </pre>
      * 
      * @param key
@@ -344,7 +344,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).contains(key, value, "the pair key/value was not found in the map").toThrow();
+     * Assertor.that(map).contains(key, value, "the pair key/value was not found in the map").orElseThrow();
      * </pre>
      * 
      * @param key
@@ -370,7 +370,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).contains(key, value, Locale.US, "the pair key/value was not found in the map").toThrow();
+     * Assertor.that(map).contains(key, value, Locale.US, "the pair key/value was not found in the map").orElseThrow();
      * </pre>
      * 
      * @param key
@@ -401,7 +401,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAll(keys).toThrow();
+     * Assertor.that(map).containsAll(keys).orElseThrow();
      * </pre>
      * 
      * @param keys
@@ -422,7 +422,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAll(keys, "not all keys can be found in the map").toThrow();
+     * Assertor.that(map).containsAll(keys, "not all keys can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param keys
@@ -447,7 +447,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAll(keys, Locale.US, "not all keys can be found in the map").toThrow();
+     * Assertor.that(map).containsAll(keys, Locale.US, "not all keys can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param keys
@@ -475,7 +475,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAll(entries).toThrow();
+     * Assertor.that(map).containsAll(entries).orElseThrow();
      * </pre>
      * 
      * @param map
@@ -495,7 +495,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAll(entries, "not all pairs key/value can be found in the map").toThrow();
+     * Assertor.that(map).containsAll(entries, "not all pairs key/value can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param map
@@ -519,7 +519,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAll(entries, Locale.US, "not all pairs key/value can be found in the map").toThrow();
+     * Assertor.that(map).containsAll(entries, Locale.US, "not all pairs key/value can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param map
@@ -548,7 +548,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAny(keys).toThrow();
+     * Assertor.that(map).containsAny(keys).orElseThrow();
      * </pre>
      * 
      * @param keys
@@ -569,7 +569,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAny(keys, "no pair key can be found in the map").toThrow();
+     * Assertor.that(map).containsAny(keys, "no pair key can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param keys
@@ -594,7 +594,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAny(keys, Locale.US, "no pair key can be found in the map").toThrow();
+     * Assertor.that(map).containsAny(keys, Locale.US, "no pair key can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param keys
@@ -622,7 +622,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAny(entries).toThrow();
+     * Assertor.that(map).containsAny(entries).orElseThrow();
      * </pre>
      * 
      * @param map
@@ -642,7 +642,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAny(entries, "no pair key/value can be found in the map").toThrow();
+     * Assertor.that(map).containsAny(entries, "no pair key/value can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param map
@@ -666,7 +666,7 @@ public interface PredicateAssertorMap<K, V> extends PredicateAssertor<PredicateS
      * </p>
      * 
      * <pre>
-     * Assertor.that(map).containsAny(entries, Locale.US, "no pair key/value can be found in the map").toThrow();
+     * Assertor.that(map).containsAny(entries, Locale.US, "no pair key/value can be found in the map").orElseThrow();
      * </pre>
      * 
      * @param map

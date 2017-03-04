@@ -14,6 +14,14 @@ package fr.landel.utils.commons;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -151,21 +159,6 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * Date Wrapper.
-     * 
-     * @param date
-     *            The date to wrap
-     * @return The wrapped date
-     */
-    public static Date getDate(final Date date) {
-        if (date == null) {
-            return null;
-        }
-
-        return new Date(date.getTime());
-    }
-
-    /**
      * Get the date if not null otherwise defaultDate.
      * 
      * @param date
@@ -215,22 +208,6 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Date getNullIfEmpty(final String date, final DateFormat df) {
         return getDefaultIfEmpty(date, df, null);
-    }
-
-    /**
-     * Get a new calendar instance from the date
-     * 
-     * @param date
-     *            The input date
-     * @return The calendar or null (if date is null)
-     */
-    public static Calendar getCalendar(final Date date) {
-        Calendar calendar = null;
-        if (date != null) {
-            calendar = Calendar.getInstance();
-            calendar.setTime(date);
-        }
-        return calendar;
     }
 
     /**
@@ -374,5 +351,577 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 calendar.clear(field);
             }
         }
+    }
+
+    /**
+     * Date Wrapper (security reason).
+     * 
+     * @param date
+     *            The date to wrap
+     * @return The wrapped date
+     */
+    public static Date cloneDate(final Date date) {
+        if (date == null) {
+            return null;
+        }
+        return new Date(date.getTime());
+    }
+
+    /**
+     * Get the date from a local date/time. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDateTime date) {
+        return getDate(date, null);
+    }
+
+    /**
+     * Get the date from a local date/time.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDateTime date, final ZoneId zoneId) {
+        return Date.from(date.atZone(ObjectUtils.defaultIfNull(zoneId, () -> ZoneId.systemDefault())).toInstant());
+    }
+
+    /**
+     * Get the date from a local date and time. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @param time
+     *            the input time
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDate date, final LocalTime time) {
+        return getDate(date, time, null);
+    }
+
+    /**
+     * Get the date from a local date and time.
+     * 
+     * @param date
+     *            the input date
+     * @param time
+     *            the input time
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDate date, final LocalTime time, final ZoneId zoneId) {
+        return Date.from(time.atDate(date).atZone(ObjectUtils.defaultIfNull(zoneId, () -> ZoneId.systemDefault())).toInstant());
+    }
+
+    /**
+     * Get the date from a local date. The time is defined to midnight at the
+     * start of the day (00:00). Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDate date) {
+        return getDate(date, (ZoneId) null);
+    }
+
+    /**
+     * Get the date from a local date. The time is defined to midnight at the
+     * start of the day (00:00).
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDate date, final ZoneId zoneId) {
+        return getDate(date.atTime(LocalTime.MIN), zoneId);
+    }
+
+    /**
+     * Get the date from a local time. The date is defined to epoch date
+     * 1970-01-01 ({@link ChronoField#EPOCH_DAY}). Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param time
+     *            the input time
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalTime time) {
+        return getDate(time, null);
+    }
+
+    /**
+     * Get the date from a local time. The date is defined to epoch date
+     * 1970-01-01 ({@link ChronoField#EPOCH_DAY}).
+     * 
+     * @param time
+     *            the input time
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalTime time, final ZoneId zoneId) {
+        return getDate(time.atDate(LocalDate.ofEpochDay(0)), zoneId);
+    }
+
+    /**
+     * Get the date from a date/time with an offset.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static Date getDate(final OffsetDateTime date) {
+        return Date.from(date.toInstant());
+    }
+
+    /**
+     * Get the date from a date/time with an offset. The date is defined to
+     * epoch date 1970-01-01 ({@link ChronoField#EPOCH_DAY}).
+     * 
+     * @param time
+     *            the input time
+     * @return the mapped date
+     */
+    public static Date getDate(final OffsetTime time) {
+        return getDate(null, time);
+    }
+
+    /**
+     * Get the date from a date/time with an offset.
+     * 
+     * @param date
+     *            the input date (if {@code null}, use the epoch date 1970-01-01
+     *            ({@link ChronoField#EPOCH_DAY}))
+     * @param time
+     *            the input time
+     * @return the mapped date
+     */
+    public static Date getDate(final LocalDate date, final OffsetTime time) {
+        return Date.from(time.atDate(ObjectUtils.defaultIfNull(date, LocalDate.ofEpochDay(0))).toInstant());
+    }
+
+    /**
+     * Get the date from a zoned date/time.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static Date getDate(final ZonedDateTime date) {
+        return Date.from(date.toInstant());
+    }
+
+    /**
+     * Get a new calendar instance from the date
+     * 
+     * @param date
+     *            The input date
+     * @return The calendar or null (if date is null)
+     */
+    public static Calendar getCalendar(final Date date) {
+        Calendar calendar = null;
+        if (date != null) {
+            calendar = Calendar.getInstance();
+            calendar.setTime(date);
+        }
+        return calendar;
+    }
+
+    /**
+     * Get the calendar from a local date/time. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDateTime date) {
+        return getCalendar(date, null);
+    }
+
+    /**
+     * Get the calendar from a local date/time.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDateTime date, final ZoneId zoneId) {
+        return getCalendar(getDate(date, zoneId));
+    }
+
+    /**
+     * Get the calendar from a local date and time. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @param time
+     *            the input time
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDate date, final LocalTime time) {
+        return getCalendar(date, time, null);
+    }
+
+    /**
+     * Get the calendar from a local date and time.
+     * 
+     * @param date
+     *            the input date
+     * @param time
+     *            the input time
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDate date, final LocalTime time, final ZoneId zoneId) {
+        return getCalendar(getDate(date, time, zoneId));
+    }
+
+    /**
+     * Get the calendar from a local date. The time is defined to midnight at
+     * the start of the day (00:00). Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDate date) {
+        return getCalendar(date, (ZoneId) null);
+    }
+
+    /**
+     * Get the calendar from a local date. The time is defined to midnight at
+     * the start of the day (00:00).
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDate date, final ZoneId zoneId) {
+        return getCalendar(date.atTime(LocalTime.MIN), zoneId);
+    }
+
+    /**
+     * Get the calendar from a local time. The date is defined to epoch date
+     * 1970-01-01 ({@link ChronoField#EPOCH_DAY}). Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param time
+     *            the input time
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalTime time) {
+        return getCalendar(time, null);
+    }
+
+    /**
+     * Get the calendar from a local time. The date is defined to epoch date
+     * 1970-01-01 ({@link ChronoField#EPOCH_DAY}).
+     * 
+     * @param time
+     *            the input time
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalTime time, final ZoneId zoneId) {
+        return getCalendar(getDate(time, zoneId));
+    }
+
+    /**
+     * Get the calendar from a date/time with an offset.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final OffsetDateTime date) {
+        return getCalendar(getDate(date));
+    }
+
+    /**
+     * Get the calendar from a date/time with an offset. The date is defined to
+     * epoch date 1970-01-01 ({@link ChronoField#EPOCH_DAY}).
+     * 
+     * @param time
+     *            the input time
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final OffsetTime time) {
+        return getCalendar(null, time);
+    }
+
+    /**
+     * Get the calendar from a date/time with an offset.
+     * 
+     * @param date
+     *            the input date (if {@code null}, use the epoch date 1970-01-01
+     *            ({@link ChronoField#EPOCH_DAY}))
+     * @param time
+     *            the input time
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final LocalDate date, final OffsetTime time) {
+        return getCalendar(getDate(date, time));
+    }
+
+    /**
+     * Get the calendar from a zoned date/time.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped calendar
+     */
+    public static Calendar getCalendar(final ZonedDateTime date) {
+        return getCalendar(getDate(date));
+    }
+
+    /**
+     * Get the local date/time from a date. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static LocalDateTime getLocalDateTime(final Date date) {
+        return getLocalDateTime(getCalendar(date));
+    }
+
+    /**
+     * Get the local date/time from a date
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static LocalDateTime getLocalDateTime(final Date date, final ZoneId zoneId) {
+        return LocalDateTime.ofInstant(date.toInstant(), ObjectUtils.defaultIfNull(zoneId, () -> ZoneId.systemDefault()));
+    }
+
+    /**
+     * Get the local date/time from a calendar
+     * 
+     * @param calendar
+     *            the input calendar
+     * @return the mapped date
+     */
+    public static LocalDateTime getLocalDateTime(final Calendar calendar) {
+        return LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
+    }
+
+    /**
+     * Get the local date from a date. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static LocalDate getLocalDate(final Date date) {
+        return getLocalDate(getCalendar(date));
+    }
+
+    /**
+     * Get the local date from a date.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static LocalDate getLocalDate(final Date date, final ZoneId zoneId) {
+        return getLocalDateTime(date, zoneId).toLocalDate();
+    }
+
+    /**
+     * Get the local date from a calendar.
+     * 
+     * @param calendar
+     *            the input calendar
+     * @return the mapped date
+     */
+    public static LocalDate getLocalDate(final Calendar calendar) {
+        return getLocalDateTime(calendar).toLocalDate();
+    }
+
+    /**
+     * Get the local time from a date. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static LocalTime getLocalTime(final Date date) {
+        return getLocalTime(getCalendar(date));
+    }
+
+    /**
+     * Get the local time from a date.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static LocalTime getLocalTime(final Date date, final ZoneId zoneId) {
+        return getLocalDateTime(date, zoneId).toLocalTime();
+    }
+
+    /**
+     * Get the local time from a calendar.
+     * 
+     * @param calendar
+     *            the input calendar
+     * @return the mapped date
+     */
+    public static LocalTime getLocalTime(final Calendar calendar) {
+        return getLocalDateTime(calendar).toLocalTime();
+    }
+
+    /**
+     * Get the zoned date/time from a date. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static ZonedDateTime getZonedDateTime(final Date date) {
+        return getZonedDateTime(getCalendar(date));
+    }
+
+    /**
+     * Get the zoned date/time from a date.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static ZonedDateTime getZonedDateTime(final Date date, final ZoneId zoneId) {
+        return ZonedDateTime.ofInstant(date.toInstant(), ObjectUtils.defaultIfNull(zoneId, () -> ZoneId.systemDefault()));
+    }
+
+    /**
+     * Get the zoned date/time from a calendar.
+     * 
+     * @param calendar
+     *            the input calendar
+     * @return the mapped date
+     */
+    public static ZonedDateTime getZonedDateTime(final Calendar calendar) {
+        return ZonedDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
+    }
+
+    /**
+     * Get the date/time with an offset from a date. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static OffsetDateTime getOffsetDateTime(final Date date) {
+        return getOffsetDateTime(getCalendar(date));
+    }
+
+    /**
+     * Get the date/time with an offset from a date.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static OffsetDateTime getOffsetDateTime(final Date date, final ZoneId zoneId) {
+        return OffsetDateTime.ofInstant(date.toInstant(), ObjectUtils.defaultIfNull(zoneId, () -> ZoneId.systemDefault()));
+    }
+
+    /**
+     * Get the date/time with an offset from a calendar.
+     * 
+     * @param calendar
+     *            the input calendar
+     * @return the mapped date
+     */
+    public static OffsetDateTime getOffsetDateTime(final Calendar calendar) {
+        return OffsetDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
+    }
+
+    /**
+     * Get the time with an offset from a date. Use the default time-zone
+     * {@link ZoneId#systemDefault()}.
+     * 
+     * @param date
+     *            the input date
+     * @return the mapped date
+     */
+    public static OffsetTime getOffsetTime(final Date date) {
+        return getOffsetTime(getCalendar(date));
+    }
+
+    /**
+     * Get the time with an offset from a date.
+     * 
+     * @param date
+     *            the input date
+     * @param zoneId
+     *            the time-zone identifier (if {@code null}, use
+     *            {@link ZoneId#systemDefault()})
+     * @return the mapped date
+     */
+    public static OffsetTime getOffsetTime(final Date date, final ZoneId zoneId) {
+        return OffsetTime.ofInstant(date.toInstant(), ObjectUtils.defaultIfNull(zoneId, () -> ZoneId.systemDefault()));
+    }
+
+    /**
+     * Get the time with an offset from a calendar.
+     * 
+     * @param calendar
+     *            the input calendar
+     * @return the mapped date
+     */
+    public static OffsetTime getOffsetTime(final Calendar calendar) {
+        return OffsetTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
     }
 }

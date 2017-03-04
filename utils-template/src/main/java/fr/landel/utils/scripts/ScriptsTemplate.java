@@ -117,9 +117,9 @@ public interface ScriptsTemplate {
         // Avoid some SQL injections but not all!, parameters has to be
         // checked before
         Assertor.that(StringUtils.countMatches(v, SINGLE_QUOTE) % 2).isEqual(0)
-                .toThrow("Replacement value has to contain only pairs of: " + SINGLE_QUOTE);
+                .orElseThrow("Replacement value has to contain only pairs of: " + SINGLE_QUOTE);
         Assertor.that(StringUtils.countMatches(StringUtils.replace(v, SINGLE_QUOTE + SINGLE_QUOTE, ""), SINGLE_QUOTE)).isEqual(0)
-                .toThrow("Replacement value has to contain only group of pairs of: " + SINGLE_QUOTE);
+                .orElseThrow("Replacement value has to contain only group of pairs of: " + SINGLE_QUOTE);
     };
 
     /**
@@ -131,7 +131,7 @@ public interface ScriptsTemplate {
         // Avoid some JSON injections but not all!, parameters has to be
         // checked before
         Assertor.that(v).not().contains(EXPRESSION_OPEN).and().not().contains(EXPRESSION_CLOSE)
-                .toThrow("Replacement value hasn't to contain braces");
+                .orElseThrow("Replacement value hasn't to contain braces");
     };
 
     /**

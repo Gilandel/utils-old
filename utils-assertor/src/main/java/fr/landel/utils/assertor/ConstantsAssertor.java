@@ -381,6 +381,46 @@ public class ConstantsAssertor {
         }
 
         /**
+         * Temporal constants
+         *
+         * @since Aug 10, 2016
+         * @author Gilles
+         *
+         */
+        static interface TEMPORAL {
+
+            /**
+             * Message key for temporal equals
+             */
+            String EQUALS = "temporal.equals";
+
+            /**
+             * Message key for temporal around
+             */
+            String AROUND = "temporal.around";
+
+            /**
+             * Message key for temporal after
+             */
+            String AFTER = "temporal.after";
+
+            /**
+             * Message key for temporal after or equals
+             */
+            String AFTER_OR_EQUALS = "temporal.afterOrEqual";
+
+            /**
+             * Message key for temporal before
+             */
+            String BEFORE = "temporal.before";
+
+            /**
+             * Message key for temporal before or equals
+             */
+            String BEFORE_OR_EQUALS = "temporal.beforeOrEqual";
+        }
+
+        /**
          * Array constants
          *
          * @since Aug 10, 2016

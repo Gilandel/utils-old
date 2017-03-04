@@ -88,7 +88,7 @@ public class EndBuilder<E extends AbstractEntity<E, K>, K extends Serializable &
      */
     public ClauseBuilder<E, K> having() {
         Assertor.that(this.groupByBuilder).isNotEmpty()
-                .toThrow(() -> new IllegalOperationException("'having' cannot be used without 'group by' clause"));
+                .orElseThrow(() -> new IllegalOperationException("'having' cannot be used without 'group by' clause"));
 
         this.havingBuilder = new ClauseBuilder<>(this.getParentBuilder(), this.getEntityClass(), this.getAlias());
         return this.havingBuilder;

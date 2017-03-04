@@ -58,7 +58,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasName(name).toThrow();
+     * Assertor.that(enumeration).hasName(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -78,7 +78,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasName(name, "bad name").toThrow();
+     * Assertor.that(enumeration).hasName(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -102,7 +102,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasName(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(enumeration).hasName(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -131,7 +131,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasNameIgnoreCase(name).toThrow();
+     * Assertor.that(enumeration).hasNameIgnoreCase(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -152,7 +152,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasNameIgnoreCase(name, "bad name").toThrow();
+     * Assertor.that(enumeration).hasNameIgnoreCase(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -177,7 +177,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasNameIgnoreCase(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(enumeration).hasNameIgnoreCase(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -204,7 +204,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasOrdinal(ordinal).toThrow();
+     * Assertor.that(enumeration).hasOrdinal(ordinal).orElseThrow();
      * </pre>
      * 
      * @param ordinal
@@ -223,7 +223,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasOrdinal(ordinal, "bad ordinal").toThrow();
+     * Assertor.that(enumeration).hasOrdinal(ordinal, "bad ordinal").orElseThrow();
      * </pre>
      * 
      * @param ordinal
@@ -246,7 +246,7 @@ public interface PredicateAssertorEnum<T extends Enum<T>> extends PredicateAsser
      * </p>
      * 
      * <pre>
-     * Assertor.that(enumeration).hasOrdinal(ordinal, Locale.US, "bad ordinal").toThrow();
+     * Assertor.that(enumeration).hasOrdinal(ordinal, Locale.US, "bad ordinal").orElseThrow();
      * </pre>
      * 
      * @param ordinal

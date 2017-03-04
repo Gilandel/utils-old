@@ -22,9 +22,9 @@ package fr.landel.utils.io;
 public class SystemUtils {
 
     /**
-     * The OS name
+     * The operating system name
      */
-    public static final String OS = System.getProperty("os.name");
+    public static final String OS = SystemProperties.OS_NAME.getValue();
 
     private static final String OS_LC = OS.toLowerCase();
 

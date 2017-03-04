@@ -51,7 +51,7 @@ public class AssertorCharSequenceKOPerf extends AbstractMicrobenchmark {
         Assertor.that("text").contains("re").isOK();
         Assertor.that("text").contains("re").getErrors();
         try {
-            Assertor.that("text").contains("ex").toThrow();
+            Assertor.that("text").contains("ex").orElseThrow();
         } catch (IllegalArgumentException e) {
             // Do nothing
         }

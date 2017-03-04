@@ -122,8 +122,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final String path, final Charset charset) throws IOException {
-        Assertor.that(path).isNotNull().toThrow("The 'path' parameter cannot be null");
-        Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
+        Assertor.that(path).isNotNull().orElseThrow("The 'path' parameter cannot be null");
+        Assertor.that(charset).isNotNull().orElseThrow("The 'charset' parameter cannot be null");
 
         return FileUtils.getFileContent(new File(path), charset);
     }
@@ -140,8 +140,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final File file, final Charset charset) throws IOException {
-        Assertor.that(file).isNotNull().toThrow("The 'file' parameter cannot be null");
-        Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
+        Assertor.that(file).isNotNull().orElseThrow("The 'file' parameter cannot be null");
+        Assertor.that(charset).isNotNull().orElseThrow("The 'charset' parameter cannot be null");
 
         final StringBuilder buffer;
 
@@ -179,8 +179,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final InputStream inputStream, final Charset charset) throws IOException {
-        Assertor.that(inputStream).isNotNull().toThrow("The 'inputStream' parameter cannot be null");
-        Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
+        Assertor.that(inputStream).isNotNull().orElseThrow("The 'inputStream' parameter cannot be null");
+        Assertor.that(charset).isNotNull().orElseThrow("The 'charset' parameter cannot be null");
 
         final StringBuilder content = new StringBuilder();
 
@@ -205,8 +205,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static StringBuilder getFileContent(final String path, final Charset charset, final ClassLoader classLoader) throws IOException {
-        Assertor.that(path).isNotBlank().toThrow("The 'path' parameter cannot be null or blank");
-        Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
+        Assertor.that(path).isNotBlank().orElseThrow("The 'path' parameter cannot be null or blank");
+        Assertor.that(charset).isNotNull().orElseThrow("The 'charset' parameter cannot be null");
 
         ClassLoader loader = classLoader;
 
@@ -224,7 +224,7 @@ public final class FileUtils {
     }
 
     private static void loadContent(final StringBuilder content, final InputStream inputStream, final Charset charset) throws IOException {
-        Assertor.that(inputStream).isNotNull().toThrow("The 'inputStream' from the classpath cannot be null");
+        Assertor.that(inputStream).isNotNull().orElseThrow("The 'inputStream' from the classpath cannot be null");
 
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             int bufferReadSize;
@@ -279,8 +279,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during writing
      */
     public static void writeFileContent(final StringBuilder buffer, final String path, final Charset charset) throws IOException {
-        Assertor.that(path).isNotNull().toThrow("The 'path' parameter cannot be null");
-        Assertor.that(charset).isNotNull().toThrow("The 'charset' parameter cannot be null");
+        Assertor.that(path).isNotNull().orElseThrow("The 'path' parameter cannot be null");
+        Assertor.that(charset).isNotNull().orElseThrow("The 'charset' parameter cannot be null");
 
         writeFileContent(buffer, new File(path), charset);
     }
@@ -297,7 +297,7 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static void writeFileContent(final InputStream inputStream, final String path) throws IOException {
-        Assertor.that(path).isNotNull().toThrow("The 'path' parameter cannot be null");
+        Assertor.that(path).isNotNull().orElseThrow("The 'path' parameter cannot be null");
 
         writeFileContent(inputStream, new File(path));
     }
@@ -314,8 +314,8 @@ public final class FileUtils {
      *             Exception thrown if problems occurs during reading
      */
     public static void writeFileContent(final InputStream inputStream, final File file) throws IOException {
-        Assertor.that(inputStream).isNotNull().toThrow("The 'inpuStream' parameter cannot be null");
-        Assertor.that(file).isNotNull().toThrow("The 'file' parameter cannot be null");
+        Assertor.that(inputStream).isNotNull().orElseThrow("The 'inpuStream' parameter cannot be null");
+        Assertor.that(file).isNotNull().orElseThrow("The 'file' parameter cannot be null");
 
         final BufferedOutputStream bos = StreamUtils.createBufferedOutputStream(file);
 
@@ -335,8 +335,8 @@ public final class FileUtils {
      *             thrown if problems occurs during reading
      */
     public static void writeStream(final InputStream inputStream, final OutputStream outputStream) throws IOException {
-        Assertor.that(inputStream).isNotNull().toThrow("The 'inpuStream' parameter cannot be null");
-        Assertor.that(outputStream).isNotNull().toThrow("The 'outputStream' parameter cannot be null");
+        Assertor.that(inputStream).isNotNull().orElseThrow("The 'inpuStream' parameter cannot be null");
+        Assertor.that(outputStream).isNotNull().orElseThrow("The 'outputStream' parameter cannot be null");
 
         int bufferReadSize;
         final byte[] buffer = new byte[BUFFER_SIZE];
@@ -360,7 +360,7 @@ public final class FileUtils {
      *             If parameters are null or not files
      */
     public static boolean isEqual(final String path1, final String path2) {
-        Assertor.that(path1).isNotNull().and(path2).isNotNull().toThrow("The 'path1' or 'path2' parameters cannot be null");
+        Assertor.that(path1).isNotNull().and(path2).isNotNull().orElseThrow("The 'path1' or 'path2' parameters cannot be null");
 
         return FileUtils.isEqual(new File(path1), new File(path2));
     }

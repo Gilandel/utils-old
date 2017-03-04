@@ -48,7 +48,7 @@ class InternalFileSystemUtils {
     /**
      * The line separator string (windows = \r\n, unix = \n, macOS = \r)
      */
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    public static final String LINE_SEPARATOR = SystemProperties.LINE_SEPARATOR.getValue();
 
     /**
      * Message if parameters are null
@@ -143,7 +143,7 @@ class InternalFileSystemUtils {
      */
     protected static void copyDirectory(final File src, final File dest, final FileFilter fileFilter, final FilenameFilter filenameFilter,
             final boolean removeSource) throws IOException {
-        Assertor.that(src).validates((file) -> file.exists()).toThrow(() -> new FileNotFoundException("the source doesn't exist"));
+        Assertor.that(src).validates((file) -> file.exists()).orElseThrow(() -> new FileNotFoundException("the source doesn't exist"));
 
         if (src.isDirectory()) {
             // creation du repertoire si necessaire
@@ -338,7 +338,7 @@ class InternalFileSystemUtils {
      */
     protected static boolean deleteDirectory(final File dir, final FileFilter fileFilter, final FilenameFilter filenameFilter)
             throws IOException {
-        Assertor.that(dir).isNotNull().and().validates((file) -> file.isDirectory(), "not a directory").toThrow();
+        Assertor.that(dir).isNotNull().and().validates((file) -> file.isDirectory(), "not a directory").orElseThrow();
 
         boolean notDeleted = false;
 
@@ -374,7 +374,7 @@ class InternalFileSystemUtils {
      * @return true if directory is empty
      */
     public static boolean isDirectoryEmpty(final File dir) {
-        Assertor.that(dir).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         if (dir.isDirectory()) {
             File[] files = dir.listFiles();
@@ -470,7 +470,8 @@ class InternalFileSystemUtils {
      * @return The filter
      */
     public static FilenameFilter createFilenameFilter(final String... exts) {
-        Assertor.that(exts).isNotEmpty(ERROR_PARAM_NULL).and().not().contains(null, "extensions array cannot contains 'null'").toThrow();
+        Assertor.that(exts).isNotEmpty(ERROR_PARAM_NULL).and().not().contains(null, "extensions array cannot contains 'null'")
+                .orElseThrow();
 
         final Set<String> allowedExts = new HashSet<>();
         for (String ext : exts) {

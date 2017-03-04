@@ -60,7 +60,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).istEqual(number2).toThrow();
+     * Assertor.that(number1).istEqual(number2).orElseThrow();
      * </pre>
      * 
      * @see <a href=
@@ -83,7 +83,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).istEqual(number2, "%1$d* cannot be equal to %2$d*").toThrow();
+     * Assertor.that(number1).istEqual(number2, "%1$d* cannot be equal to %2$d*").orElseThrow();
      * </pre>
      * 
      * @see <a href=
@@ -110,7 +110,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).istEqual(number2, Locale.US, "%1$d* cannot be equal to %2$d*").toThrow();
+     * Assertor.that(number1).istEqual(number2, Locale.US, "%1$d* cannot be equal to %2$d*").orElseThrow();
      * </pre>
      * 
      * @see <a href=
@@ -140,7 +140,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isNotEqual(number2).toThrow();
+     * Assertor.that(number1).isNotEqual(number2).orElseThrow();
      * </pre>
      * 
      * @see <a href=
@@ -163,7 +163,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isNotEqual(number2, "%1$d* is not equal to %2$d*").toThrow();
+     * Assertor.that(number1).isNotEqual(number2, "%1$d* is not equal to %2$d*").orElseThrow();
      * </pre>
      * 
      * @see <a href=
@@ -190,7 +190,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isNotEqual(number2, Locale.US, "%1$d* is not equal to %2$d*").toThrow();
+     * Assertor.that(number1).isNotEqual(number2, Locale.US, "%1$d* is not equal to %2$d*").orElseThrow();
      * </pre>
      * 
      * @see <a href=
@@ -219,7 +219,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isZero().toThrow();
+     * Assertor.that(number).isZero().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -236,7 +236,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isZero("not zero").toThrow();
+     * Assertor.that(number).isZero("not zero").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -257,7 +257,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isZero(Locale.US, "not zero").toThrow();
+     * Assertor.that(number).isZero(Locale.US, "not zero").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -282,7 +282,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isPositive().toThrow();
+     * Assertor.that(number).isPositive().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -300,7 +300,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isPositive("not positive").toThrow();
+     * Assertor.that(number).isPositive("not positive").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -322,7 +322,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isPositive(Locale.US, "not positive").toThrow();
+     * Assertor.that(number).isPositive(Locale.US, "not positive").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -347,7 +347,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isNegative().toThrow();
+     * Assertor.that(number).isNegative().orElseThrow();
      * </pre>
      * 
      * @return The operator
@@ -365,7 +365,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isNegative("not negative").toThrow();
+     * Assertor.that(number).isNegative("not negative").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -387,7 +387,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number).isNegative(Locale.US, "not negative").toThrow();
+     * Assertor.that(number).isNegative(Locale.US, "not negative").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -417,7 +417,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isGT(number2).toThrow();
+     * Assertor.that(number1).isGT(number2).orElseThrow();
      * </pre>
      * 
      * @param number
@@ -442,7 +442,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isGT(number2, "not greater").toThrow();
+     * Assertor.that(number1).isGT(number2, "not greater").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -471,7 +471,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isGT(number2, Locale.US, "not greater").toThrow();
+     * Assertor.that(number1).isGT(number2, Locale.US, "not greater").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -504,7 +504,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isGTE(number2).toThrow();
+     * Assertor.that(number1).isGTE(number2).orElseThrow();
      * </pre>
      * 
      * @param number
@@ -530,7 +530,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isGTE(number2, "not greater or equal").toThrow();
+     * Assertor.that(number1).isGTE(number2, "not greater or equal").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -560,7 +560,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isGTE(number2, Locale.US, "not greater or equal").toThrow();
+     * Assertor.that(number1).isGTE(number2, Locale.US, "not greater or equal").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -592,7 +592,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isLT(number2).toThrow();
+     * Assertor.that(number1).isLT(number2).orElseThrow();
      * </pre>
      * 
      * @param number
@@ -617,7 +617,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isLT(number2, "not lower").toThrow();
+     * Assertor.that(number1).isLT(number2, "not lower").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -646,7 +646,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isLT(number2, Locale.US, "not lower").toThrow();
+     * Assertor.that(number1).isLT(number2, Locale.US, "not lower").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -679,7 +679,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isLTE(number2).toThrow();
+     * Assertor.that(number1).isLTE(number2).orElseThrow();
      * </pre>
      * 
      * @param number
@@ -705,7 +705,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isLTE(number2, "not lower or equal").toThrow();
+     * Assertor.that(number1).isLTE(number2, "not lower or equal").orElseThrow();
      * </pre>
      * 
      * @param number
@@ -735,7 +735,7 @@ public interface PredicateAssertorNumber<N extends Number & Comparable<N>> exten
      * </p>
      * 
      * <pre>
-     * Assertor.that(number1).isLTE(number2, Locale.US, "not lower or equal").toThrow();
+     * Assertor.that(number1).isLTE(number2, Locale.US, "not lower or equal").orElseThrow();
      * </pre>
      * 
      * @param number

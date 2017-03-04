@@ -123,7 +123,7 @@ public class ScriptsReplacer {
     }
 
     private void checkInput(final StringBuilder sb) throws IllegalArgumentException {
-        Assertor.that(sb).isNotEmpty().toThrow("Input cannot be empty or null");
+        Assertor.that(sb).isNotEmpty().orElseThrow("Input cannot be empty or null");
 
         int countBracketOpen = 0;
         int countBracketClose = 0;
@@ -148,28 +148,28 @@ public class ScriptsReplacer {
             countBracketOpen++;
         }
 
-        Assertor.that(countBracketOpen).isEqual(countBracketClose).toThrow("The count of %s doesn't match the count of %s, input: %s",
+        Assertor.that(countBracketOpen).isEqual(countBracketClose).orElseThrow("The count of %s doesn't match the count of %s, input: %s",
                 this.template.getExpressionOpen(), this.template.getExpressionClose(), sb);
     }
 
     private void checkReplacements(final Map<String, String> replacements) throws IllegalArgumentException {
         for (Entry<String, String> entry : replacements.entrySet()) {
-            final String key = Assertor.that(entry.getKey()).isNotNull().toThrow("Replacement key cannot be null");
-            final String value = Assertor.that(entry.getValue()).isNotNull().toThrow("Replacement value cannot be null");
+            final String key = Assertor.that(entry.getKey()).isNotNull().orElseThrow("Replacement key cannot be null");
+            final String value = Assertor.that(entry.getValue()).isNotNull().orElseThrow("Replacement value cannot be null");
 
             final String errorKey = "Replacement key cannot contains: %s";
             PredicateAssertorCharSequence<String> assertorNot = Assertor.that(key).not();
-            assertorNot.contains(this.template.getExpressionOpen()).toThrow(errorKey, this.template.getExpressionOpen());
-            assertorNot.contains(this.template.getExpressionClose()).toThrow(errorKey, this.template.getExpressionClose());
-            assertorNot.contains(this.template.getOperatorThen()).toThrow(errorKey, this.template.getOperatorThen());
-            assertorNot.contains(this.template.getOperatorElse()).toThrow(errorKey, this.template.getOperatorElse());
+            assertorNot.contains(this.template.getExpressionOpen()).orElseThrow(errorKey, this.template.getExpressionOpen());
+            assertorNot.contains(this.template.getExpressionClose()).orElseThrow(errorKey, this.template.getExpressionClose());
+            assertorNot.contains(this.template.getOperatorThen()).orElseThrow(errorKey, this.template.getOperatorThen());
+            assertorNot.contains(this.template.getOperatorElse()).orElseThrow(errorKey, this.template.getOperatorElse());
 
             final String errorValue = "Replacement value cannot contains: ";
             assertorNot = Assertor.that(value).not();
-            assertorNot.contains(this.template.getExpressionOpen()).toThrow(errorValue, this.template.getExpressionOpen());
-            assertorNot.contains(this.template.getExpressionClose()).toThrow(errorValue, this.template.getExpressionClose());
-            assertorNot.contains(this.template.getOperatorThen()).toThrow(errorValue, this.template.getOperatorThen());
-            assertorNot.contains(this.template.getOperatorElse()).toThrow(errorValue, this.template.getOperatorElse());
+            assertorNot.contains(this.template.getExpressionOpen()).orElseThrow(errorValue, this.template.getExpressionOpen());
+            assertorNot.contains(this.template.getExpressionClose()).orElseThrow(errorValue, this.template.getExpressionClose());
+            assertorNot.contains(this.template.getOperatorThen()).orElseThrow(errorValue, this.template.getOperatorThen());
+            assertorNot.contains(this.template.getOperatorElse()).orElseThrow(errorValue, this.template.getOperatorElse());
 
             if (this.template.getChecker() != null) {
                 this.template.getChecker().acceptThrows(value);

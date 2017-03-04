@@ -228,7 +228,7 @@ public enum QueryOperator {
     }
 
     public void isParamsNumberCorrect(final int number) {
-        Assertor.that(number).isEqual(this.nbParams).toThrow();
+        Assertor.that(number).isEqual(this.nbParams).orElseThrow();
     }
 
     @Override

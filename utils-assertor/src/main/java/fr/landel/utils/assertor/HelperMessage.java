@@ -495,7 +495,7 @@ public final class HelperMessage extends ConstantsAssertor {
      */
     protected static StringBuilder getParam(final int index, final EnumType type) {
         final StringBuilder stringBuilder = new StringBuilder();
-        if (EnumType.CHAR_SEQUENCE.equals(type)) {
+        if (EnumType.CHAR_SEQUENCE.equals(type) || EnumType.TEMPORAL.equals(type)) {
             stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_CHAR_SEQUENCE);
         } else if (EnumType.BOOLEAN.equals(type)) {
             stringBuilder.append(PREFIX_PERCENT).append(index).append(SUFFIX_BOOLEAN);

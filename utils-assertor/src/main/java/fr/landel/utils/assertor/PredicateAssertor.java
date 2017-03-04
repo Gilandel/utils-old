@@ -70,7 +70,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * Add the NOT operator on the next assertion
      * 
      * <pre>
-     * Assertor.that(object).not().isInstanceOf(Exception.class).toThrow();
+     * Assertor.that(object).not().isInstanceOf(Exception.class).orElseThrow();
      * </pre>
      * 
      * @return an assertor based on the current one
@@ -87,7 +87,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isNull().toThrow();
+     * Assertor.that(object).isNull().orElseThrow();
      * </pre>
      * 
      * @return the assertor step
@@ -104,7 +104,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isNull("The object must be null").toThrow();
+     * Assertor.that(object).isNull("The object must be null").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -125,7 +125,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isNull(Locale.US, "The object must be null").toThrow();
+     * Assertor.that(object).isNull(Locale.US, "The object must be null").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -149,7 +149,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isNotNull().toThrow();
+     * Assertor.that(object).isNotNull().orElseThrow();
      * </pre>
      * 
      * @return the assertor step
@@ -166,7 +166,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isNotNull("The object cannot be null").toThrow();
+     * Assertor.that(object).isNotNull("The object cannot be null").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -187,7 +187,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isNotNull(Locale.US, "The object cannot be null").toThrow();
+     * Assertor.that(object).isNotNull(Locale.US, "The object cannot be null").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -211,7 +211,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isEqual(object2).toThrow();
+     * Assertor.that(object).isEqual(object2).orElseThrow();
      * </pre>
      * 
      * @param object
@@ -230,7 +230,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isEqual(object2, "The object must be equal").toThrow();
+     * Assertor.that(object).isEqual(object2, "The object must be equal").orElseThrow();
      * </pre>
      * 
      * @param object
@@ -253,7 +253,7 @@ public interface PredicateAssertor<S extends PredicateStep<S, T>, T> {
      * </p>
      * 
      * <pre>
-     * Assertor.that(object).isEqual(object2, Locale.US, "The object must be equal").toThrow();
+     * Assertor.that(object).isEqual(object2, Locale.US, "The object must be equal").orElseThrow();
      * </pre>
      * 
      * @param object

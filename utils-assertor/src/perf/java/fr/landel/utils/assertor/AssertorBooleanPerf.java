@@ -46,16 +46,16 @@ public class AssertorBooleanPerf extends AbstractMicrobenchmark {
     public void assertorBasicPerf1() {
         Assertor.that(true).isTrue().isOK();
         Assertor.that(true).isTrue().getErrors();
-        Assertor.that(true).isTrue().toThrow();
+        Assertor.that(true).isTrue().orElseThrow();
 
         Assertor.that(false).isFalse().isOK();
         Assertor.that(false).isFalse().getErrors();
-        Assertor.that(false).isFalse().toThrow();
+        Assertor.that(false).isFalse().orElseThrow();
 
         Assertor.that(true).isFalse().isOK();
         Assertor.that(true).isFalse().getErrors();
         try {
-            Assertor.that(true).isFalse().toThrow();
+            Assertor.that(true).isFalse().orElseThrow();
         } catch (IllegalArgumentException e) {
             // do nothing
         }
@@ -63,7 +63,7 @@ public class AssertorBooleanPerf extends AbstractMicrobenchmark {
         Assertor.that(false).isTrue().isOK();
         Assertor.that(false).isTrue().getErrors();
         try {
-            Assertor.that(false).isTrue().toThrow();
+            Assertor.that(false).isTrue().orElseThrow();
         } catch (IllegalArgumentException e) {
             // do nothing
         }

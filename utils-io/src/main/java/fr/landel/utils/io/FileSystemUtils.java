@@ -89,7 +89,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveFile(final String src, final String dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyFile(new File(src), new File(dest), true);
     }
@@ -105,7 +105,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveFile(final File src, final File dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyFile(src, dest, true);
     }
@@ -121,7 +121,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyFile(final String src, final String dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyFile(new File(src), new File(dest), false);
     }
@@ -137,7 +137,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyFile(final File src, final File dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyFile(src, dest, false);
     }
@@ -154,7 +154,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveDirectory(final String src, final String dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(new File(src), new File(dest), null, null, true);
     }
@@ -173,7 +173,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveDirectory(final String src, final String dest, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(new File(src), new File(dest), fileFilter, null, true);
     }
@@ -192,7 +192,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveDirectory(final String src, final String dest, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(new File(src), new File(dest), null, filenameFilter, true);
     }
@@ -209,7 +209,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveDirectory(final File src, final File dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(src, dest, null, null, true);
     }
@@ -228,7 +228,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveDirectory(final File src, final File dest, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(src, dest, fileFilter, null, true);
     }
@@ -247,7 +247,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void moveDirectory(final File src, final File dest, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(src, dest, null, filenameFilter, true);
     }
@@ -264,7 +264,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyDirectory(final String src, final String dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(new File(src), new File(dest), null, null, false);
     }
@@ -283,7 +283,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyDirectory(final String src, final String dest, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(new File(src), new File(dest), fileFilter, null, false);
     }
@@ -302,7 +302,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyDirectory(final String src, final String dest, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(new File(src), new File(dest), null, filenameFilter, false);
     }
@@ -319,7 +319,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyDirectory(final File src, final File dest) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(src, dest, null, null, false);
     }
@@ -338,7 +338,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyDirectory(final File src, final File dest, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(src, dest, fileFilter, null, false);
     }
@@ -357,79 +357,79 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             Exception thrown if problems occurs during coping
      */
     public static void copyDirectory(final File src, final File dest, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(dest).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         copyDirectory(src, dest, null, filenameFilter, false);
     }
 
     public static long getSize(final String src) throws IOException {
-        Assertor.that(src).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(new File(src), null, null);
     }
 
     public static long getSize(final String src, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(new File(src), fileFilter, null);
     }
 
     public static long getSize(final String src, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(new File(src), null, filenameFilter);
     }
 
     public static long getSize(final File src) throws IOException {
-        Assertor.that(src).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(src, null, null);
     }
 
     public static long getSize(final File src, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(src, fileFilter, null);
     }
 
     public static long getSize(final File src, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.getSize(src, null, filenameFilter);
     }
 
     public static List<File> listFiles(final String src) throws IOException {
-        Assertor.that(src).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.listFiles(Optional.empty(), new File(src), null, null, null);
     }
 
     public static List<File> listFiles(final String src, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.listFiles(Optional.empty(), new File(src), fileFilter, null, null);
     }
 
     public static List<File> listFiles(final String src, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.listFiles(Optional.empty(), new File(src), null, filenameFilter, null);
     }
 
     public static List<File> listFiles(final File src) throws IOException {
-        Assertor.that(src).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.listFiles(Optional.empty(), src, null, null, null);
     }
 
     public static List<File> listFiles(final File src, final FileFilter fileFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.listFiles(Optional.empty(), src, fileFilter, null, null);
     }
 
     public static List<File> listFiles(final File src, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(src).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return FileSystemUtils.listFiles(Optional.empty(), src, null, filenameFilter, null);
     }
@@ -467,7 +467,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOexception
      */
     public static boolean deleteDirectory(final String dir) throws IOException {
-        Assertor.that(dir).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return deleteDirectory(new File(dir), null, null);
     }
@@ -484,7 +484,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOexception
      */
     public static boolean deleteDirectory(final String dir, final FileFilter fileFilter) throws IOException {
-        Assertor.that(dir).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return deleteDirectory(new File(dir), fileFilter, null);
     }
@@ -501,7 +501,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOexception
      */
     public static boolean deleteDirectory(final String dir, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(dir).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return deleteDirectory(new File(dir), null, filenameFilter);
     }
@@ -516,7 +516,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOexception
      */
     public static boolean deleteDirectory(final File dir) throws IOException {
-        Assertor.that(dir).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return deleteDirectory(dir, null, null);
     }
@@ -533,7 +533,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOexception
      */
     public static boolean deleteDirectory(final File dir, final FileFilter fileFilter) throws IOException {
-        Assertor.that(dir).isNotNull().and(fileFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().and(fileFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return deleteDirectory(dir, fileFilter, null);
     }
@@ -550,7 +550,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOexception
      */
     public static boolean deleteDirectory(final File dir, final FilenameFilter filenameFilter) throws IOException {
-        Assertor.that(dir).isNotNull().and(filenameFilter).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().and(filenameFilter).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return deleteDirectory(dir, null, filenameFilter);
     }
@@ -565,7 +565,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      *             IOException
      */
     public static boolean isDirectoryEmpty(final String dir) throws IOException {
-        Assertor.that(dir).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(dir).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return isDirectoryEmpty(new File(dir));
     }
@@ -580,7 +580,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      * @return filePath, if it's absolute otherwise return 'base + filePath'
      */
     public static String getAbsolutePath(final File base, final File filePath) {
-        Assertor.that(base).isNotNull().and(filePath).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(base).isNotNull().and(filePath).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         File file = filePath;
         if (!file.isAbsolute()) {
@@ -599,7 +599,7 @@ public final class FileSystemUtils extends InternalFileSystemUtils {
      * @return filePath, if it's absolute otherwise return 'base + filePath'
      */
     public static String getAbsolutePath(final String base, final String filePath) {
-        Assertor.that(base).isNotNull().and(filePath).isNotNull().toThrow(ERROR_PARAM_NULL);
+        Assertor.that(base).isNotNull().and(filePath).isNotNull().orElseThrow(ERROR_PARAM_NULL);
 
         return getAbsolutePath(new File(base), new File(filePath));
     }

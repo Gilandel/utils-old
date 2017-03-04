@@ -54,13 +54,13 @@ Original idea is based on the version of Assert provided by the Spring Team.
 
 Examples:
 ```java
-Assertor.that(file).isNotNull().and().validates(f -> f.isDirectory(), "not a directory").toThrow();
+Assertor.that(file).isNotNull().and().validates(f -> f.isDirectory(), "not a directory").orElseThrow();
 // -> if 'file' is null or not a directory, an IllegalArgumentException is thrown
 
-Assertor.that(paramInt).isGT(10).toThrow(() -> new MyException("invalid"));
+Assertor.that(paramInt).isGT(10).orElseThrow(() -> new MyException("invalid"));
 // -> if 'paramInt' is not greater than 10, a MyException is thrown
 
-Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").toThrow((errors, parameters) -> new MyException("invalid"));
+Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").orElseThrow((errors, parameters) -> new MyException("invalid"));
 // -> if 'array' is null/empty and 'paramMessage' does not contain 'text', a MyException is thrown
 // -> if 'array' is not null/empty and 'paramMessage' contains 'text', a MyException is thrown
 // -> if 'array' is null/empty and 'paramMessage' contains 'text', returns 'paramMessage'
@@ -68,14 +68,14 @@ Assertor.that(array).isNotEmpty().xor(paramMessage).contains("text").toThrow((er
 
 Assertor.that(param1).isNotNull().and().not().startsWith("_")
 	.and(param2).isNotNull().and().isBefore(Calendar.getInstance())
-	.toThrow("Param1 '%1$s*' or/and param2 '%3$tF* %3$tT*.%3$tL* %3$tZ*' are incorrect");
+	.orElseThrow("Param1 '%1$s*' or/and param2 '%3$tF* %3$tT*.%3$tL* %3$tZ*' are incorrect");
 // -> if condition result is false, throw an IllegalArgumentException with the message "Param1 '<value_param1>' or/and param2 '<value_param2>' are incorrect".
 // -> the message uses String.format, to get injected parameter just add an asterisk at the end.
 
 // Exactly the same validation but with more specific errors
 Assertor.that(param1).isNotNull("Param1 cannot be null or empty").and().not().startsWith("_", "Param1 '%1$*' cannot start with '%2$s*'")
 	.and(param2).isNotNull("Param2 cannot be null").and().isBefore(Calendar.getInstance(), "Param2 '%1$tF* %1$tT*.%1$tL* %1$tZ*' must be before '%2$tF* %2$tT*.%2$tL* %2$tZ*'")
-	.toThrow();
+	.orElseThrow();
 // -> throw for example (if param1="test", param2=Calendar[2018-02-28 04:31:56.399 CET] and NOW=Calendar[2017-02-28 04:31:56.401 CET]):
 // IllegalArgumnentException("Param2 '2018-02-28 04:31:56.399 CET' must be before '2017-02-28 04:31:56.401 CET'")
 ```
@@ -104,6 +104,7 @@ Features:
 - FileSystemUtils: All methods to manage files and directories
 - FileUtils: To read, write and compare files
 - StreamUtils: To manage stream files (related to Input/OutputStream)
+- SystemProperties: A list of system properties (like os.name, java.home,...)
 - SystemUtils: To get operating system info
 
 # utils-log

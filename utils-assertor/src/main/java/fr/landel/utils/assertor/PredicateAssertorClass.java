@@ -58,7 +58,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).isAssignableFrom(superType).toThrow();
+     * Assertor.that(clazz).isAssignableFrom(superType).orElseThrow();
      * </pre>
      * 
      * @param clazz
@@ -79,7 +79,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).isAssignableFrom(superType, "not assignable").toThrow();
+     * Assertor.that(clazz).isAssignableFrom(superType, "not assignable").orElseThrow();
      * </pre>
      * 
      * @param clazz
@@ -104,7 +104,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).isAssignableFrom(superType, Locale.US, "not assignable").toThrow();
+     * Assertor.that(clazz).isAssignableFrom(superType, Locale.US, "not assignable").orElseThrow();
      * </pre>
      * 
      * @param clazz
@@ -133,7 +133,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasName(name).toThrow();
+     * Assertor.that(clazz).hasName(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -153,7 +153,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasName(name, "bad name").toThrow();
+     * Assertor.that(clazz).hasName(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -177,7 +177,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasName(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(clazz).hasName(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -206,7 +206,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasSimpleName(name).toThrow();
+     * Assertor.that(clazz).hasSimpleName(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -227,7 +227,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasSimpleName(name, "bad name").toThrow();
+     * Assertor.that(clazz).hasSimpleName(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -252,7 +252,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasSimpleName(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(clazz).hasSimpleName(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -281,7 +281,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasCanonicalName(name).toThrow();
+     * Assertor.that(clazz).hasCanonicalName(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -302,7 +302,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasCanonicalName(name, "bad name").toThrow();
+     * Assertor.that(clazz).hasCanonicalName(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -327,7 +327,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasCanonicalName(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(clazz).hasCanonicalName(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -355,7 +355,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasTypeName(name).toThrow();
+     * Assertor.that(clazz).hasTypeName(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -375,7 +375,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasTypeName(name, "bad name").toThrow();
+     * Assertor.that(clazz).hasTypeName(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -399,7 +399,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasTypeName(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(clazz).hasTypeName(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -428,7 +428,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasPackageName(name).toThrow();
+     * Assertor.that(clazz).hasPackageName(name).orElseThrow();
      * </pre>
      * 
      * @param name
@@ -449,7 +449,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasPackageName(name, "bad name").toThrow();
+     * Assertor.that(clazz).hasPackageName(name, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name
@@ -474,7 +474,7 @@ public interface PredicateAssertorClass<T> extends PredicateAssertor<PredicateSt
      * </p>
      * 
      * <pre>
-     * Assertor.that(clazz).hasPackageName(name, Locale.US, "bad name").toThrow();
+     * Assertor.that(clazz).hasPackageName(name, Locale.US, "bad name").orElseThrow();
      * </pre>
      * 
      * @param name

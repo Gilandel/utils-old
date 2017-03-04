@@ -48,7 +48,15 @@ public class ExpectTest extends AbstractTest {
             }, IOException.class);
             fail();
         } catch (ExpectException e) {
-            assertNotNull(e);
+            assertEquals("The expected exception never came up", e.getMessage());
+        }
+
+        try {
+            Expect.exception(() -> {
+            }, IOException.class);
+            fail();
+        } catch (ExpectException e) {
+            assertEquals("No exception thrown", e.getMessage());
         }
     }
 
@@ -72,7 +80,9 @@ public class ExpectTest extends AbstractTest {
             }, IllegalArgumentException.class, "message2");
             fail();
         } catch (ExpectException e) {
-            assertNotNull(e);
+            assertEquals(
+                    "The exception message isn't as expected.\nExpected (first part) and result (second part):\nmessage2\n-----\nmessage",
+                    e.getMessage());
         }
 
         try {
@@ -81,7 +91,8 @@ public class ExpectTest extends AbstractTest {
             }, IllegalArgumentException.class, Pattern.compile(".*?2$"));
             fail();
         } catch (ExpectException e) {
-            assertNotNull(e);
+            assertEquals("The exception message isn't as expected.\nExpected (first part) and result (second part):\n.*?2$\n-----\nmessage",
+                    e.getMessage());
         }
     }
 

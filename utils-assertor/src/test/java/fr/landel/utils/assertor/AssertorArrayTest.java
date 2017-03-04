@@ -70,7 +70,7 @@ public class AssertorArrayTest extends AbstractTest {
 
         assertTrue(Assertor.that(array).hasLength(2).and(Assertor.that("ee").contains("ee")).and().contains("2").isOK());
 
-        Expect.exception(() -> Assertor.that(array).hasLength(12, Locale.US, "the array has not the specified length %2$d*").toThrow(),
+        Expect.exception(() -> Assertor.that(array).hasLength(12, Locale.US, "the array has not the specified length %2$d*").orElseThrow(),
                 IllegalArgumentException.class, "the array has not the specified length 12", JUNIT_ERROR);
     }
 
@@ -102,19 +102,19 @@ public class AssertorArrayTest extends AbstractTest {
     @Test
     public void testIsNotEmpty() {
         try {
-            Assertor.that(new String[0]).not().isNotEmpty().toThrow("not empty array");
-            Assertor.that(new String[] {""}).isNotEmpty().toThrow("empty array");
+            Assertor.that(new String[0]).not().isNotEmpty().orElseThrow("not empty array");
+            Assertor.that(new String[] {""}).isNotEmpty().orElseThrow("empty array");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that(new Object[0]).isNotEmpty().toThrow("empty array");
+            Assertor.that(new Object[0]).isNotEmpty().orElseThrow("empty array");
             fail();
         }, IllegalArgumentException.class, "empty array");
 
         Expect.exception(() -> {
-            Assertor.that(new String[] {"z"}).not().isNotEmpty().toThrow("not empty array");
+            Assertor.that(new String[] {"z"}).not().isNotEmpty().orElseThrow("not empty array");
             fail();
         }, IllegalArgumentException.class, "not empty array");
     }
@@ -126,18 +126,18 @@ public class AssertorArrayTest extends AbstractTest {
     public void testContainsNull() {
         try {
             String[] array = new String[] {null, "2"};
-            Assertor.that(array).contains(null).toThrow();
+            Assertor.that(array).contains(null).orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that((Object[]) null).contains(null).toThrow();
+            Assertor.that((Object[]) null).contains(null).orElseThrow();
             fail();
         }, IllegalArgumentException.class, "the array cannot be null", JUNIT_ERROR);
 
         Expect.exception(() -> {
-            Assertor.that(new String[] {"1", "3"}).contains(null).toThrow("array hasn't null element");
+            Assertor.that(new String[] {"1", "3"}).contains(null).orElseThrow("array hasn't null element");
             fail();
         }, IllegalArgumentException.class, "array hasn't null element");
     }
@@ -149,18 +149,18 @@ public class AssertorArrayTest extends AbstractTest {
     public void testDoesNotContainNull() {
         try {
             String[] array = new String[] {"1", "2"};
-            Assertor.that(array).not().contains(null).toThrow("array has null element");
+            Assertor.that(array).not().contains(null).orElseThrow("array has null element");
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
 
         Expect.exception(() -> {
-            Assertor.that((Object[]) null).not().contains(null).toThrow("array has null element");
+            Assertor.that((Object[]) null).not().contains(null).orElseThrow("array has null element");
             fail();
         }, IllegalArgumentException.class, "array has null element");
 
         Expect.exception(() -> {
-            Assertor.that(new String[] {"", null}).not().contains(null).toThrow("array has null element");
+            Assertor.that(new String[] {"", null}).not().contains(null).orElseThrow("array has null element");
             fail();
         }, IllegalArgumentException.class, "array has null element");
     }

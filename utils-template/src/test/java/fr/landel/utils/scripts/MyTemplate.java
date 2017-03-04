@@ -45,7 +45,7 @@ public class MyTemplate extends AbstractScriptsTemplate {
         this.setMultiLineCommentOperators("#_", "_#");
 
         this.setChecker((input) -> {
-            Assertor.that(input).not().contains('=').toThrow("the script cannot contains the '=' character");
+            Assertor.that(input).not().contains('=').orElseThrow("the script cannot contains the '=' character");
         });
     }
 }

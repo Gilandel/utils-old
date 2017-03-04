@@ -34,6 +34,9 @@ public class EnumStepTest {
         assertNotNull(EnumStep.values());
         assertEquals(6, EnumStep.values().length);
 
+        assertEquals(EnumStep.CREATION, EnumStep.valueOf("CREATION"));
+        assertEquals(EnumStep.CREATION, EnumStep.valueOf(EnumStep.class, "CREATION"));
+
         assertEquals(0, EnumStep.CREATION.ordinal());
         assertEquals("CREATION", EnumStep.CREATION.name());
         assertEquals(1, EnumStep.NOT.ordinal());

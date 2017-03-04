@@ -8,7 +8,7 @@
   2. [Reset explanations](#reset-explanations)
   3. [Message (locale, arguments and parameters)](#message-locale-arguments-and-parameters)
 3. [Output details](#output-details)
-  1. [toThrow](#tothrow)
+  1. [orElseThrow](#orelsethrow)
   2. [isOK](#isok)
   3. [getErrors](#geterrors)
   4. [get](#get)
@@ -73,25 +73,32 @@
     4. [isAfterOrEqual](#isafterorequal)
     5. [isBefore](#isbefore)
     6. [isBeforeOrEqual](#isbeforeorequal)
-  7. [Enum](#enum)
+  7. [Temporal](#temporal)
+    1. [isAround](#isaround-1)
+    2. [isNotAround](#isnotaround-1)
+    3. [isAfter](#isafter-1)
+    4. [isAfterOrEqual](#isafterorequal-1)
+    5. [isBefore](#isbefore-1)
+    6. [isBeforeOrEqual](#isbeforeorequal-1)
+  8. [Enum](#enum)
     1. [hasName](#hasname-1)
     2. [hasNameIgnoreCase](#hasnameignorecase)
     3. [hasOrdinal](#hasordinal)
-  8. [Iterable](#iterable)
+  9. [Iterable](#iterable)
     1. [hasSize](#hassize)
     2. [isEmpty](#isempty-1)
     3. [isNotEmpty](#isnotempty-1)
     4. [contains](#contains-2)
     5. [containsAll](#containsall-1)
     6. [containsAny](#containsany-1)
-  9. [Map](#map)
+  10. [Map](#map)
     1. [hasSize](#hassize-1)
     2. [isEmpty](#isempty-2)
     3. [isNotEmpty](#isnotempty-2)
     4. [contains](#contains-3)
     5. [containsAll](#containsall-2)
     6. [containsAny](#containsany-2)
-  10. [Number](#number)
+  11. [Number](#number)
     1. [isEqual](#isequal-2)
     2. [isNotEqual](#isnotequal-2)
     3. [isZero](#iszero)
@@ -128,16 +135,16 @@ All assertions start with 'Assertor.that(object)' and following the type of the 
 About structure, an assertion can be cut in three parts:
 - The definition of what we check: Assertor.that(myObject))...
 - The check: ...isNull().or().isInstance(Color.class)...
-- The output: ...toThrow()
+- The output: ...orElseThrow()
 
 Multiples objects can be check in the same line:
 ```java
-Assertor.that(object1).isNull().and(object2).isNotNull().toThrow();
+Assertor.that(object1).isNull().and(object2).isNotNull().orElseThrow();
 Assertor.that(object1).isNull().or().not().isInstance(Color.class).or(object2).isEqual(object3).isOk();
 ```
 
 Mulitple outputs are available:
-- toThrow: throw an exception if assertion is false, otherwise returns the last checked parameter,
+- orElseThrow: throw an exception if assertion is false, otherwise returns the last checked parameter,
 - isOk: get the boolean result of the assertion,
 - getErrors: get the error message (java.util.Optional),
 - get: the result (java.util.Optional),
@@ -162,7 +169,7 @@ Assertor.that("text1").isBlank().and().isNotBlank().isOK(); // the second check 
 
 ### Message (locale, arguments and parameters)
 
-In each method, that manages intermediate errors (isBlank, contains...) or final errors (toThrow...) a locale can be specified.
+In each method, that manages intermediate errors (isBlank, contains...) or final errors (orElseThrow...) a locale can be specified.
 The locale can be used to manage number and date (see [String.format](http://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)).
 
 Also parameters and arguments can be injected.
@@ -183,7 +190,7 @@ The syntax is exactly the same as default [String.format](http://docs.oracle.com
 
 ## Output details
 
-### toThrow
+### orElseThrow
 Throw an exception if the assertion is false, otherwise returns the last checked value.
 Three ways to personalize the exception exist:
 - a message:
@@ -198,39 +205,39 @@ Three ways to personalize the exception exist:
 	The two parameters received are the combined errors messages and all the parameters.
 
 * Signatures:
-	- toThrow()
-	- toThrow(CharSequence message, Object... arguments)
-	- toThrow(Locale locale, CharSequence message, Object... arguments)
-	- toThrow(E exception)
-	- toThrow(BiFunction<CharSequence, Object[], E> exceptionBuilder)
-	- toThrow(boolean reset)
-	- toThrow(boolean reset, CharSequence message, Object... arguments)
-	- toThrow(boolean reset, Locale locale, CharSequence message, Object... arguments)
-	- toThrow(boolean reset, E exception)
-	- toThrow(boolean reset, BiFunction<CharSequence, Object[], E> exceptionBuilder)
+	- orElseThrow()
+	- orElseThrow(CharSequence message, Object... arguments)
+	- orElseThrow(Locale locale, CharSequence message, Object... arguments)
+	- orElseThrow(E exception)
+	- orElseThrow(BiFunction<CharSequence, Object[], E> exceptionBuilder)
+	- orElseThrow(boolean reset)
+	- orElseThrow(boolean reset, CharSequence message, Object... arguments)
+	- orElseThrow(boolean reset, Locale locale, CharSequence message, Object... arguments)
+	- orElseThrow(boolean reset, E exception)
+	- orElseThrow(boolean reset, BiFunction<CharSequence, Object[], E> exceptionBuilder)
 
 * Examples:
 ```java
-Assertor.that("text").isNotBlank().toThrow(); // -> returns "text" instance
-Assertor.that("text").isNotBlank().or(12).isGT(11).toThrow(); // -> returns 12
+Assertor.that("text").isNotBlank().orElseThrow(); // -> returns "text" instance
+Assertor.that("text").isNotBlank().or(12).isGT(11).orElseThrow(); // -> returns 12
 
-Assertor.that("").isNotBlank().toThrow(); // -> throw the default message 'the char sequence should be NOT null, NOT empty and NOT blank'
-Assertor.that("").isNotBlank("The first name is invalid").toThrow(); // -> throw the personalized message 'The first name is invalid'
+Assertor.that("").isNotBlank().orElseThrow(); // -> throw the default message 'the char sequence should be NOT null, NOT empty and NOT blank'
+Assertor.that("").isNotBlank("The first name is invalid").orElseThrow(); // -> throw the personalized message 'The first name is invalid'
 
-Assertor.that("").isNotBlank().toThrow("Invalid field"); // -> throw the personalized message 'Invalid field'
-Assertor.that("").isNotBlank("The first name is invalid").toThrow("Invalid field"); // -> throw the personalized message 'Invalid field'
+Assertor.that("").isNotBlank().orElseThrow("Invalid field"); // -> throw the personalized message 'Invalid field'
+Assertor.that("").isNotBlank("The first name is invalid").orElseThrow("Invalid field"); // -> throw the personalized message 'Invalid field'
 
-Assertor.that("").isNotBlank().toThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356); // -> throw the personalized message 'Invalid field (2,36ms)'
-Assertor.that("").isNotBlank("The first name is invalid").toThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356); // -> throw the personalized message 'Invalid field (2,36ms)'
+Assertor.that("").isNotBlank().orElseThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356); // -> throw the personalized message 'Invalid field (2,36ms)'
+Assertor.that("").isNotBlank("The first name is invalid").orElseThrow(Locale.FRANCE, "Invalid field (%.2fms)", 2.356); // -> throw the personalized message 'Invalid field (2,36ms)'
 
-Assertor.that("").isNotBlank().toThrow(new IOException("Invalid data")); // -> throw the personalized exception
-Assertor.that("").isNotBlank(The first name is invalid").toThrow(new IOException("Invalid data")); -> throw the personalized exception
+Assertor.that("").isNotBlank().orElseThrow(new IOException("Invalid data")); // -> throw the personalized exception
+Assertor.that("").isNotBlank(The first name is invalid").orElseThrow(new IOException("Invalid data")); -> throw the personalized exception
 
-Assertor.that("text").isBlank().toThrow((errors, parameters) -> new MyException("text should be blank")); // -> throw a MyException with message: text should be blank
+Assertor.that("text").isBlank().orElseThrow((errors, parameters) -> new MyException("text should be blank")); // -> throw a MyException with message: text should be blank
 // 'errors' contains: the char sequence 'text' should be null, empty or blank
 // 'parameters' contains: [{"text", EnumType.CHAR_SEQUENCE}]
 
-Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().toThrow((errors, parameters) -> new MyException(errors)); // -> throw a MyException
+Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().isBlank().orElseThrow((errors, parameters) -> new MyException(errors)); // -> throw a MyException
 // 'errors' contains: the char sequence 'texte11' should be null, empty or blank OR the char sequence 'texte12' should NOT start with 'text'" OR the char sequence 'texte12' should be null, empty or blank
 // 'parameters' contains: [{"texte11", EnumType.CHAR_SEQUENCE}, {"texte12", EnumType.CHAR_SEQUENCE}, {"text", EnumType.CHAR_SEQUENCE}]
 // to display the first parameter in MyException call: parameters.get(0).getKey()
@@ -239,7 +246,7 @@ Assertor.that("texte11").isBlank().or("texte12").not().startsWith("text").or().i
 
 As explain at the end of the description section, the reset parameter can be set to 'false' through these methods.
 ```java
-Assertor.that("").isNotBlank().toThrow(false);
+Assertor.that("").isNotBlank().orElseThrow(false);
 ```
 
 This mean:
@@ -248,8 +255,8 @@ boolean reset = false;
 Operator<AssertCharSequence<String>, String> operator = Assertor.that("").isNotBlank();
 if (!operator.isOk(reset)) {
 	LOGGER.error(operator.getErrors(reset));
-	operator.toThrow(); // only here the assertion is cleared
-	// if we catch exception, and retry at this point 'operator.toThrow()', no exception will be thrown
+	operator.orElseThrow(); // only here the assertion is cleared
+	// if we catch exception, and retry at this point 'operator.orElseThrow()', no exception will be thrown
 }
 ```
 
@@ -303,9 +310,9 @@ The 'not' function is here to negate the next method (can be applied on any meth
 
 * Examples:
 ```java
-Assertor.that(object).not().isNull().toThrow(); // become isNotNull
-Assertor.that(strings).not().contains("text").toThrow(); // become does not contain
-Assertor.that("text").not().hasLength(5, Locale.US, "The parameter '%s*' cannot be filled").toThrow(); // become has not length = 5
+Assertor.that(object).not().isNull().orElseThrow(); // become isNotNull
+Assertor.that(strings).not().contains("text").orElseThrow(); // become does not contain
+Assertor.that("text").not().hasLength(5, Locale.US, "The parameter '%s*' cannot be filled").orElseThrow(); // become has not length = 5
 ```
 
 ### AND
@@ -320,8 +327,8 @@ With a parameter, 'and' creates an sub assertor for the specified parameter.
 
 * Examples:
 ```java
-Assertor.that(object).isNull().and().isInstance(MyClass.class).toThrow(); // is null or is and instance of MyClass
-Assertor.that(12).iGT(12).and("text").contains("ex").toThrow(); // 12 > 12 and 'text' contains 'ex'
+Assertor.that(object).isNull().and().isInstance(MyClass.class).orElseThrow(); // is null or is and instance of MyClass
+Assertor.that(12).iGT(12).and("text").contains("ex").orElseThrow(); // 12 > 12 and 'text' contains 'ex'
 ```
 
 ### OR
@@ -336,8 +343,8 @@ With a parameter, 'or' creates an sub assertor for the specified parameter.
 
 * Examples:
 ```java
-Assertor.that(object).isNull().or().isInstance(MyClass.class).toThrow(); // is null or is an instance of MyClass
-Assertor.that(12).iGT(12).or("text").contains("ex").toThrow(); // 12 > 12 or 'text' contains 'ex'
+Assertor.that(object).isNull().or().isInstance(MyClass.class).orElseThrow(); // is null or is an instance of MyClass
+Assertor.that(12).iGT(12).or("text").contains("ex").orElseThrow(); // 12 > 12 or 'text' contains 'ex'
 ```
 
 ### XOR
@@ -352,8 +359,8 @@ With a parameter, 'xor' creates an sub assertor for the specified parameter.
 
 * Examples:
 ```java
-Assertor.that(object).isNull().xor().isInstance(MyClass.class).toThrow(); // is null xor is an instance of MyClass
-Assertor.that(12).iGT(12).xor("text").contains("ex").toThrow(); // 12 > 12 xor 'text' contains 'ex'
+Assertor.that(object).isNull().xor().isInstance(MyClass.class).orElseThrow(); // is null xor is an instance of MyClass
+Assertor.that(12).iGT(12).xor("text").contains("ex").orElseThrow(); // 12 > 12 xor 'text' contains 'ex'
 ```
 
 ## Available methods
@@ -372,9 +379,9 @@ Assert that the object is null.
 
 * Examples:
 ```java
-Assertor.that(object).isNull().toThrow();
-Assertor.that(object).isNull("Cannot be filled").toThrow();
-Assertor.that(object).isNull(Locale.US, "The parameter '%s*' cannot be filled").toThrow();
+Assertor.that(object).isNull().orElseThrow();
+Assertor.that(object).isNull("Cannot be filled").orElseThrow();
+Assertor.that(object).isNull(Locale.US, "The parameter '%s*' cannot be filled").orElseThrow();
 ```
 
 #### isNotNull
@@ -389,8 +396,8 @@ Assert that the object is NOT null.
 
 * Examples:
 ```java
-Assertor.that(object).isNotNull().toThrow();
-Assertor.that(name).isNotNull("Name cannot be null").toThrow();
+Assertor.that(object).isNotNull().orElseThrow();
+Assertor.that(name).isNotNull("Name cannot be null").orElseThrow();
 ```
 
 #### isEqual
@@ -405,8 +412,8 @@ Assert that the object is equal to another.
 
 * Examples:
 ```java
-Assertor.that(object).isEqual(object2).toThrow();
-Assertor.that(name).isEqual(object2, "Name '%s*' is not equal to '%s*'").toThrow();
+Assertor.that(object).isEqual(object2).orElseThrow();
+Assertor.that(name).isEqual(object2, "Name '%s*' is not equal to '%s*'").orElseThrow();
 ```
 
 * Info
@@ -424,8 +431,8 @@ Assert that the object is NOT equal to another.
 
 * Examples:
 ```java
-Assertor.that(object).isNotEqual(object2).toThrow();
-Assertor.that(name).isNotEqual(object2, "Name '%s*' already exists").toThrow();
+Assertor.that(object).isNotEqual(object2).orElseThrow();
+Assertor.that(name).isNotEqual(object2, "Name '%s*' already exists").orElseThrow();
 ```
 
 * Info
@@ -445,14 +452,14 @@ Assert that the object is an instance of the specified class.
 
 * Examples:
 ```java
-Assertor.that(object).isInstance(class1).toThrow();
-Assertor.that(object).isInstance(class1, "Input is not an instance of the class '%2$s*'").toThrow();
+Assertor.that(object).isInstance(class1).orElseThrow();
+Assertor.that(object).isInstance(class1, "Input is not an instance of the class '%2$s*'").orElseThrow();
 
 // prerequisite errors
-Assertor.that(null).isInstance(class1).toThrow(); // -> throw an exception
-Assertor.that(object).isInstance(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isInstance(class1).toThrow(); // -> throw an exception
-Assertor.that(object).not().isInstance(null).toThrow(); // -> throw an exception
+Assertor.that(null).isInstance(class1).orElseThrow(); // -> throw an exception
+Assertor.that(object).isInstance(null).orElseThrow(); // -> throw an exception
+Assertor.that(null).not().isInstance(class1).orElseThrow(); // -> throw an exception
+Assertor.that(object).not().isInstance(null).orElseThrow(); // -> throw an exception
 ```
 
 #### isAssignableFrom
@@ -469,14 +476,14 @@ Assert that the object is assignable from the specified class.
 
 * Examples:
 ```java
-Assertor.that(object).isAssignableFrom(class1).toThrow();
-Assertor.that(object).isAssignableFrom(class1, "Input is not assignable from the class '%2$s*'").toThrow();
+Assertor.that(object).isAssignableFrom(class1).orElseThrow();
+Assertor.that(object).isAssignableFrom(class1, "Input is not assignable from the class '%2$s*'").orElseThrow();
 
 // prerequisite errors
-Assertor.that(null).isAssignableFrom(class1).toThrow(); // -> throw an exception
-Assertor.that(object).isAssignableFrom(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isAssignableFrom(class1).toThrow(); // -> throw an exception
-Assertor.that(object).not().isAssignableFrom(null).toThrow(); // -> throw an exception
+Assertor.that(null).isAssignableFrom(class1).orElseThrow(); // -> throw an exception
+Assertor.that(object).isAssignableFrom(null).orElseThrow(); // -> throw an exception
+Assertor.that(null).not().isAssignableFrom(class1).orElseThrow(); // -> throw an exception
+Assertor.that(object).not().isAssignableFrom(null).orElseThrow(); // -> throw an exception
 ```
 
 #### hasHashCode
@@ -491,8 +498,8 @@ Assert that the object hash code equals the specified value.
 
 * Examples:
 ```java
-Assertor.that(colors).hasHashCode(0).toThrow();
-Assertor.that(colors).hasHashCode(45, "The hash codes don't match (%d != %d*)", Objects.hashCode(colors)).toThrow();
+Assertor.that(colors).hasHashCode(0).orElseThrow();
+Assertor.that(colors).hasHashCode(45, "The hash codes don't match (%d != %d*)", Objects.hashCode(colors)).orElseThrow();
 ```
 
 #### validates
@@ -508,19 +515,19 @@ Assert that the object validates the predicate.
 
 * Examples:
 ```java
-Assertor.that(object).validates((o) -> o != null).toThrow();
-Assertor.that(object).validates((o) -> o != null, "The object is invalid").toThrow();
+Assertor.that(object).validates((o) -> o != null).orElseThrow();
+Assertor.that(object).validates((o) -> o != null, "The object is invalid").orElseThrow();
 Assertor.that(object).validates((Object obj) -> {
     return obj != null;
-}, Locale.US, "Object is null!!!").toThrow();
+}, Locale.US, "Object is null!!!").orElseThrow();
 
 Assertor.that("/var/log/dev.log").validates((path) -> {
     return Paths.get(path).endsWith("dev.log");
 }, Locale.US, "Path is invalid").isOK();
 
 // prerequisite errors
-Assertor.that(object).validates(null).toThrow(); // -> throw an exception
-Assertor.that(object).not().validates(null).toThrow(); // -> throw an exception
+Assertor.that(object).validates(null).orElseThrow(); // -> throw an exception
+Assertor.that(object).not().validates(null).orElseThrow(); // -> throw an exception
 ```
 
 ### Array
@@ -545,9 +552,9 @@ Assert that the boolean is true.
 
 * Examples:
 ```java
-Assertor.that(bool).isTrue().toThrow(); // -> throw an exception, if bool == true
-Assertor.that(false).isTrue("Bad status").toThrow(); // -> OK
-Assertor.that(true).not().isTrue("Bad status").toThrow(); // -> OK
+Assertor.that(bool).isTrue().orElseThrow(); // -> throw an exception, if bool == true
+Assertor.that(false).isTrue("Bad status").orElseThrow(); // -> OK
+Assertor.that(true).not().isTrue("Bad status").orElseThrow(); // -> OK
 ```
 
 #### isFalse
@@ -562,9 +569,9 @@ Assert that the boolean is false.
 
 * Examples:
 ```java
-Assertor.that(bool).isFalse().toThrow(); // -> throw an exception, if bool == true
-Assertor.that(false).isFalse("Bad status").toThrow(); // -> OK
-Assertor.that(true).not().isFalse("Bad status").toThrow(); // -> OK
+Assertor.that(bool).isFalse().orElseThrow(); // -> throw an exception, if bool == true
+Assertor.that(false).isFalse("Bad status").orElseThrow(); // -> OK
+Assertor.that(true).not().isFalse("Bad status").orElseThrow(); // -> OK
 ```
 
 ### CharSequence
@@ -582,15 +589,15 @@ Assert that char sequence has the specified length.
 
 * Examples:
 ```java
-Assertor.that("text").hasLength(3).toThrow(); // -> throw an exception
-Assertor.that("text").hasLength(4, "Bad status").toThrow(); // -> OK
-Assertor.that("text").not().hasLength(3).toThrow(); // -> OK
+Assertor.that("text").hasLength(3).orElseThrow(); // -> throw an exception
+Assertor.that("text").hasLength(4, "Bad status").orElseThrow(); // -> OK
+Assertor.that("text").not().hasLength(3).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).hasLength(4, "Bad status").toThrow(); // -> throw an exception
-Assertor.that("text").hasLength(-1, "Bad status").toThrow(); // -> throw an exception
-Assertor.that(null).not().hasLength(4, "Bad status").toThrow(); // -> throw an exception
-Assertor.that("text").not().hasLength(-1, "Bad status").toThrow(); // -> throw an exception
+Assertor.that(null).hasLength(4, "Bad status").orElseThrow(); // -> throw an exception
+Assertor.that("text").hasLength(-1, "Bad status").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().hasLength(4, "Bad status").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().hasLength(-1, "Bad status").orElseThrow(); // -> throw an exception
 ```
 
 #### isEmpty
@@ -605,10 +612,10 @@ Assert that char sequence is empty or null.
 
 * Examples:
 ```java
-Assertor.that("text").isEmpty().toThrow(); // -> throw an exception
-Assertor.that((CharSequence) null).isEmpty("Param '%1$s*' not empty").toThrow(); // -> OK
-Assertor.that("").isEmpty("Param '%1$s*' not empty").toThrow(); // -> OK
-Assertor.that("text").not().isEmpty("Param '%1$s*' not empty").toThrow(); // -> OK
+Assertor.that("text").isEmpty().orElseThrow(); // -> throw an exception
+Assertor.that((CharSequence) null).isEmpty("Param '%1$s*' not empty").orElseThrow(); // -> OK
+Assertor.that("").isEmpty("Param '%1$s*' not empty").orElseThrow(); // -> OK
+Assertor.that("text").not().isEmpty("Param '%1$s*' not empty").orElseThrow(); // -> OK
 ```
 
 #### isNotEmpty
@@ -623,9 +630,9 @@ Assert that char sequence is NOT empty and NOT null.
 
 * Examples:
 ```java
-Assertor.that((CharSequence) null).isNotEmpty().toThrow(); // -> throw an exception
-Assertor.that("").isNotEmpty().toThrow(); // -> throw an exception
-Assertor.that("text").isNotEmpty("Param '%1$s*' empty or null").toThrow(); // -> OK
+Assertor.that((CharSequence) null).isNotEmpty().orElseThrow(); // -> throw an exception
+Assertor.that("").isNotEmpty().orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEmpty("Param '%1$s*' empty or null").orElseThrow(); // -> OK
 
 ```
 
@@ -641,11 +648,11 @@ Assert that char sequence is blank or empty or null.
 
 * Examples:
 ```java
-Assertor.that("text").isBlank().toThrow(); // -> throw an exception
-Assertor.that(null).isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
-Assertor.that("").isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
-Assertor.that("   ").isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
-Assertor.that("text").not().isBlank("Param '%1$s*' not blank").toThrow(); // -> OK
+Assertor.that("text").isBlank().orElseThrow(); // -> throw an exception
+Assertor.that(null).isBlank("Param '%1$s*' not blank").orElseThrow(); // -> OK
+Assertor.that("").isBlank("Param '%1$s*' not blank").orElseThrow(); // -> OK
+Assertor.that("   ").isBlank("Param '%1$s*' not blank").orElseThrow(); // -> OK
+Assertor.that("text").not().isBlank("Param '%1$s*' not blank").orElseThrow(); // -> OK
 ```
 
 #### isNotBlank
@@ -660,12 +667,12 @@ Assert that char sequence is NOT blank and NOT empty and NOT null.
 
 * Examples:
 ```java
-Assertor.that("text").isNotBlank().toThrow(); // -> OK
-Assertor.that("text").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> OK
-Assertor.that("text").isNotBlank().toThrow(); // -> OK
-Assertor.that(null).isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("   ").isNotBlank("Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that("text").isNotBlank().orElseThrow(); // -> OK
+Assertor.that("text").isNotBlank("Param '%1$s*' not blank").orElseThrow(); // -> OK
+Assertor.that("text").isNotBlank().orElseThrow(); // -> OK
+Assertor.that(null).isNotBlank("Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("").isNotBlank("Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("   ").isNotBlank("Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### isEqual
@@ -680,11 +687,11 @@ Assert that char sequence is equal to the string
 
 * Examples:
 ```java
-Assertor.that("text").isEqual("text").toThrow(); // -> OK
-Assertor.that("text").isEqual("ex", "Param '%1$s*' not equal").toThrow(); -> throw an exception
-Assertor.that("text").isEqual("TexT").toThrow(); -> throw an exception
-Assertor.that("text").isEqual("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().isEqual("text").toThrow(); // -> throw an exception
+Assertor.that("text").isEqual("text").orElseThrow(); // -> OK
+Assertor.that("text").isEqual("ex", "Param '%1$s*' not equal").orElseThrow(); -> throw an exception
+Assertor.that("text").isEqual("TexT").orElseThrow(); -> throw an exception
+Assertor.that("text").isEqual("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().isEqual("text").orElseThrow(); // -> throw an exception
 ```
 
 #### isNotEqual
@@ -699,11 +706,11 @@ Assert that char sequence is NOT equal to the string
 
 * Examples:
 ```java
-Assertor.that("text").isNotEqual("text").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqual("ex", "Param '%1$s*' equal").toThrow(); // -> OK
-Assertor.that("text").isNotEqual("TexT").toThrow(); // -> OK
-Assertor.that("text").isNotEqual("y").toThrow(); // -> OK
-Assertor.that("text").not().isNotEqual("text").toThrow(); -> throw an exception
+Assertor.that("text").isNotEqual("text").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqual("ex", "Param '%1$s*' equal").orElseThrow(); // -> OK
+Assertor.that("text").isNotEqual("TexT").orElseThrow(); // -> OK
+Assertor.that("text").isNotEqual("y").orElseThrow(); // -> OK
+Assertor.that("text").not().isNotEqual("text").orElseThrow(); -> throw an exception
 ```
 
 #### isEqualIgnoreCase
@@ -718,11 +725,11 @@ Assert that char sequence is equal to the string, ignoring case considerations
 
 * Examples:
 ```java
-Assertor.that("text").isEqualIgnoreCase("text").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreCase("ex", "Param '%1$s*' equal").toThrow(); // -> throw an exception
-Assertor.that("text").isEqualIgnoreCase("TexT").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreCase("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().isEqualIgnoreCase("text").toThrow(); -> throw an exception
+Assertor.that("text").isEqualIgnoreCase("text").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCase("ex", "Param '%1$s*' equal").orElseThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreCase("TexT").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCase("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().isEqualIgnoreCase("text").orElseThrow(); -> throw an exception
 
 #### isNotEqualIgnoreCase
 Assert that char sequence is NOT equal to the string, ignoring case considerations
@@ -736,11 +743,11 @@ Assert that char sequence is NOT equal to the string, ignoring case consideratio
 
 * Examples:
 ```java
-Assertor.that("text").isNotEqualIgnoreCase("text").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreCase("ex", "Param '%1$s*' equal").toThrow(); // -> OK
-Assertor.that("text").isNotEqualIgnoreCase("TexT").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreCase("y").toThrow(); // -> OK
-Assertor.that("text").not().isNotEqualIgnoreCase("text").toThrow(); -> OK
+Assertor.that("text").isNotEqualIgnoreCase("text").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCase("ex", "Param '%1$s*' equal").orElseThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreCase("TexT").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCase("y").orElseThrow(); // -> OK
+Assertor.that("text").not().isNotEqualIgnoreCase("text").orElseThrow(); -> OK
 ```
 
 #### isEqualIgnoreLineReturns
@@ -755,12 +762,12 @@ Assert that char sequence is equal to the string, ignoring line returns consider
 
 * Examples:
 ```java
-Assertor.that("text").isEqualIgnoreLineReturns("text").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> throw an exception
-Assertor.that("text").isEqualIgnoreLineReturns("tex\nt").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreLineReturns("Tex\nT").toThrow(); // -> throw an exception
-Assertor.that("text").isEqualIgnoreLineReturns("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().isEqualIgnoreLineReturns("text").toThrow(); -> throw an exception
+Assertor.that("text").isEqualIgnoreLineReturns("text").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreLineReturns("ex", "Param '%1$s*' equal").orElseThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreLineReturns("tex\nt").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreLineReturns("Tex\nT").orElseThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreLineReturns("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().isEqualIgnoreLineReturns("text").orElseThrow(); -> throw an exception
 ```
 
 #### isNotEqualIgnoreLineReturns
@@ -775,12 +782,12 @@ Assert that char sequence is NOT equal to the string, ignoring line returns cons
 
 * Examples:
 ```java
-Assertor.that("text").isNotEqualIgnoreLineReturns("text").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> OK
-Assertor.that("text").isNotEqualIgnoreLineReturns("tex\nt").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreLineReturns("Tex\nT").toThrow(); // -> OK
-Assertor.that("text").isNotEqualIgnoreLineReturns("y").toThrow(); // -> OK
-Assertor.that("text").not().isNotEqualIgnoreLineReturns("text").toThrow(); -> OK
+Assertor.that("text").isNotEqualIgnoreLineReturns("text").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreLineReturns("ex", "Param '%1$s*' equal").orElseThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreLineReturns("tex\nt").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreLineReturns("Tex\nT").orElseThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreLineReturns("y").orElseThrow(); // -> OK
+Assertor.that("text").not().isNotEqualIgnoreLineReturns("text").orElseThrow(); -> OK
 ```
 
 #### isEqualIgnoreCaseAndLineReturns
@@ -795,12 +802,12 @@ Assert that char sequence is equal to the string, ignoring case and line returns
 
 * Examples:
 ```java
-Assertor.that("text").isEqualIgnoreCaseAndLineReturns("text").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreCaseAndLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> throw an exception
-Assertor.that("text").isEqualIgnoreCaseAndLineReturns("tex\nt").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreCaseAndLineReturns("Tex\nT").toThrow(); // -> OK
-Assertor.that("text").isEqualIgnoreCaseAndLineReturns("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().isEqualIgnoreCaseAndLineReturns("text").toThrow(); -> throw an exception
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("text").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("ex", "Param '%1$s*' equal").orElseThrow(); // -> throw an exception
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("tex\nt").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("Tex\nT").orElseThrow(); // -> OK
+Assertor.that("text").isEqualIgnoreCaseAndLineReturns("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().isEqualIgnoreCaseAndLineReturns("text").orElseThrow(); -> throw an exception
 ```
 
 #### isNotEqualIgnoreCaseAndLineReturns
@@ -815,12 +822,12 @@ Assert that char sequence is NOT equal to the string, ignoring case and line ret
 
 * Examples:
 ```java
-Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("text").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("ex", "Param '%1$s*' equal").toThrow(); // -> OK
-Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("tex\nt").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("Tex\nT").toThrow(); // -> throw an exception
-Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("y").toThrow(); // -> OK
-Assertor.that("text").not().isNotEqualIgnoreCaseAndLineReturns("text").toThrow(); -> OK
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("text").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("ex", "Param '%1$s*' equal").orElseThrow(); // -> OK
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("tex\nt").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("Tex\nT").orElseThrow(); // -> throw an exception
+Assertor.that("text").isNotEqualIgnoreCaseAndLineReturns("y").orElseThrow(); // -> OK
+Assertor.that("text").not().isNotEqualIgnoreCaseAndLineReturns("text").orElseThrow(); -> OK
 ```
 
 #### contains
@@ -837,19 +844,19 @@ Assert that char sequence contains the substring.
 
 * Examples:
 ```java
-Assertor.that("text").contains("t").toThrow(); // -> OK
-Assertor.that("text").contains("ex", "Param '%1$s*' not contains '%2$s*'").toThrow(); // -> OK
-Assertor.that("text").contains("text").toThrow(); // -> OK
-Assertor.that("text").contains("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().contains("y").toThrow(); // -> OK
+Assertor.that("text").contains("t").orElseThrow(); // -> OK
+Assertor.that("text").contains("ex", "Param '%1$s*' not contains '%2$s*'").orElseThrow(); // -> OK
+Assertor.that("text").contains("text").orElseThrow(); // -> OK
+Assertor.that("text").contains("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().contains("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().contains("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().contains(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().contains("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).contains("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").contains(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").contains("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().contains("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().contains(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().contains("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### startsWith
@@ -865,20 +872,20 @@ Assert that char sequence starts with the substring.
 
 * Examples:
 ```java
-Assertor.that("text").startsWith("t").toThrow(); // -> OK
-Assertor.that("text").startsWith("T").toThrow(); // -> throw an exception
-Assertor.that("text").startsWith("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").startsWith("text").toThrow(); // -> OK
-Assertor.that("text").startsWith("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().startsWith("y").toThrow(); // -> OK
+Assertor.that("text").startsWith("t").orElseThrow(); // -> OK
+Assertor.that("text").startsWith("T").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWith("ex", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWith("text").orElseThrow(); // -> OK
+Assertor.that("text").startsWith("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().startsWith("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).startsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").startsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").startsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().startsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().startsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().startsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).startsWith("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWith(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWith("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().startsWith("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().startsWith(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().startsWith("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### startsWithIgnoreCase
@@ -894,20 +901,20 @@ Assert that char sequence starts with the substring (case insensitive).
 
 * Examples:
 ```java
-Assertor.that("text").startsWithIgnoreCase("t").toThrow(); // -> OK
-Assertor.that("text").startsWithIgnoreCase("T").toThrow(); // -> OK
-Assertor.that("text").startsWithIgnoreCase("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").startsWithIgnoreCase("text").toThrow(); // -> OK
-Assertor.that("text").startsWithIgnoreCase("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().startsWithIgnoreCase("y").toThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("t").orElseThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("T").orElseThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("ex", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWithIgnoreCase("text").orElseThrow(); // -> OK
+Assertor.that("text").startsWithIgnoreCase("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().startsWithIgnoreCase("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).startsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").startsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").startsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().startsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().startsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().startsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).startsWithIgnoreCase("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWithIgnoreCase(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").startsWithIgnoreCase("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().startsWithIgnoreCase("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().startsWithIgnoreCase(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().startsWithIgnoreCase("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### endsWith
@@ -923,20 +930,20 @@ Assert that char sequence ends with the substring.
 
 * Examples:
 ```java
-Assertor.that("text").endsWith("t").toThrow(); // -> OK
-Assertor.that("text").endsWith("T").toThrow(); // -> throw an exception
-Assertor.that("text").endsWith("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").endsWith("text").toThrow(); // -> OK
-Assertor.that("text").endsWith("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().endsWith("y").toThrow(); // -> OK
+Assertor.that("text").endsWith("t").orElseThrow(); // -> OK
+Assertor.that("text").endsWith("T").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWith("ex", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWith("text").orElseThrow(); // -> OK
+Assertor.that("text").endsWith("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().endsWith("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).endsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").endsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").endsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().endsWith("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().endsWith(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().endsWith("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).endsWith("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWith(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWith("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().endsWith("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().endsWith(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().endsWith("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### endsWithIgnoreCase
@@ -952,20 +959,20 @@ Assert that char sequence ends with the substring (case insensitive).
 
 * Examples:
 ```java
-Assertor.that("text").endsWithIgnoreCase("t").toThrow(); // -> OK
-Assertor.that("text").endsWithIgnoreCase("T").toThrow(); // -> OK
-Assertor.that("text").endsWithIgnoreCase("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").endsWithIgnoreCase("text").toThrow(); // -> OK
-Assertor.that("text").endsWithIgnoreCase("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().endsWithIgnoreCase("y").toThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("t").orElseThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("T").orElseThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("ex", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWithIgnoreCase("text").orElseThrow(); // -> OK
+Assertor.that("text").endsWithIgnoreCase("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().endsWithIgnoreCase("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).endsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").endsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").endsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().endsWithIgnoreCase("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().endsWithIgnoreCase(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().endsWithIgnoreCase("", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).endsWithIgnoreCase("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWithIgnoreCase(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").endsWithIgnoreCase("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().endsWithIgnoreCase("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().endsWithIgnoreCase(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().endsWithIgnoreCase("", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### matches
@@ -984,20 +991,20 @@ Assert that char sequence matches the specified pattern / regex.
 
 * Examples:
 ```java
-Assertor.that("text").matches("[xet]{4}").toThrow(); // -> OK
-Assertor.that("text").matches("[xet]{3}").toThrow(); // -> throw an exception
-Assertor.that("text").matches("\\w+").toThrow(); // -> OK
-Assertor.that("text").matches("xt").toThrow(); // -> throw an exception
-Assertor.that("text").matches("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").matches("text").toThrow(); // -> OK
-Assertor.that("text").matches("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().matches("y").toThrow(); // -> OK
+Assertor.that("text").matches("[xet]{4}").orElseThrow(); // -> OK
+Assertor.that("text").matches("[xet]{3}").orElseThrow(); // -> throw an exception
+Assertor.that("text").matches("\\w+").orElseThrow(); // -> OK
+Assertor.that("text").matches("xt").orElseThrow(); // -> throw an exception
+Assertor.that("text").matches("ex", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").matches("text").orElseThrow(); // -> OK
+Assertor.that("text").matches("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().matches("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).matches("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").matches(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().matches("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().matches(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).matches("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").matches(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().matches("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().matches(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 #### find
@@ -1016,20 +1023,20 @@ Assert that char sequence contains the specified pattern / regex.
 
 * Examples:
 ```java
-Assertor.that("text").find("[xet]{4}").toThrow(); // -> OK
-Assertor.that("text").find("[xet]{3}").toThrow(); // -> OK
-Assertor.that("text").find("\\w+").toThrow(); // -> OK
-Assertor.that("text").find("xt").toThrow(); // -> OK
-Assertor.that("text").find("ex", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").find("text").toThrow(); // -> OK
-Assertor.that("text").find("y").toThrow(); // -> throw an exception
-Assertor.that("text").not().find("y").toThrow(); // -> OK
+Assertor.that("text").find("[xet]{4}").orElseThrow(); // -> OK
+Assertor.that("text").find("[xet]{3}").orElseThrow(); // -> OK
+Assertor.that("text").find("\\w+").orElseThrow(); // -> OK
+Assertor.that("text").find("xt").orElseThrow(); // -> OK
+Assertor.that("text").find("ex", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").find("text").orElseThrow(); // -> OK
+Assertor.that("text").find("y").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().find("y").orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).find("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").find(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that(null).not().find("t", "Param '%1$s*' not blank").toThrow(); // -> throw an exception
-Assertor.that("text").not().find(null, "Param '%1$s*' not blank").toThrow(); // -> throw an exception
+Assertor.that(null).find("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").find(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that(null).not().find("t", "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
+Assertor.that("text").not().find(null, "Param '%1$s*' not blank").orElseThrow(); // -> throw an exception
 ```
 
 ### Class
@@ -1076,22 +1083,22 @@ final Calendar date2 = Calendar.getInstance();
 date1.set(2016, 05, 29, 5, 5, 6);
 date2.set(2016, 05, 29, 5, 5, 5);
 
-Assertor.that(date1).isAround(date2, Calendar.SECOND, 5).toThrow(); // -> OK
-Assertor.that(date1).isAround(date2, Calendar.HOUR, 5).toThrow(); // -> OK
-Assertor.that(date1).isAround(date2, Calendar.MILLISECOND, 5).toThrow(); // -> throw an exception
-Assertor.that(date1).not().isAround(date2, Calendar.MILLISECOND, 5).toThrow(); // -> OK
+Assertor.that(date1).isAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> OK
+Assertor.that(date1).isAround(date2, Calendar.HOUR, 5).orElseThrow(); // -> OK
+Assertor.that(date1).isAround(date2, Calendar.MILLISECOND, 5).orElseThrow(); // -> throw an exception
+Assertor.that(date1).not().isAround(date2, Calendar.MILLISECOND, 5).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).isAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).isAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).isAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).isAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
-Assertor.that(null).not().isAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).not().isAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).not().isAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).not().isAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).not().isAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).isAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isAround(null, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isAround(date2, Calendar.FIELD_COUNT, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isAround(date2, -100, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isAround(date2, Calendar.HOUR, 0).orElseThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).not().isAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isAround(null, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isAround(date2, Calendar.FIELD_COUNT, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isAround(date2, -100, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isAround(date2, Calendar.HOUR, 0).orElseThrow(); // -> throw an exception (invalid calendarAmount)
 ```
 
 #### isNotAround
@@ -1117,22 +1124,22 @@ final Calendar date2 = Calendar.getInstance();
 date1.set(2016, 05, 29, 5, 5, 5);
 date2.set(2016, 05, 29, 6, 5, 5);
 
-Assertor.that(date1).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> OK
-Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).toThrow(); // -> OK
-Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> throw an exception
-Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).orElseThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 5).orElseThrow(); // -> throw an exception
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 5).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
-Assertor.that(null).not().isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).not().isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).not().isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).not().isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).isNotAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(null, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(date2, Calendar.FIELD_COUNT, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, -100, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 0).orElseThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).not().isNotAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(null, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(date2, Calendar.FIELD_COUNT, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, -100, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).orElseThrow(); // -> throw an exception (invalid calendarAmount)
 ```
 
 #### isAfter
@@ -1158,24 +1165,32 @@ final Calendar date2 = Calendar.getInstance();
 date1.set(2016, 05, 29, 5, 5, 5);
 date2.set(2016, 05, 29, 6, 5, 5);
 
-Assertor.that(date1).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> OK
-Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).toThrow(); // -> OK
-Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> throw an exception
-Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 5).toThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.MINUTE, 5).orElseThrow(); // -> OK
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 5).orElseThrow(); // -> throw an exception
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 5).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
-Assertor.that(null).not().isNotAround(date2, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).not().isNotAround(null, Calendar.SECOND, 5).toThrow(); // -> throw an exception (date null)
-Assertor.that(date1).not().isNotAround(date2, Calendar.FIELD_COUNT, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).not().isNotAround(date2, -100, -5).toThrow(); // -> throw an exception (invalid calendarField)
-Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).toThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).isNotAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(null, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).isNotAround(date2, Calendar.FIELD_COUNT, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, -100, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).isNotAround(date2, Calendar.HOUR, 0).orElseThrow(); // -> throw an exception (invalid calendarAmount)
+Assertor.that(null).not().isNotAround(date2, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(null, Calendar.SECOND, 5).orElseThrow(); // -> throw an exception (date null)
+Assertor.that(date1).not().isNotAround(date2, Calendar.FIELD_COUNT, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, -100, -5).orElseThrow(); // -> throw an exception (invalid calendarField)
+Assertor.that(date1).not().isNotAround(date2, Calendar.HOUR, 0).orElseThrow(); // -> throw an exception (invalid calendarAmount)
 ```
 
+#### isAfterOrEqual
+#### isBefore
+#### isBeforeOrEqual
+
+### Temporal
+#### isAround
+#### isNotAround
+#### isAfter
 #### isAfterOrEqual
 #### isBefore
 #### isBeforeOrEqual
@@ -1220,15 +1235,15 @@ Assert that number is greater than specified number.
 
 * Examples:
 ```java
-Assertor.that(12).isGT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isGT(10, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isGT(12).toThrow(); // -> OK
+Assertor.that(12).isGT(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).isGT(10, "Bad status").orElseThrow(); // -> OK
+Assertor.that(12).not().isGT(12).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isGT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isGT(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isGT(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isGT(null).toThrow(); // -> throw an exception
+Assertor.that(null).isGT(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).isGT(null).orElseThrow(); // -> throw an exception
+Assertor.that(null).not().isGT(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).not().isGT(null).orElseThrow(); // -> throw an exception
 ```
 
 #### isGTE
@@ -1244,16 +1259,16 @@ Assert that number is greater than or equal to specified number.
 
 * Examples:
 ```java
-Assertor.that(12).isGTE(13).toThrow(); // -> throw an exception
-Assertor.that(12).isGTE(12).toThrow(); // -> OK
-Assertor.that(12).isGTE(10, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isGTE(13).toThrow(); // -> OK
+Assertor.that(12).isGTE(13).orElseThrow(); // -> throw an exception
+Assertor.that(12).isGTE(12).orElseThrow(); // -> OK
+Assertor.that(12).isGTE(10, "Bad status").orElseThrow(); // -> OK
+Assertor.that(12).not().isGTE(13).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isGTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).isGTE(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isGTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isGTE(null).toThrow(); // -> throw an exception
+Assertor.that(null).isGTE(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).isGTE(null).orElseThrow(); // -> throw an exception
+Assertor.that(null).not().isGTE(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).not().isGTE(null).orElseThrow(); // -> throw an exception
 ```
 
 #### isLT
@@ -1269,15 +1284,15 @@ Assert that number is lower than specified number.
 
 * Examples:
 ```java
-Assertor.that(12).isLT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isLT(13, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isLT(12).toThrow(); // -> OK
+Assertor.that(12).isLT(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).isLT(13, "Bad status").orElseThrow(); // -> OK
+Assertor.that(12).not().isLT(12).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isLT(12).toThrow(); // -> throw an exception
-Assertor.that(12).isLT(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isLT(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isLT(null).toThrow(); // -> throw an exception
+Assertor.that(null).isLT(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).isLT(null).orElseThrow(); // -> throw an exception
+Assertor.that(null).not().isLT(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).not().isLT(null).orElseThrow(); // -> throw an exception
 ```
 
 #### isLTE
@@ -1293,16 +1308,16 @@ Assert that number is lower than or equal to specified number.
 
 * Examples:
 ```java
-Assertor.that(12).isLTE(11).toThrow(); // -> throw an exception
-Assertor.that(12).isLTE(12).toThrow(); // -> OK
-Assertor.that(12).isLTE(13, "Bad status").toThrow(); // -> OK
-Assertor.that(12).not().isLTE(11).toThrow(); // -> OK
+Assertor.that(12).isLTE(11).orElseThrow(); // -> throw an exception
+Assertor.that(12).isLTE(12).orElseThrow(); // -> OK
+Assertor.that(12).isLTE(13, "Bad status").orElseThrow(); // -> OK
+Assertor.that(12).not().isLTE(11).orElseThrow(); // -> OK
 
 // prerequisite errors
-Assertor.that(null).isLTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).isLTE(null).toThrow(); // -> throw an exception
-Assertor.that(null).not().isLTE(12).toThrow(); // -> throw an exception
-Assertor.that(12).not().isLTE(null).toThrow(); // -> throw an exception
+Assertor.that(null).isLTE(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).isLTE(null).orElseThrow(); // -> throw an exception
+Assertor.that(null).not().isLTE(12).orElseThrow(); // -> throw an exception
+Assertor.that(12).not().isLTE(null).orElseThrow(); // -> throw an exception
 ```
 
 ## Others

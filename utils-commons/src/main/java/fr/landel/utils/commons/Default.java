@@ -146,6 +146,15 @@ public final class Default<T> {
     }
 
     /**
+     * Return the default value
+     * 
+     * @return the default value
+     */
+    public T getDefault() {
+        return this.defaultValue;
+    }
+
+    /**
      * Return {@code true} if there is a value present, otherwise {@code false}.
      *
      * @return {@code true} if there is a value present, otherwise {@code false}

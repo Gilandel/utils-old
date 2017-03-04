@@ -151,7 +151,7 @@ public class Zone extends AbstractEntity<Zone, Integer> {
      * @return the estimatedEndDate
      */
     public Date getEstimatedEndDate() {
-        return DateUtils.getDate(this.estimatedEndDate);
+        return DateUtils.cloneDate(this.estimatedEndDate);
     }
 
     /**
@@ -159,7 +159,7 @@ public class Zone extends AbstractEntity<Zone, Integer> {
      *            the estimatedEndDate to set
      */
     public void setEstimatedEndDate(Date estimatedEndDate) {
-        this.estimatedEndDate = DateUtils.getDate(estimatedEndDate);
+        this.estimatedEndDate = DateUtils.cloneDate(estimatedEndDate);
     }
 
     /**

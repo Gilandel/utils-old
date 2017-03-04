@@ -57,7 +57,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </p>
      * 
      * <pre>
-     * Assertor.that(bool).isTrue().toThrow();
+     * Assertor.that(bool).isTrue().orElseThrow();
      * </pre>
      * 
      * @return the assertor step
@@ -74,7 +74,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </p>
      * 
      * <pre>
-     * Assertor.that(bool).isTrue("not true").toThrow();
+     * Assertor.that(bool).isTrue("not true").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -95,7 +95,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </p>
      * 
      * <pre>
-     * Assertor.that(bool).isTrue(Locale.US, "not true").toThrow();
+     * Assertor.that(bool).isTrue(Locale.US, "not true").orElseThrow();
      * </pre>
      * 
      * @param locale
@@ -119,7 +119,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </p>
      * 
      * <pre>
-     * Assertor.that(bool).isFalse().toThrow();
+     * Assertor.that(bool).isFalse().orElseThrow();
      * </pre>
      * 
      * @return the assertor step
@@ -136,7 +136,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </p>
      * 
      * <pre>
-     * Assertor.that(bool).isFalse("not false").toThrow();
+     * Assertor.that(bool).isFalse("not false").orElseThrow();
      * </pre>
      * 
      * @param message
@@ -157,7 +157,7 @@ public interface PredicateAssertorBoolean extends PredicateAssertor<PredicateSte
      * </p>
      * 
      * <pre>
-     * Assertor.that(bool).isFalse(Locale.US, "not false").toThrow();
+     * Assertor.that(bool).isFalse(Locale.US, "not false").orElseThrow();
      * </pre>
      * 
      * @param locale
