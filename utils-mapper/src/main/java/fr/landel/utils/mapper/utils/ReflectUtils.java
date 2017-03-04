@@ -541,7 +541,7 @@ public class ReflectUtils {
      * Create a new instance of a map.
      * 
      * <pre>
-     * Class&lt;TreeMap&lt;String, Integer&gt;&gt; clazz = CastGenerics.getClass(new TreeMap&lt;String, Integer&gt;);
+     * Class&lt;TreeMap&lt;String, Integer&gt;&gt; clazz = CastUtils.getClass(new TreeMap&lt;String, Integer&gt;);
      * Map&lt;String, Integer&gt; map = this.ru.newInstanceMap(clazz);
      * </pre>
      * 
