@@ -205,6 +205,18 @@ public enum SystemProperties {
     SUN_CPU_ISALIST("sun.cpu.isalist"),
 
     /**
+     * User-defined path to fonts. Prefix the path value with "append:" or
+     * "prepend:" to specify if it should be searched before or after the
+     * JRE-defined font directories. Read-only property.
+     */
+    SUN_JAVA2D_FONTPATH("sun.java2d.fontpath"),
+
+    /**
+     * (ex: Oracle Java Micro Edition Embedded Client)
+     */
+    SUN_MISC_PRODUCT("sun.misc.product"),
+
+    /**
      * The filename encoding (ex: Cp1252)
      */
     SUN_JNU_ENCODING("sun.jnu.encoding"),

@@ -20,9 +20,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.BinaryOperator;
+import java.util.stream.DoubleStream;
 
 import org.openjdk.jmh.results.BenchmarkResult;
 import org.openjdk.jmh.results.IterationResult;
@@ -72,12 +70,10 @@ public abstract class AbstractMicrobenchmark {
                 .warmupIterations(this.getWarmupIterations()).measurementIterations(this.getMeasureIterations()).forks(this.getNumForks());
 
         final File file = new File(this.getOutputDirectory(), classPath + ".json");
-        if (file.exists()) {
-            file.delete();
-        } else {
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-        }
+
+        file.getParentFile().mkdirs();
+        file.delete();
+
         runnerOptions.resultFormat(ResultFormatType.JSON);
         runnerOptions.result(file.getAbsolutePath());
 
@@ -90,20 +86,18 @@ public abstract class AbstractMicrobenchmark {
         assertNotNull(runResults);
         assertNotEquals(0, runResults.size());
 
-        final BinaryOperator<Double> avg = (s1, s2) -> (s1 + s2) / 2;
-
         for (final RunResult runResult : runResults) {
             assertEquals(this.getNumForks(), runResult.getBenchmarkResults().size());
 
             for (final BenchmarkResult result : runResult.getBenchmarkResults()) {
                 assertEquals(this.getMeasureIterations(), result.getIterationResults().size());
 
-                final Set<Double> scores = new HashSet<>();
+                final DoubleStream.Builder scores = DoubleStream.builder();
                 for (final IterationResult ir : result.getIterationResults()) {
-                    scores.add(ir.getRawPrimaryResults().stream().map((r) -> r.getScore()).reduce(avg).get());
+                    scores.add(ir.getRawPrimaryResults().stream().mapToDouble((r) -> r.getScore()).average().getAsDouble());
                 }
 
-                final Double avgScore = scores.stream().reduce(avg).get();
+                final Double avgScore = scores.build().average().getAsDouble();
                 LOGGER.info(String.format("[%s] score: %,.3f %s", result.getParams().getBenchmark(), avgScore, result.getScoreUnit()));
 
                 final String onBadScore = String.format("[%s] Average score is lower than expected: %,.3f ops/s < %,.3f ops/s",

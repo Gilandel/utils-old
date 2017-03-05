@@ -29,6 +29,8 @@ import static fr.landel.utils.io.SystemProperties.MICROEDITION_PROFILES;
 import static fr.landel.utils.io.SystemProperties.MICROEDITION_SECURERANDOM_NOFALLBACK;
 import static fr.landel.utils.io.SystemProperties.SUN_CPU_ISALIST;
 import static fr.landel.utils.io.SystemProperties.SUN_DESKTOP;
+import static fr.landel.utils.io.SystemProperties.SUN_JAVA2D_FONTPATH;
+import static fr.landel.utils.io.SystemProperties.SUN_MISC_PRODUCT;
 import static fr.landel.utils.io.SystemProperties.SUN_OS_PATCH_LEVEL;
 import static fr.landel.utils.io.SystemProperties.USER_REGION;
 import static fr.landel.utils.io.SystemProperties.USER_SCRIPT;
@@ -76,13 +78,14 @@ public class SystemPropertiesTest {
     @Test
     public void testGetValue() {
         final List<SystemProperties> excludedProperties = Arrays.asList(JAVA_COMPILER, SUN_OS_PATCH_LEVEL, USER_VARIANT, USER_SCRIPT,
-                USER_REGION, SUN_DESKTOP, SUN_CPU_ISALIST, CDRAMS_DECORATIONS, CDRAMS_PRESENTATION, CDRAMS_REPOSITORY, CDRAMS_VERBOSE,
-                COM_SUN_MIDP_IMPLEMENTATION, COM_SUN_PACKAGE_SPEC_VERSION, MICROEDITION_COMMPORTS, MICROEDITION_CONFIGURATION,
-                MICROEDITION_ENCODING, MICROEDITION_HOSTNAME, MICROEDITION_LOCALE, MICROEDITION_PLATFORM, MICROEDITION_PROFILES,
-                MICROEDITION_SECURERANDOM_NOFALLBACK);
+                USER_REGION, SUN_DESKTOP, SUN_CPU_ISALIST, SUN_JAVA2D_FONTPATH, SUN_MISC_PRODUCT, CDRAMS_DECORATIONS, CDRAMS_PRESENTATION,
+                CDRAMS_REPOSITORY, CDRAMS_VERBOSE, COM_SUN_MIDP_IMPLEMENTATION, COM_SUN_PACKAGE_SPEC_VERSION, MICROEDITION_COMMPORTS,
+                MICROEDITION_CONFIGURATION, MICROEDITION_ENCODING, MICROEDITION_HOSTNAME, MICROEDITION_LOCALE, MICROEDITION_PLATFORM,
+                MICROEDITION_PROFILES, MICROEDITION_SECURERANDOM_NOFALLBACK);
 
-        LOGGER.info("----- ALL KNOWN PROPS");
-        Arrays.asList(SystemProperties.values()).stream().forEach(SystemPropertiesTest::log);
+        LOGGER.info("----- FOUND PROPS");
+        Arrays.asList(SystemProperties.values()).stream().filter(p -> StringUtils.isNotEmpty(p.getValue()))
+                .forEach(SystemPropertiesTest::log);
 
         LOGGER.info("----- NOT FOUND PROPS");
         Arrays.asList(SystemProperties.values()).stream().filter(p -> StringUtils.isEmpty(p.getValue())).forEach(SystemPropertiesTest::log);
