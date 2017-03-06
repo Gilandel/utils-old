@@ -51,7 +51,7 @@ public class ToStringBuilderTest {
         expected.append(",");
         expected.append("blue=java.awt.Color[r=0,g=0,b=255]");
         expected.append(",");
-        expected.append("value=1 153 120 156,569");
+        expected.append("value=").append(String.format("%,.3f", 1_153_120_156.569));
         expected.append(",");
         expected.append("supplier");
         expected.append(",");
@@ -131,7 +131,7 @@ public class ToStringBuilderTest {
         expected.append(",");
         expected.append("\"blue\":\"java.awt.Color[r=0,g=0,b=255]\"");
         expected.append(",");
-        expected.append("\"value\":\"120 156,569\"");
+        expected.append("\"value\":\"").append(String.format("%,.3f", 120156.569)).append("\"");
         expected.append(",");
         expected.append("\"supplier\"");
         expected.append(",");
@@ -182,7 +182,7 @@ public class ToStringBuilderTest {
         expected.append(",\n");
         expected.append("'blue' = 'java.awt.Color[r=0,g=0,b=255]'");
         expected.append(",\n");
-        expected.append("'value' = '120 156,569'");
+        expected.append("'value' = '").append(String.format("%,.3f", 120_156.569)).append("'");
         expected.append(",\n");
         expected.append("'supplier'");
         expected.append(",\n");
