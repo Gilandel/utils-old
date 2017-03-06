@@ -10,6 +10,7 @@
   1. [EqualsBuilder](#equalsbuilder)
   2. [EqualsBuilder2](#equalsbuilder2)
   3. [HashCodeBuilder](#hashcodebuilder)
+  4. [ToStringBuilder](#tostringbuilder)
 4. [Exception](#exception)
 5. [Function](#function)
 6. [Listener](#listener)
@@ -74,7 +75,8 @@ Result.ofNullable(text).ifNotNull(consumer); // executes the consumer if 'text' 
 ##Builder
 - EqualsBuilder: Extend EqualsBuilder from Apache project, add the possibility to append a property through a functional getter function,
 - EqualsBuilder2: Based on the fact that the most of the time I compare DTOs, the class provide a constructor for both checked objects and appenders based on these objects with the ability to check them througth functional getters and predicates.
-- HashCodeBuilder: Extend EqualsBuilder from Apache project, add the possibility to append a property through a functional getter function.
+- HashCodeBuilder: Extend EqualsBuilder from Apache project, add the possibility to append a property through a functional getter function,
+- ToStringBuilder: Another version of the ToStringBuilder, simple and also faster.
 
 ###EqualsBuilder
 
@@ -92,7 +94,7 @@ new EqualsBuilder()
 // We also check if both names are equals (ignoring case consideration),
 // previous calling the predicate function, a null check is automatically performed to avoid NullPointerException
 
-new EqualsBuilder2(dto1, dto2)
+new EqualsBuilder2<>(dto1, dto2)
 	.append(dto -> dto.getId())
 	.append(dto -> dto.getName(), (name1, name2) -> name1.equalsIgnoreCase(name2))
 	.isEqual();
@@ -139,6 +141,19 @@ new HashCodeBuilder()
 	.isEqual();
 ```
 
+###ToStringBuilder
+
+```java
+new ToStringBuilder(this, ToStringStyle.JSON)
+	.append("key", value)
+	.append("key", () -> value)
+	.append("key", () -> value, text -> text.toUpperCase())
+	.append("key", 126452.2223, ToStringBuilder.FORMATTER)
+	.appendIfPresent("key", Optional.ofNullable(null))
+	.build();
+// =&gt; {"org.test.MyClass":{"key":"value","key":"value","key":"VALUE","key":"126 452.222"}}
+```
+
 ##Exception
 - AbstractException: Base class for Exception (add constructors to directly create message with arguments),
 - AbstractException: Base class for RuntimeException (add constructors to directly create message with arguments),
@@ -147,13 +162,29 @@ new HashCodeBuilder()
 
 ##Function
 Functional interfaces that support to throw exception:
-- AssertSupplier: To supply an exception (just throws the given exception),
+- ThrowableSupplier: To supply an exception (just throws the given exception),
 - *Throwable: Functional interfaces that manage one parameters,
 - Bi*Throwable: Functional interfaces that manage two parameters,
 - Tri*Throwable: Functional interfaces that manage three parameters,
 - Quad*Throwable: Functional interfaces that manage four parameters.
 
 Also, missing standard functional interfaces are provided to manage 2, 3 and 4 parameters.
+
+The catched exceptions (for *Throwable interfaces) are mapped into FunctionException (an extend of RuntimeException).
+
+```java
+// definition
+void myMethod(ThrowableSupplier<MyException> throwableSupplier);
+
+// call the method
+myMethod(() -> throw new MyException());
+
+// definition
+void myMethod(SupplierThrowable<String, MyException> supplier);
+
+// call the method
+myMethod(() -> Optional.ofNullable(myString).orElseThrow(new MyException("myString cannot be null")));
+```
 
 ##Listener
 Very simple classes to manage events (listenable / event / listener).

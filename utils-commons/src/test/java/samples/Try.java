@@ -16,14 +16,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 import fr.landel.utils.commons.ClassUtils;
-import fr.landel.utils.commons.function.AssertSupplier;
+import fr.landel.utils.commons.function.ThrowableSupplier;
 
 /**
- * Just a try test for {@link AssertSupplier}
+ * Just a try test for {@link ThrowableSupplier}
  * 
  * <p>
  * Not good for production, because this hides bugs. (can only be used, if a
- * library throw {@link Exception} or {@link Throwable}...)
+ * library throws {@link Exception} or {@link Throwable}...)
  * </p>
  *
  * @since Aug 11, 2016
@@ -33,11 +33,11 @@ import fr.landel.utils.commons.function.AssertSupplier;
 public class Try {
 
     @SuppressWarnings("unchecked")
-    public static <E extends Throwable> Optional<Catch<E>> that(final AssertSupplier<E> exceptionSupplier) {
+    public static <E extends Throwable> Optional<Catch<E>> that(final ThrowableSupplier<E> exceptionSupplier) {
         Objects.requireNonNull(exceptionSupplier);
 
         try {
-            exceptionSupplier.assertException();
+            exceptionSupplier.throwException();
         } catch (Throwable e) {
             return Optional.of(new Catch<>((E) e));
         }

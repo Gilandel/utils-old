@@ -15,7 +15,8 @@ package fr.landel.utils.commons.function;
 /**
  * Represents an operation that accepts no input argument and returns no result.
  * The only output is through an exception. Unlike most other functional
- * interfaces, {@link AssertSupplier} is expected to operate via side-effects.
+ * interfaces, {@link ThrowableSupplier} is expected to operate via
+ * side-effects.
  * 
  * <p>
  * This class can be used for example to prepare an exception or to assert the
@@ -24,11 +25,11 @@ package fr.landel.utils.commons.function;
  *
  * <p>
  * This is a <a href="package-summary.html">functional interface</a> whose
- * functional method is {@link #assertException()}.
+ * functional method is {@link #throwException()}.
  * </p>
  * 
  * <pre>
- * AssertSupplier&lt;Exception&gt; exceptionBuilder = () -&gt; {
+ * ThrowableSupplier&lt;Exception&gt; exceptionBuilder = () -&gt; {
  *     throw new Exception("Not possible");
  * };
  * </pre>
@@ -40,13 +41,13 @@ package fr.landel.utils.commons.function;
  *            The exception type
  */
 @FunctionalInterface
-public interface AssertSupplier<E extends Throwable> {
+public interface ThrowableSupplier<E extends Throwable> {
 
     /**
-     * Assert that the code throws the specified exception.
+     * Throws the specified exception.
      *
      * @throws E
      *             On error exception
      */
-    void assertException() throws E;
+    void throwException() throws E;
 }
