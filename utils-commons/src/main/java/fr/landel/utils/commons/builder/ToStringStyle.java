@@ -55,7 +55,7 @@ public interface ToStringStyle {
      * @param value
      *            the value to append
      */
-    <T> void append(CharSequence key, Object value);
+    void append(CharSequence key, Object value);
 
     /**
      * Append the value to the builder
@@ -156,7 +156,7 @@ public interface ToStringStyle {
      * @param value
      *            the value
      */
-    <T> void appendIfNotNull(CharSequence key, Object value);
+    void appendIfNotNull(CharSequence key, Object value);
 
     /**
      * Append the value to the builder only if value is not {@code null}.

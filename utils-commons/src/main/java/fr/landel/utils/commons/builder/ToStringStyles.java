@@ -1,3 +1,15 @@
+/*-
+ * #%L
+ * utils-commons
+ * %%
+ * Copyright (C) 2016 - 2017 Gilandel
+ * %%
+ * Authors: Gilles Landel
+ * URL: https://github.com/Gilandel
+ * 
+ * This file is under Apache License, version 2.0 (2004).
+ * #L%
+ */
 package fr.landel.utils.commons.builder;
 
 import java.util.function.Supplier;
@@ -42,7 +54,7 @@ public enum ToStringStyles {
      * The JSON toString style with quotes
      * 
      * <pre>
-     * 
+     * {"test":{"java.awt.Color[r=0,g=0,b=0]","0","blue":"java.awt.Color[r=0,g=0,b=255]","value":"120 156,569","optional","OPTIONAL","optional":"optional","optional":"OPTIONAL"}}
      * </pre>
      */
     JSON_QUOTED(ToStringStyleJSONQuoted::new),

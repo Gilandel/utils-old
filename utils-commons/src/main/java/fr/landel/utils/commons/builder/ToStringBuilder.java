@@ -85,7 +85,7 @@ public class ToStringBuilder implements Builder<String> {
      *             if object is {@code null}
      */
     public ToStringBuilder(final Object object, final ToStringStyles style) {
-        this(object, ObjectUtils.defaultIfNull(style, ToStringStyleDefault::new, s -> s.getSupplier()));
+        this(object, ObjectUtils.defaultIfNull(style, ToStringStyles.DEFAULT.getSupplier(), s -> s.getSupplier()));
     }
 
     /**
@@ -121,8 +121,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value to append
      * @return the {@link ToStringBuilder} instance
      */
-    public ToStringBuilder append(final Object object) {
-        this.style.append(object);
+    public ToStringBuilder append(final Object value) {
+        this.style.append(value);
         return this;
     }
 
@@ -152,8 +152,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIf(final T object, final Predicate<T> predicate) {
-        this.style.append(object, predicate);
+    public <T> ToStringBuilder appendIf(final T value, final Predicate<T> predicate) {
+        this.style.append(value, predicate);
         return this;
     }
 
@@ -187,8 +187,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormat(final T object, final Function<T, CharSequence> formatter) {
-        this.style.append(object, formatter);
+    public <T> ToStringBuilder appendAndFormat(final T value, final Function<T, CharSequence> formatter) {
+        this.style.append(value, formatter);
         return this;
     }
 
@@ -224,8 +224,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIf(final T object, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
-        this.style.append(object, predicate, formatter);
+    public <T> ToStringBuilder appendAndFormatIf(final T value, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        this.style.append(value, predicate, formatter);
         return this;
     }
 
@@ -258,8 +258,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value
      * @return the {@link ToStringBuilder} instance
      */
-    public ToStringBuilder appendIfNotNull(final Object object) {
-        this.style.appendIfNotNull(object);
+    public ToStringBuilder appendIfNotNull(final Object value) {
+        this.style.appendIfNotNull(value);
         return this;
     }
 
@@ -290,8 +290,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIfNotNullIf(final T object, final Predicate<T> predicate) {
-        this.style.appendIfNotNull(object, predicate);
+    public <T> ToStringBuilder appendIfNotNullIf(final T value, final Predicate<T> predicate) {
+        this.style.appendIfNotNull(value, predicate);
         return this;
     }
 
@@ -326,8 +326,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIfNotNull(final T object, final Function<T, CharSequence> formatter) {
-        this.style.appendIfNotNull(object, formatter);
+    public <T> ToStringBuilder appendAndFormatIfNotNull(final T value, final Function<T, CharSequence> formatter) {
+        this.style.appendIfNotNull(value, formatter);
         return this;
     }
 
@@ -364,9 +364,9 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIfNotNullIf(final T object, final Predicate<T> predicate,
+    public <T> ToStringBuilder appendAndFormatIfNotNullIf(final T value, final Predicate<T> predicate,
             final Function<T, CharSequence> formatter) {
-        this.style.appendIfNotNull(object, predicate, formatter);
+        this.style.appendIfNotNull(value, predicate, formatter);
         return this;
     }
 
@@ -403,8 +403,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendDefault(final Default<T> object) {
-        this.style.appendDefault(object);
+    public <T> ToStringBuilder appendDefault(final Default<T> value) {
+        this.style.appendDefault(value);
         return this;
     }
 
@@ -438,8 +438,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendDefaultIf(final Default<T> object, final Predicate<T> predicate) {
-        this.style.appendDefault(object, predicate);
+    public <T> ToStringBuilder appendDefaultIf(final Default<T> value, final Predicate<T> predicate) {
+        this.style.appendDefault(value, predicate);
         return this;
     }
 
@@ -475,8 +475,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatDefault(final Default<T> object, final Function<T, CharSequence> formatter) {
-        this.style.appendDefault(object, formatter);
+    public <T> ToStringBuilder appendAndFormatDefault(final Default<T> value, final Function<T, CharSequence> formatter) {
+        this.style.appendDefault(value, formatter);
         return this;
     }
 
@@ -515,9 +515,9 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatDefaultIf(final Default<T> object, final Predicate<T> predicate,
+    public <T> ToStringBuilder appendAndFormatDefaultIf(final Default<T> value, final Predicate<T> predicate,
             final Function<T, CharSequence> formatter) {
-        this.style.appendDefault(object, predicate, formatter);
+        this.style.appendDefault(value, predicate, formatter);
         return this;
     }
 
@@ -554,8 +554,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIfPresent(final Optional<T> object) {
-        this.style.appendIfPresent(object);
+    public <T> ToStringBuilder appendIfPresent(final Optional<T> value) {
+        this.style.appendIfPresent(value);
         return this;
     }
 
@@ -586,8 +586,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIfPresent(final Result<T> object) {
-        this.style.appendIfPresent(object);
+    public <T> ToStringBuilder appendIfPresent(final Result<T> value) {
+        this.style.appendIfPresent(value);
         return this;
     }
 
@@ -621,8 +621,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIfPresentIf(final Optional<T> object, final Predicate<T> predicate) {
-        this.style.appendIfPresent(object, predicate);
+    public <T> ToStringBuilder appendIfPresentIf(final Optional<T> value, final Predicate<T> predicate) {
+        this.style.appendIfPresent(value, predicate);
         return this;
     }
 
@@ -659,8 +659,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIfPresentIf(final Result<T> object, final Predicate<T> predicate) {
-        this.style.appendIfPresent(object, predicate);
+    public <T> ToStringBuilder appendIfPresentIf(final Result<T> value, final Predicate<T> predicate) {
+        this.style.appendIfPresent(value, predicate);
         return this;
     }
 
@@ -696,8 +696,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIfPresent(final Optional<T> object, final Function<T, CharSequence> formatter) {
-        this.style.appendIfPresent(object, formatter);
+    public <T> ToStringBuilder appendAndFormatIfPresent(final Optional<T> value, final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(value, formatter);
         return this;
     }
 
@@ -713,8 +713,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIfPresent(final Result<T> object, final Function<T, CharSequence> formatter) {
-        this.style.appendIfPresent(object, formatter);
+    public <T> ToStringBuilder appendAndFormatIfPresent(final Result<T> value, final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(value, formatter);
         return this;
     }
 
@@ -773,9 +773,9 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIfPresentIf(final Optional<T> object, final Predicate<T> predicate,
+    public <T> ToStringBuilder appendAndFormatIfPresentIf(final Optional<T> value, final Predicate<T> predicate,
             final Function<T, CharSequence> formatter) {
-        this.style.appendIfPresent(object, predicate, formatter);
+        this.style.appendIfPresent(value, predicate, formatter);
         return this;
     }
 
@@ -794,9 +794,9 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendAndFormatIfPresentIf(final Result<T> object, final Predicate<T> predicate,
+    public <T> ToStringBuilder appendAndFormatIfPresentIf(final Result<T> value, final Predicate<T> predicate,
             final Function<T, CharSequence> formatter) {
-        this.style.appendIfPresent(object, predicate, formatter);
+        this.style.appendIfPresent(value, predicate, formatter);
         return this;
     }
 
