@@ -17,6 +17,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Field;
 
 import org.junit.Test;
 
@@ -172,9 +175,43 @@ public class GenericTest {
 
     /**
      * Test method for {@link Generic#of(T[])}.
+     * 
+     * @throws IndexOutOfBoundsException
+     *             if out of bounds
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testOfSetError() {
+        final MutableGeneric<Comparable<?>> genericMutable = Generic.ofMutable(2, 3, "test");
+
+        genericMutable.set(3, 1);
+    }
+
+    /**
+     * Test method for {@link Generic#of(T[])}.
      */
     @Test(expected = NullPointerException.class)
     public void testOfNull() {
         Generic.ofMutable((Object[]) null);
+    }
+
+    /**
+     * Test method for {@link Generic#of(T[])}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testOfAllNull() {
+        MutableGeneric<String> mg = Generic.ofMutable("");
+
+        assertEquals(1, mg.getAll().size());
+
+        try {
+            Field field = AbstractImmutableGeneric.class.getDeclaredField("all");
+
+            field.setAccessible(true);
+            field.set(mg, null);
+
+            mg.getAll();
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            fail();
+        }
     }
 }

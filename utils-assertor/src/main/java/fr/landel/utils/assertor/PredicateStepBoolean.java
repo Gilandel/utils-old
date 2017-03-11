@@ -41,4 +41,14 @@ public interface PredicateStepBoolean extends PredicateStep<PredicateStepBoolean
     default PredicateAssertorBoolean xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorBoolean nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorBoolean nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

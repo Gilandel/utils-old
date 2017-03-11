@@ -138,7 +138,7 @@ public class PredicateStepOperatorTest extends AbstractTest {
         assertFalse(Assertor.that(text).isEmpty().xor(true).isFalse().isOK());
 
         assertTrue(Assertor.that(text).isEmpty().xor(text.getClass()).isAssignableFrom(CharSequence.class).isOK());
-        assertFalse(Assertor.that(text).isEmpty().or(text.getClass()).isAssignableFrom(StringBuilder.class).isOK());
+        assertFalse(Assertor.that(text).isEmpty().xor(text.getClass()).isAssignableFrom(StringBuilder.class).isOK());
 
         assertTrue(Assertor.that(text).isEmpty().xor(Calendar.getInstance()).isAfter(DateUtils.getCalendar(new Date(0))).isOK());
         assertFalse(Assertor.that(text).isEmpty().xor(Calendar.getInstance()).isBefore(DateUtils.getCalendar(new Date(0))).isOK());
@@ -171,5 +171,99 @@ public class PredicateStepOperatorTest extends AbstractTest {
         assertTrue(Assertor.that(Color.BLACK).isNull().xor((Object) 0).isNotNull().isOK());
 
         assertTrue(Assertor.that(Color.BLACK).isNotNull().xor(Assertor.that(text).isEmpty()).isOK());
+    }
+
+    /**
+     * Test method for {@link Operator#nand()}.
+     */
+    @Test
+    public void testNand() {
+        final String text = "text";
+        assertFalse(Assertor.that(text).isEmpty().nand().isNotBlank().isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(true).isTrue().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(true).isFalse().isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(text.getClass()).isAssignableFrom(CharSequence.class).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(text.getClass()).isAssignableFrom(StringBuilder.class).isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(Calendar.getInstance()).isAfter(DateUtils.getCalendar(new Date(0))).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(Calendar.getInstance()).isBefore(DateUtils.getCalendar(new Date(0))).isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(new Date()).isAfter(new Date(0)).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(new Date()).isBefore(new Date(0)).isOK());
+
+        assertFalse(Assertor.that(text).isNotEmpty().nand(LocalDateTime.now()).isAfter(LocalDateTime.MAX).isOK());
+        assertFalse(Assertor.that(text).isNotEmpty().nand(LocalDateTime.now()).isAfter(LocalDateTime.MIN).isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(2).isGT(1).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(2).isLT(1).isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand("tt").isNotEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand("tt").isEmpty().isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(new String[] {}).isEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(new String[] {}).isNotEmpty().isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(Collections.emptyList()).isEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(Collections.emptyList()).isNotEmpty().isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand(Collections.emptyMap()).isEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand(Collections.emptyMap()).isNotEmpty().isOK());
+
+        assertFalse(Assertor.that(text).isEmpty().nand((Object) 0).isNotNull().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nand((Object) 0).isNull().isOK());
+
+        assertFalse(Assertor.that(Color.BLACK).isNull().nand().isEqual(Color.black).isOK());
+        assertFalse(Assertor.that(Color.BLACK).isNull().nand((Object) 0).isNotNull().isOK());
+
+        assertFalse(Assertor.that(Color.BLACK).isNotNull().nand(Assertor.that(text).isEmpty()).isOK());
+    }
+
+    /**
+     * Test method for {@link Operator#nor()}.
+     */
+    @Test
+    public void testNor() {
+        final String text = "text";
+        assertTrue(Assertor.that(text).isEmpty().nor().isNotBlank().isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(true).isTrue().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(true).isFalse().isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(text.getClass()).isAssignableFrom(CharSequence.class).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(text.getClass()).isAssignableFrom(StringBuilder.class).isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(Calendar.getInstance()).isAfter(DateUtils.getCalendar(new Date(0))).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(Calendar.getInstance()).isBefore(DateUtils.getCalendar(new Date(0))).isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(new Date()).isAfter(new Date(0)).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(new Date()).isBefore(new Date(0)).isOK());
+
+        assertTrue(Assertor.that(text).isNotEmpty().nor(LocalDateTime.now()).isAfter(LocalDateTime.MAX).isOK());
+        assertFalse(Assertor.that(text).isNotEmpty().nor(LocalDateTime.now()).isAfter(LocalDateTime.MIN).isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(2).isGT(1).isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(2).isLT(1).isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor("tt").isNotEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor("tt").isEmpty().isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(new String[] {}).isEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(new String[] {}).isNotEmpty().isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(Collections.emptyList()).isEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(Collections.emptyList()).isNotEmpty().isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor(Collections.emptyMap()).isEmpty().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor(Collections.emptyMap()).isNotEmpty().isOK());
+
+        assertTrue(Assertor.that(text).isEmpty().nor((Object) 0).isNotNull().isOK());
+        assertTrue(Assertor.that(text).isEmpty().nor((Object) 0).isNull().isOK());
+
+        assertTrue(Assertor.that(Color.BLACK).isNull().nor().isEqual(Color.black).isOK());
+        assertTrue(Assertor.that(Color.BLACK).isNull().nor((Object) 0).isNotNull().isOK());
+
+        assertTrue(Assertor.that(Color.BLACK).isNotNull().nor(Assertor.that(text).isEmpty()).isOK());
     }
 }

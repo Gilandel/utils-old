@@ -40,14 +40,42 @@ public class ObjectUtilsTest {
      * {@link ObjectUtils#defaultIfNull(java.lang.Object, java.util.function.Supplier)}.
      */
     @Test
-    public void testDefaultIfNullTSupplierOfT() {
+    public void testDefaultIfNullTOfT() {
         assertTrue(ObjectUtils.defaultIfNull(true, () -> false));
         assertFalse(ObjectUtils.defaultIfNull(null, () -> false));
     }
 
     /**
      * Test method for
-     * {@link ObjectUtils#defaultIfNull(java.lang.Object, java.util.function.Supplier)}.
+     * {@link ObjectUtils#defaultIfNull(Object, Object, java.util.function.Function)}.
+     */
+    @Test
+    public void testDefaultIfNullTOfT2() {
+        assertTrue(ObjectUtils.defaultIfNull(false, false, b -> !b));
+        assertFalse(ObjectUtils.defaultIfNull((Boolean) null, false, b -> !b));
+    }
+
+    /**
+     * Test method for
+     * {@link ObjectUtils#defaultIfSupplyNull(java.util.function.Supplier, Object)}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testDefaultIfNullSupplierNull() {
+        ObjectUtils.defaultIfNull(null, true, null);
+    }
+
+    /**
+     * Test method for
+     * {@link ObjectUtils#defaultIfSupplyNull(java.util.function.Supplier, java.util.function.Supplier)}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testDefaultIfNullDefaultNull1() {
+        ObjectUtils.defaultIfNull(null, null);
+    }
+
+    /**
+     * Test method for
+     * {@link ObjectUtils#defaultIfSupplyNull(java.lang.Object, java.util.function.Supplier)}.
      */
     @Test(expected = NullPointerException.class)
     public void testDefaultIfNullTSupplierOfTNull() {

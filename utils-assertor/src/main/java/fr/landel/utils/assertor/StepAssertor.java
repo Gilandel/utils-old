@@ -20,6 +20,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import fr.landel.utils.commons.StringUtils;
+import fr.landel.utils.commons.builder.ToStringBuilder;
+import fr.landel.utils.commons.builder.ToStringStyles;
 
 /**
  * Class to store results of assertion at each step. It contains the current
@@ -365,27 +367,35 @@ public class StepAssertor<T> implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
+        final ToStringBuilder sb = new ToStringBuilder(ToStringStyles.JSON_SPACED);
+
         sb.append(this.stepType.name());
-        if (EnumStep.CREATION.equals(this.stepType)) {
-            sb.append(", object: ").append(this.object);
-            sb.append(", type: ").append(this.type);
-        } else if (EnumStep.NOT.equals(this.stepType)) {
-            sb.append(", not: ").append(this.not);
-        } else if (EnumStep.OPERATOR.equals(this.stepType)) {
-            sb.append(", operator: ").append(this.operator);
-        } else if (EnumStep.OBJECT.equals(this.stepType)) {
-            sb.append(", object: ").append(this.object);
-            sb.append(", type: ").append(this.type);
-            sb.append(", operator: ").append(this.operator);
-        } else if (EnumStep.ASSERTION.equals(this.stepType)) {
-            sb.append(", key: ").append(this.messageKey);
-            sb.append(", key not: ").append(this.messageKeyNot);
-            sb.append(", parameters: ").append(StringUtils.joinComma(this.parameters));
-            sb.append(", message: ").append(this.message);
-        } else if (EnumStep.SUB.equals(this.stepType)) {
-            sb.append(", operator: ").append(this.operator);
+
+        switch (this.stepType) {
+        case CREATION:
+            sb.append("object", this.object);
+            sb.append("type", this.type);
+            break;
+        case OBJECT:
+            sb.append("object", this.object);
+            sb.append("type", this.type);
+            sb.append("operator", this.operator);
+            break;
+        case OPERATOR:
+        case SUB:
+            sb.append("operator", this.operator);
+            break;
+        case NOT:
+            sb.append("not", this.not);
+            break;
+        case ASSERTION:
+            sb.append("key", this.messageKey);
+            sb.append("key not", this.messageKeyNot);
+            sb.appendAndFormat("parameters", this.parameters, StringUtils::joinComma);
+            sb.append("message", this.message);
+            break;
+        default:
         }
-        return sb.append("}").toString();
+        return sb.build();
     }
 }

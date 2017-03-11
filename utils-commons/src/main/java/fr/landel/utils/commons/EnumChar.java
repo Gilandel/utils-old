@@ -356,6 +356,11 @@ public enum EnumChar {
     APOSTROPHE('\'', "\u0027", "&apos;"),
 
     /**
+     * Apostrophe (symbol: "'", code: 39, unicode: u0027, HTML: &amp;apos;)
+     */
+    SINGLE_QUOTE(APOSTROPHE),
+
+    /**
      * Grave (symbol: "`", code: 96, unicode: u0060, HTML: &amp;grave;)
      */
     GRAVE('`', "\u0060", "&grave;"),

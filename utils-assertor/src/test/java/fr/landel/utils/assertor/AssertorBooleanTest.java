@@ -92,6 +92,8 @@ public class AssertorBooleanTest extends AbstractTest {
     public void testIsTrue() {
         try {
             assertTrue(Assertor.that(true).isTrue().orElseThrow());
+
+            // get last false
             assertFalse(Assertor.that(true).isTrue().and(false).not().isTrue().orElseThrow("not true"));
             assertTrue(Assertor.that(true).isTrue().orElseThrow(new IllegalArgumentException(), true));
 
@@ -100,6 +102,8 @@ public class AssertorBooleanTest extends AbstractTest {
             assertTrue(Assertor.that(true).isTrue().and().not().isFalse().orElseThrow());
             assertTrue(Assertor.that(true).isTrue().or().isFalse().orElseThrow());
             assertTrue(Assertor.that(true).isTrue().xor().isFalse().orElseThrow());
+            assertFalse(Assertor.that(true).isTrue().nand().isFalse().isOK());
+            assertTrue(Assertor.that(true).isTrue().nor().isFalse().orElseThrow());
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }

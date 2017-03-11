@@ -284,7 +284,7 @@ public class HelperMessageTest extends AbstractTest {
      */
     @Test
     public void testParameterToString() {
-        assertEquals("ParameterAssertor[object=true,type=BOOLEAN,checked=false]",
+        assertEquals("{fr.landel.utils.assertor.ParameterAssertor: {object: true, type: BOOLEAN, checked: false}}",
                 new ParameterAssertor<>(true, EnumType.BOOLEAN).toString());
     }
 }

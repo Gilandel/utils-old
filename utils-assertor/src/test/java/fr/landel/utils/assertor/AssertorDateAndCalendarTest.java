@@ -59,6 +59,8 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
         assertTrue(Assertor.that(calendar1).isEqual(calendar2).and().isEqual(calendar1).isOK());
         assertTrue(Assertor.that(calendar1).isEqual(calendar2).or().isEqual(calendar1).isOK());
         assertFalse(Assertor.that(calendar1).isEqual(calendar2).xor().isEqual(calendar1).isOK());
+        assertFalse(Assertor.that(calendar1).isEqual(calendar2).nand().isEqual(calendar1).isOK());
+        assertFalse(Assertor.that(calendar1).isEqual(calendar2).nor().isEqual(calendar1).isOK());
 
         assertFalse(Assertor.that(calendar1).isEqual(calendar2).xor(Assertor.that(true).isTrue()).and().isEqual(calendar1).isOK());
 
@@ -67,6 +69,8 @@ public class AssertorDateAndCalendarTest extends AbstractTest {
         assertTrue(Assertor.that(date1).isEqual(date2).and().isEqual(date1).isOK());
         assertTrue(Assertor.that(date1).isEqual(date2).or().isEqual(date1).isOK());
         assertFalse(Assertor.that(date1).isEqual(date2).xor().isEqual(date1).isOK());
+        assertFalse(Assertor.that(date1).isEqual(date2).nand().isEqual(date1).isOK());
+        assertFalse(Assertor.that(date1).isEqual(date2).nor().isEqual(date1).isOK());
 
         assertFalse(Assertor.that(date1).isEqual(date2).xor(Assertor.that(true).isTrue()).and().isEqual(date1).isOK());
 

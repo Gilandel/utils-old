@@ -70,6 +70,8 @@ public class AssertorIterableTest extends AbstractTest {
         assertTrue(Assertor.that(set).hasSize(1).and().contains(el).isOK());
         assertTrue(Assertor.that(set).hasSize(1).or().contains(el).isOK());
         assertTrue(Assertor.that(set).hasSize(1).xor().not().contains(el).isOK());
+        assertFalse(Assertor.that(set).hasSize(1).nand().not().contains(el).isOK());
+        assertTrue(Assertor.that(set).hasSize(1).nor().not().contains(el).isOK());
 
         final Iterable<String> iterable = new Iterable<String>() {
             @Override

@@ -58,6 +58,8 @@ public class AssertorNumberTest extends AbstractTest {
         assertTrue(Assertor.that(2).isEqual(2, "error1").and().isNotNull().isOK());
         assertTrue(Assertor.that(2).isEqual(2, "error1").or().isNull().isOK());
         assertTrue(Assertor.that(2).isEqual(2, "error1").xor().isNull().isOK());
+        assertFalse(Assertor.that(2).isEqual(2, "error1").nand().isNull().isOK());
+        assertTrue(Assertor.that(2).isEqual(2, "error1").nor().isNull().isOK());
 
         assertEquals("error1", Assertor.that(2).isEqual(1, "error1").getErrors().get());
 

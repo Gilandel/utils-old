@@ -41,4 +41,14 @@ public interface PredicateStepNumber<N extends Number & Comparable<N>> extends P
     default PredicateAssertorNumber<N> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorNumber<N> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorNumber<N> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

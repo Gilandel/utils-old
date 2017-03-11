@@ -97,6 +97,8 @@ public class AssertorObjectTest extends AbstractTest {
         assertTrue(assertor.contains("__").xor().contains("ext").and("toti").contains("to").and().contains("i").isOK());
         assertFalse(assertor.contains("ext").xor().contains("ext").and("toti").contains("to").and().contains("i").isOK());
         assertFalse(assertor.contains("__").xor().contains("__").and("toti").contains("to").and().contains("i").isOK());
+        assertTrue(assertor.contains("__").nand().contains("__").and("toti").contains("to").and().contains("i").isOK());
+        assertTrue(assertor.contains("__").nor().contains("__").and("toti").contains("to").and().contains("i").isOK());
     }
 
     /**

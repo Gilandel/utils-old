@@ -24,18 +24,63 @@ public enum EnumOperator {
 
     /**
      * And operator
+     * 
+     * <pre>
+     * true AND true = true
+     * true AND false = false
+     * false AND true = false
+     * false AND false = false
+     * </pre>
      */
     AND("operator.and"),
 
     /**
      * Or operator
+     * 
+     * <pre>
+     * true AND true = true
+     * true AND false = true
+     * false AND true = true
+     * false AND false = false
+     * </pre>
      */
     OR("operator.or"),
 
     /**
      * Xor operator
+     * 
+     * <pre>
+     * true AND true = false
+     * true AND false = true
+     * false AND true = true
+     * false AND false = false
+     * </pre>
      */
-    XOR("operator.xor");
+    XOR("operator.xor"),
+
+    /**
+     * Nand operator (negative and)
+     * 
+     * <pre>
+     * true AND true = false
+     * true AND false = false
+     * false AND true = false
+     * false AND false = true
+     * </pre>
+     */
+    NAND("operator.nand"),
+
+    /**
+     * Nor operator (negative or)
+     * 
+     * <pre>
+     * true AND true = false
+     * true AND false = true
+     * false AND true = true
+     * false AND false = true
+     * </pre>
+     */
+    NOR("operator.nor");
 
     private final String key;
 

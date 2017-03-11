@@ -16,8 +16,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.Predicate;
 
+import fr.landel.utils.commons.Default;
+import fr.landel.utils.commons.EnumChar;
+import fr.landel.utils.commons.Result;
 import fr.landel.utils.commons.StringUtils;
 
 /**
@@ -29,12 +32,25 @@ import fr.landel.utils.commons.StringUtils;
  */
 public abstract class AbstractToStringStyle extends ArrayList<CharSequence> implements ToStringStyle {
 
+    protected static final String EMPTY = "";
+    protected static final String EQUALS = EnumChar.EQUALS.getUnicode();
+    protected static final String COLON = EnumChar.COLON.getUnicode();
+    protected static final String COMMA = EnumChar.COMMA.getUnicode();
+    protected static final String QUOTE = EnumChar.QUOTE.getUnicode();
+    protected static final String SINGLE_QUOTE = EnumChar.SINGLE_QUOTE.getUnicode();
+    protected static final String BRACE_OPEN = EnumChar.BRACE_OPEN.getUnicode();
+    protected static final String BRACE_CLOSE = EnumChar.BRACE_CLOSE.getUnicode();
+    protected static final String BRACKET_OPEN = EnumChar.BRACKET_OPEN.getUnicode();
+    protected static final String BRACKET_CLOSE = EnumChar.BRACKET_CLOSE.getUnicode();
+    protected static final String PARENTHESIS_OPEN = EnumChar.PARENTHESIS_OPEN.getUnicode();
+    protected static final String PARENTHESIS_CLOSE = EnumChar.PARENTHESIS_CLOSE.getUnicode();
+
     /**
      * serialVersionUID
      */
     private static final long serialVersionUID = 8130375854086601461L;
 
-    private CharSequence title;
+    private String title;
 
     @Override
     public ToStringStyle setObject(final Object object) {
@@ -51,90 +67,317 @@ public abstract class AbstractToStringStyle extends ArrayList<CharSequence> impl
     }
 
     @Override
-    public <T> void append(final T object) {
-        this.add(new StringBuilder(this.getValueStart()).append(object).append(this.getValueEnd()));
+    public void append(final Object object) {
+        this.append(object, null, null);
+    }
+
+    @Override
+    public <T> void append(final T object, final Predicate<T> predicate) {
+        this.append(object, predicate, null);
     }
 
     @Override
     public <T> void append(final T object, final Function<T, CharSequence> formatter) {
-        this.append(formatter.apply(object));
+        this.append(object, null, formatter);
     }
 
     @Override
-    public <T> void append(final CharSequence key, final T value) {
-        this.add(new StringBuilder(this.getKeyStart()).append(key).append(this.getKeyEnd()).append(this.getPropertySeparator())
-                .append(this.getValueStart()).append(value).append(this.getValueEnd()));
+    public void append(final CharSequence key, final Object value) {
+        this.append(key, value, null, null);
+    }
+
+    @Override
+    public <T> void append(final CharSequence key, final T value, final Predicate<T> predicate) {
+        this.append(key, value, predicate, null);
     }
 
     @Override
     public <T> void append(final CharSequence key, final T value, final Function<T, CharSequence> formatter) {
-        this.append(key, formatter.apply(value));
+        this.append(key, value, null, formatter);
     }
 
     @Override
-    public <T> void append(final Supplier<T> value) {
-        this.append(value.get());
+    public <T> void append(final T object, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        if (predicate == null || predicate.test(object)) {
+            final StringBuilder builder = new StringBuilder(this.getValueStart());
+            if (formatter != null) {
+                builder.append(formatter.apply(object));
+            } else {
+                builder.append(object);
+            }
+            this.add(builder.append(this.getValueEnd()));
+        }
     }
 
     @Override
-    public <T> void append(final Supplier<T> value, final Function<T, CharSequence> formatter) {
-        this.append(formatter.apply(value.get()));
+    public <T> void append(final CharSequence key, final T value, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        if (predicate == null || predicate.test(value)) {
+            final StringBuilder builder = new StringBuilder(this.getKeyStart()).append(key).append(this.getKeyEnd())
+                    .append(this.getPropertySeparator()).append(this.getValueStart());
+            if (formatter != null) {
+                builder.append(formatter.apply(value));
+            } else {
+                builder.append(value);
+            }
+            this.add(builder.append(this.getValueEnd()));
+        }
     }
 
     @Override
-    public <T> void append(final CharSequence key, final Supplier<T> value) {
-        this.append(key, value.get());
+    public void appendIfNotNull(final Object value) {
+        this.appendIfNotNull(value, null, null);
     }
 
     @Override
-    public <T> void append(final CharSequence key, final Supplier<T> value, final Function<T, CharSequence> formatter) {
-        this.append(key, formatter.apply(value.get()));
+    public <T> void appendIfNotNull(final T value, final Predicate<T> predicate) {
+        this.appendIfNotNull(value, predicate, null);
+    }
+
+    @Override
+    public <T> void appendIfNotNull(final T value, final Function<T, CharSequence> formatter) {
+        this.appendIfNotNull(value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendIfNotNull(final T value, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        if (value != null) {
+            this.append(value, predicate, formatter);
+        }
+    }
+
+    @Override
+    public void appendIfNotNull(final CharSequence key, final Object value) {
+        this.appendIfNotNull(key, value, null, null);
+    }
+
+    @Override
+    public <T> void appendIfNotNull(final CharSequence key, final T value, final Predicate<T> predicate) {
+        this.appendIfNotNull(key, value, predicate, null);
+    }
+
+    @Override
+    public <T> void appendIfNotNull(final CharSequence key, final T value, final Function<T, CharSequence> formatter) {
+        this.appendIfNotNull(key, value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendIfNotNull(final CharSequence key, final T value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        if (value != null) {
+            this.append(key, value, predicate, formatter);
+        }
+    }
+
+    @Override
+    public <T> void appendDefault(final Default<T> value) {
+        this.appendDefault(value, null, null);
+    }
+
+    @Override
+    public <T> void appendDefault(final Default<T> value, final Predicate<T> predicate) {
+        this.appendDefault(value, predicate, null);
+    }
+
+    @Override
+    public <T> void appendDefault(final Default<T> value, final Function<T, CharSequence> formatter) {
+        this.appendDefault(value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendDefault(final Default<T> value, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        final T defaultResult = value.get();
+        if (predicate == null || predicate.test(defaultResult)) {
+            if (formatter != null) {
+                this.append(formatter.apply(defaultResult));
+            } else {
+                this.append(defaultResult);
+            }
+        }
+    }
+
+    @Override
+    public <T> void appendDefault(final CharSequence key, final Default<T> value) {
+        this.appendDefault(key, value, null, null);
+    }
+
+    @Override
+    public <T> void appendDefault(final CharSequence key, final Default<T> value, final Predicate<T> predicate) {
+        this.appendDefault(key, value, predicate, null);
+    }
+
+    @Override
+    public <T> void appendDefault(final CharSequence key, final Default<T> value, final Function<T, CharSequence> formatter) {
+        this.appendDefault(key, value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendDefault(final CharSequence key, final Default<T> value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        final T defaultResult = value.get();
+        if (predicate == null || predicate.test(defaultResult)) {
+            if (formatter != null) {
+                this.append(key, formatter.apply(defaultResult));
+            } else {
+                this.append(key, defaultResult);
+            }
+        }
     }
 
     @Override
     public <T> void appendIfPresent(final Optional<T> value) {
-        this.appendIfPresent(value, null);
+        this.appendIfPresent(value, null, null);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final Optional<T> value, final Predicate<T> predicate) {
+        this.appendIfPresent(value, predicate, null);
     }
 
     @Override
     public <T> void appendIfPresent(final Optional<T> value, final Function<T, CharSequence> formatter) {
+        this.appendIfPresent(value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final Optional<T> value, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
         if (value.isPresent()) {
-            if (formatter != null) {
-                this.append(formatter.apply(value.get()));
-            } else {
-                this.append(value.get());
+            final T optionalResult = value.get();
+            if (predicate == null || predicate.test(optionalResult)) {
+                if (formatter != null) {
+                    this.append(formatter.apply(optionalResult));
+                } else {
+                    this.append(optionalResult);
+                }
             }
         }
     }
 
     @Override
     public <T> void appendIfPresent(final CharSequence key, final Optional<T> value) {
-        this.appendIfPresent(key, value, null);
+        this.appendIfPresent(key, value, null, null);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final CharSequence key, final Optional<T> value, final Predicate<T> predicate) {
+        this.appendIfPresent(key, value, predicate, null);
     }
 
     @Override
     public <T> void appendIfPresent(final CharSequence key, final Optional<T> value, final Function<T, CharSequence> formatter) {
+        this.appendIfPresent(key, value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final CharSequence key, final Optional<T> value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
         if (value.isPresent()) {
-            if (formatter != null) {
-                this.append(key, formatter.apply(value.get()));
-            } else {
-                this.append(key, value.get());
+            final T optionalResult = value.get();
+            if (predicate == null || predicate.test(optionalResult)) {
+                if (formatter != null) {
+                    this.append(key, formatter.apply(optionalResult));
+                } else {
+                    this.append(key, optionalResult);
+                }
+            }
+        }
+    }
+
+    @Override
+    public <T> void appendIfPresent(final Result<T> value) {
+        this.appendIfPresent(value, null, null);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final Result<T> value, final Predicate<T> predicate) {
+        this.appendIfPresent(value, predicate, null);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final Result<T> value, final Function<T, CharSequence> formatter) {
+        this.appendIfPresent(value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final Result<T> value, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        if (value.isPresent()) {
+            final T resultResult = value.get();
+            if (predicate == null || predicate.test(resultResult)) {
+                if (formatter != null) {
+                    this.append(formatter.apply(resultResult));
+                } else {
+                    this.append(resultResult);
+                }
+            }
+        }
+    }
+
+    @Override
+    public <T> void appendIfPresent(final CharSequence key, final Result<T> value) {
+        this.appendIfPresent(key, value, null, null);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final CharSequence key, final Result<T> value, final Predicate<T> predicate) {
+        this.appendIfPresent(key, value, predicate, null);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final CharSequence key, final Result<T> value, final Function<T, CharSequence> formatter) {
+        this.appendIfPresent(key, value, null, formatter);
+    }
+
+    @Override
+    public <T> void appendIfPresent(final CharSequence key, final Result<T> value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        if (value.isPresent()) {
+            final T resultResult = value.get();
+            if (predicate == null || predicate.test(resultResult)) {
+                if (formatter != null) {
+                    this.append(key, formatter.apply(resultResult));
+                } else {
+                    this.append(key, resultResult);
+                }
             }
         }
     }
 
     @Override
     public String build() {
-        final StringBuilder builder = new StringBuilder(this.getTitleStart()).append(this.title).append(this.getTitleEnd());
-
-        if (!this.isEmpty()) {
-            builder.append(this.getPropertiesStart());
-            builder.append(StringUtils.join(this, this.getPropertiesSeparator()));
-            builder.append(this.getPropertiesEnd());
+        final StringBuilder builder = new StringBuilder();
+        boolean appendEnd = false;
+        final String title = this.getTitle();
+        if (StringUtils.isNotEmpty(title)) {
+            builder.append(this.getStart());
+            builder.append(this.getTitleStart());
+            builder.append(title);
+            builder.append(this.getTitleEnd());
+            builder.append(this.getTitleSeparator());
+            appendEnd = true;
         }
-
+        builder.append(this.getPropertiesStart());
+        if (!this.isEmpty()) {
+            builder.append(StringUtils.join(this, this.getPropertiesSeparator()));
+        }
+        builder.append(this.getPropertiesEnd());
+        if (appendEnd) {
+            builder.append(this.getEnd());
+        }
         return builder.toString();
     }
+
+    /**
+     * Get the title
+     * 
+     * @return a {@link String} representing the title
+     */
+    protected String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * @return the start tag
+     */
+    protected abstract String getStart();
 
     /**
      * @return the title start tag
@@ -145,6 +388,11 @@ public abstract class AbstractToStringStyle extends ArrayList<CharSequence> impl
      * @return the title end tag
      */
     protected abstract String getTitleEnd();
+
+    /**
+     * @return the title separator tag
+     */
+    protected abstract String getTitleSeparator();
 
     /**
      * @return the global properties start tag
@@ -185,4 +433,9 @@ public abstract class AbstractToStringStyle extends ArrayList<CharSequence> impl
      * @return the global properties end tag
      */
     protected abstract String getPropertiesEnd();
+
+    /**
+     * @return the end tag
+     */
+    protected abstract String getEnd();
 }

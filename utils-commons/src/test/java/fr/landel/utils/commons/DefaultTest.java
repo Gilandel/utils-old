@@ -350,6 +350,8 @@ public class DefaultTest {
      */
     @Test
     public void testEqualsObject() {
+        Default<Integer> d = Default.of(5);
+        assertTrue(d.equals(d));
         assertTrue(Default.of(5).equals(Default.of(5)));
         assertFalse(Default.of(5).equals(Default.ofNullable(5, 2)));
         assertFalse(Default.ofNullable(5, 2).equals(Default.of(5)));

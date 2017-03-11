@@ -174,6 +174,8 @@ public class AssertorMapTest extends AbstractTest {
         assertTrue(assertMap.contains(key1).and().isNotEmpty().isOK());
         assertTrue(assertMap.contains(key1).or().isEmpty().isOK());
         assertTrue(assertMap.contains(key1).xor().isEmpty().isOK());
+        assertFalse(assertMap.contains(key1).nand().isEmpty().isOK());
+        assertTrue(assertMap.contains(key1).nor().isEmpty().isOK());
 
         Map<String, Integer> map1 = new HashMap<>();
         map1.put("element3", 2);

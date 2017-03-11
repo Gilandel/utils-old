@@ -43,4 +43,14 @@ public interface PredicateStepCalendar extends PredicateStep<PredicateStepCalend
     default PredicateAssertorCalendar xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorCalendar nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorCalendar nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

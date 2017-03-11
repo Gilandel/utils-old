@@ -159,23 +159,6 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * Get the date if not null otherwise defaultDate.
-     * 
-     * @param date
-     *            The input date
-     * @param defaultDate
-     *            The default date
-     * @return a date
-     */
-    public static Date getDefaultIfNull(final Date date, final Date defaultDate) {
-        if (date != null) {
-            return date;
-        }
-
-        return defaultDate;
-    }
-
-    /**
      * Get the date if not null, not empty and parseable otherwise defaultDate.
      * 
      * @param date
@@ -186,7 +169,7 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *            The default date
      * @return a date
      */
-    public static Date getDefaultIfEmpty(final String date, final DateFormat df, final Date defaultDate) {
+    public static Date defaultIfEmpty(final String date, final DateFormat df, final Date defaultDate) {
         if (StringUtils.isNotEmpty(date) && df != null) {
             try {
                 return df.parse(date);
@@ -206,8 +189,8 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *            The date formatter
      * @return a date or null
      */
-    public static Date getNullIfEmpty(final String date, final DateFormat df) {
-        return getDefaultIfEmpty(date, df, null);
+    public static Date nullIfEmpty(final String date, final DateFormat df) {
+        return defaultIfEmpty(date, df, null);
     }
 
     /**

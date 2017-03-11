@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -36,26 +35,19 @@ public class ToStringBuilderPerf extends AbstractMicrobenchmark {
      */
     @Benchmark
     public void testBuild() {
-        final Supplier<String> supplier = () -> "supplier";
         final Function<String, CharSequence> upper = text -> text.toUpperCase();
 
         final ToStringBuilder builder = new ToStringBuilder("test");
         builder.append(Color.BLACK);
-        builder.append(Color.BLACK, color -> String.valueOf(color.getBlue()));
+        builder.appendAndFormat(Color.BLACK, color -> String.valueOf(color.getBlue()));
         builder.append("blue", Color.BLUE);
-        builder.append("value", 120_156.568_9, ToStringBuilder.NUMBER_FORMATTER);
-        builder.append(() -> "supplier");
-        builder.append(supplier, upper);
-        builder.append("supplier", () -> 12);
-        // XXX Java 8.121 ambiguous // builder.append("supplier", () -> 12,
-        // ToStringStyle.NUMBER_FORMATTER);
-        builder.append("supplier", supplier, upper);
+        builder.appendAndFormat("value", 120_156.568_9, ToStringBuilder.NUMBER_FORMATTER);
         builder.appendIfPresent(Optional.empty());
         builder.appendIfPresent(Optional.of("optional"));
-        builder.appendIfPresent(Optional.of("optional"), upper);
+        builder.appendAndFormatIfPresent(Optional.of("optional"), upper);
         builder.appendIfPresent("optional", Optional.ofNullable(null));
         builder.appendIfPresent("optional", Optional.of("optional"));
-        builder.appendIfPresent("optional", Optional.of("optional"), upper);
+        builder.appendAndFormatIfPresent("optional", Optional.of("optional"), upper);
         builder.build();
     }
 

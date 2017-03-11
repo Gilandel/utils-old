@@ -16,6 +16,8 @@ import java.util.Locale;
 
 import fr.landel.utils.commons.ArrayUtils;
 import fr.landel.utils.commons.StringUtils;
+import fr.landel.utils.commons.builder.ToStringBuilder;
+import fr.landel.utils.commons.builder.ToStringStyles;
 
 /**
  * Message DTO
@@ -41,7 +43,6 @@ public class MessageAssertor {
      *            the message arguments
      */
     private MessageAssertor(final Locale locale, final CharSequence message, final Object[] arguments) {
-
         this.locale = locale;
         this.message = message;
         this.arguments = ArrayUtils.clone(arguments);
@@ -70,23 +71,13 @@ public class MessageAssertor {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("[");
-        if (this.locale != null) {
-            sb.append("locale: ").append(this.locale);
-        }
-        if (this.message != null) {
-            if (this.locale != null) {
-                sb.append(StringUtils.SEPARATOR_COMMA);
-            }
-            sb.append("message: ").append(this.message);
-        }
-        if (ArrayUtils.isNotEmpty(this.arguments)) {
-            if (this.locale != null || this.message != null) {
-                sb.append(StringUtils.SEPARATOR_COMMA);
-            }
-            sb.append("arguments: ").append(StringUtils.join(this.arguments, StringUtils.SEPARATOR_COMMA));
-        }
-        return sb.append("]").toString();
+        // @formatter:off
+        return new ToStringBuilder(ToStringStyles.JSON_SPACED)
+                .appendIfNotNull("locale", this.locale)
+                .appendIfNotNull("message", this.message)
+                .appendAndFormatIf("arguments", this.arguments, ArrayUtils::isNotEmpty, StringUtils::joinComma)
+                .build();
+        // @formatter:on
     }
 
     /**

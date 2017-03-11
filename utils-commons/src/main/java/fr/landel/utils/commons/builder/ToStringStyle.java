@@ -14,7 +14,10 @@ package fr.landel.utils.commons.builder;
 
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.Predicate;
+
+import fr.landel.utils.commons.Default;
+import fr.landel.utils.commons.Result;
 
 /**
  * ToString style
@@ -24,45 +27,6 @@ import java.util.function.Supplier;
  *
  */
 public interface ToStringStyle {
-
-    /**
-     * The default toString style.
-     * 
-     * <pre>
-     * test[java.awt.Color[r=0,g=0,b=0],0,blue=java.awt.Color[r=0,g=0,b=255],value=1 153 120 156,569,supplier,SUPPLIER,supplier=12,supplier=SUPPLIER,optional,OPTIONAL,optional=optional,optional=OPTIONAL]
-     * </pre>
-     */
-    ToStringStyle DEFAULT = new ToStringStyleDefault();
-
-    /**
-     * The JSON toString style
-     * 
-     * <pre>
-     * {"test":{"java.awt.Color[r=0,g=0,b=0]","0","blue":"java.awt.Color[r=0,g=0,b=255]","value":"1 153 120 156,569","supplier","SUPPLIER","supplier":"12","supplier":"SUPPLIER","optional","OPTIONAL","optional":"optional","optional":"OPTIONAL"}}
-     * </pre>
-     */
-    ToStringStyle JSON = new ToStringStyleJSON();
-
-    /**
-     * The readable toString style
-     * 
-     * <pre>
-     * test = 
-     * ['java.awt.Color[r=0,g=0,b=0]',
-     * '0',
-     * 'blue' = 'java.awt.Color[r=0,g=0,b=255]',
-     * 'value' = '1 153 120 156,569',
-     * 'supplier',
-     * 'SUPPLIER',
-     * 'supplier' = '12',
-     * 'supplier' = 'SUPPLIER',
-     * 'optional',
-     * 'OPTIONAL',
-     * 'optional' = 'optional',
-     * 'optional' = 'OPTIONAL']
-     * </pre>
-     */
-    ToStringStyle READABLE = new ToStringStyleReadable();
 
     /**
      * Define the main object, the class or a title
@@ -80,10 +44,8 @@ public interface ToStringStyle {
      * 
      * @param value
      *            the value to append
-     * @param <T>
-     *            the value type
      */
-    <T> void append(T value);
+    void append(Object value);
 
     /**
      * Append the pair key/value to the builder
@@ -92,10 +54,8 @@ public interface ToStringStyle {
      *            the key to append
      * @param value
      *            the value to append
-     * @param <T>
-     *            the value type
      */
-    <T> void append(CharSequence key, T value);
+    <T> void append(CharSequence key, Object value);
 
     /**
      * Append the value to the builder
@@ -127,11 +87,13 @@ public interface ToStringStyle {
      * Append the value to the builder
      * 
      * @param value
-     *            the value supplier
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended
      * @param <T>
      *            the value type
      */
-    <T> void append(Supplier<T> value);
+    <T> void append(T value, Predicate<T> predicate);
 
     /**
      * Append the pair key/value to the builder
@@ -139,23 +101,27 @@ public interface ToStringStyle {
      * @param key
      *            the key to append
      * @param value
-     *            the value supplier
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended
      * @param <T>
      *            the value type
      */
-    <T> void append(CharSequence key, Supplier<T> value);
+    <T> void append(CharSequence key, T value, Predicate<T> predicate);
 
     /**
      * Append the value to the builder
      * 
      * @param value
-     *            the value supplier
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended
      * @param formatter
-     *            the formatter used to format the value before appending
+     *            the formatter used to format the object before appending
      * @param <T>
      *            the value type
      */
-    <T> void append(Supplier<T> value, Function<T, CharSequence> formatter);
+    <T> void append(T value, Predicate<T> predicate, Function<T, CharSequence> formatter);
 
     /**
      * Append the pair key/value to the builder
@@ -163,13 +129,231 @@ public interface ToStringStyle {
      * @param key
      *            the key to append
      * @param value
-     *            the value supplier
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the object type
+     */
+    <T> void append(CharSequence key, T value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
+     */
+    void appendIfNotNull(Object value);
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     */
+    <T> void appendIfNotNull(CharSequence key, Object value);
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
      * @param formatter
      *            the formatter used to format the value before appending
      * @param <T>
      *            the value type
      */
-    <T> void append(CharSequence key, Supplier<T> value, Function<T, CharSequence> formatter);
+    <T> void appendIfNotNull(T value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfNotNull(CharSequence key, T value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfNotNull(T value, Predicate<T> predicate);
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfNotNull(CharSequence key, T value, Predicate<T> predicate);
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfNotNull(T value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfNotNull(CharSequence key, T value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value if present, otherwise the default value to the builder.
+     * See {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(Default<T> value);
+
+    /**
+     * Append the pair key/value, otherwise the pair key/default value to the
+     * builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(CharSequence key, Default<T> value);
+
+    /**
+     * Append the value, otherwise the default value to the builder. See
+     * {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(Default<T> value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value, otherwise the pair key/default value to the
+     * builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(CharSequence key, Default<T> value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value if present, otherwise the default value to the builder.
+     * See {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(Default<T> value, Predicate<T> predicate);
+
+    /**
+     * Append the pair key/value, otherwise the pair key/default value to the
+     * builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(CharSequence key, Default<T> value, Predicate<T> predicate);
+
+    /**
+     * Append the value, otherwise the default value to the builder. See
+     * {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(Default<T> value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value, otherwise the pair key/default value to the
+     * builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendDefault(CharSequence key, Default<T> value, Predicate<T> predicate, Function<T, CharSequence> formatter);
 
     /**
      * Append the value to the builder only if value is present. See
@@ -222,6 +406,178 @@ public interface ToStringStyle {
      *            the value type
      */
     <T> void appendIfPresent(CharSequence key, Optional<T> value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(Optional<T> value, Predicate<T> predicate);
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(CharSequence key, Optional<T> value, Predicate<T> predicate);
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(Optional<T> value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(CharSequence key, Optional<T> value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(Result<T> value);
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(CharSequence key, Result<T> value);
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(Result<T> value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(CharSequence key, Result<T> value, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(Result<T> value, Predicate<T> predicate);
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(CharSequence key, Result<T> value, Predicate<T> predicate);
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(Result<T> value, Predicate<T> predicate, Function<T, CharSequence> formatter);
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     */
+    <T> void appendIfPresent(CharSequence key, Result<T> value, Predicate<T> predicate, Function<T, CharSequence> formatter);
 
     /**
      * Build the toString content

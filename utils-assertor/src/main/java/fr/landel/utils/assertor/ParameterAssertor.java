@@ -14,8 +14,8 @@ package fr.landel.utils.assertor;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import fr.landel.utils.commons.builder.ToStringBuilder;
+import fr.landel.utils.commons.builder.ToStringStyles;
 
 /**
  * Assertor parameter DTO
@@ -98,7 +98,12 @@ public class ParameterAssertor<T> implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("object", this.object).append("type", this.type)
-                .append("checked", this.checked).build();
+        // @formatter:off
+        return new ToStringBuilder(this, ToStringStyles.JSON_SPACED)
+                .append("object", this.object)
+                .append("type", this.type)
+                .append("checked", this.checked)
+                .build();
+        // @formatter:on
     }
 }

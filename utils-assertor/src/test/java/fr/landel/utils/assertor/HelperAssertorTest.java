@@ -65,7 +65,8 @@ public class HelperAssertorTest extends AbstractTest {
 
         // precondition: true & true, valid: true & true
         StepAssertor<String> step1 = new StepAssertor<>(a, apTrue, aTrue, false, null, MSG.CSQ.CONTAINS, false);
-        StepAssertor<Boolean> step2 = new StepAssertor<>(b, bpTrue, bTrue, false, null, MSG.BOOLEAN.TRUE, false);
+        StepAssertor<Boolean> step2 = new StepAssertor<>(b, bpTrue, bTrue, false, MessageAssertor.of(null, "test", new Object[0]),
+                MSG.BOOLEAN.TRUE, false);
 
         StepAssertor<String> step = new StepAssertor<>(step1, step2, EnumOperator.AND);
 

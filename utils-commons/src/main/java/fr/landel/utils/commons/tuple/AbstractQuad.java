@@ -156,8 +156,15 @@ public abstract class AbstractQuad<A, B, C, D> implements Comparable<AbstractQua
      */
     @Override
     public String toString() {
-        return new StringBuilder().append('(').append(this.getFirst()).append(",").append(this.getSecond()).append(",")
-                .append(this.getThird()).append(",").append(this.getFourth()).append(')').toString();
+        // @formatter:off
+        return new StringBuilder()
+                .append('(')
+                .append(this.getFirst()).append(",")
+                .append(this.getSecond()).append(",")
+                .append(this.getThird()).append(",")
+                .append(this.getFourth()).append(')')
+                .toString();
+     // @formatter:on
     }
 
     /**

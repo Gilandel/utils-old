@@ -67,6 +67,8 @@ public class AssertorArrayTest extends AbstractTest {
         assertTrue(Assertor.that(array).isNotEmpty().and().hasLength(2).isOK());
         assertTrue(Assertor.that(array).isEmpty().or().hasLength(2).isOK());
         assertTrue(Assertor.that(array).isEmpty().xor().hasLength(2).isOK());
+        assertFalse(Assertor.that(array).isEmpty().nand().hasLength(2).isOK());
+        assertTrue(Assertor.that(array).isEmpty().nor().hasLength(2).isOK());
 
         assertTrue(Assertor.that(array).hasLength(2).and(Assertor.that("ee").contains("ee")).and().contains("2").isOK());
 

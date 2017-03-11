@@ -34,6 +34,10 @@ public class EnumCharTest {
         assertEquals(EnumChar.DOT.getCode(), EnumChar.PERIOD.getCode());
         assertEquals(EnumChar.DOT.getHTML(), EnumChar.PERIOD.getHTML());
         assertEquals(EnumChar.DOT.getUnicode(), EnumChar.PERIOD.getUnicode());
+
+        assertEquals(EnumChar.NUL, EnumChar.valueOf("NUL"));
+        assertEquals("NUL", EnumChar.NUL.name());
+        assertEquals(0, EnumChar.NUL.ordinal());
     }
 
     /**

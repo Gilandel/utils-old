@@ -72,6 +72,8 @@ public class AssertorEnumTest extends AbstractTest {
             Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").and(EnumOperator.AND).hasName("AND").orElseThrow();
             Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").or(EnumOperator.AND).hasName("AND").orElseThrow();
             Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").xor(EnumOperator.AND).hasName("XOR").orElseThrow();
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERIS").nand(EnumOperator.AND).hasName("XOR").orElseThrow();
+            Assertor.that(EnumChar.ASTERISK).hasName("ASTERISK").nor(EnumOperator.AND).hasName("XOR").orElseThrow();
         } catch (IllegalArgumentException e) {
             fail("The test isn't correct");
         }
@@ -121,6 +123,8 @@ public class AssertorEnumTest extends AbstractTest {
             Assertor.that(EnumOperator.OR).hasOrdinal(1).and().not().hasName("xor").orElseThrow();
             Assertor.that(EnumOperator.OR).hasOrdinal(1).or().hasName("xor").orElseThrow();
             Assertor.that(EnumOperator.OR).hasOrdinal(1).xor().hasName("xor").orElseThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(2).nand().hasName("xor").orElseThrow();
+            Assertor.that(EnumOperator.OR).hasOrdinal(1).nor().hasName("xor").orElseThrow();
 
             Assertor.that(EnumOperator.OR).hasOrdinal(1).and(Assertor.that("").isBlank().or().isEqual("r")).orElseThrow();
         } catch (IllegalArgumentException e) {

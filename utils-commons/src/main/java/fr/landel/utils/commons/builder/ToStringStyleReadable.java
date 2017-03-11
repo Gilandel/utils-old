@@ -26,12 +26,16 @@ public class ToStringStyleReadable extends AbstractToStringStyle {
      */
     private static final long serialVersionUID = -1671814171209301363L;
 
-    private static final String EMPTY = "";
     private static final String EQUALS = " = ";
     private static final String START = "\n[";
-    private static final String END = "]";
+    private static final String END = BRACKET_CLOSE;
     private static final String SEP = ",\n";
     private static final String QUOTE = "'";
+
+    @Override
+    protected String getStart() {
+        return EMPTY;
+    }
 
     @Override
     protected String getTitleStart() {
@@ -40,6 +44,11 @@ public class ToStringStyleReadable extends AbstractToStringStyle {
 
     @Override
     protected String getTitleEnd() {
+        return EMPTY;
+    }
+
+    @Override
+    protected String getTitleSeparator() {
         return EQUALS;
     }
 
@@ -81,5 +90,10 @@ public class ToStringStyleReadable extends AbstractToStringStyle {
     @Override
     protected String getPropertiesEnd() {
         return END;
+    }
+
+    @Override
+    protected String getEnd() {
+        return EMPTY;
     }
 }

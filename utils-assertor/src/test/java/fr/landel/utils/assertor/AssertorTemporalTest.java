@@ -66,6 +66,8 @@ public class AssertorTemporalTest extends AbstractTest {
         assertTrue(Assertor.that(localDateTime1).isEqual(localDateTime2).and().isEqual(localDateTime1).isOK());
         assertTrue(Assertor.that(localDateTime1).isEqual(localDateTime2).or().isEqual(localDateTime1).isOK());
         assertFalse(Assertor.that(localDateTime1).isEqual(localDateTime2).xor().isEqual(localDateTime1).isOK());
+        assertFalse(Assertor.that(localDateTime1).isEqual(localDateTime2).nand().isEqual(localDateTime1).isOK());
+        assertFalse(Assertor.that(localDateTime1).isEqual(localDateTime2).nor().isEqual(localDateTime1).isOK());
 
         assertFalse(Assertor.that(localDateTime1).isEqual(localDateTime2).xor(Assertor.that(true).isTrue()).and().isEqual(localDateTime1)
                 .isOK());

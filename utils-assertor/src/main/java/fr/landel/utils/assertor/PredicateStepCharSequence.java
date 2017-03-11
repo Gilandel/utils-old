@@ -47,4 +47,14 @@ public interface PredicateStepCharSequence<T extends CharSequence> extends Predi
     default PredicateAssertorCharSequence<T> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorCharSequence<T> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorCharSequence<T> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

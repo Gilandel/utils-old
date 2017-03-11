@@ -41,4 +41,14 @@ public interface PredicateStepArray<T> extends PredicateStep<PredicateStepArray<
     default PredicateAssertorArray<T> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorArray<T> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorArray<T> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

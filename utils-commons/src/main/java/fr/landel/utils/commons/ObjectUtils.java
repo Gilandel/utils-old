@@ -1,5 +1,5 @@
 /*-
- * #%L
+8 * #%L
  * utils-commons
  * %%
  * Copyright (C) 2016 - 2017 Gilandel
@@ -13,6 +13,7 @@
 package fr.landel.utils.commons;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -37,25 +38,55 @@ import java.util.function.Supplier;
 public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
 
     /**
-     * <p>
      * Returns a default value if the object passed is {@code null}.
-     * </p>
+     * 
+     * <pre>
+     * ObjectUtils.defaultIfNull(null, null, o -&gt; o.getTitle())              = null
+     * ObjectUtils.defaultIfNull(null, "",  o -&gt; o.getTitle())               = ""
+     * ObjectUtils.defaultIfNull(null, "zz", o -&gt; o.getTitle())              = "zz"
+     * ObjectUtils.defaultIfNull("abc", "NO_TEXT", o -&gt; o.toUpperCase())     = "ABC"
+     * ObjectUtils.defaultIfNull("false", Boolean.TRUE, Boolean::parseBoolean)  = Boolean.TRUE
+     * </pre>
+     * 
+     * @param object
+     *            the object to check
+     * @param defaultObject
+     *            the default value
+     * @param transformer
+     *            the object mapper
+     * @param <T>
+     *            the type of the object to check
+     * @param <X>
+     *            the type of the output
+     * @return transformed {@code object} if not {@code null}, default value
+     *         otherwise
+     * @throws NullPointerException
+     *             if {@code transformer} is {@code null}
+     */
+    public static <T, X> X defaultIfNull(final T object, final X defaultObject, final Function<T, X> transformer) {
+        Objects.requireNonNull(transformer, "The parameter transformer cannot be null");
+
+        return object != null ? transformer.apply(object) : defaultObject;
+    }
+
+    /**
+     * Returns a default value if the object passed is {@code null}.
      *
      * <pre>
-     * ObjectUtils.defaultIfNull(null, null)      = null
-     * ObjectUtils.defaultIfNull(null, "")        = ""
-     * ObjectUtils.defaultIfNull(null, "zz")      = "zz"
-     * ObjectUtils.defaultIfNull("abc", *)        = "abc"
-     * ObjectUtils.defaultIfNull(Boolean.TRUE, *) = Boolean.TRUE
+     * ObjectUtils.defaultIfNull(null, () -&gt; null)          = null
+     * ObjectUtils.defaultIfNull(null, () -&gt; "")            = ""
+     * ObjectUtils.defaultIfNull(null, () -&gt; "zz")          = "zz"
+     * ObjectUtils.defaultIfNull("abc", () -&gt; *)            = "abc"
+     * ObjectUtils.defaultIfNull(Boolean.TRUE, () -&gt;  *)    = Boolean.TRUE
      * </pre>
      *
-     * @param <T>
-     *            the type of the object
      * @param object
      *            the {@code Object} to test, may be {@code null}
      * @param defaultValueSupplier
      *            the default value supplier, cannot be {@code null}, may supply
      *            {@code null}
+     * @param <T>
+     *            the type of the object
      * @return {@code object} if it is not {@code null}, defaultValue otherwise
      * @throws NullPointerException
      *             if supplier is {@code null}

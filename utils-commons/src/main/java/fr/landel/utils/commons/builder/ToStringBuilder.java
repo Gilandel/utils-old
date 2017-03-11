@@ -13,11 +13,17 @@
 package fr.landel.utils.commons.builder;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.builder.Builder;
+
+import fr.landel.utils.commons.Default;
+import fr.landel.utils.commons.ObjectUtils;
+import fr.landel.utils.commons.Result;
 
 /**
  * ToString builder
@@ -42,19 +48,18 @@ public class ToStringBuilder implements Builder<String> {
     /**
      * Constructor
      *
-     * @param object
-     *            the main object, class or title
      * @param style
      *            the style to apply
-     * @throws NullPointerException
-     *             if object is {@code null}
      */
-    public ToStringBuilder(final Object object, final ToStringStyle style) {
-        if (style != null) {
-            this.style = style.setObject(object);
-        } else {
-            this.style = new ToStringStyleDefault().setObject(object);
-        }
+    public ToStringBuilder(final ToStringStyles style) {
+        this("", style);
+    }
+
+    /**
+     * Constructor
+     */
+    public ToStringBuilder() {
+        this("", (ToStringStyles) null);
     }
 
     /**
@@ -66,7 +71,47 @@ public class ToStringBuilder implements Builder<String> {
      *             if object is {@code null}
      */
     public ToStringBuilder(final Object object) {
-        this(object, null);
+        this(object, (ToStringStyles) null);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param object
+     *            the main object, class or title
+     * @param style
+     *            the style to apply
+     * @throws NullPointerException
+     *             if object is {@code null}
+     */
+    public ToStringBuilder(final Object object, final ToStringStyles style) {
+        this(object, ObjectUtils.defaultIfNull(style, ToStringStyleDefault::new, s -> s.getSupplier()));
+    }
+
+    /**
+     * Constructor
+     *
+     * @param supplier
+     *            the style supplier
+     * @throws NullPointerException
+     *             if object is {@code null}
+     */
+    public ToStringBuilder(final Supplier<? extends ToStringStyle> supplier) {
+        this("", supplier);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param object
+     *            the main object, class or title
+     * @param supplier
+     *            the style supplier
+     * @throws NullPointerException
+     *             if object is {@code null}
+     */
+    public ToStringBuilder(final Object object, final Supplier<? extends ToStringStyle> supplier) {
+        this.style = Objects.requireNonNull(supplier, "ToStringStyle supplier cannot be null").get().setObject(object);
     }
 
     /**
@@ -74,12 +119,60 @@ public class ToStringBuilder implements Builder<String> {
      * 
      * @param value
      *            the value to append
+     * @return the {@link ToStringBuilder} instance
+     */
+    public ToStringBuilder append(final Object object) {
+        this.style.append(object);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value to append
+     * @return the {@link ToStringBuilder} instance
+     */
+    public ToStringBuilder append(final CharSequence key, final Object value) {
+        this.style.append(key, value);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder
+     * 
+     * @param value
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
      * @param <T>
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder append(final T object) {
-        this.style.append(object);
+    public <T> ToStringBuilder appendIf(final T object, final Predicate<T> predicate) {
+        this.style.append(object, predicate);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIf(final CharSequence key, final T value, final Predicate<T> predicate) {
+        this.style.append(key, value, predicate);
         return this;
     }
 
@@ -94,24 +187,8 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder append(final T object, final Function<T, CharSequence> formatter) {
+    public <T> ToStringBuilder appendAndFormat(final T object, final Function<T, CharSequence> formatter) {
         this.style.append(object, formatter);
-        return this;
-    }
-
-    /**
-     * Append the pair key/value to the builder
-     * 
-     * @param key
-     *            the key to append
-     * @param value
-     *            the value to append
-     * @param <T>
-     *            the value type
-     * @return the {@link ToStringBuilder} instance
-     */
-    public <T> ToStringBuilder append(final CharSequence key, final T value) {
-        this.style.append(key, value);
         return this;
     }
 
@@ -128,7 +205,7 @@ public class ToStringBuilder implements Builder<String> {
      *            the object type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder append(final CharSequence key, final T value, final Function<T, CharSequence> formatter) {
+    public <T> ToStringBuilder appendAndFormat(final CharSequence key, final T value, final Function<T, CharSequence> formatter) {
         this.style.append(key, value, formatter);
         return this;
     }
@@ -137,29 +214,18 @@ public class ToStringBuilder implements Builder<String> {
      * Append the value to the builder
      * 
      * @param value
-     *            the value supplier
-     * @param <T>
-     *            the value type
-     * @return the {@link ToStringBuilder} instance
-     */
-    public <T> ToStringBuilder append(final Supplier<T> object) {
-        this.style.append(object);
-        return this;
-    }
-
-    /**
-     * Append the value to the builder
-     * 
-     * @param value
-     *            the value supplier
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
      * @param formatter
-     *            the formatter used to format the value before appending
+     *            the formatter used to format the object before appending
      * @param <T>
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder append(final Supplier<T> object, final Function<T, CharSequence> formatter) {
-        this.style.append(object, formatter);
+    public <T> ToStringBuilder appendAndFormatIf(final T object, final Predicate<T> predicate, final Function<T, CharSequence> formatter) {
+        this.style.append(object, predicate, formatter);
         return this;
     }
 
@@ -169,31 +235,312 @@ public class ToStringBuilder implements Builder<String> {
      * @param key
      *            the key to append
      * @param value
-     *            the value supplier
+     *            the value to append
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
      * @param <T>
-     *            the value type
+     *            the object type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder append(final CharSequence key, final Supplier<T> value) {
-        this.style.append(key, value);
+    public <T> ToStringBuilder appendAndFormatIf(final CharSequence key, final T value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.append(key, value, predicate, formatter);
         return this;
     }
 
     /**
-     * Append the pair key/value to the builder
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
+     * @return the {@link ToStringBuilder} instance
+     */
+    public ToStringBuilder appendIfNotNull(final Object object) {
+        this.style.appendIfNotNull(object);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
      * 
      * @param key
      *            the key to append
      * @param value
-     *            the value supplier
+     *            the value
+     * @return the {@link ToStringBuilder} instance
+     */
+    public ToStringBuilder appendIfNotNull(final CharSequence key, final Object value) {
+        this.style.appendIfNotNull(key, value);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfNotNullIf(final T object, final Predicate<T> predicate) {
+        this.style.appendIfNotNull(object, predicate);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfNotNullIf(final CharSequence key, final T value, final Predicate<T> predicate) {
+        this.style.appendIfNotNull(key, value, predicate);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
      * @param formatter
      *            the formatter used to format the value before appending
      * @param <T>
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder append(final CharSequence key, final Supplier<T> value, final Function<T, CharSequence> formatter) {
-        this.style.append(key, value, formatter);
+    public <T> ToStringBuilder appendAndFormatIfNotNull(final T object, final Function<T, CharSequence> formatter) {
+        this.style.appendIfNotNull(object, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfNotNull(final CharSequence key, final T value, final Function<T, CharSequence> formatter) {
+        this.style.appendIfNotNull(key, value, formatter);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is not {@code null}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfNotNullIf(final T object, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfNotNull(object, predicate, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is not
+     * {@code null}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfNotNullIf(final CharSequence key, final T value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfNotNull(key, value, predicate, formatter);
+        return this;
+    }
+
+    /**
+     * Append the value if present, otherwise the default value to the builder.
+     * See {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendDefault(final Default<T> object) {
+        this.style.appendDefault(object);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value if present, otherwise the pair key/default
+     * value to the builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendDefault(final CharSequence key, final Default<T> value) {
+        this.style.appendDefault(key, value);
+        return this;
+    }
+
+    /**
+     * Append the value if present, otherwise the default value to the builder.
+     * See {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendDefaultIf(final Default<T> object, final Predicate<T> predicate) {
+        this.style.appendDefault(object, predicate);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value if present, otherwise the pair key/default
+     * value to the builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendDefaultIf(final CharSequence key, final Default<T> value, final Predicate<T> predicate) {
+        this.style.appendDefault(key, value, predicate);
+        return this;
+    }
+
+    /**
+     * Append the value if present, otherwise the default value to the builder.
+     * See {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatDefault(final Default<T> object, final Function<T, CharSequence> formatter) {
+        this.style.appendDefault(object, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value if present, otherwise the pair key/default
+     * value to the builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatDefault(final CharSequence key, final Default<T> value,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendDefault(key, value, formatter);
+        return this;
+    }
+
+    /**
+     * Append the value if present, otherwise the default value to the builder.
+     * See {@link Default}.
+     * 
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatDefaultIf(final Default<T> object, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendDefault(object, predicate, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value if present, otherwise the pair key/default
+     * value to the builder. See {@link Default}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatDefaultIf(final CharSequence key, final Default<T> value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendDefault(key, value, predicate, formatter);
         return this;
     }
 
@@ -209,23 +556,6 @@ public class ToStringBuilder implements Builder<String> {
      */
     public <T> ToStringBuilder appendIfPresent(final Optional<T> object) {
         this.style.appendIfPresent(object);
-        return this;
-    }
-
-    /**
-     * Append the value to the builder only if value is present. See
-     * {@link Optional}.
-     * 
-     * @param value
-     *            the optional value
-     * @param formatter
-     *            the formatter used to format the value before appending
-     * @param <T>
-     *            the value type
-     * @return the {@link ToStringBuilder} instance
-     */
-    public <T> ToStringBuilder appendIfPresent(final Optional<T> object, final Function<T, CharSequence> formatter) {
-        this.style.appendIfPresent(object, formatter);
         return this;
     }
 
@@ -247,6 +577,148 @@ public class ToStringBuilder implements Builder<String> {
     }
 
     /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfPresent(final Result<T> object) {
+        this.style.appendIfPresent(object);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfPresent(final CharSequence key, final Result<T> value) {
+        this.style.appendIfPresent(key, value);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfPresentIf(final Optional<T> object, final Predicate<T> predicate) {
+        this.style.appendIfPresent(object, predicate);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfPresentIf(final CharSequence key, final Optional<T> value, final Predicate<T> predicate) {
+        this.style.appendIfPresent(key, value, predicate);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfPresentIf(final Result<T> object, final Predicate<T> predicate) {
+        this.style.appendIfPresent(object, predicate);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendIfPresentIf(final CharSequence key, final Result<T> value, final Predicate<T> predicate) {
+        this.style.appendIfPresent(key, value, predicate);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param value
+     *            the optional value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresent(final Optional<T> object, final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(object, formatter);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresent(final Result<T> object, final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(object, formatter);
+        return this;
+    }
+
+    /**
      * Append the pair key/value to the builder only if value is present. See
      * {@link Optional}.
      * 
@@ -260,8 +732,117 @@ public class ToStringBuilder implements Builder<String> {
      *            the value type
      * @return the {@link ToStringBuilder} instance
      */
-    public <T> ToStringBuilder appendIfPresent(final CharSequence key, final Optional<T> value, final Function<T, CharSequence> formatter) {
+    public <T> ToStringBuilder appendAndFormatIfPresent(final CharSequence key, final Optional<T> value,
+            final Function<T, CharSequence> formatter) {
         this.style.appendIfPresent(key, value, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresent(final CharSequence key, final Result<T> value,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(key, value, formatter);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresentIf(final Optional<T> object, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(object, predicate, formatter);
+        return this;
+    }
+
+    /**
+     * Append the value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresentIf(final Result<T> object, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(object, predicate, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Optional}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresentIf(final CharSequence key, final Optional<T> value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(key, value, predicate, formatter);
+        return this;
+    }
+
+    /**
+     * Append the pair key/value to the builder only if value is present. See
+     * {@link Result}.
+     * 
+     * @param key
+     *            the key to append
+     * @param value
+     *            the optional value
+     * @param predicate
+     *            to check if the value has to be appended (ignored if
+     *            {@code null})
+     * @param formatter
+     *            the formatter used to format the value before appending
+     * @param <T>
+     *            the value type
+     * @return the {@link ToStringBuilder} instance
+     */
+    public <T> ToStringBuilder appendAndFormatIfPresentIf(final CharSequence key, final Result<T> value, final Predicate<T> predicate,
+            final Function<T, CharSequence> formatter) {
+        this.style.appendIfPresent(key, value, predicate, formatter);
         return this;
     }
 

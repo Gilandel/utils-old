@@ -43,4 +43,14 @@ public interface PredicateStepTemporal<T extends Temporal & Comparable<T>> exten
     default PredicateAssertorTemporal<T> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorTemporal<T> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorTemporal<T> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

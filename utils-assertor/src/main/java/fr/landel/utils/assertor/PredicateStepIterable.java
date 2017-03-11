@@ -41,4 +41,14 @@ public interface PredicateStepIterable<T> extends PredicateStep<PredicateStepIte
     default PredicateAssertorIterable<T> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorIterable<T> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorIterable<T> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

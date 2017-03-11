@@ -13,13 +13,13 @@
 package fr.landel.utils.commons.builder;
 
 /**
- * ToString default style
+ * ToString JSON style
  *
  * @since Mar 5, 2017
  * @author Gilles
  *
  */
-public class ToStringStyleDefault extends AbstractToStringStyle {
+public class ToStringStyleParenthesis extends AbstractToStringStyle {
 
     /**
      * serialVersionUID
@@ -28,7 +28,7 @@ public class ToStringStyleDefault extends AbstractToStringStyle {
 
     @Override
     protected String getStart() {
-        return EMPTY;
+        return PARENTHESIS_OPEN;
     }
 
     @Override
@@ -43,12 +43,12 @@ public class ToStringStyleDefault extends AbstractToStringStyle {
 
     @Override
     protected String getTitleSeparator() {
-        return EMPTY;
+        return COLON;
     }
 
     @Override
     protected String getPropertiesStart() {
-        return BRACKET_OPEN;
+        return PARENTHESIS_OPEN;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ToStringStyleDefault extends AbstractToStringStyle {
 
     @Override
     protected String getPropertySeparator() {
-        return EQUALS;
+        return COLON;
     }
 
     @Override
@@ -83,11 +83,11 @@ public class ToStringStyleDefault extends AbstractToStringStyle {
 
     @Override
     protected String getPropertiesEnd() {
-        return BRACKET_CLOSE;
+        return PARENTHESIS_CLOSE;
     }
 
     @Override
     protected String getEnd() {
-        return EMPTY;
+        return PARENTHESIS_CLOSE;
     }
 }

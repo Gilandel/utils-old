@@ -59,6 +59,14 @@ public class HelperAssertor extends ConstantsAssertor {
         return new StepAssertor<>(result, object, type, EnumOperator.XOR);
     }
 
+    protected static <X, T> StepAssertor<T> nand(final StepAssertor<X> result, final T object, final EnumType type) {
+        return new StepAssertor<>(result, object, type, EnumOperator.NAND);
+    }
+
+    protected static <X, T> StepAssertor<T> nor(final StepAssertor<X> result, final T object, final EnumType type) {
+        return new StepAssertor<>(result, object, type, EnumOperator.NOR);
+    }
+
     protected static <T> StepAssertor<T> and(final StepAssertor<T> result) {
         return new StepAssertor<>(result, EnumOperator.AND);
     }
@@ -71,6 +79,14 @@ public class HelperAssertor extends ConstantsAssertor {
         return new StepAssertor<>(result, EnumOperator.XOR);
     }
 
+    protected static <T> StepAssertor<T> nand(final StepAssertor<T> result) {
+        return new StepAssertor<>(result, EnumOperator.NAND);
+    }
+
+    protected static <T> StepAssertor<T> nor(final StepAssertor<T> result) {
+        return new StepAssertor<>(result, EnumOperator.NOR);
+    }
+
     protected static <T, X> StepAssertor<T> and(final StepAssertor<T> result, final StepAssertor<X> other) {
         return new StepAssertor<>(result, other, EnumOperator.AND);
     }
@@ -81,6 +97,14 @@ public class HelperAssertor extends ConstantsAssertor {
 
     protected static <T, X> StepAssertor<T> xor(final StepAssertor<T> result, final StepAssertor<X> other) {
         return new StepAssertor<>(result, other, EnumOperator.XOR);
+    }
+
+    protected static <T, X> StepAssertor<T> nand(final StepAssertor<T> result, final StepAssertor<X> other) {
+        return new StepAssertor<>(result, other, EnumOperator.NAND);
+    }
+
+    protected static <T, X> StepAssertor<T> nor(final StepAssertor<T> result, final StepAssertor<X> other) {
+        return new StepAssertor<>(result, other, EnumOperator.NOR);
     }
 
     protected static <T> ResultAssertor combine(final StepAssertor<T> step, final boolean loadMessage) {
@@ -270,14 +294,26 @@ public class HelperAssertor extends ConstantsAssertor {
 
     protected static boolean isValid(final boolean previousOK, final boolean currentOK, final EnumOperator operator) {
         boolean ok = false;
-        if (EnumOperator.AND.equals(operator)) {
+        if (operator == null) { // AND
             ok = previousOK & currentOK;
-        } else if (EnumOperator.OR.equals(operator)) {
-            ok = previousOK | currentOK;
-        } else if (EnumOperator.XOR.equals(operator)) {
-            ok = previousOK ^ currentOK;
         } else {
-            ok = previousOK & currentOK;
+            switch (operator) {
+            case OR:
+                ok = previousOK | currentOK;
+                break;
+            case XOR:
+                ok = previousOK ^ currentOK;
+                break;
+            case NAND:
+                ok = !previousOK & !currentOK;
+                break;
+            case NOR:
+                ok = !previousOK | !currentOK;
+                break;
+            case AND:
+            default:
+                ok = previousOK & currentOK;
+            }
         }
         return ok;
     }

@@ -32,7 +32,7 @@ public class EnumOperatorTest {
     @Test
     public void test() {
         assertNotNull(EnumOperator.values());
-        assertEquals(3, EnumOperator.values().length);
+        assertEquals(5, EnumOperator.values().length);
 
         assertEquals(EnumOperator.AND, EnumOperator.valueOf("AND"));
         assertEquals(EnumOperator.AND, EnumOperator.valueOf(EnumOperator.class, "AND"));
@@ -40,12 +40,22 @@ public class EnumOperatorTest {
         assertEquals(0, EnumOperator.AND.ordinal());
         assertEquals("operator.and", EnumOperator.AND.getKey());
         assertEquals("AND", EnumOperator.AND.name());
+
         assertEquals(1, EnumOperator.OR.ordinal());
         assertEquals("operator.or", EnumOperator.OR.getKey());
         assertEquals("OR", EnumOperator.OR.name());
+
         assertEquals(2, EnumOperator.XOR.ordinal());
         assertEquals("operator.xor", EnumOperator.XOR.getKey());
         assertEquals("XOR", EnumOperator.XOR.name());
+
+        assertEquals(3, EnumOperator.NAND.ordinal());
+        assertEquals("operator.nand", EnumOperator.NAND.getKey());
+        assertEquals("NAND", EnumOperator.NAND.name());
+
+        assertEquals(4, EnumOperator.NOR.ordinal());
+        assertEquals("operator.nor", EnumOperator.NOR.getKey());
+        assertEquals("NOR", EnumOperator.NOR.name());
     }
 
     /**
@@ -56,5 +66,7 @@ public class EnumOperatorTest {
         assertEquals(" AND ", EnumOperator.AND.toString());
         assertEquals(" OR ", EnumOperator.OR.toString());
         assertEquals(" XOR ", EnumOperator.XOR.toString());
+        assertEquals(" NAND ", EnumOperator.NAND.toString());
+        assertEquals(" NOR ", EnumOperator.NOR.toString());
     }
 }

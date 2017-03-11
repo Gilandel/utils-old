@@ -1139,4 +1139,411 @@ public interface PredicateStep<S extends PredicateStep<S, T>, T> {
     default PredicateAssertor<S, T> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    /**
+     * Applies a predicate step in the current one with the operator NAND. The
+     * aim of this is to provide the equivalence of parenthesis in condition
+     * expressions.
+     * 
+     * <pre>
+     * // '' empty nand 'text' not empty and contains 'r'
+     * Assertor.that("").isEmpty().nand("text").isNotEmpty().and().contains("r").isOK();
+     * // -&gt; false (because: true nand true and false =&gt; true nand true = false
+     * // =&gt; false and false = false)
+     * 
+     * // '' empty nand ('text' not empty and contains 'r')
+     * Assertor.that("text").isEmpty().nand(Assertor.that("text").isEmpty().nand().contains("r")).isOK();
+     * // -&gt; true (because: false nand false =&gt; (false nand false) = true)
+     * </pre>
+     * 
+     * @param other
+     *            the other predicate step
+     * @param <X>
+     *            The type of other checked object
+     * @param <R>
+     *            The {@linkplain PredicateStep} type
+     * @return this predicate step with the other injected
+     */
+    default <X, R extends PredicateStep<R, X>> S nand(final PredicateStep<R, X> other) {
+        return this.get(HelperAssertor.nand(this.getStep(), other.getStep()));
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check
+     * another object.
+     * 
+     * @param other
+     *            the other or next checked object to check
+     * @param <X>
+     *            the object type
+     * @param <R>
+     *            the type of predicate
+     * @return the predicate assertor
+     */
+    default <X, R extends PredicateStep<R, X>> PredicateAssertor<R, X> nand(final X other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.getType(other));
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link Boolean}.
+     * 
+     * @param other
+     *            the other or next checked {@link Boolean} to check
+     * @return the predicate assertor
+     */
+    default PredicateAssertorBoolean nand(final Boolean other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.BOOLEAN);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link CharSequence}.
+     * 
+     * @param other
+     *            the other or next checked {@link CharSequence} to check
+     * @param <X>
+     *            the {@link CharSequence} type
+     * @return the predicate assertor
+     */
+    default <X extends CharSequence> PredicateAssertorCharSequence<X> nand(final X other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.CHAR_SEQUENCE);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link Number}.
+     * 
+     * @param other
+     *            the other or next checked {@link Number} to check
+     * @param <N>
+     *            the {@link Number} type
+     * @return the predicate assertor
+     */
+    default <N extends Number & Comparable<N>> PredicateAssertorNumber<N> nand(final N other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.getType(other));
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check
+     * an {@code array}.
+     * 
+     * @param other
+     *            the other or next checked {@code array} to check
+     * @param <X>
+     *            the array elements type
+     * @return the predicate assertor
+     */
+    default <X> PredicateAssertorArray<X> nand(final X[] other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.ARRAY);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link Class}.
+     * 
+     * @param other
+     *            the other or next checked {@link Class} to check
+     * @param <X>
+     *            the {@link Class} type
+     * @return the predicate assertor
+     */
+    default <X> PredicateAssertorClass<X> nand(final Class<X> other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.CLASS);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link Map}.
+     * 
+     * @param other
+     *            the other or next checked {@link Map} to check
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the predicate assertor
+     */
+    default <K, V> PredicateAssertorMap<K, V> nand(final Map<K, V> other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.MAP);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check
+     * an {@link Iterable}.
+     * 
+     * @param other
+     *            the other or next checked {@link Iterable} to check
+     * @param <X>
+     *            the {@link Iterable} elements type
+     * @return the predicate assertor
+     */
+    default <X> PredicateAssertorIterable<X> nand(final Iterable<X> other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.ITERABLE);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link Date}.
+     * 
+     * @param other
+     *            the other or next checked {@link Date} to check
+     * @return the predicate assertor
+     */
+    default PredicateAssertorDate nand(final Date other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.DATE);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * {@link Calendar}.
+     * 
+     * @param other
+     *            the other or next checked {@link Calendar} to check
+     * @return the predicate assertor
+     */
+    default PredicateAssertorCalendar nand(final Calendar other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.CALENDAR);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check a
+     * comparable {@link Temporal}.
+     * 
+     * @param other
+     *            the other or next checked {@link Temporal} to check
+     * @param <X>
+     *            the temporal type
+     * @return the predicate assertor
+     */
+    default <X extends Temporal & Comparable<X>> PredicateAssertorTemporal<X> nand(final X other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.TEMPORAL);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step with the ability to check
+     * an {@link Enum}.
+     * 
+     * @param other
+     *            the other or next checked {@link Enum} to check
+     * @param <X>
+     *            the type of the {@link Enum}
+     * @return the predicate assertor
+     */
+    default <X extends Enum<X>> PredicateAssertorEnum<X> nand(final X other) {
+        return () -> HelperAssertor.nand(this.getStep(), other, EnumType.ENUMERATION);
+    }
+
+    /**
+     * Append an operator 'NAND' on the current step.
+     * 
+     * @return the predicate assertor
+     */
+    default PredicateAssertor<S, T> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    /**
+     * Applies a predicate step in the current one with the operator NOR. The
+     * aim of this is to provide the equivalence of parenthesis in condition
+     * expressions.
+     * 
+     * <pre>
+     * // '' not empty nor 'text' empty nor contains 't'
+     * Assertor.that("").isNotEmpty().nor("text").isEmpty().nor().contains("r").isOK();
+     * // -&gt; false (because: false nor false nor true =&gt; false nor false = true
+     * // =&gt; true and true = false)
+     * 
+     * // 'test' empty nor 'text' blank and contains 'r'
+     * Assertor.that("text").isEmpty().nor(Assertor.that("text").isBlank().nor().contains("r")).isOK();
+     * // -&gt; true (because: false nor false nor false =&gt; false nor false = true
+     * // =&gt; true nor false = true)
+     * </pre>
+     * 
+     * @param other
+     *            the other predicate step
+     * @param <X>
+     *            The type of other checked object
+     * @param <R>
+     *            The {@linkplain PredicateStep} type
+     * @return this predicate step with the other injected
+     */
+    default <X, R extends PredicateStep<R, X>> S nor(final PredicateStep<R, X> other) {
+        return this.get(HelperAssertor.nor(this.getStep(), other.getStep()));
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check
+     * another object.
+     * 
+     * @param other
+     *            the other or next checked object to check
+     * @param <X>
+     *            the object type
+     * @param <R>
+     *            the type of predicate
+     * @return the predicate assertor
+     */
+    default <X, R extends PredicateStep<R, X>> PredicateAssertor<R, X> nor(final X other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.getType(other));
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link Boolean}.
+     * 
+     * @param other
+     *            the other or next checked {@link Boolean} to check
+     * @return the predicate assertor
+     */
+    default PredicateAssertorBoolean nor(final Boolean other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.BOOLEAN);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link CharSequence}.
+     * 
+     * @param other
+     *            the other or next checked {@link CharSequence} to check
+     * @param <X>
+     *            the {@link CharSequence} type
+     * @return the predicate assertor
+     */
+    default <X extends CharSequence> PredicateAssertorCharSequence<X> nor(final X other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.CHAR_SEQUENCE);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link Number}.
+     * 
+     * @param other
+     *            the other or next checked {@link Number} to check
+     * @param <N>
+     *            the {@link Number} type
+     * @return the predicate assertor
+     */
+    default <N extends Number & Comparable<N>> PredicateAssertorNumber<N> nor(final N other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.getType(other));
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check an
+     * {@code array}.
+     * 
+     * @param other
+     *            the other or next checked {@code array} to check
+     * @param <X>
+     *            the array elements type
+     * @return the predicate assertor
+     */
+    default <X> PredicateAssertorArray<X> nor(final X[] other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.ARRAY);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link Class}.
+     * 
+     * @param other
+     *            the other or next checked {@link Class} to check
+     * @param <X>
+     *            the {@link Class} type
+     * @return the predicate assertor
+     */
+    default <X> PredicateAssertorClass<X> nor(final Class<X> other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.CLASS);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link Map}.
+     * 
+     * @param other
+     *            the other or next checked {@link Map} to check
+     * @param <K>
+     *            the {@link Map} key elements type
+     * @param <V>
+     *            the {@link Map} value elements type
+     * @return the predicate assertor
+     */
+    default <K, V> PredicateAssertorMap<K, V> nor(final Map<K, V> other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.MAP);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check an
+     * {@link Iterable}.
+     * 
+     * @param other
+     *            the other or next checked {@link Iterable} to check
+     * @param <X>
+     *            the {@link Iterable} elements type
+     * @return the predicate assertor
+     */
+    default <X> PredicateAssertorIterable<X> nor(final Iterable<X> other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.ITERABLE);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link Date}.
+     * 
+     * @param other
+     *            the other or next checked {@link Date} to check
+     * @return the predicate assertor
+     */
+    default PredicateAssertorDate nor(final Date other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.DATE);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * {@link Calendar}.
+     * 
+     * @param other
+     *            the other or next checked {@link Calendar} to check
+     * @return the predicate assertor
+     */
+    default PredicateAssertorCalendar nor(final Calendar other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.CALENDAR);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check a
+     * comparable {@link Temporal}.
+     * 
+     * @param other
+     *            the other or next checked {@link Temporal} to check
+     * @param <X>
+     *            the temporal type
+     * @return the predicate assertor
+     */
+    default <X extends Temporal & Comparable<X>> PredicateAssertorTemporal<X> nor(final X other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.TEMPORAL);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step with the ability to check an
+     * {@link Enum}.
+     * 
+     * @param other
+     *            the other or next checked {@link Enum} to check
+     * @param <X>
+     *            the type of the {@link Enum}
+     * @return the predicate assertor
+     */
+    default <X extends Enum<X>> PredicateAssertorEnum<X> nor(final X other) {
+        return () -> HelperAssertor.nor(this.getStep(), other, EnumType.ENUMERATION);
+    }
+
+    /**
+     * Append an operator 'NOR' on the current step.
+     * 
+     * @return the predicate assertor
+     */
+    default PredicateAssertor<S, T> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

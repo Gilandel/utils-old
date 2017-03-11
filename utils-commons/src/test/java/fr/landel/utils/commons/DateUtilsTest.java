@@ -86,13 +86,13 @@ public class DateUtilsTest {
 
         assertNotNull(date1);
 
-        Date date2 = DateUtils.getDefaultIfNull(date1, dateDefault);
+        Date date2 = ObjectUtils.defaultIfNull(date1, dateDefault);
         assertEquals(date1, date2);
 
-        date2 = DateUtils.getDefaultIfNull(null, dateDefault);
+        date2 = ObjectUtils.defaultIfNull(null, dateDefault);
         assertEquals(dateDefault, date2);
 
-        date2 = DateUtils.getDefaultIfNull(null, null);
+        date2 = ObjectUtils.defaultIfNull(null, (Date) null);
         assertNull(date2);
     }
 
@@ -112,19 +112,19 @@ public class DateUtilsTest {
 
         assertNotNull(date1);
 
-        Date date2 = DateUtils.getDefaultIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, df, dateDefault);
+        Date date2 = DateUtils.defaultIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, df, dateDefault);
         assertEquals(date1.toString(), date2.toString());
 
-        date2 = DateUtils.getDefaultIfEmpty("", df, dateDefault);
+        date2 = DateUtils.defaultIfEmpty("", df, dateDefault);
         assertEquals(dateDefault.toString(), date2.toString());
 
-        date2 = DateUtils.getDefaultIfEmpty(null, df, dateDefault);
+        date2 = DateUtils.defaultIfEmpty(null, df, dateDefault);
         assertEquals(dateDefault.toString(), date2.toString());
 
-        date2 = DateUtils.getDefaultIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, null, dateDefault);
+        date2 = DateUtils.defaultIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, null, dateDefault);
         assertEquals(dateDefault.toString(), date2.toString());
 
-        date2 = DateUtils.getDefaultIfEmpty("UNPARSEABLE", df, dateDefault);
+        date2 = DateUtils.defaultIfEmpty("UNPARSEABLE", df, dateDefault);
         assertEquals(dateDefault.toString(), date2.toString());
     }
 
@@ -135,16 +135,16 @@ public class DateUtilsTest {
     public void testGetNullIfEmpty() {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-        Date date2 = DateUtils.getNullIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, df);
+        Date date2 = DateUtils.nullIfEmpty(DAY + "/" + (MONTH + 1) + "/" + YEAR, df);
         assertEquals(date2.toString(), date2.toString());
 
-        date2 = DateUtils.getNullIfEmpty(null, df);
+        date2 = DateUtils.nullIfEmpty(null, df);
         assertNull(date2);
 
-        date2 = DateUtils.getNullIfEmpty("", df);
+        date2 = DateUtils.nullIfEmpty("", df);
         assertNull(date2);
 
-        date2 = DateUtils.getNullIfEmpty("UNPARSEABLE", df);
+        date2 = DateUtils.nullIfEmpty("UNPARSEABLE", df);
         assertNull(date2);
     }
 

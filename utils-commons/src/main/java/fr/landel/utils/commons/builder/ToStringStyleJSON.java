@@ -26,61 +26,68 @@ public class ToStringStyleJSON extends AbstractToStringStyle {
      */
     private static final long serialVersionUID = -1671814171209301363L;
 
-    private static final String TITLE_START = "{\"";
-    private static final String TITLE_END = "\":";
-    private static final String EQUALS = ":";
-    private static final String START = "{";
-    private static final String END = "}}";
-    private static final String SEP = ",";
-    private static final String QUOTE = "\"";
+    @Override
+    protected String getStart() {
+        return BRACE_OPEN;
+    }
 
     @Override
     protected String getTitleStart() {
-        return TITLE_START;
+        return EMPTY;
     }
 
     @Override
     protected String getTitleEnd() {
-        return TITLE_END;
+        return EMPTY;
+    }
+
+    @Override
+    protected String getTitleSeparator() {
+        return COLON;
     }
 
     @Override
     protected String getPropertiesStart() {
-        return START;
+        return BRACE_OPEN;
     }
 
     @Override
     protected String getKeyStart() {
-        return QUOTE;
+        return EMPTY;
     }
 
     @Override
     protected String getKeyEnd() {
-        return QUOTE;
+        return EMPTY;
     }
 
     @Override
     protected String getPropertySeparator() {
-        return EQUALS;
+        return COLON;
     }
 
     @Override
     protected String getValueStart() {
-        return QUOTE;
+        return EMPTY;
     }
 
     @Override
     protected String getValueEnd() {
-        return QUOTE;
+        return EMPTY;
     }
 
     @Override
     protected String getPropertiesSeparator() {
-        return SEP;
+        return COMMA;
     }
 
     @Override
     protected String getPropertiesEnd() {
-        return END;
+        return BRACE_CLOSE;
+    }
+
+    @Override
+    protected String getEnd() {
+        return BRACE_CLOSE;
     }
 }

@@ -41,4 +41,14 @@ public interface PredicateStepEnum<T extends Enum<T>> extends PredicateStep<Pred
     default PredicateAssertorEnum<T> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorEnum<T> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorEnum<T> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

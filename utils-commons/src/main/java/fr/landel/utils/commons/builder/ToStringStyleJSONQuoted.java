@@ -13,67 +13,67 @@
 package fr.landel.utils.commons.builder;
 
 /**
- * ToString default style
+ * ToString JSON style
  *
  * @since Mar 5, 2017
  * @author Gilles
  *
  */
-public class ToStringStyleDefault extends AbstractToStringStyle {
+public class ToStringStyleJSONQuoted extends AbstractToStringStyle {
 
     /**
      * serialVersionUID
      */
-    private static final long serialVersionUID = -1671814171209301363L;
+    private static final long serialVersionUID = -1671814171209301361L;
 
     @Override
     protected String getStart() {
-        return EMPTY;
+        return BRACE_OPEN;
     }
 
     @Override
     protected String getTitleStart() {
-        return EMPTY;
+        return QUOTE;
     }
 
     @Override
     protected String getTitleEnd() {
-        return EMPTY;
+        return QUOTE;
     }
 
     @Override
     protected String getTitleSeparator() {
-        return EMPTY;
+        return COLON;
     }
 
     @Override
     protected String getPropertiesStart() {
-        return BRACKET_OPEN;
+        return BRACE_OPEN;
     }
 
     @Override
     protected String getKeyStart() {
-        return EMPTY;
+        return QUOTE;
     }
 
     @Override
     protected String getKeyEnd() {
-        return EMPTY;
+        return QUOTE;
     }
 
     @Override
     protected String getPropertySeparator() {
-        return EQUALS;
+        return COLON;
     }
 
     @Override
     protected String getValueStart() {
-        return EMPTY;
+        return QUOTE;
     }
 
     @Override
     protected String getValueEnd() {
-        return EMPTY;
+        return QUOTE;
     }
 
     @Override
@@ -83,11 +83,11 @@ public class ToStringStyleDefault extends AbstractToStringStyle {
 
     @Override
     protected String getPropertiesEnd() {
-        return BRACKET_CLOSE;
+        return BRACE_CLOSE;
     }
 
     @Override
     protected String getEnd() {
-        return EMPTY;
+        return BRACE_CLOSE;
     }
 }

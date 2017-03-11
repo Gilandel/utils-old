@@ -40,6 +40,16 @@ public interface PredicateStepDate extends PredicateStep<PredicateStepDate, Date
     }
 
     @Override
+    default PredicateAssertorDate nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorDate nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
+
+    @Override
     default PredicateAssertorDate xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }

@@ -43,4 +43,14 @@ public interface PredicateStepMap<K, V> extends PredicateStep<PredicateStepMap<K
     default PredicateAssertorMap<K, V> xor() {
         return () -> HelperAssertor.xor(this.getStep());
     }
+
+    @Override
+    default PredicateAssertorMap<K, V> nand() {
+        return () -> HelperAssertor.nand(this.getStep());
+    }
+
+    @Override
+    default PredicateAssertorMap<K, V> nor() {
+        return () -> HelperAssertor.nor(this.getStep());
+    }
 }

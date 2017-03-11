@@ -102,10 +102,14 @@ public class AssertorClassTest extends AbstractTest {
         assertTrue(Assertor.that(IOException.class).isNull().or().hasName(name).isOK());
         assertTrue(Assertor.that(IOException.class).isNull().xor().hasName(name).isOK());
         assertTrue(Assertor.that(IOException.class).isNull().or().not().hasName("ee").isOK());
+        assertFalse(Assertor.that(IOException.class).isNull().nand().not().hasName("ee").isOK());
+        assertTrue(Assertor.that(IOException.class).isNull().nor().not().hasName("ee").isOK());
 
         assertTrue(Assertor.that(IOException.class).hasName(name).and("ere").contains('e').isOK());
         assertTrue(Assertor.that(IOException.class).hasName(name).or("ere").contains('e').isOK());
         assertTrue(Assertor.that(IOException.class).hasName(name).xor("ara").contains('e').isOK());
+        assertFalse(Assertor.that(IOException.class).hasName(name).nand("ara").contains('e').isOK());
+        assertTrue(Assertor.that(IOException.class).hasName(name).nor("ara").contains('e').isOK());
 
         Expect.exception(() -> {
             Assertor.that(Exception.class).hasName("re").orElseThrow();
